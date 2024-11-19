@@ -1,6 +1,7 @@
 <div class="app-main-container">
   <app-menu-config #MenuConfigComponent />
-  <div class="main-content">
-    <router-outlet></router-outlet>
+  <div class="flex flex-column main-content">
+    <p-button class="flex" label="test" (click)="test()" *ngIf="testVisible"></p-button>
+    <router-outlet class="flex"></router-outlet>
   </div>
 </div>

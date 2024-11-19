@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {CommonService} from '../rest/common.service';
-import {getLocalStorage, setLocalStorage} from '../../guards/f-amhohwa';
-import {getKeyName, LangType} from '../../models/common/lang-type';
-import * as FConstants from '../../guards/f-constants';
+import { Injectable } from "@angular/core";
+import {TranslateService} from "@ngx-translate/core";
+import {CommonService} from "../rest/common.service";
+import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
+import {getKeyName, LangType} from "../../models/common/lang-type";
+import * as FConstants from "../../guards/f-constants";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class LanguageService {
   langList: string[];

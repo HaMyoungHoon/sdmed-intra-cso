@@ -1,0 +1,16 @@
+export enum UserRole {
+  None = 0,
+  Admin = 1,
+  CsoAdmin = Admin.valueOf() << 1,
+  Employee = Admin.valueOf() << 2,
+  BusinessMan = Admin.valueOf() << 3,
+  PasswordChanger = Admin.valueOf() << 4,
+  StatusChanger = Admin.valueOf() << 5,
+  RoleChanger = Admin.valueOf() << 6,
+  DeptChanger = Admin.valueOf() << 7,
+  UserChildChanger = Admin.valueOf() << 8,
+  UserFileUploader = Admin.valueOf() << 9,
+  CorrespondentFileUploader = Admin.valueOf() << 10,
+  PharmaFileUploader = Admin.valueOf() << 11,
+  HospitalFileUploader = Admin.valueOf() << 12,
+}

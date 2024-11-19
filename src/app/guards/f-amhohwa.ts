@@ -45,10 +45,10 @@ const toHexStr = (data: string) : string => {
 
 const hexStrToByteArrayStr = (data: string | null) : string => {
   if (data == null) {
-    return '';
+    return "";
   }
 
-  let result = '';
+  let result = "";
   const split = data.split(',');
   const splitLength = split.length;
   for (let i = 0; i < splitLength; ++i) {

@@ -7,9 +7,9 @@ export enum UserStatus {
 }
 
 export const UserStatusDescriptions: { [key in UserStatus]: string} = {
-  [UserStatus.None]: '미지정',
-  [UserStatus.Live]: '라이브',
-  [UserStatus.Stop]: '중지됨',
-  [UserStatus.Delete]: '삭제됨',
-  [UserStatus.Expired]: '만료됨',
+  [UserStatus.None]: "미지정",
+  [UserStatus.Live]: "라이브",
+  [UserStatus.Stop]: "중지됨",
+  [UserStatus.Delete]: "삭제됨",
+  [UserStatus.Expired]: "만료됨",
 }

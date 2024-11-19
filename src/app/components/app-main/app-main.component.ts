@@ -1,24 +1,30 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ViewChild} from "@angular/core";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
-import {FormsModule} from '@angular/forms';
-import {MenuConfigComponent} from '../common/menu-config/menu-config.component';
-import {UserService} from '../../services/rest/user.service';
-import {getLocalStorage, isExpired, removeLocalStorage} from '../../guards/f-amhohwa';
-import * as FConstants from '../../guards/f-constants';
-import {FDialogService} from '../../services/common/f-dialog.service';
+import {FormsModule} from "@angular/forms";
+import {MenuConfigComponent} from "../common/menu-config/menu-config.component";
+import {UserService} from "../../services/rest/user.service";
+import {getLocalStorage, isExpired, removeLocalStorage} from "../../guards/f-amhohwa";
+import * as FConstants from "../../guards/f-constants";
+import {FDialogService} from "../../services/common/f-dialog.service";
+import {Button} from "primeng/button";
+import {UserRole} from "../../models/rest/user-role";
+import {NgIf} from "@angular/common";
+import {saveAs} from "file-saver";
 
 @Component({
-  selector: 'app-app-main',
+  selector: "app-app-main",
   standalone: true,
   imports: [
     InputSwitchModule,
     RouterOutlet,
     FormsModule,
-    MenuConfigComponent
+    MenuConfigComponent,
+    Button,
+    NgIf
   ],
-  templateUrl: './app-main.component.html',
-  styleUrl: './app-main.component.scss'
+  templateUrl: "./app-main.component.html",
+  styleUrl: "./app-main.component.scss"
 })
 export class AppMainComponent implements AfterViewInit {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;
@@ -81,5 +87,31 @@ export class AppMainComponent implements AfterViewInit {
         this.menuConfig.menuClose();
       }
     });
+  }
+  get testVisible(): boolean {
+    return false;
+  }
+  test(): void {
+    this.userService.getSampleDownloadExcel().then(x => {
+      saveAs(x.body, "sampleExcel.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("download", x.message);
+    });
+//    let id = "김미리";
+//    let roles: UserRole[] = [
+//      UserRole.Employee,
+//      UserRole.UserChildChanger,
+//      UserRole.UserFileUploader
+//    ];
+//    this.userService.putUserRoleModify(id, roles).then(x => {
+//      if (x.result) {
+//
+//        return;
+//      }
+//
+//      this.fDialogService.warn("test", x.msg);
+//    }).catch(x => {
+//      this.fDialogService.error("test", x.message);
+//    });
   }
 }

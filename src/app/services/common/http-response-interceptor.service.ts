@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {lastValueFrom, map, Observable} from 'rxjs';
-import {RestResult} from '../../models/common/rest-result';
+import { Injectable } from "@angular/core";
+import {HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {lastValueFrom, map, Observable} from "rxjs";
+import {RestResult} from "../../models/common/rest-result";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpResponseInterceptorService {
   options?: {
@@ -19,13 +19,13 @@ export class HttpResponseInterceptorService {
     headers?: HttpHeaders | {
       [header: string]: string | string[];
     };
-    observe: 'response';
+    observe: "response";
     context?: HttpContext;
     params?: HttpParams | {
       [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
     };
     reportProgress?: boolean;
-    responseType: 'blob';
+    responseType: "blob";
     withCredentials?: boolean;
     transferCache?: {
       includeHeaders?: string[];
@@ -40,9 +40,9 @@ export class HttpResponseInterceptorService {
     params?: HttpParams | {
       [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
     };
-    observe?: 'body' | 'events' | 'response';
+    observe?: "body" | "events" | "response";
     reportProgress?: boolean;
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+    responseType?: "arraybuffer" | "blob" | "json" | "text";
     withCredentials?: boolean;
     transferCache?: {
       includeHeaders?: string[];
@@ -134,8 +134,8 @@ export class HttpResponseInterceptorService {
       responseType: "blob"
     }
     this.anyOptions = {
-      observe: 'events',
-      responseType: 'blob',
+      observe: "events",
+      responseType: "blob",
       reportProgress: true
     }
   }

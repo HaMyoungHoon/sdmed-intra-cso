@@ -1,23 +1,23 @@
-import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
-import {ToolbarModule} from 'primeng/toolbar';
-import {Button} from 'primeng/button';
-import {SidebarModule} from 'primeng/sidebar';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {RouterLink} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {LanguageService} from '../../../services/common/language.service';
-import {MenuItem} from 'primeng/api';
-import {AppConfigService} from '../../../services/common/app-config.service';
-import {MainMenuItem} from '../../../models/common/main-menu-item';
-import {LangType} from '../../../models/common/lang-type';
-import {getLocalStorage, getTokenExpired, getTokenExpiredDate, setLocalStorage} from '../../../guards/f-amhohwa';
-import * as FConstants from '../../../guards/f-constants';
-import {UserService} from '../../../services/rest/user.service';
-import {FDialogService} from '../../../services/common/f-dialog.service';
-import {dateToMonthFullString} from '../../../guards/f-extensions';
+import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
+import {ToolbarModule} from "primeng/toolbar";
+import {Button} from "primeng/button";
+import {SidebarModule} from "primeng/sidebar";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {RouterLink} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
+import {LanguageService} from "../../../services/common/language.service";
+import {MenuItem} from "primeng/api";
+import {AppConfigService} from "../../../services/common/app-config.service";
+import {MainMenuItem} from "../../../models/common/main-menu-item";
+import {LangType} from "../../../models/common/lang-type";
+import {getLocalStorage, getTokenExpired, getTokenExpiredDate, setLocalStorage} from "../../../guards/f-amhohwa";
+import * as FConstants from "../../../guards/f-constants";
+import {UserService} from "../../../services/rest/user.service";
+import {FDialogService} from "../../../services/common/f-dialog.service";
+import {dateToMonthFullString} from "../../../guards/f-extensions";
 
 @Component({
-  selector: 'app-menu-config',
+  selector: "app-menu-config",
   standalone: true,
   imports: [
     ToolbarModule,
@@ -29,8 +29,8 @@ import {dateToMonthFullString} from '../../../guards/f-extensions';
     NgClass,
     NgIf
   ],
-  templateUrl: './menu-config.component.html',
-  styleUrl: './menu-config.component.scss'
+  templateUrl: "./menu-config.component.html",
+  styleUrl: "./menu-config.component.scss"
 })
 export class MenuConfigComponent {
   menuButtonVisible: boolean;

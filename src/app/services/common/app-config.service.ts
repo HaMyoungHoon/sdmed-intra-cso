@@ -1,13 +1,13 @@
-import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from '@angular/core';
+import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from "@angular/core";
 import * as FConstants from "../../guards/f-constants"
-import {AppConfig} from '../../models/common/app-config';
-import {AppState} from '../../models/common/app-state';
-import {Subject} from 'rxjs';
-import {getLocalStorage, setLocalStorage} from '../../guards/f-amhohwa';
-import {isPlatformBrowser} from '@angular/common';
+import {AppConfig} from "../../models/common/app-config";
+import {AppState} from "../../models/common/app-state";
+import {Subject} from "rxjs";
+import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
+import {isPlatformBrowser} from "@angular/common";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AppConfigService {
   private _config: AppConfig = {
@@ -72,12 +72,12 @@ export class AppConfigService {
     const newHref = toDark ? FConstants.DEF_DARK_THEME : FConstants.DEF_LIGHT_THEME;
     let themeLink = <HTMLLinkElement>document.getElementById(FConstants.THEME_LINK);
     const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
-    cloneLinkElement.setAttribute('href', newHref);
-    cloneLinkElement.setAttribute('id', FConstants.THEME_LINK + '-clone');
+    cloneLinkElement.setAttribute("href", newHref);
+    cloneLinkElement.setAttribute("id", FConstants.THEME_LINK + "-clone");
     themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
-    cloneLinkElement.addEventListener('load', () => {
+    cloneLinkElement.addEventListener("load", () => {
       themeLink.remove();
-      cloneLinkElement.setAttribute('id', FConstants.THEME_LINK);
+      cloneLinkElement.setAttribute("id", FConstants.THEME_LINK);
     });
     this.onConfigUpdate();
     setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, `${toDark}`);

@@ -1,15 +1,15 @@
-import {HttpClient} from '@angular/common/http';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {Injectable, Provider} from '@angular/core';
-import {TranslateLoader, TranslateModule, TranslationObject} from '@ngx-translate/core';
-import {Observable} from 'rxjs';
+import {HttpClient} from "@angular/common/http";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {Injectable, Provider} from "@angular/core";
+import {TranslateLoader, TranslateModule, TranslationObject} from "@ngx-translate/core";
+import {Observable} from "rxjs";
 
 export function HttpLoaderFactory(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient)
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CustomTranslateLoader implements TranslateLoader {
   constructor(private http: HttpClient) {

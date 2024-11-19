@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import {DialogService, DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {MessageService} from 'primeng/api';
-import {ToastLevel} from '../../models/common/toast-level';
-import {ToastItem} from '../../models/common/toast-item';
-import {Observable} from 'rxjs';
-import {TableDialogComponent} from '../../components/common/table-dialog/table-dialog.component';
-import {HtmlEditDialogComponent} from '../../components/common/html-edit-dialog/html-edit-dialog.component';
-import {SignDialogComponent} from '../../components/common/sign-dialog/sign-dialog.component';
-import {FDialogComponent} from '../../components/common/f-dialog/f-dialog.component';
+import { Injectable } from "@angular/core";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {MessageService} from "primeng/api";
+import {ToastLevel} from "../../models/common/toast-level";
+import {ToastItem} from "../../models/common/toast-item";
+import {Observable} from "rxjs";
+import {TableDialogComponent} from "../../components/common/table-dialog/table-dialog.component";
+import {HtmlEditDialogComponent} from "../../components/common/html-edit-dialog/html-edit-dialog.component";
+import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
+import {FDialogComponent} from "../../components/common/f-dialog/f-dialog.component";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class FDialogService {
   ref?: DynamicDialogRef
@@ -23,7 +23,7 @@ export class FDialogService {
   }
   openSignIn(): Observable<any> {
     this.ref = this.dialogService.open(SignDialogComponent, {
-      header: 'sign in',
+      header: "sign in",
       modal: true,
       closable: true,
       closeOnEscape: false,

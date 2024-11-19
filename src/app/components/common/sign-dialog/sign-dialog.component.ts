@@ -1,17 +1,17 @@
-import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
-import {FDialogService} from '../../../services/common/f-dialog.service';
-import {DynamicDialogRef} from 'primeng/dynamicdialog';
-import {UserService} from '../../../services/rest/user.service';
-import {setLocalStorage} from '../../../guards/f-amhohwa';
-import * as FConstants from '../../../guards/f-constants';
-import {PasswordModule} from 'primeng/password';
-import {FormsModule} from '@angular/forms';
-import {FloatLabelModule} from 'primeng/floatlabel';
-import {Button} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
+import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
+import {FDialogService} from "../../../services/common/f-dialog.service";
+import {DynamicDialogRef} from "primeng/dynamicdialog";
+import {UserService} from "../../../services/rest/user.service";
+import {setLocalStorage} from "../../../guards/f-amhohwa";
+import * as FConstants from "../../../guards/f-constants";
+import {PasswordModule} from "primeng/password";
+import {FormsModule} from "@angular/forms";
+import {FloatLabelModule} from "primeng/floatlabel";
+import {Button} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
 
 @Component({
-  selector: 'app-sign-dialog',
+  selector: "app-sign-dialog",
   standalone: true,
   imports: [
     PasswordModule,
@@ -20,8 +20,8 @@ import {InputTextModule} from 'primeng/inputtext';
     Button,
     InputTextModule
   ],
-  templateUrl: './sign-dialog.component.html',
-  styleUrl: './sign-dialog.component.scss'
+  templateUrl: "./sign-dialog.component.html",
+  styleUrl: "./sign-dialog.component.scss"
 })
 export class SignDialogComponent {
   id: string;
@@ -53,7 +53,7 @@ export class SignDialogComponent {
       return;
     }
 
-    if (data.key == 'Enter') {
+    if (data.key == "Enter") {
       this.signIn();
     }
   }
@@ -62,7 +62,7 @@ export class SignDialogComponent {
       return;
     }
 
-    if (data.key == 'Enter') {
+    if (data.key == "Enter") {
       this.signIn();
     }
   }

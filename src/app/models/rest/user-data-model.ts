@@ -1,5 +1,5 @@
-import {UserStatus} from './user-status';
-import {UserDataSubModel} from './user-data-sub-model';
+import {UserStatus} from "./user-status";
+import {UserDataSubModel} from "./user-data-sub-model";
 
 export interface UserDataModel {
   thisIndex: number;
