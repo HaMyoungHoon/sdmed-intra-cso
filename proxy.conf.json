@@ -1,0 +1,11 @@
+{
+  "/apiCSO/" : {
+    "target": "https://localhost:25801",
+    "secure": false,
+    "loglevel": "debug",
+    "pathRewrite": {
+      "^/apiCSO": ""
+    },
+    "changeOrigin": true
+  }
+}

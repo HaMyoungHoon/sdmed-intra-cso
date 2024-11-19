@@ -1,3 +1,16 @@
 import { Routes } from '@angular/router';
+import * as FConstants from "./guards/f-constants"
+import {AppMainComponent} from './components/app-main/app-main.component';
+import {DASH_BOARD} from './guards/f-constants';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', component: AppMainComponent,
+    children: [
+      { path: FConstants.DASH_BOARD, loadChildren: () => import('./components/app-main/dash-board/dash-board.module').then(m => m.DashBoardModule) },
+      { path: FConstants.MY_INFO, loadChildren: () => import('./components/app-main/user/my-info/my-info.module').then(m => m.MyInfoModule) }
+    ]
+  },
+  { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
+  { path: FConstants.API_CSO.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
+  { path: '**', redirectTo: FConstants.NOTFOUND_URL },
+];

@@ -1,13 +1,24 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
+import {LanguageService} from './services/common/language.service';
+import {ToastModule} from 'primeng/toast';
+import {Button} from 'primeng/button';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {FormsModule} from '@angular/forms';
+import {AppConfigService} from './services/common/app-config.service';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastModule, Button, InputSwitchModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'sdmed-intra-cso';
+  constructor(private cd: ChangeDetectorRef, private router: Router,
+              public languageService: LanguageService, private appConfigService: AppConfigService) {
+    languageService.onInit();
+    appConfigService.onInit();
+  }
 }

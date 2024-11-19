@@ -1,0 +1,35 @@
+<div class="menu-config-container">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <p-button class="p-button-sm" icon="pi pi-bars" (click)="toggleMenu()" *ngIf="menuButtonVisible"></p-button>
+    </div>
+    <div class="p-toolbar-group-right option">
+      <div class="flex flex-column mr-1">
+        <label class="flex justify-content-center">{{'menu-config.label.expired' | translate}}</label>
+        <label class="flex justify-content-center">{{expiredDate}}</label>
+        <p-button class="flex justify-content-center" label="{{'menu-config.button.refresh' | translate}}" (click)="tokenRefresh()" *ngIf="expiredButtonVisible"></p-button>
+      </div>
+      <a class="sun" (click)="changeTheme(false)" *ngIf="isDarkMode"></a>
+      <a class="moon" (click)="changeTheme(true)" *ngIf="!isDarkMode"></a>
+      <p-button label="{{'menu-config.button.ko' | translate}}" (click)="langToKo()" class="mr-1" *ngIf="!isKoLang"></p-button>
+      <p-button label="{{'menu-config.button.en' | translate}}" (click)="langToEn()" class="mr-1" *ngIf="isKoLang"></p-button>
+      <p-button icon="pi pi-minus" (click)="decrementScale()" class="mr-1" [disabled]="scale === scales[0]"></p-button>
+      <i class="pi pi-circle-on" *ngFor="let s of scales" [ngClass]="{'scale-active': s === scale}"></i>
+      <p-button icon="pi pi-plus"  (click)="incrementScale()" class="ml-1" [disabled]="scale === scales[scales.length - 1]"></p-button>
+    </div>
+  </p-toolbar>
+  <p-sidebar [(visible)]="menuVisible" [baseZIndex]="1000">
+    <div *ngFor="let menu of menuItems" [className]="menu.styleClass">
+      <label [routerLink]="menu.routerLink">
+        <i class="{{menu.icon}}"></i>
+        {{menu.label!! | translate}}
+        <div *ngFor="let sub of menu.items" [className]="sub.styleClass">
+          <label [routerLink]="sub.routerLink">
+            <i class="{{sub.icon}}"></i>
+            {{sub.label!! | translate}}
+          </label>
+        </div>
+      </label>
+    </div>
+  </p-sidebar>
+</div>
