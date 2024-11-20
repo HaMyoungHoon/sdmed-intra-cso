@@ -3,3 +3,11 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
+
+app-menu-config .p-menu {
+  width: 100% !important;
+  height: 100% !important;
+}
+app-menu-config .p-menu a {
+  text-decoration-line: none;
+}

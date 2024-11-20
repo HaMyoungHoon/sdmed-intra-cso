@@ -1,29 +1,5 @@
 $linkColor: #2196f3;
 .menu-config-container {
-  .top-menu {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: solid 1px black;
-  }
-  .top-menu:hover{
-    background-color: #0d3c61aa;
-    color: #fef4f7;
-  }
-  .top-menu label:hover {
-    background-color: #0b655b;
-    cursor: pointer;
-  }
-  .sub-menu {
-    padding-left: 20px;
-  }
-  .sub-menu:hover {
-    color: #fef4f7;
-  }
-  .sub-menu label:hover {
-    background-color: #0d1c61aa;
-    cursor: pointer;
-  }
-
   .option {
     display: flex;
     align-items: center;
@@ -62,13 +38,4 @@ $linkColor: #2196f3;
   .p-toolbar {
     background-color: transparent !important;
   }
-}
-
-::ng-deep .p-menu {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-::ng-deep .p-menu a {
-  text-decoration-line: none;
 }
