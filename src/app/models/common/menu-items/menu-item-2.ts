@@ -6,7 +6,6 @@ export function MenuItem2(): MenuItem {
     visible: true,
     icon: "pi pi-fw pi-pencil",
     styleClass: "top-menu",
-    routerLink: "/menu-2",
     items: [
       {
         label: "menu-2.sub-menu.sub-1",

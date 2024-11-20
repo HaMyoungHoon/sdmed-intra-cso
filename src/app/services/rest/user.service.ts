@@ -3,7 +3,7 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {UserDataModel} from "../../models/rest/user-data-model";
 import {RestPage} from "../../models/common/rest-page";
-import {UserStatus, UserStatusDescriptions} from "../../models/rest/user-status";
+import {UserStatus} from "../../models/rest/user-status";
 import {UserRole} from "../../models/rest/user-role";
 import {UserDept} from "../../models/rest/user-dept";
 
@@ -53,7 +53,7 @@ export class UserService {
   }
   putUserStatusModify(id: string, status: UserStatus): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("id", id);
-    this.httpResponse.addParam("status", UserStatusDescriptions[status]);
+    this.httpResponse.addParam("status", status);
     return this.httpResponse.put(`${this.baseUrl}/userStatusModify`);
   }
   postDataUploadExcel(file: File): Promise<RestResult<string>> {

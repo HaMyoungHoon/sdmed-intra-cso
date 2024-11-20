@@ -7,7 +7,6 @@ export function MenuItem3(): MenuItem {
     visible: true,
     icon: "pi pi-fw pi-user",
     styleClass: "top-menu",
-    routerLink: `/${FConstants.MY_INFO}`,
     items: [
       {
         label: "menu-3.sub-menu.sub-1",

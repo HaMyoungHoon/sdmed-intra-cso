@@ -10,11 +10,14 @@ import {MenuItem} from "primeng/api";
 import {AppConfigService} from "../../../services/common/app-config.service";
 import {MainMenuItem} from "../../../models/common/main-menu-item";
 import {LangType} from "../../../models/common/lang-type";
-import {getLocalStorage, getTokenExpired, getTokenExpiredDate, setLocalStorage} from "../../../guards/f-amhohwa";
+import {getLocalStorage, getTokenExpiredDate, setLocalStorage} from "../../../guards/f-amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import {UserService} from "../../../services/rest/user.service";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToMonthFullString} from "../../../guards/f-extensions";
+import {MenuModule} from "primeng/menu";
+import {Ripple} from "primeng/ripple";
+import {BadgeModule} from "primeng/badge";
 
 @Component({
   selector: "app-menu-config",
@@ -27,7 +30,10 @@ import {dateToMonthFullString} from "../../../guards/f-extensions";
     RouterLink,
     TranslatePipe,
     NgClass,
-    NgIf
+    NgIf,
+    MenuModule,
+    Ripple,
+    BadgeModule
   ],
   templateUrl: "./menu-config.component.html",
   styleUrl: "./menu-config.component.scss"

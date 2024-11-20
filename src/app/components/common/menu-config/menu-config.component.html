@@ -19,17 +19,24 @@
     </div>
   </p-toolbar>
   <p-sidebar [(visible)]="menuVisible" [baseZIndex]="1000">
-    <div *ngFor="let menu of menuItems" [className]="menu.styleClass">
-      <label [routerLink]="menu.routerLink">
-        <i class="{{menu.icon}}"></i>
-        {{menu.label!! | translate}}
-        <div *ngFor="let sub of menu.items" [className]="sub.styleClass">
-          <label [routerLink]="sub.routerLink">
-            <i class="{{sub.icon}}"></i>
-            {{sub.label!! | translate}}
-          </label>
-        </div>
-      </label>
-    </div>
+    <p-menu class="w-full h-full" [model]="menuItems">
+      <ng-template pTemplate="submenuheader" let-item>
+        <span class="text-primary font-bold" *ngIf="item.routerLink == undefined">{{item.label | translate}}</span>
+        <a pRipple class="text-primary font-bold" [routerLink]="item.routerLink" *ngIf="item.routerLink">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{item.label | translate}}</span>
+        </a>
+      </ng-template>
+      <ng-template pTemplate="item" let-item>
+        <a pRipple class="flex align-items-center p-menuitem-link" [routerLink]="item.routerLink">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{item.label | translate}}</span>
+          <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+          <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
+            {{item.shortcut}}
+          </span>
+        </a>
+      </ng-template>
+    </p-menu>
   </p-sidebar>
 </div>

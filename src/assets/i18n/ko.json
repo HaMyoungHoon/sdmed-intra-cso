@@ -1,11 +1,8 @@
 {
-  "dash-board": {
-    "title": "대시보드"
-  },
   "menu-1": {
     "title": "메뉴 1 타이틀",
     "sub-menu": {
-      "sub-1": "메뉴 1 서브 1"
+      "sub-1": "대시보드"
     }
   },
   "menu-2": {
@@ -31,6 +28,34 @@
       "en": "english",
       "ko": "한글",
       "refresh": "로그인 연장"
+    }
+  },
+  "my-info": {
+    "accordion-header": {
+      "detail": "내 정보",
+      "child": "하위 유저"
+    },
+    "detail": {
+      "id": "아이디",
+      "name": "이름",
+      "mail": "메일",
+      "phoneNumber": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "regDate": "등록일",
+      "lastLoginDate": "마지막 로그인일"
+    },
+    "child": {
+      "id": "아이디",
+      "name": "이름",
+      "phoneNumber": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "subData": {
+        "companyName": "회사이름"
+      }
     }
   },
   "error": {

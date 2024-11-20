@@ -33,6 +33,34 @@
       "refresh": "login refresh"
     }
   },
+  "my-info": {
+    "accordion-header": {
+      "detail": "my info",
+      "child": "lower user"
+    },
+    "detail": {
+      "id": "id",
+      "name": "name",
+      "mail": "mail",
+      "phoneNumber": "phone",
+      "role": "role",
+      "dept": "dept",
+      "status": "status",
+      "regDate": "reg date",
+      "lastLoginDate": "last login date"
+    },
+    "child": {
+      "id": "id",
+      "name": "name",
+      "phoneNumber": "phone",
+      "role": "role",
+      "dept": "dept",
+      "status": "status",
+      "subData": {
+        "companyName": "company name"
+      }
+    }
+  },
   "error": {
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",

@@ -11,8 +11,8 @@ export interface UserDataModel {
   role: number;
   dept: number;
   status: UserStatus;
-  regDate: Date;
-  lastLoginDate?: Date;
+  regDate: string;
+  lastLoginDate?: string;
   subData?: UserDataSubModel;
   children?: UserDataModel[];
 }

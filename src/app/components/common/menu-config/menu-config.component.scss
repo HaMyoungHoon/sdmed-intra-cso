@@ -63,3 +63,12 @@ $linkColor: #2196f3;
     background-color: transparent !important;
   }
 }
+
+::ng-deep .p-menu {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+::ng-deep .p-menu a {
+  text-decoration-line: none;
+}

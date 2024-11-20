@@ -49,7 +49,7 @@ const hexStrToByteArrayStr = (data: string | null) : string => {
   }
 
   let result = "";
-  const split = data.split(',');
+  const split = data.split(",");
   const splitLength = split.length;
   for (let i = 0; i < splitLength; ++i) {
     result += (String.fromCharCode(parseInt(split[i], 16)));
@@ -101,7 +101,7 @@ export function getTokenExpired(token: String): number {
     return 0;
   }
   try {
-    return (JSON.parse(atob(token.split('.')[1]))).exp ?? 0;
+    return (JSON.parse(atob(token.split(".")[1]))).exp ?? 0;
   } catch {
     return 0;
   }
