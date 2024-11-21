@@ -19,7 +19,7 @@ export function statusToUserStatusDesc(status?: UserStatus): string {
   }
   return UserStatusDesc[status ?? UserStatus.None];
 }
-export const UserStatusDesc: { [key in UserStatus]: string} = {
+export const UserStatusDesc: { [key in UserStatus]: string } = {
   [UserStatus.None]: "미지정",
   [UserStatus.Live]: "라이브",
   [UserStatus.Stop]: "중지됨",

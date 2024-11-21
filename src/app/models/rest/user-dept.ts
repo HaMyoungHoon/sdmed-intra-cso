@@ -33,7 +33,7 @@ export function flagToDeptDesc(flags?: number): string[] {
   });
   return ret;
 }
-export const StringToUserDeptDesc: { [key in string]: string} = {
+export const StringToUserDeptDesc: { [key in string]: string } = {
   "None": "미지정",
   "Admin": "슈퍼관리자",
   "CsoAdmin": "관리자",

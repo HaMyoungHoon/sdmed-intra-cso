@@ -1,5 +1,4 @@
 import {UserStatus} from "./user-status";
-import {UserDataSubModel} from "./user-data-sub-model";
 
 export interface UserDataModel {
   thisIndex: number;
@@ -7,12 +6,17 @@ export interface UserDataModel {
   pw: string;
   name: string;
   mail: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   role: number;
   dept: number;
   status: UserStatus;
+  taxpayerImageUrl: string;
+  companyName: string;
+  companyNumber: string;
+  companyAddress: string;
+  bankAccountImageUrl: string;
+  bankAccount: string;
   regDate: string;
   lastLoginDate?: string;
-  subData?: UserDataSubModel;
   children?: UserDataModel[];
 }
