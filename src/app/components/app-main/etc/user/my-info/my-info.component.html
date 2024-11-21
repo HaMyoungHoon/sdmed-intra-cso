@@ -39,7 +39,7 @@
         <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
       </div>
     </p-accordionTab>
-    <p-accordionTab class="flex-auto" header="{{'my-info.accordion-header.child' | translate}}" *ngIf="userDataModel?.children">
+    <p-accordionTab class="flex-auto" header="{{'my-info.accordion-header.child' | translate}}" *ngIf="userDataModel?.children?.length ?? 0 > 0">
       <p-table [value]="userDataModel?.children ?? []" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]"
                [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
         <ng-template pTemplate="header">
@@ -48,7 +48,9 @@
             <th>{{'my-info.child.name' | translate}}</th>
             <th>{{'my-info.child.phoneNumber' | translate}}</th>
             <th>{{'my-info.child.status' | translate}}</th>
-            <th>{{'my-info.child.subData.companyName' | translate}}</th>
+            <th>{{'my-info.child.companyName' | translate}}</th>
+            <th>{{'my-info.child.taxPayerImage' | translate}}</th>
+            <th>{{'my-info.child.bankAccountImage' | translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-child>
@@ -59,7 +61,13 @@
             <td>
               <p-tag [value]="statusToUserStatusDesc(child?.status)" [severity]="getSeverity(child?.status)"/>
             </td>
-            <td>{{child?.subData?.companyName}}</td>
+            <td>{{child?.companyName}}</td>
+            <td>
+              <p-button [disabled]="child?.taxpayerImageUrl?.length ?? 0 <= 0">{{'common-desc.open' | translate}}</p-button>
+            </td>
+            <td>
+              <p-button [disabled]="child?.bankAccountImageUrl?.length ?? 0 <= 0">{{'common-desc.open' | translate}}</p-button>
+            </td>
           </tr>
         </ng-template>
       </p-table>

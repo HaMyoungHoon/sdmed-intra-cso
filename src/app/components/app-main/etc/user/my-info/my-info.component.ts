@@ -7,7 +7,7 @@ import {UserDataModel} from "../../../../models/rest/user-data-model";
 import {dateToYearFullString, getSeverity, stringToDate} from "../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../models/rest/user-role";
 import {flagToDeptDesc} from "../../../../models/rest/user-dept";
-import {statusToUserStatusDesc, stringToUserStatus, UserStatus} from "../../../../models/rest/user-status";
+import {statusToUserStatusDesc} from "../../../../models/rest/user-status";
 
 @Component({
   selector: "app-my-info",

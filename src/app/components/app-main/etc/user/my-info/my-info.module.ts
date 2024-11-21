@@ -8,13 +8,14 @@ import {CardModule} from "primeng/card";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {Button} from "primeng/button";
 
 
 
 @NgModule({
   declarations: [MyInfoComponent],
   imports: [
-    CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, ProgressSpinnerModule
+    CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, ProgressSpinnerModule, Button
   ]
 })
 export class MyInfoModule { }
