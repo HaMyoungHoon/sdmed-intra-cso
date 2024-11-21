@@ -10,5 +10,8 @@ export const DEF_DARK_THEME = "assets/themes/aura-dark-green/theme.css";
 export const NOTFOUND_URL = "/notfound";
 export const API_CSO = "/apiCSO";
 
-export const DASH_BOARD = "dashBoard";
-export const MY_INFO = "myInfo";
+export const DASH_BOARD_URL = "dashBoard";
+
+export const MEDICINE_LIST_URL = "medicine-list"
+
+export const MY_INFO_URL = "myInfo";

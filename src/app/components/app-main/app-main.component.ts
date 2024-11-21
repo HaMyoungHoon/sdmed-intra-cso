@@ -67,7 +67,7 @@ export class AppMainComponent implements AfterViewInit {
     this.menuConfig.menuInit(data);
     const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
     if (this.router.url == "/" && !isExpired(authToken)) {
-      this.router.navigate([`/${FConstants.DASH_BOARD}`]).then();
+      this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
     }
   }
 
