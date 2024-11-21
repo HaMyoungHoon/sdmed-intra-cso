@@ -1,24 +1,21 @@
 {
-  "dash-board": {
-    "title": "dashboard"
-  },
   "menu-1": {
     "title": "menu 1",
     "sub-menu": {
-      "sub-1": "menu 1 sub 1"
+      "sub-1": "dashboard"
     }
   },
   "menu-2": {
     "title": "menu 2",
     "sub-menu": {
-      "sub-1": "menu 2 menu 1",
+      "sub-1": "pharma benefits list",
       "sub-2": "menu 2 menu 2"
     }
   },
   "menu-3": {
-    "title": "menu 3",
+    "title": "et cetera",
     "sub-menu": {
-      "sub-1": "menu 3 sub 1",
+      "sub-1": "my info",
       "sub-2": "menu 3 sub 2",
       "sub-3": "menu 3 sub 3"
     }
@@ -32,6 +29,16 @@
       "ko": "한글",
       "refresh": "login refresh"
     }
+  },
+  "medicine-list": {
+    "name": "product name",
+    "kdCode": "insurance code",
+    "pharmaName": "pharma name",
+    "mainIngredientCode": "main ingredient code",
+    "div": "div",
+    "maxPrice": "price",
+    "general": "general",
+    "special": "special"
   },
   "my-info": {
     "accordion-header": {
@@ -56,14 +63,18 @@
       "role": "role",
       "dept": "dept",
       "status": "status",
-      "subData": {
-        "companyName": "company name"
-      }
+      "companyName": "company name",
+      "taxPayerImage": "tax payer",
+      "bankAccountImage": "bank account"
     }
   },
   "error": {
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
     "back-to-home": "back to home"
+  },
+  "common-desc": {
+    "open": "open",
+    "view": "view"
   }
 }

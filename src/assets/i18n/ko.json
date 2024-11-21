@@ -1,6 +1,6 @@
 {
   "menu-1": {
-    "title": "메뉴 1 타이틀",
+    "title": "메뉴 1",
     "sub-menu": {
       "sub-1": "대시보드"
     }
@@ -8,14 +8,14 @@
   "menu-2": {
     "title": "메뉴 2",
     "sub-menu": {
-      "sub-1": "메뉴 2 서브 1",
+      "sub-1": "약제급여목록표",
       "sub-2": "메뉴 2 서브 2"
     }
   },
   "menu-3": {
-    "title": "내 정보",
+    "title": "기타",
     "sub-menu": {
-      "sub-1": "내 정보 상세",
+      "sub-1": "내 정보",
       "sub-2": "메뉴 3 서브 2",
       "sub-3": "메뉴 3 서브 3"
     }
@@ -29,6 +29,16 @@
       "ko": "한글",
       "refresh": "로그인 연장"
     }
+  },
+  "medicine-list": {
+    "name": "제품명",
+    "kdCode": "보험코드",
+    "pharmaName": "판매사",
+    "mainIngredientCode": "주성분코드",
+    "div": "구분",
+    "maxPrice": "약가",
+    "general": "일반",
+    "special": "전문"
   },
   "my-info": {
     "accordion-header": {
@@ -53,14 +63,18 @@
       "role": "권한",
       "dept": "부서",
       "status": "상태",
-      "subData": {
-        "companyName": "회사이름"
-      }
+      "companyName": "회사이름",
+      "taxPayerImage": "사업등록증",
+      "bankAccountImage": "은행계좌"
     }
   },
   "error": {
     "title": "요청하신 페이지를 찾을 수 없습니다.",
     "contents": "페이지의 주소가 잘못 입력되었거나,\n찾으시려는 페이지의 주소가 삭제 또는 변경되어 사용할 수 없는 상태입니다.\n입력하신 주소가 정확한지 한 번 더 확인해 주시기 바랍니다.",
     "back-to-home": "돌아가기"
+  },
+  "common-desc": {
+    "open": "열기",
+    "view": "보기"
   }
 }
