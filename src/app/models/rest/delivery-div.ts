@@ -13,7 +13,7 @@ export function stringToDeliveryDiv(data?: string): DeliveryDiv {
 
   return StringToDeliveryDiv[data];
 }
-export function deliveryDivToDeliveryDivDesc(deliveryDiv?: DeliveryDiv): string {
+export function deliveryDivToDeliveryDivDesc(deliveryDiv?: DeliveryDiv | string): string {
   if (typeof(deliveryDiv) == "string") {
     return StringToDeliveryDivDesc[deliveryDiv];
   }

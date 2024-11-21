@@ -13,7 +13,7 @@ export function stringToPharmaGroup(data?: string): PharmaGroup {
 
   return StringToPharmaGroup[data];
 }
-export function pharmaGroupToPharmaGroupDesc(pharmaGroup?: PharmaGroup): string {
+export function pharmaGroupToPharmaGroupDesc(pharmaGroup?: PharmaGroup | string): string {
   if (typeof(pharmaGroup) == "string") {
     return StringToPharmaGroupDesc[pharmaGroup];
   }

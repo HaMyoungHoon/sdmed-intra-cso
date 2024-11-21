@@ -1,13 +1,13 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from "@angular/core";
-import {UserService} from "../../../../services/rest/user.service";
-import {getLocalStorage, isExpired} from "../../../../guards/f-amhohwa";
-import * as FConstants from "../../../../guards/f-constants";
-import {FDialogService} from "../../../../services/common/f-dialog.service";
-import {UserDataModel} from "../../../../models/rest/user-data-model";
-import {dateToYearFullString, getSeverity, stringToDate} from "../../../../guards/f-extensions";
-import {flagToRoleDesc} from "../../../../models/rest/user-role";
-import {flagToDeptDesc} from "../../../../models/rest/user-dept";
-import {statusToUserStatusDesc} from "../../../../models/rest/user-status";
+import {UserService} from "../../../../../services/rest/user.service";
+import {getLocalStorage, isExpired} from "../../../../../guards/f-amhohwa";
+import * as FConstants from "../../../../../guards/f-constants";
+import {FDialogService} from "../../../../../services/common/f-dialog.service";
+import {UserDataModel} from "../../../../../models/rest/user-data-model";
+import {dateToYearFullString, getSeverity, stringToDate} from "../../../../../guards/f-extensions";
+import {flagToRoleDesc} from "../../../../../models/rest/user-role";
+import {flagToDeptDesc} from "../../../../../models/rest/user-dept";
+import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 
 @Component({
   selector: "app-my-info",

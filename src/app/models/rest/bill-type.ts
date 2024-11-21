@@ -12,7 +12,7 @@ export function stringToBillType(data?: string): BillType {
 
   return StringToBillType[data];
 }
-export function billTypeToBillTypeDesc(billType?: BillType): string {
+export function billTypeToBillTypeDesc(billType?: BillType | string): string {
   if (typeof(billType) == "string") {
     return StringToBillTypeDesc[billType];
   }

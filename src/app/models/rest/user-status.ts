@@ -13,7 +13,7 @@ export function stringToUserStatus(data?: string): UserStatus {
 
   return StringToUserStatus[data];
 }
-export function statusToUserStatusDesc(status?: UserStatus): string {
+export function statusToUserStatusDesc(status?: UserStatus | string): string {
   if (typeof(status) == "string") {
     return StringToUserStatusDesc[status];
   }

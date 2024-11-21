@@ -13,7 +13,7 @@ export function stringToPharmaType(data?: string): PharmaType {
 
   return StringToPharmaType[data];
 }
-export function pharmaTypeToPharmaTypeDesc(pharmaType?: PharmaType): string {
+export function pharmaTypeToPharmaTypeDesc(pharmaType?: PharmaType | string): string {
   if (typeof(pharmaType) == "string") {
     return StringToPharmaTypeDesc[pharmaType];
   }

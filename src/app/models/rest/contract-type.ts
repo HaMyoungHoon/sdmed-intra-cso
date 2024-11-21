@@ -11,7 +11,7 @@ export function stringToContractType(data?: string): ContractType {
 
   return StringToContractType[data];
 }
-export function contractTypeToContractTypeDesc(contractType?: ContractType): string {
+export function contractTypeToContractTypeDesc(contractType?: ContractType | string): string {
   if (typeof(contractType) == "string") {
     return StringToContractTypeDesc[contractType];
   }

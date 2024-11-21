@@ -8,7 +8,6 @@ import {getLocalStorage, isExpired, removeLocalStorage} from "../../guards/f-amh
 import * as FConstants from "../../guards/f-constants";
 import {FDialogService} from "../../services/common/f-dialog.service";
 import {Button} from "primeng/button";
-import {UserRole} from "../../models/rest/user-role";
 import {NgIf} from "@angular/common";
 import {saveAs} from "file-saver";
 
