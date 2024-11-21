@@ -1,0 +1,80 @@
+import {AfterViewInit, Component, ViewChild} from "@angular/core";
+import {MedicineService} from "../../../../services/rest/medicine.service";
+import {getLocalStorage, isExpired} from "../../../../guards/f-amhohwa";
+import * as FConstants from "../../../../guards/f-constants";
+import {MedicineModel} from "../../../../models/rest/medicine-model";
+import {FDialogService} from "../../../../services/common/f-dialog.service";
+import {statusToUserStatusDesc} from "../../../../models/rest/user-status";
+import {getSeverity} from "../../../../guards/f-extensions";
+import {Table} from 'primeng/table';
+import {SortEvent} from 'primeng/api';
+
+@Component({
+  selector: "app-medicine-list",
+  templateUrl: "./medicine-list.component.html",
+  styleUrl: "./medicine-list.component.scss"
+})
+export class MedicineListComponent implements AfterViewInit {
+  @ViewChild("medicineListTable") medicineListTable!: Table
+  initValue?: MedicineModel[];
+  medicineModel?: MedicineModel[];
+  loading: boolean = true;
+  isSorted: boolean | null = null;
+  constructor(private medicineService: MedicineService, private fDialogService: FDialogService) {
+  }
+
+  ngAfterViewInit(): void {
+    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
+    if (isExpired(authToken)) {
+      return;
+    }
+
+    this.medicineService.getMedicineAll().then(x => {
+      if (x.result) {
+        this.initValue = x.data;
+        this.medicineModel = x.data;
+        this.loading = false;
+        return;
+      }
+
+      this.fDialogService.warn("get medicine", x.msg);
+      this.loading = false;
+    }).catch(x => {
+      this.fDialogService.error("get medicine", x.message);
+      this.loading = false;
+    });
+  }
+
+  customSort(event: SortEvent): void {
+    if (this.isSorted == null) {
+      this.isSorted = true;
+      this.sortTableData(event);
+    } else if (this.isSorted == true) {
+      this.isSorted = false;
+      this.sortTableData(event);
+    } else if (this.isSorted == false) {
+      this.isSorted = null;
+      if (this.initValue) {
+        this.medicineModel = [...this.initValue];
+      }
+      this.medicineListTable.reset();
+    }
+  }
+  sortTableData(event: any): void {
+    event.data.sort((data1: any[], data2: any[]) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+      if (value1 == null && value2 != null) result = -1;
+      else if (value1 != null && value2 == null) result = 1;
+      else if (value1 == null && value2 == null) result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string') result = value1.localeCompare(value2);
+      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+      return event.order * result;
+    });
+  }
+  filterTable(data: any, options: string): void {
+    this.medicineListTable.filterGlobal(data.target.value, options);
+  }
+}
