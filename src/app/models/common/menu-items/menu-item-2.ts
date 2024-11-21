@@ -1,4 +1,5 @@
 import {MenuItem} from "primeng/api";
+import * as FConstants from "../../../guards/f-constants";
 
 export function MenuItem2(): MenuItem {
   return {
@@ -11,7 +12,7 @@ export function MenuItem2(): MenuItem {
         label: "menu-2.sub-menu.sub-1",
         icon: "pi pi-fw pi-calendar",
         styleClass: "sub-menu",
-        routerLink: "/menu-2/sub-1"
+        routerLink: `/${FConstants.MEDICINE_LIST_URL}`
       },
       {
         label: "menu-2.sub-menu.sub-2",

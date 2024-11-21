@@ -12,7 +12,7 @@ export function MenuItem3(): MenuItem {
         label: "menu-3.sub-menu.sub-1",
         icon: "pi pi-fw pi-book",
         styleClass: "sub-menu",
-        routerLink: `/${FConstants.MY_INFO}`
+        routerLink: `/${FConstants.MY_INFO_URL}`
       },
       {
         label: "menu-3.sub-menu.sub-2",

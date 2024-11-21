@@ -12,7 +12,7 @@ export function MenuItem1(): MenuItem {
         visible: true,
         icon: "pi pi-fw pi-home",
         styleClass: "top-menu",
-        routerLink: `/${FConstants.DASH_BOARD}`,
+        routerLink: `/${FConstants.DASH_BOARD_URL}`,
       }
     ]
   }
