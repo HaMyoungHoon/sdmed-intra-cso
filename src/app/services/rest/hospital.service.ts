@@ -1,0 +1,30 @@
+import { Injectable } from "@angular/core";
+import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
+import {RestResult} from "../../models/common/rest-result";
+import {HospitalModel} from "../../models/rest/hospital-model";
+
+@Injectable({
+  providedIn: "root"
+})
+export class HospitalService {
+//  private baseUrl = "/apiCSO/v1/hospital";
+  private baseUrl = "http://localhost:25801/v1/hospital";
+
+  constructor(private httpResponse: HttpResponseInterceptorService) { }
+
+  getHospitalAll(): Promise<RestResult<HospitalModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/all`)
+  }
+  getHospitalAllPage(page: number, size: number): Promise<RestResult<HospitalModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/all/${page}/${size}`)
+  }
+  postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    this.httpResponse.addParam("applyDate", applyDate);
+    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
+  }
+  getSampleDownloadExcel(): Promise<any> {
+    return this.httpResponse.get(`${this.baseUrl}/sampleDownloadExcel`);
+  }
+}
