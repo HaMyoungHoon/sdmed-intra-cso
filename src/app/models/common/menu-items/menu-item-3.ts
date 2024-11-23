@@ -18,7 +18,7 @@ export function MenuItem3(): MenuItem {
         label: "menu-3.sub-menu.sub-2",
         icon: "pi pi-fw pi-chart-bar",
         styleClass: "sub-menu",
-        routerLink: "/menu-3/sub-2"
+        routerLink: `/${FConstants.MAIN_INGREDIENT_METHOD_URL}`
       },
       {
         label: "menu-3.sub-menu.sub-3",

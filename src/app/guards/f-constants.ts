@@ -14,4 +14,5 @@ export const DASH_BOARD_URL = "dashBoard";
 
 export const MEDICINE_LIST_URL = "medicine-list"
 
-export const MY_INFO_URL = "myInfo";
+export const MY_INFO_URL = "etc/myInfo";
+export const MAIN_INGREDIENT_METHOD_URL = "etc/manual/main_ingredient_method";
