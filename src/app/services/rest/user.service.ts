@@ -6,6 +6,7 @@ import {RestPage} from "../../models/common/rest-page";
 import {UserStatus} from "../../models/rest/user-status";
 import {UserRole} from "../../models/rest/user-role";
 import {UserDept} from "../../models/rest/user-dept";
+import {HosPharmaMedicinePairModel} from "../../models/rest/HosPharmaMedicinePairModel";
 
 @Injectable({
   providedIn: "root"
@@ -29,32 +30,82 @@ export class UserService {
     this.httpResponse.addParam("pw", pw);
     return this.httpResponse.get(`${this.baseUrl}/signIn`);
   }
-  putPasswordChange(id: string, changePW: string): Promise<RestResult<UserDataModel>> {
+  putPasswordChangeByID(id: string, changePW: string): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("id", id);
     this.httpResponse.addParam("changePW", changePW);
-    return this.httpResponse.put(`${this.baseUrl}/passwordChange`);
+    return this.httpResponse.put(`${this.baseUrl}/passwordChange/id`);
   }
+  putPasswordChangeByPK(userPK: string, changePW: string): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    this.httpResponse.addParam("changePW", changePW);
+    return this.httpResponse.put(`${this.baseUrl}/passwordChange/pk`);
+  }
+
   tokenRefresh(): Promise<RestResult<string>> {
     return this.httpResponse.post(`${this.baseUrl}/tokenRefresh`);
   }
-  getUserData(id?: string): Promise<RestResult<UserDataModel>> {
+  getUserDataByID(id?: string, childView: boolean = false, relationView: boolean = false, pharmaOwnMedicineView: boolean = false): Promise<RestResult<UserDataModel>> {
     if (id != null) {
       this.httpResponse.addParam("id", id);
     }
-    return this.httpResponse.get(`${this.baseUrl}/userData`);
+    this.httpResponse.addParam("childView", childView);
+    this.httpResponse.addParam("relationView", relationView);
+    this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
+    return this.httpResponse.get(`${this.baseUrl}/userData/id`);
   }
-  putUserRoleModify(id: string, roles: UserRole[]): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("id", id);
-    return this.httpResponse.put(`${this.baseUrl}/userRoleModify`, roles.map((x) => UserRole[x]));
+  getUserDataByPK(userPK: string, childView: boolean = false, relationView: boolean = false, pharmaOwnMedicineView: boolean = false): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    this.httpResponse.addParam("childView", childView);
+    this.httpResponse.addParam("relationView", relationView);
+    this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
+    return this.httpResponse.get(`${this.baseUrl}/userData/pk`);
   }
-  putUserDeptModify(id: string, depts: UserDept[]): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("id", id);
-    return this.httpResponse.put(`${this.baseUrl}/userDeptModify`, depts);
+
+  putUserRelationModifyByPK(userPK: string, hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[]): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    return this.httpResponse.put(`${this.baseUrl}/userRelModify/pk`, hosPharmaMedicinePairModel);
   }
-  putUserStatusModify(id: string, status: UserStatus): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("id", id);
+
+  getMyRole(): Promise<RestResult<number>> {
+    return this.httpResponse.get(`${this.baseUrl}/myRole`);
+  }
+  putUserRoleModifyByPK(userPK: string, roles: UserRole[]): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    return this.httpResponse.put(`${this.baseUrl}/userRoleModify/pk`, roles.map((x) => UserRole[x]));
+  }
+  putUserDeptModifyByPK(userPK: string, depts: UserDept[]): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    return this.httpResponse.put(`${this.baseUrl}/userDeptModify/pk`, depts);
+  }
+  putUserStatusModifyByPK(userPK: string, status: UserStatus): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
     this.httpResponse.addParam("status", status);
-    return this.httpResponse.put(`${this.baseUrl}/userStatusModify`);
+    return this.httpResponse.put(`${this.baseUrl}/userStatusModify/pk`);
+  }
+  putUserRoleDeptStatusModifyByPK(userPK: string, roles: UserRole[], depts: UserDept[], status: UserStatus): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    this.httpResponse.addParam("status", status);
+    const json = {
+      "roles": roles.map((x) => UserRole[x]),
+      "depts": depts.map((x) => UserDept[x]),
+      "status": status
+    };
+    return this.httpResponse.put(`${this.baseUrl}/userRoleDeptStatusModify/pk`, json);
+  }
+
+  putUserBankImageUploadByPK(userPK: string, file: File): Promise<RestResult<UserDataModel>> {
+    const formData = new FormData();
+    formData.append("userPK", userPK);
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.put(`${this.baseUrl}/userBankImageUpload/pk`, formData);
+  }
+  putUserTaxImageUploadByPK(userPK: string, file: File): Promise<RestResult<UserDataModel>> {
+    const formData = new FormData();
+    formData.append("userPK", userPK);
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.put(`${this.baseUrl}/userTaxImageUpload/pk`, formData);
   }
   postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
@@ -62,7 +113,8 @@ export class UserService {
     return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
   }
   getSampleDownloadExcel(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/sampleDownloadExcel`);
+    return this.httpResponse.getBlob(
+      `${this.baseUrl}/sampleDownloadExcel`);
   }
   postAddChild(motherID: string, childID: string[]): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("motherID", motherID);

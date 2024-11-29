@@ -5,7 +5,13 @@ export enum UserStatus {
   Delete = 3,
   Expired = 4,
 }
-
+export function allUserStatusDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(UserStatus).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToUserStatusDesc[x]);
+  });
+  return ret;
+}
 export function stringToUserStatus(data?: string): UserStatus {
   if (data == null) {
     return UserStatus.None;
@@ -39,4 +45,11 @@ export const StringToUserStatus: { [key in string]: UserStatus } = {
   "Stop": UserStatus.Stop,
   "Delete": UserStatus.Delete,
   "Expired": UserStatus.Expired,
+}
+export const StatusDescToUserStatus: { [key in string]: UserStatus } = {
+  "미지정": UserStatus.None,
+  "라이브": UserStatus.Live,
+  "중지됨": UserStatus.Stop,
+  "삭제됨": UserStatus.Delete,
+  "만료됨": UserStatus.Expired,
 }

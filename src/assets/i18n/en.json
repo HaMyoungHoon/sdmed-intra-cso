@@ -17,7 +17,7 @@
     "sub-menu": {
       "sub-1": "my info",
       "sub-2": "main ingredient method",
-      "sub-3": "menu 3 sub 3"
+      "sub-3": "user's info"
     }
   },
   "menu-config": {
@@ -38,7 +38,10 @@
     "div": "div",
     "maxPrice": "price",
     "general": "general",
-    "special": "special"
+    "special": "special",
+    "price-history": "history",
+    "etc": "etc",
+    "applyDate": "apply date"
   },
   "my-info": {
     "accordion-header": {
@@ -68,6 +71,52 @@
       "bankAccountImage": "bank account"
     }
   },
+  "user-setting": {
+    "id": "id",
+    "name": "name",
+    "mail": "mail",
+    "phoneNumber": "phoneNumber",
+    "status": "status",
+    "role": "role",
+    "edit": "edit"
+  },
+  "user-edit-dialog": {
+    "accordion-header": {
+      "detail": "user info edit",
+      "child": "하위 유저",
+      "in-charge": "inCharge"
+    },
+    "detail": {
+      "id": "id",
+      "name": "name",
+      "mail": "mail",
+      "phoneNumber": "phone",
+      "role": "role",
+      "dept": "dept",
+      "status": "status",
+      "regDate": "regDate",
+      "lastLoginDate": "loginDate"
+    },
+    "child": {
+      "id": "아이디",
+      "name": "이름",
+      "phoneNumber": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "companyName": "회사이름",
+      "taxPayerImage": "사업등록증",
+      "bankAccountImage": "은행계좌"
+    },
+    "hosData": {
+      "code": "code",
+      "innerName": "innerName"
+    },
+    "pharmaData": {
+      "code": "code",
+      "innerName": "innerName"
+    }
+  },
   "error": {
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
@@ -75,6 +124,8 @@
   },
   "common-desc": {
     "open": "open",
-    "view": "view"
+    "view": "view",
+    "save": "save",
+    "close": "close"
   }
 }

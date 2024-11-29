@@ -17,7 +17,7 @@
     "sub-menu": {
       "sub-1": "내 정보",
       "sub-2": "주성분코드 부여방법",
-      "sub-3": "메뉴 3 서브 3"
+      "sub-3": "유저 정보"
     }
   },
   "menu-config": {
@@ -38,7 +38,10 @@
     "div": "구분",
     "maxPrice": "약가",
     "general": "일반",
-    "special": "전문"
+    "special": "전문",
+    "price-history": "가격 이력",
+    "etc": "비고",
+    "applyDate": "적용일자"
   },
   "my-info": {
     "accordion-header": {
@@ -68,6 +71,52 @@
       "bankAccountImage": "은행계좌"
     }
   },
+  "user-setting": {
+    "id": "아이디",
+    "name": "이름",
+    "mail": "메일",
+    "phoneNumber": "번호",
+    "status": "상태",
+    "role": "권한",
+    "edit": "편집"
+  },
+  "user-edit-dialog": {
+    "accordion-header": {
+      "detail": "유저 정보 편집",
+      "child": "하위 유저",
+      "in-charge": "담당"
+    },
+    "detail": {
+      "id": "아이디",
+      "name": "이름",
+      "mail": "메일",
+      "phoneNumber": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "regDate": "등록일",
+      "lastLoginDate": "마지막 로그인일"
+    },
+    "child": {
+      "id": "아이디",
+      "name": "이름",
+      "phoneNumber": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "companyName": "회사이름",
+      "taxPayerImage": "사업등록증",
+      "bankAccountImage": "은행계좌"
+    },
+    "hosData": {
+      "code": "코드",
+      "innerName": "내부명"
+    },
+    "pharmaData": {
+      "code": "코드",
+      "innerName": "내부명"
+    }
+  },
   "error": {
     "title": "요청하신 페이지를 찾을 수 없습니다.",
     "contents": "페이지의 주소가 잘못 입력되었거나,\n찾으시려는 페이지의 주소가 삭제 또는 변경되어 사용할 수 없는 상태입니다.\n입력하신 주소가 정확한지 한 번 더 확인해 주시기 바랍니다.",
@@ -75,6 +124,8 @@
   },
   "common-desc": {
     "open": "열기",
-    "view": "보기"
+    "view": "보기",
+    "save": "저장",
+    "close": "닫기"
   }
 }

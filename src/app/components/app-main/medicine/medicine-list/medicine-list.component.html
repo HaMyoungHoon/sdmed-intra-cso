@@ -14,12 +14,12 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="name" style="min-width: 50rem">{{'medicine-list.name' | translate}} <p-sortIcon field="name" /></th>
-        <th>{{'medicine-list.kdCode' | translate}}</th>
-        <th pSortableColumn="pharmaName" style="width: 20rem">{{'medicine-list.pharmaName' | translate}} <p-sortIcon field="pharmaName" /></th>
-        <th pSortableColumn="mainIngredientCode" style="width: 20rem">{{'medicine-list.mainIngredientCode' | translate}} <p-sortIcon field="mainIngredientCode" /></th>
-        <th>{{'medicine-list.div' | translate}}</th>
-        <th>{{'medicine-list.maxPrice' | translate}}</th>
+        <th pSortableColumn="name" style="min-width: 50rem">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
+        <th>{{"medicine-list.kdCode" | translate}}</th>
+        <th pSortableColumn="pharmaName" style="width: 20rem">{{"medicine-list.pharmaName" | translate}} <p-sortIcon field="pharmaName" /></th>
+        <th pSortableColumn="mainIngredientCode" style="width: 20rem">{{"medicine-list.mainIngredientCode" | translate}} <p-sortIcon field="mainIngredientCode" /></th>
+        <th>{{"medicine-list.div" | translate}}</th>
+        <th>{{"medicine-list.maxPrice" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
@@ -28,8 +28,11 @@
         <td>{{item.kdCode}}</td>
         <td>{{item.pharmaName}}</td>
         <td>{{item.mainIngredientCode}}</td>
-        <td>{{item.general ? ('medicine-list.general' | translate) : ('medicine-list.special' | translate)}}</td>
+        <td>{{item.general ? ("medicine-list.general" | translate) : ("medicine-list.special" | translate)}}</td>
         <td>{{item.maxPrice}}</td>
+        <td>
+          <p-button (onClick)="priceHistoryDialogOpen(item)">{{"medicine-list.price-history" | translate}}</p-button>
+        </td>
       </tr>
     </ng-template>
   </p-table>

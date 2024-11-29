@@ -5,14 +5,14 @@
     </div>
     <div class="p-toolbar-group-right option">
       <div class="flex flex-column mr-1">
-        <label class="flex justify-content-center">{{'menu-config.label.expired' | translate}}</label>
+        <label class="flex justify-content-center">{{"menu-config.label.expired" | translate}}</label>
         <label class="flex justify-content-center">{{expiredDate}}</label>
-        <p-button class="flex justify-content-center" label="{{'menu-config.button.refresh' | translate}}" (click)="tokenRefresh()" *ngIf="expiredButtonVisible"></p-button>
+        <p-button class="flex justify-content-center" (click)="tokenRefresh()" *ngIf="expiredButtonVisible">{{"menu-config.button.refresh" | translate}}</p-button>
       </div>
       <a class="sun" (click)="changeTheme(false)" *ngIf="isDarkMode"></a>
       <a class="moon" (click)="changeTheme(true)" *ngIf="!isDarkMode"></a>
-      <p-button label="{{'menu-config.button.ko' | translate}}" (click)="langToKo()" class="mr-1" *ngIf="!isKoLang"></p-button>
-      <p-button label="{{'menu-config.button.en' | translate}}" (click)="langToEn()" class="mr-1" *ngIf="isKoLang"></p-button>
+      <p-button (click)="langToKo()" class="mr-1" *ngIf="!isKoLang">{{"menu-config.button.ko" | translate}}</p-button>
+      <p-button (click)="langToEn()" class="mr-1" *ngIf="isKoLang">{{"menu-config.button.en" | translate}}</p-button>
       <p-button icon="pi pi-minus" (click)="decrementScale()" class="mr-1" [disabled]="scale === scales[0]"></p-button>
       <i class="pi pi-circle-on" *ngFor="let s of scales" [ngClass]="{'scale-active': s === scale}"></i>
       <p-button icon="pi pi-plus"  (click)="incrementScale()" class="ml-1" [disabled]="scale === scales[scales.length - 1]"></p-button>

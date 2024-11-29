@@ -4,19 +4,34 @@ export enum UserRole {
   CsoAdmin = Admin.valueOf() << 1,
   Employee = Admin.valueOf() << 2,
   BusinessMan = Admin.valueOf() << 3,
-  PasswordChanger = Admin.valueOf() << 4,
-  StatusChanger = Admin.valueOf() << 5,
-  RoleChanger = Admin.valueOf() << 6,
-  DeptChanger = Admin.valueOf() << 7,
-  UserChildChanger = Admin.valueOf() << 8,
-  UserFileUploader = Admin.valueOf() << 9,
-  CorrespondentFileUploader = Admin.valueOf() << 10,
-  PharmaFileUploader = Admin.valueOf() << 11,
-  HospitalFileUploader = Admin.valueOf() << 12,
+  UserChanger = Admin.valueOf() << 4,
+  HospitalChanger = Admin.valueOf() << 5,
+  PharmaChanger = Admin.valueOf() << 6,
+  MedicineChanger = Admin.valueOf() << 7,
 }
 
-export function flagToRole(flags?: number): UserRole[] {
-  if (flags == null) {
+export function allUserRoleDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(UserRole).filter(x => isNaN(Number(x))).forEach(x => {
+    if (x != "Admin" && x != "CsoAdmin") {
+      ret.push(StringToUserRoleDesc[x]);
+    }
+  });
+  return ret;
+}
+export function stringArrayToUserRole(data: string[]): UserRole[] {
+  if (data.length <= 0) {
+    return [UserRole.None];
+  }
+
+  const ret: UserRole[] = [];
+  data.forEach(x => {
+    ret.push(UserRoleDescToUserRole[x]);
+  });
+  return ret;
+}
+export function flagToUserRole(flags?: number): UserRole[] {
+  if (flags == null || flags == 0) {
     return [UserRole.None];
   }
   return Object.values(UserRole).filter((x) => {
@@ -26,18 +41,29 @@ export function flagToRole(flags?: number): UserRole[] {
     return false;
   }) as UserRole[];
 }
-export function roleToFlag(role: UserRole[]): number {
+export function userRoleToFlag(role: UserRole[]): number {
   return role.reduce((flag, x) => flag | x, 0);
 }
-export function roleToString(role: UserRole[]): string[] {
+export function userRoleToString(role: UserRole[]): string[] {
   return role.map((x) => UserRole[x]);
 }
 export function flagToRoleDesc(flags?: number): string[] {
   let ret: string[] = [];
-  roleToString(flagToRole(flags)).forEach(x => {
+  userRoleToString(flagToUserRole(flags)).forEach(x => {
     ret.push(StringToUserRoleDesc[x]);
   });
   return ret;
+}
+export function haveRole(flags?: number, data: UserRole[] = []): boolean {
+  if (flags == null || flags == 0) {
+    return false;
+  }
+  for (const buff of data) {
+    if (buff.valueOf() & flags) {
+      return true;
+    }
+  }
+  return false;
 }
 export const StringToUserRoleDesc: { [key in string]: string } = {
   "None" : "미지정",
@@ -45,13 +71,19 @@ export const StringToUserRoleDesc: { [key in string]: string } = {
   "CsoAdmin" : "관리자",
   "Employee" : "직원",
   "BusinessMan" : "영업",
-  "PasswordChanger" : "PasswordChanger",
-  "StatusChanger" : "StatusChanger",
-  "RoleChanger" : "RoleChanger",
-  "DeptChanger" : "DeptChanger",
-  "UserChildChanger" : "UserChildChanger",
-  "UserFileUploader" : "UserFileUploader",
-  "CorrespondentFileUploader" : "CorrespondentFileUploader",
-  "PharmaFileUploader" : "PharmaFileUploader",
-  "HospitalFileUploader" : "HospitalFileUploader",
+  "UserChanger" : "UserChanger",
+  "HospitalChanger" : "HospitalChanger",
+  "PharmaChanger" : "PharmaChanger",
+  "MedicineChanger" : "MedicineChanger"
+}
+export const UserRoleDescToUserRole: { [key in string]: UserRole } = {
+  "미지정": UserRole.None,
+  "슈퍼관리자": UserRole.Admin,
+  "관리자": UserRole.CsoAdmin,
+  "직원": UserRole.Employee,
+  "영업": UserRole.BusinessMan,
+  "UserChanger": UserRole.UserChanger,
+  "HospitalChanger": UserRole.HospitalChanger,
+  "PharmaChanger": UserRole.PharmaChanger,
+  "MedicineChanger": UserRole.MedicineChanger
 }

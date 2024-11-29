@@ -8,6 +8,8 @@ import {TableDialogComponent} from "../../components/common/table-dialog/table-d
 import {HtmlEditDialogComponent} from "../../components/common/html-edit-dialog/html-edit-dialog.component";
 import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
 import {FDialogComponent} from "../../components/common/f-dialog/f-dialog.component";
+import {UserEditDialogComponent} from "../../components/common/user-edit-dialog/user-edit-dialog.component";
+import {ImageViewDialogComponent} from "../../components/common/image-view-dialog/image-view-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -35,8 +37,16 @@ export class FDialogService {
     this.ref = this.dialogService.open(TableDialogComponent, config);
     return this.ref.onClose;
   }
+  openUserEditDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(UserEditDialogComponent, config);
+    return this.ref.onClose;
+  }
   openHtmlEdit(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(HtmlEditDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openImageView(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(ImageViewDialogComponent, config);
     return this.ref.onClose;
   }
   alertToast(data: ToastItem): void {

@@ -1,9 +1,10 @@
 import {BillType} from "./bill-type";
 import {ContractType} from "./contract-type";
 import {DeliveryDiv} from "./delivery-div";
+import {PharmaModel} from "./pharma-model";
 
 export interface HospitalModel {
-  thisIndex: number;
+  thisPK: string;
   code: number;
   orgName: string;
   innerName: string;
@@ -28,4 +29,5 @@ export interface HospitalModel {
   etc1: string;
   etc2: string;
   imageUrl: string;
+  pharmaList: PharmaModel[];
 }

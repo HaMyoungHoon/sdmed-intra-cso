@@ -3,9 +3,10 @@ import {PharmaType} from "./pharma-type";
 import {PharmaGroup} from "./pharma-group";
 import {ContractType} from "./contract-type";
 import {DeliveryDiv} from "./delivery-div";
+import {MedicineModel} from "./medicine-model";
 
 export interface PharmaModel {
-  thisIndex: number;
+  thisPK: string;
   code: number;
   orgName: string;
   innerName: string;
@@ -30,4 +31,6 @@ export interface PharmaModel {
   etc1: string;
   etc2: string;
   imageUrl: string;
+  medicineList: MedicineModel[];
+  relationMedicineList: MedicineModel[];
 }

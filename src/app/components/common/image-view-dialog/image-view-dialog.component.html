@@ -1,0 +1,8 @@
+<div class="image-view-dialog-container flex flex-column flex-wrap">
+  <div class="flex flex-wrap flex-row">
+    <p-button class="flex width-fit-content p-button-sm m-1" (mousedown)="minusHeightStart()" (mouseup)="minusHeightEnd()">-</p-button>
+    <p-button class="flex width-fit-content p-button-sm m-1" (mousedown)="plusHeightStart()" (mouseup)="plusHeightEnd()">+</p-button>
+    <p-button class="flex width-fit-content p-button-sm m-1" (click)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-image class="flex" [src]="imageSrc" [height]="imageHeight" alt="image view" />
+</div>

@@ -44,9 +44,8 @@ export class LanguageService {
     }
   }
   setLanguage(lang: string): void {
-//    this.commonService.setLanguage(lang).then().catch(res => {
-//
-//    });
+    this.commonService.setLanguage(lang).then().catch(res => {
+    });
     setLocalStorage(FConstants.STORAGE_KEY_LANG, lang);
   }
 

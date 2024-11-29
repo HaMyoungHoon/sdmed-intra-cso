@@ -1,0 +1,38 @@
+<div class="user-setting-container">
+  <p-table [value]="userDataModel ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="userLoading"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <p-button (onClick)="refreshUserDataModel()" icon="pi pi-refresh" />
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{"user-setting.id" | translate}}</th>
+        <th>{{"user-setting.name" | translate}}</th>
+        <th>{{"user-setting.mail" | translate}}</th>
+        <th>{{"user-setting.phoneNumber" | translate}}</th>
+        <th>{{"user-setting.status" | translate}}</th>
+        <th>{{"user-setting.role" | translate}}</th>
+        <th>{{"user-setting.edit" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-userData>
+      <tr>
+        <td>{{userData.id}}</td>
+        <td>{{userData.name}}</td>
+        <td>{{userData.mail}}</td>
+        <td>{{userData.phoneNumber}}</td>
+        <td>
+          <p-tag [value]="statusToUserStatusDesc(userData?.status)" [severity]="getSeverity(userData?.status)"/>
+        </td>
+        <td>
+          <span class="flex h-full mr-1 align-items-center inline-flex" *ngFor="let role of flagToRoleDesc(userData.role)">
+            <p-tag [value]="role"/>
+          </span>
+        </td>
+        <td>
+          <p-button class="p-button-sm" (onClick)="userEdit(userData)">{{"user-setting.edit" | translate}}</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

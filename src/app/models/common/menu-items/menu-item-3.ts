@@ -24,7 +24,7 @@ export function MenuItem3(): MenuItem {
         label: "menu-3.sub-menu.sub-3",
         icon: "pi pi-fw pi-map",
         styleClass: "sub-menu",
-        routerLink: "/menu-3/sub-3"
+        routerLink: `/${FConstants.USER_SETTING_URL}`
       }
     ]
   }

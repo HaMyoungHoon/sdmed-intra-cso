@@ -1,1 +1,19 @@
-<p>table-dialog works!</p>
+<div class="table-dialog-container">
+  <p-table [columns]="cols" [value]="data" [scrollable]="true" [selectionMode]="selectionMode" [(selection)]="selectedData" (selectionChange)="selectChange()">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header | translate }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns" >
+          {{ ellipsis(rowData[col.field]) }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-button class="flex mt-3 width-fit-content" label="ok" (click)="select()" [disabled]="disableSelect" *ngIf="isVisibleSelect" />
+</div>

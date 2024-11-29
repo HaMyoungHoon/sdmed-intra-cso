@@ -52,30 +52,30 @@ export class HttpResponseInterceptorService {
   constructor(private http: HttpClient) {
     this.clear();
   }
-  get<T = any>(url: string): Promise<RestResult<T>> {
-    const ret = lastValueFrom(this.http.get<RestResult<T>>(url, this.options).pipe(
+  get<T = any>(url: string, options = this.options): Promise<RestResult<T>> {
+    const ret = lastValueFrom(this.http.get<RestResult<T>>(url, options).pipe(
       map(response => response)
     ));
     this.clear();
 
     return ret;
   }
-  post<T = any>(url: string, param?: any): Promise<RestResult<T>> {
-    const ret = lastValueFrom(this.http.post<RestResult<T>>(url, param, this.options).pipe(
+  post<T = any>(url: string, param?: any, options = this.options): Promise<RestResult<T>> {
+    const ret = lastValueFrom(this.http.post<RestResult<T>>(url, param, options).pipe(
       map(response => response)
     ));
     this.clear();
     return ret;
   }
-  put<T = any>(url: string, param?: any): Promise<RestResult<T>> {
-    const ret = lastValueFrom(this.http.put<RestResult<T>>(url, param, this.options).pipe(
+  put<T = any>(url: string, param?: any, options = this.options): Promise<RestResult<T>> {
+    const ret = lastValueFrom(this.http.put<RestResult<T>>(url, param, options).pipe(
       map(response => response)
     ));
     this.clear();
     return ret;
   }
-  delete<T = any>(url: string): Promise<RestResult<T>> {
-    const ret = lastValueFrom(this.http.delete<RestResult<T>>(url, this.options).pipe(
+  delete<T = any>(url: string, options = this.options): Promise<RestResult<T>> {
+    const ret = lastValueFrom(this.http.delete<RestResult<T>>(url, options).pipe(
       map(response => response)
     ));
     this.clear();
@@ -122,6 +122,12 @@ export class HttpResponseInterceptorService {
 //    }
 //
 //    this.blobOptions!!.params = this.blobOptions!!.params.append(key, value);
+  }
+  setMultipartContentType(): void {
+    this.options = {
+      headers: new HttpHeaders({
+      }),
+    };
   }
   clear(): void {
     this.options = {

@@ -6,6 +6,7 @@ import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {Table} from "primeng/table";
 import {SortEvent} from "primeng/api";
+import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 
 @Component({
   selector: "app-medicine-list",
@@ -74,5 +75,23 @@ export class MedicineListComponent implements AfterViewInit {
   }
   filterTable(data: any, options: string): void {
     this.medicineListTable.filterGlobal(data.target.value, options);
+  }
+  priceHistoryDialogOpen(data: MedicineModel): void {
+    const col: TableDialogColumn[] = [];
+    col.push(new TableDialogColumn().build("maxPrice", "medicine-list.maxPrice"))
+    col.push(new TableDialogColumn().build("etc", "medicine-list.etc"))
+    col.push(new TableDialogColumn().build("applyDate", "medicine-list.applyDate"))
+    this.fDialogService.openTable({
+      modal: true,
+      closable: true,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      data: {
+        cols: col,
+        tableData: data.medicinePriceModel,
+        selectable: null
+      }
+    });
   }
 }

@@ -3,39 +3,39 @@
   <p-accordion class="flex-auto" [multiple]="true" [activeIndex]="[0]">
     <p-accordionTab class="flex flex-column" header="{{'my-info.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.id' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.id" | translate}}</label>
         <label class="col-6">{{userDataModel?.id}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.name' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.name" | translate}}</label>
         <label class="col-6">{{userDataModel?.name}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.mail' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.mail" | translate}}</label>
         <label class="col-6">{{userDataModel?.mail}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.phoneNumber' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.phoneNumber" | translate}}</label>
         <label class="col-6">{{userDataModel?.phoneNumber}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.role' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.role" | translate}}</label>
         <label class="col-6">{{flagToRoleDesc(userDataModel?.role)}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.dept' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.dept" | translate}}</label>
         <label class="col-6">{{flagToDeptDesc(userDataModel?.dept)}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.status' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.status" | translate}}</label>
         <p-tag class="col-6" [value]="statusToUserStatusDesc(userDataModel?.status)" [severity]="getSeverity(userDataModel?.status)"/>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.regDate' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.regDate" | translate}}</label>
         <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.regDate))}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{'my-info.detail.lastLoginDate' | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.lastLoginDate" | translate}}</label>
         <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
       </div>
     </p-accordionTab>
@@ -44,13 +44,13 @@
                [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
         <ng-template pTemplate="header">
           <tr>
-            <th>{{'my-info.child.id' | translate}}</th>
-            <th>{{'my-info.child.name' | translate}}</th>
-            <th>{{'my-info.child.phoneNumber' | translate}}</th>
-            <th>{{'my-info.child.status' | translate}}</th>
-            <th>{{'my-info.child.companyName' | translate}}</th>
-            <th>{{'my-info.child.taxPayerImage' | translate}}</th>
-            <th>{{'my-info.child.bankAccountImage' | translate}}</th>
+            <th>{{"my-info.child.id" | translate}}</th>
+            <th>{{"my-info.child.name" | translate}}</th>
+            <th>{{"my-info.child.phoneNumber" | translate}}</th>
+            <th>{{"my-info.child.status" | translate}}</th>
+            <th>{{"my-info.child.companyName" | translate}}</th>
+            <th>{{"my-info.child.taxPayerImage" | translate}}</th>
+            <th>{{"my-info.child.bankAccountImage" | translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-child>
@@ -63,10 +63,10 @@
             </td>
             <td>{{child?.companyName}}</td>
             <td>
-              <p-button [disabled]="child?.taxpayerImageUrl?.length ?? 0 <= 0">{{'common-desc.open' | translate}}</p-button>
+              <p-button [disabled]="child?.taxpayerImageUrl?.length ?? 0 <= 0">{{"common-desc.open" | translate}}</p-button>
             </td>
             <td>
-              <p-button [disabled]="child?.bankAccountImageUrl?.length ?? 0 <= 0">{{'common-desc.open' | translate}}</p-button>
+              <p-button [disabled]="child?.bankAccountImageUrl?.length ?? 0 <= 0">{{"common-desc.open" | translate}}</p-button>
             </td>
           </tr>
         </ng-template>

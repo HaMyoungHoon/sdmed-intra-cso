@@ -1,5 +1,7 @@
+import {MedicinePriceModel} from "./MedicinePriceModel";
+
 export interface MedicineModel {
-  thisIndex: number;
+  thisPK: string;
   serialNumber: number;
   method: string;
   classify: string;
@@ -9,9 +11,8 @@ export interface MedicineModel {
   pharmaName: string;
   standard: string;
   unit: string;
-  maxPrice: number;
   general: boolean;
-  etc: string;
+  maxPrice: number;
   ancestorCode: number;
-  applyDate: string;
+  medicinePriceModel: MedicinePriceModel[]
 }
