@@ -1,5 +1,6 @@
 import {MenuItem} from "primeng/api";
 import * as FConstants from "../../../guards/f-constants";
+import {USER_MAPPING_URL} from '../../../guards/f-constants';
 
 export function MenuItem3(): MenuItem {
   return {
@@ -22,9 +23,15 @@ export function MenuItem3(): MenuItem {
       },
       {
         label: "menu-3.sub-menu.sub-3",
-        icon: "pi pi-fw pi-map",
+        icon: "pi pi-fw pi-users",
         styleClass: "sub-menu",
-        routerLink: `/${FConstants.USER_SETTING_URL}`
+        routerLink: `/${FConstants.USER_INFO_URL}`
+      },
+      {
+        label: "menu-3.sub-menu.sub-4",
+        icon: "pi pi-fw pi-sitemap",
+        styleClass: "sub-menu",
+        routerLink: `/${FConstants.USER_MAPPING_URL}`
       }
     ]
   }

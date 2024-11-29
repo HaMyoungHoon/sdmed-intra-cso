@@ -6,9 +6,10 @@ export const routes: Routes = [
   { path: "", component: AppMainComponent,
     children: [
       { path: FConstants.DASH_BOARD_URL, loadChildren: () => import("./components/app-main/dash-board/dash-board.module").then(m => m.DashBoardModule) },
-      { path: FConstants.MY_INFO_URL, loadChildren: () => import("./components/app-main/etc/user/my-info/my-info.module").then(m => m.MyInfoModule) },
-      { path: FConstants.USER_SETTING_URL, loadChildren: () => import("./components/app-main/etc/user/user-setting/user-setting.module").then(m => m.UserSettingModule) },
       { path: FConstants.MEDICINE_LIST_URL, loadChildren: () => import("./components/app-main/medicine/medicine-list/medicine-list.module").then(m => m.MedicineListModule) },
+      { path: FConstants.MY_INFO_URL, loadChildren: () => import("./components/app-main/etc/user/my-info/my-info.module").then(m => m.MyInfoModule) },
+      { path: FConstants.USER_INFO_URL, loadChildren: () => import("./components/app-main/etc/user/user-setting/user-setting.module").then(m => m.UserSettingModule) },
+      { path: FConstants.USER_MAPPING_URL, loadChildren: () => import("./components/app-main/etc/user/user-mapping/user-mapping.module").then(m => m.UserMappingModule) },
       { path: FConstants.MAIN_INGREDIENT_METHOD_URL, loadChildren: () => import("./components/app-main/etc/manual/main-ingredient-method/main-ingredient-method.module").then(m => m.MainIngredientMethodModule) },
     ]
   },

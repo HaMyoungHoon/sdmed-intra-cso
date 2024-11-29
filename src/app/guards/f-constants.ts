@@ -15,7 +15,8 @@ export const DASH_BOARD_URL = "dashBoard";
 export const MEDICINE_LIST_URL = "medicine-list"
 
 export const MY_INFO_URL = "etc/myInfo";
-export const USER_SETTING_URL = "etc/userSetting";
+export const USER_INFO_URL = "etc/userInfo";
+export const USER_MAPPING_URL = "etc/userMapping";
 export const MAIN_INGREDIENT_METHOD_URL = "etc/manual/main_ingredient_method";
 
 export const ASSETS_NO_IMAGE = "assets/image/no-image-1920.png";

@@ -22,7 +22,7 @@
         <td>{{userData.mail}}</td>
         <td>{{userData.phoneNumber}}</td>
         <td>
-          <p-tag [value]="statusToUserStatusDesc(userData?.status)" [severity]="getSeverity(userData?.status)"/>
+          <p-tag [value]="statusToUserStatusDesc(userData.status)" [severity]="getSeverity(userData.status)"/>
         </td>
         <td>
           <span class="flex h-full mr-1 align-items-center inline-flex" *ngFor="let role of flagToRoleDesc(userData.role)">
