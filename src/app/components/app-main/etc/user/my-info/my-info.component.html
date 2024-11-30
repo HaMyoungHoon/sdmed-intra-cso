@@ -15,7 +15,7 @@
         <label class="col-6">{{userDataModel?.mail}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{"my-info.detail.phoneNumber" | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.phone-number" | translate}}</label>
         <label class="col-6">{{userDataModel?.phoneNumber}}</label>
       </div>
       <div class="flex">
@@ -31,11 +31,11 @@
         <p-tag class="col-6" [value]="statusToUserStatusDesc(userDataModel?.status)" [severity]="getSeverity(userDataModel?.status)"/>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{"my-info.detail.regDate" | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.reg-date" | translate}}</label>
         <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.regDate))}}</label>
       </div>
       <div class="flex">
-        <label class="col-6 mr-1">{{"my-info.detail.lastLoginDate" | translate}}</label>
+        <label class="col-6 mr-1">{{"my-info.detail.last-login-date" | translate}}</label>
         <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
       </div>
     </p-accordionTab>
@@ -46,11 +46,11 @@
           <tr>
             <th>{{"my-info.child.id" | translate}}</th>
             <th>{{"my-info.child.name" | translate}}</th>
-            <th>{{"my-info.child.phoneNumber" | translate}}</th>
+            <th>{{"my-info.child.phone-number" | translate}}</th>
             <th>{{"my-info.child.status" | translate}}</th>
-            <th>{{"my-info.child.companyName" | translate}}</th>
-            <th>{{"my-info.child.taxPayerImage" | translate}}</th>
-            <th>{{"my-info.child.bankAccountImage" | translate}}</th>
+            <th>{{"my-info.child.company-name" | translate}}</th>
+            <th>{{"my-info.child.tax-payer-image" | translate}}</th>
+            <th>{{"my-info.child.bank-account-image" | translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-child>

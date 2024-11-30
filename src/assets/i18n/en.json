@@ -33,16 +33,16 @@
   },
   "medicine-list": {
     "name": "product name",
-    "kdCode": "insurance code",
-    "pharmaName": "pharma name",
-    "mainIngredientCode": "main ingredient code",
+    "kd-code": "insurance code",
+    "pharma-name": "pharma name",
+    "main-ingredient-code": "main ingredient code",
     "div": "div",
-    "maxPrice": "price",
+    "max-price": "price",
     "general": "general",
     "special": "special",
     "price-history": "history",
     "etc": "etc",
-    "applyDate": "apply date"
+    "apply-date": "apply date"
   },
   "my-info": {
     "accordion-header": {
@@ -53,33 +53,40 @@
       "id": "id",
       "name": "name",
       "mail": "mail",
-      "phoneNumber": "phone",
+      "phone-number": "phone",
       "role": "role",
       "dept": "dept",
       "status": "status",
-      "regDate": "reg date",
-      "lastLoginDate": "last login date"
+      "reg-date": "reg date",
+      "last-login-date": "last login date"
     },
     "child": {
       "id": "id",
       "name": "name",
-      "phoneNumber": "phone",
+      "phone-number": "phone",
       "role": "role",
       "dept": "dept",
       "status": "status",
-      "companyName": "company name",
-      "taxPayerImage": "tax payer",
-      "bankAccountImage": "bank account"
+      "company-name": "company name",
+      "tax-payer-image": "tax payer",
+      "bank-account-image": "bank account"
     }
   },
   "user-setting": {
     "id": "id",
     "name": "name",
     "mail": "mail",
-    "phoneNumber": "phoneNumber",
+    "phone-number": "phone",
     "status": "status",
     "role": "role",
     "edit": "edit"
+  },
+  "user-mapping": {
+    "hos-pick-list": {
+      "source-header": "hospital list",
+      "target-header": "in-charge",
+      "filter-place-holder": "inner name"
+    }
   },
   "user-edit-dialog": {
     "accordion-header": {
@@ -91,31 +98,31 @@
       "id": "id",
       "name": "name",
       "mail": "mail",
-      "phoneNumber": "phone",
+      "phone-number": "phone",
       "role": "role",
       "dept": "dept",
       "status": "status",
-      "regDate": "regDate",
-      "lastLoginDate": "loginDate"
+      "reg-date": "reg date",
+      "last-login-date": "login date"
     },
     "child": {
       "id": "아이디",
       "name": "이름",
-      "phoneNumber": "번호",
+      "phone-number": "번호",
       "role": "권한",
       "dept": "부서",
       "status": "상태",
-      "companyName": "회사이름",
-      "taxPayerImage": "사업등록증",
-      "bankAccountImage": "은행계좌"
+      "company-name": "회사이름",
+      "tax-payer-image": "사업등록증",
+      "bank-account-image": "은행계좌"
     },
-    "hosData": {
+    "hos-data": {
       "code": "code",
-      "innerName": "innerName"
+      "inner-name": "inner name"
     },
-    "pharmaData": {
+    "pharma-data": {
       "code": "code",
-      "innerName": "innerName"
+      "inner-name": "inner name"
     }
   },
   "error": {

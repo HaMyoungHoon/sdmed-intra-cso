@@ -78,9 +78,9 @@ export class MedicineListComponent implements AfterViewInit {
   }
   priceHistoryDialogOpen(data: MedicineModel): void {
     const col: TableDialogColumn[] = [];
-    col.push(new TableDialogColumn().build("maxPrice", "medicine-list.maxPrice"))
+    col.push(new TableDialogColumn().build("maxPrice", "medicine-list.max-price"))
     col.push(new TableDialogColumn().build("etc", "medicine-list.etc"))
-    col.push(new TableDialogColumn().build("applyDate", "medicine-list.applyDate"))
+    col.push(new TableDialogColumn().build("applyDate", "medicine-list.apply-date"))
     this.fDialogService.openTable({
       modal: true,
       closable: true,
