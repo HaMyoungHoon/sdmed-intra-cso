@@ -20,22 +20,11 @@ import {Ripple} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
 
 @Component({
-    selector: "app-menu-config",
-    imports: [
-        ToolbarModule,
-        Button,
-        SidebarModule,
-        NgForOf,
-        RouterLink,
-        TranslatePipe,
-        NgClass,
-        NgIf,
-        MenuModule,
-        Ripple,
-        BadgeModule
-    ],
-    templateUrl: "./menu-config.component.html",
-    styleUrl: "./menu-config.component.scss"
+  selector: "app-menu-config",
+  standalone: true,
+  imports: [ToolbarModule, Button, SidebarModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, Ripple, BadgeModule ],
+  templateUrl: "./menu-config.component.html",
+  styleUrl: "./menu-config.component.scss"
 })
 export class MenuConfigComponent {
   menuButtonVisible: boolean;

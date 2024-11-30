@@ -4,19 +4,8 @@ import {UserService} from "../../../services/rest/user.service";
 import {UserDataModel} from "../../../models/rest/user-data-model";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToYearFullString, stringToDate} from "../../../guards/f-extensions";
-import {
-  allUserRoleDescArray,
-  flagToRoleDesc,
-  haveRole,
-  stringArrayToUserRole,
-  UserRole
-} from "../../../models/rest/user-role";
-import {
-  allUserStatusDescArray,
-  StatusDescToUserStatus,
-  statusToUserStatusDesc,
-  UserStatus,
-} from "../../../models/rest/user-status";
+import {allUserRoleDescArray, flagToRoleDesc, haveRole, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
+import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
 import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
 import {AccordionModule} from "primeng/accordion";
 import {NgIf} from "@angular/common";
@@ -33,22 +22,11 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 
 @Component({
-    selector: "app-user-edit-dialog",
-    imports: [
-        AccordionModule,
-        NgIf,
-        ProgressSpinnerModule,
-        TagModule,
-        TranslatePipe,
-        DropdownModule,
-        FormsModule,
-        MultiSelectModule,
-        Button,
-        TableModule,
-        ImageModule
-    ],
-    templateUrl: "./user-edit-dialog.component.html",
-    styleUrl: "./user-edit-dialog.component.scss"
+  selector: "app-user-edit-dialog",
+  standalone: true,
+  imports: [AccordionModule, NgIf, ProgressSpinnerModule, TagModule, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, Button, TableModule, ImageModule],
+  templateUrl: "./user-edit-dialog.component.html",
+  styleUrl: "./user-edit-dialog.component.scss"
 })
 export class UserEditDialogComponent {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>

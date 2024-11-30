@@ -4,12 +4,11 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {Button} from 'primeng/button';
 import {TranslatePipe} from '@ngx-translate/core';
-import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: "app-image-view-dialog",
   standalone: true,
-  imports: [ImageModule, Button, TranslatePipe, NgOptimizedImage],
+  imports: [ImageModule, TranslatePipe, Button],
   templateUrl: "./image-view-dialog.component.html",
   styleUrl: "./image-view-dialog.component.scss"
 })
