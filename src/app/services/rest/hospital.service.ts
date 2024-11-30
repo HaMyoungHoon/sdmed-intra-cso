@@ -18,6 +18,11 @@ export class HospitalService {
   getHospitalAllPage(page: number, size: number): Promise<RestResult<HospitalModel[]>> {
     return this.httpResponse.get(`${this.baseUrl}/all/${page}/${size}`)
   }
+  getHospitalAllSearch(searchString: string, isSearchTypeCode: boolean = false): Promise<RestResult<HospitalModel[]>> {
+    this.httpResponse.addParam("searchString", searchString);
+    this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
+    return this.httpResponse.get(`${this.baseUrl}/all/search`);
+  }
   postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file, file.name);

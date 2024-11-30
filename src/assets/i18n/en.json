@@ -82,10 +82,22 @@
     "edit": "edit"
   },
   "user-mapping": {
+    "user-list": {
+      "title": "user list"
+    },
     "hos-pick-list": {
       "source-header": "hospital list",
       "target-header": "in-charge",
-      "filter-place-holder": "inner name"
+      "filter-place-holder": "inner name",
+      "search-code": "code",
+      "search-name": "name"
+    },
+    "pharma-pick-list": {
+      "source-header": "pharma list",
+      "target-header": "in-charge",
+      "filter-place-holder": "inner name",
+      "search-code": "code",
+      "search-name": "name"
     }
   },
   "user-edit-dialog": {

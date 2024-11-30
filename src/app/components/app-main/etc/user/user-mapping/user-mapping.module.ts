@@ -7,13 +7,17 @@ import {FormsModule} from '@angular/forms';
 import {PickListModule} from 'primeng/picklist';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Button} from 'primeng/button';
+import {IconFieldModule} from "primeng/iconfield";
+import {InputIconModule} from 'primeng/inputicon';
+import {ChipsModule} from 'primeng/chips';
+import {CheckboxModule} from 'primeng/checkbox';
 
 
 
 @NgModule({
   declarations: [UserMappingComponent],
   imports: [
-    CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, Button
+    CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, Button, IconFieldModule, InputIconModule, ChipsModule, CheckboxModule
   ]
 })
 export class UserMappingModule { }

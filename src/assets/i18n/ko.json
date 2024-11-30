@@ -82,10 +82,22 @@
     "edit": "편집"
   },
   "user-mapping": {
+    "user-list": {
+      "title": "유저 리스트"
+    },
     "hos-pick-list": {
       "source-header": "전체 병원",
       "target-header": "담당 병원",
-      "filter-place-holder": "내부명"
+      "filter-place-holder": "내부명",
+      "search-code": "코드",
+      "search-name": "이름"
+    },
+    "pharma-pick-list": {
+      "source-header": "전체 제약사",
+      "target-header": "담당 제약사",
+      "filter-place-holder": "내부명",
+      "search-code": "코드",
+      "search-name": "이름"
     }
   },
   "user-edit-dialog": {
