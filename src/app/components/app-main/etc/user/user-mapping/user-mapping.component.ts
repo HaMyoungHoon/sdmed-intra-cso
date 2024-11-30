@@ -11,9 +11,10 @@ import {HospitalService} from '../../../../../services/rest/hospital.service';
 import {PharmaService} from '../../../../../services/rest/pharma.service';
 
 @Component({
-  selector: 'app-user-mapping',
-  templateUrl: './user-mapping.component.html',
-  styleUrl: './user-mapping.component.scss'
+    selector: 'app-user-mapping',
+    templateUrl: './user-mapping.component.html',
+    styleUrl: './user-mapping.component.scss',
+    standalone: false
 })
 export class UserMappingComponent extends FComponentBase {
   haveRole: boolean = false;

@@ -9,9 +9,10 @@ import {SortEvent} from "primeng/api";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 
 @Component({
-  selector: "app-medicine-list",
-  templateUrl: "./medicine-list.component.html",
-  styleUrl: "./medicine-list.component.scss"
+    selector: "app-medicine-list",
+    templateUrl: "./medicine-list.component.html",
+    styleUrl: "./medicine-list.component.scss",
+    standalone: false
 })
 export class MedicineListComponent implements AfterViewInit {
   @ViewChild("medicineListTable") medicineListTable!: Table

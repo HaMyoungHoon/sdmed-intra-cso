@@ -12,18 +12,17 @@ import {NgIf} from "@angular/common";
 import {saveAs} from "file-saver";
 
 @Component({
-  selector: "app-app-main",
-  standalone: true,
-  imports: [
-    InputSwitchModule,
-    RouterOutlet,
-    FormsModule,
-    MenuConfigComponent,
-    Button,
-    NgIf
-  ],
-  templateUrl: "./app-main.component.html",
-  styleUrl: "./app-main.component.scss"
+    selector: "app-app-main",
+    imports: [
+        InputSwitchModule,
+        RouterOutlet,
+        FormsModule,
+        MenuConfigComponent,
+        Button,
+        NgIf
+    ],
+    templateUrl: "./app-main.component.html",
+    styleUrl: "./app-main.component.scss"
 })
 export class AppMainComponent implements AfterViewInit {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;

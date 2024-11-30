@@ -3,7 +3,8 @@ import {getLocalStorage, isExpired} from "./f-amhohwa";
 import * as FConstants from "./f-constants";
 
 @Component({
-  template: ""
+    template: "",
+    standalone: false
 })
 export abstract class FComponentBase implements AfterViewInit {
 

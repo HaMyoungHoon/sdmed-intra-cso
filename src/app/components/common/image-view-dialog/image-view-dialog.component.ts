@@ -9,12 +9,7 @@ import {NgOptimizedImage} from '@angular/common';
 @Component({
   selector: "app-image-view-dialog",
   standalone: true,
-  imports: [
-    ImageModule,
-    Button,
-    TranslatePipe,
-    NgOptimizedImage
-  ],
+  imports: [ImageModule, Button, TranslatePipe, NgOptimizedImage],
   templateUrl: "./image-view-dialog.component.html",
   styleUrl: "./image-view-dialog.component.scss"
 })

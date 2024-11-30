@@ -11,17 +11,16 @@ import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 
 @Component({
-  selector: "app-sign-dialog",
-  standalone: true,
-  imports: [
-    PasswordModule,
-    FormsModule,
-    FloatLabelModule,
-    Button,
-    InputTextModule
-  ],
-  templateUrl: "./sign-dialog.component.html",
-  styleUrl: "./sign-dialog.component.scss"
+    selector: "app-sign-dialog",
+    imports: [
+        PasswordModule,
+        FormsModule,
+        FloatLabelModule,
+        Button,
+        InputTextModule
+    ],
+    templateUrl: "./sign-dialog.component.html",
+    styleUrl: "./sign-dialog.component.scss"
 })
 export class SignDialogComponent {
   id: string;

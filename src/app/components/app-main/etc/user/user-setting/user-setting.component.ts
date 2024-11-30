@@ -8,9 +8,10 @@ import {getSeverity} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../../models/rest/user-role";
 
 @Component({
-  selector: "app-user-setting",
-  templateUrl: "./user-setting.component.html",
-  styleUrl: "./user-setting.component.scss"
+    selector: "app-user-setting",
+    templateUrl: "./user-setting.component.html",
+    styleUrl: "./user-setting.component.scss",
+    standalone: false
 })
 export class UserSettingComponent extends FComponentBase {
   userDataModel?: UserDataModel[];

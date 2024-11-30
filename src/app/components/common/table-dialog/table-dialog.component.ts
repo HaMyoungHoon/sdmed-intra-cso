@@ -7,17 +7,16 @@ import {NgForOf, NgIf} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
-  selector: "app-table-dialog",
-  standalone: true,
-  imports: [
-    TableModule,
-    Button,
-    NgForOf,
-    NgIf,
-    TranslatePipe
-  ],
-  templateUrl: "./table-dialog.component.html",
-  styleUrl: "./table-dialog.component.scss"
+    selector: "app-table-dialog",
+    imports: [
+        TableModule,
+        Button,
+        NgForOf,
+        NgIf,
+        TranslatePipe
+    ],
+    templateUrl: "./table-dialog.component.html",
+    styleUrl: "./table-dialog.component.scss"
 })
 export class TableDialogComponent {
   cols: TableDialogColumn[];

@@ -33,23 +33,22 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 
 @Component({
-  selector: "app-user-edit-dialog",
-  standalone: true,
-  imports: [
-    AccordionModule,
-    NgIf,
-    ProgressSpinnerModule,
-    TagModule,
-    TranslatePipe,
-    DropdownModule,
-    FormsModule,
-    MultiSelectModule,
-    Button,
-    TableModule,
-    ImageModule
-  ],
-  templateUrl: "./user-edit-dialog.component.html",
-  styleUrl: "./user-edit-dialog.component.scss"
+    selector: "app-user-edit-dialog",
+    imports: [
+        AccordionModule,
+        NgIf,
+        ProgressSpinnerModule,
+        TagModule,
+        TranslatePipe,
+        DropdownModule,
+        FormsModule,
+        MultiSelectModule,
+        Button,
+        TableModule,
+        ImageModule
+    ],
+    templateUrl: "./user-edit-dialog.component.html",
+    styleUrl: "./user-edit-dialog.component.scss"
 })
 export class UserEditDialogComponent {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>

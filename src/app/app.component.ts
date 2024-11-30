@@ -9,11 +9,10 @@ import {AppConfigService} from "./services/common/app-config.service";
 
 
 @Component({
-  selector: "app-root",
-  standalone: true,
-  imports: [RouterOutlet, ToastModule, Button, InputSwitchModule, FormsModule],
-  templateUrl: "./app.component.html",
-  styleUrl: "./app.component.scss"
+    selector: "app-root",
+    imports: [RouterOutlet, ToastModule, Button, InputSwitchModule, FormsModule],
+    templateUrl: "./app.component.html",
+    styleUrl: "./app.component.scss"
 })
 export class AppComponent {
   constructor(private cd: ChangeDetectorRef, private router: Router,

@@ -9,9 +9,10 @@ import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 
 @Component({
-  selector: "app-my-info",
-  templateUrl: "./my-info.component.html",
-  styleUrl: "./my-info.component.scss"
+    selector: "app-my-info",
+    templateUrl: "./my-info.component.html",
+    styleUrl: "./my-info.component.scss",
+    standalone: false
 })
 export class MyInfoComponent extends FComponentBase {
   userDataModel?: UserDataModel = undefined;
