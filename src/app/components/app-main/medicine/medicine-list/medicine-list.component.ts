@@ -3,9 +3,9 @@ import {MedicineService} from "../../../../services/rest/medicine.service";
 import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {Table} from "primeng/table";
-import {SortEvent} from "primeng/api";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
+import {customSort, filterTable} from '../../../../guards/f-extensions';
 
 @Component({
   selector: "app-medicine-list",
@@ -15,8 +15,8 @@ import {FComponentBase} from "../../../../guards/f-component-base";
 })
 export class MedicineListComponent extends FComponentBase {
   @ViewChild("medicineListTable") medicineListTable!: Table
-  initValue?: MedicineModel[];
-  medicineModel?: MedicineModel[];
+  initValue: MedicineModel[] = [];
+  medicineModel: MedicineModel[] = [];
   loading: boolean = true;
   isSorted: boolean | null = null;
   constructor(private medicineService: MedicineService, private fDialogService: FDialogService) {
@@ -26,8 +26,8 @@ export class MedicineListComponent extends FComponentBase {
   override ngInit(): void {
     this.medicineService.getMedicineAll().then(x => {
       if (x.result) {
-        this.initValue = x.data;
-        this.medicineModel = x.data;
+        this.initValue = x.data ?? [];
+        this.medicineModel = x.data ?? [];
         this.loading = false;
         return;
       }
@@ -40,38 +40,6 @@ export class MedicineListComponent extends FComponentBase {
     });
   }
 
-  customSort(event: SortEvent): void {
-    if (this.isSorted == null) {
-      this.isSorted = true;
-      this.sortTableData(event);
-    } else if (this.isSorted) {
-      this.isSorted = false;
-      this.sortTableData(event);
-    } else if (!this.isSorted) {
-      this.isSorted = null;
-      if (this.initValue) {
-        this.medicineModel = [...this.initValue];
-      }
-      this.medicineListTable.reset();
-    }
-  }
-  sortTableData(event: any): void {
-    event.data.sort((data1: any[], data2: any[]) => {
-      let value1 = data1[event.field];
-      let value2 = data2[event.field];
-      let result: number;
-      if (value1 == null && value2 != null) result = -1;
-      else if (value1 != null && value2 == null) result = 1;
-      else if (value1 == null && value2 == null) result = 0;
-      else if (typeof value1 === "string" && typeof value2 === "string") result = value1.localeCompare(value2);
-      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
-
-      return event.order * result;
-    });
-  }
-  filterTable(data: any, options: string): void {
-    this.medicineListTable.filterGlobal(data.target.value, options);
-  }
   priceHistoryDialogOpen(data: MedicineModel): void {
     const col: TableDialogColumn[] = [];
     col.push(new TableDialogColumn().build("maxPrice", "medicine-list.max-price"))
@@ -90,4 +58,7 @@ export class MedicineListComponent extends FComponentBase {
       }
     });
   }
+
+  protected readonly customSort = customSort
+  protected readonly filterTable = filterTable;
 }

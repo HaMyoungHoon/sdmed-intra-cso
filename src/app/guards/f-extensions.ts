@@ -1,4 +1,6 @@
 import {stringToUserStatus, UserStatus} from "../models/rest/user-status";
+import {Table} from 'primeng/table';
+import {SortEvent} from 'primeng/api';
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -82,4 +84,49 @@ export async function tryCatchAsync<T>(fn: () => Promise<T>, onError?: (e: any) 
 export function applyClass<T>(obj: T, fn: (obj: T) => void): T {
   fn(obj);
   return obj;
+}
+export function filterTable(table: Table, data: any, options: string): void {
+  table.filterGlobal(data.target.value, options);
+}
+
+export function sortTableData(event: any): void {
+  event.data.sort((data1: any[], data2: any[]) => {
+    let value1 = data1[event.field];
+    let value2 = data2[event.field];
+    let result: number;
+    if (value1 == null && value2 != null) result = -1;
+    else if (value1 != null && value2 == null) result = 1;
+    else if (value1 == null && value2 == null) result = 0;
+    else if (typeof value1 === "string" && typeof value2 === "string") result = value1.localeCompare(value2);
+    else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+    return event.order * result;
+  });
+}
+
+export function customSort<T>(event: SortEvent, isSorted: boolean | null, table: Table, initValue: T[], viewValue: T[]): void {
+  if (isSorted == null) {
+    isSorted = true;
+    sortTableData(event);
+  } else if (isSorted) {
+    isSorted = false;
+    sortTableData(event);
+  } else if (!isSorted) {
+    isSorted = null;
+    if (initValue) {
+      viewValue = [...initValue];
+    }
+    table.reset();
+  }
+}
+
+export function ellipsis(data?: string, length: number = 20): string {
+  if (data == null) {
+    return "";
+  }
+  if (data.length > length) {
+    return data.substring(0, length) + "...";
+  }
+
+  return data;
 }

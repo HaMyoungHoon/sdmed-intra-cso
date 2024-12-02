@@ -1,3 +1,41 @@
 <div class="hospital-list-container">
-
+  <p-table #hospitalListTable [value]="hospitalList ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, hospitalListTable, initValue, hospitalList)" [customSort]="true"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <p-button class="m-1" (onClick)="refreshHospitalData()" icon="pi pi-refresh" />
+      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" />
+      <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+      <p-iconField iconPosition="left" class="ml-auto">
+        <p-inputIcon>
+          <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input pInputText type="text" (input)="filterTable(hospitalListTable, $event, 'contains')" placeholder="Search keyword" />
+      </p-iconField>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="code">{{"hospital-list.code" | translate}} <p-sortIcon field="code" /></th>
+        <th pSortableColumn="orgName">{{"hospital-list.innerName" | translate}} <p-sortIcon field="orgName" /></th>
+        <th pSortableColumn="innerName">{{"hospital-list.orgName" | translate}} <p-sortIcon field="innerName" /></th>
+        <th>{{"hospital-list.address" | translate}}</th>
+        <th>{{"hospital-list.etc1" | translate}}</th>
+        <th>{{"hospital-list.etc2" | translate}}</th>
+        <th>{{"common-desc.edit" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-hospital>
+      <tr>
+        <td>{{hospital.code}}</td>
+        <td>{{hospital.orgName}}</td>
+        <td>{{hospital.innerName}}</td>
+        <td>{{hospital.address}}</td>
+        <td>{{ellipsis(hospital.etc1)}}</td>
+        <td>{{ellipsis(hospital.etc2)}}</td>
+        <td>
+          <p-button class="p-button-sm" (onClick)="hospitalEdit(hospital)">{{"common-desc.edit" | translate}}</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

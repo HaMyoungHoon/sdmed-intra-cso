@@ -23,10 +23,9 @@ export class HospitalService {
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
     return this.httpResponse.get(`${this.baseUrl}/all/search`);
   }
-  postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
+  postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file, file.name);
-    this.httpResponse.addParam("applyDate", applyDate);
     return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
   }
   getSampleDownloadExcel(): Promise<any> {

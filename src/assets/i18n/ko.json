@@ -45,6 +45,14 @@
     "etc": "비고",
     "apply-date": "적용일자"
   },
+  "hospital-list": {
+    "code": "",
+    "innerName": "",
+    "orgName": "",
+    "address": "",
+    "etc1": "",
+    "etc2": ""
+  },
   "my-info": {
     "accordion-header": {
       "detail": "내 정보",
@@ -157,6 +165,7 @@
     "open": "열기",
     "view": "보기",
     "save": "저장",
+    "edit": "편집",
     "refresh": "새로고침",
     "close": "닫기"
   }

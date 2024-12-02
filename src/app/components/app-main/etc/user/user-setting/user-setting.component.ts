@@ -4,10 +4,9 @@ import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
-import {getSeverity, tryCatchAsync} from "../../../../../guards/f-extensions";
+import {customSort, filterTable, getSeverity, tryCatchAsync} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../../models/rest/user-role";
 import {Table} from "primeng/table";
-import {SortEvent} from "primeng/api";
 
 @Component({
   selector: "app-user-setting",
@@ -19,8 +18,8 @@ export class UserSettingComponent extends FComponentBase {
   @ViewChild("userListTable") userListTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   isLoading: boolean = false;
-  initValue?: UserDataModel[];
-  userDataModel?: UserDataModel[];
+  initValue: UserDataModel[] = [];
+  userDataModel: UserDataModel[] = [];
   isSorted: boolean | null = null;
   constructor(private userService: UserService, private fDialogService: FDialogService) {
     super();
@@ -39,8 +38,8 @@ export class UserSettingComponent extends FComponentBase {
     this.setLoading(false);
     if (ret) {
       if (ret.result) {
-        this.initValue = ret.data;
-        this.userDataModel = ret.data;
+        this.initValue = ret.data ?? [];
+        this.userDataModel = ret.data ?? [];
         return;
       }
       this.fDialogService.warn("getUserAll", ret.msg);
@@ -59,7 +58,7 @@ export class UserSettingComponent extends FComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await tryCatchAsync(async() => this.userService.postDataUploadExcel(file),
-        e => this.fDialogService.error("taxpayerImageView", e.message));
+        e => this.fDialogService.error("excelSelected", e.message));
       input.files = null;
       this.setLoading(false);
       if (ret) {
@@ -67,42 +66,11 @@ export class UserSettingComponent extends FComponentBase {
           await this.getUserDataModel();
           return;
         }
-        this.fDialogService.warn("taxpayerImageView", ret.msg);
+        this.fDialogService.warn("excelSelected", ret.msg);
       }
     }
   }
-  customSort(event: SortEvent): void {
-    if (this.isSorted == null) {
-      this.isSorted = true;
-      this.sortTableData(event);
-    } else if (this.isSorted) {
-      this.isSorted = false;
-      this.sortTableData(event);
-    } else if (!this.isSorted) {
-      this.isSorted = null;
-      if (this.initValue) {
-        this.userDataModel = [...this.initValue];
-      }
-      this.userListTable.reset();
-    }
-  }
-  sortTableData(event: any): void {
-    event.data.sort((data1: any[], data2: any[]) => {
-      let value1 = data1[event.field];
-      let value2 = data2[event.field];
-      let result: number;
-      if (value1 == null && value2 != null) result = -1;
-      else if (value1 != null && value2 == null) result = 1;
-      else if (value1 == null && value2 == null) result = 0;
-      else if (typeof value1 === "string" && typeof value2 === "string") result = value1.localeCompare(value2);
-      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
 
-      return event.order * result;
-    });
-  }
-  filterTable(data: any, options: string): void {
-    this.userListTable.filterGlobal(data.target.value, options);
-  }
   userEdit(data: UserDataModel): void {
     this.fDialogService.openUserEditDialog({
       modal: true,
@@ -128,4 +96,6 @@ export class UserSettingComponent extends FComponentBase {
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
   protected readonly getSeverity = getSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
+  protected readonly customSort = customSort
+  protected readonly filterTable = filterTable
 }

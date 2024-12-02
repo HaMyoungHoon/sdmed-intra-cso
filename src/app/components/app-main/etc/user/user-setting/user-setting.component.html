@@ -1,6 +1,6 @@
 <div class="user-setting-container">
   <p-table #userListTable [value]="userDataModel ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event)" [customSort]="true"
+           [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, userListTable, initValue, userDataModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" />
@@ -10,7 +10,7 @@
         <p-inputIcon>
           <i class="pi pi-search"></i>
         </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable($event, 'contains')" placeholder="Search keyword" />
+        <input pInputText type="text" (input)="filterTable(userListTable, $event, 'contains')" placeholder="Search keyword" />
       </p-iconField>
     </ng-template>
     <ng-template pTemplate="header">
@@ -21,7 +21,7 @@
         <th>{{"user-setting.phone-number" | translate}}</th>
         <th pSortableColumn="status">{{"user-setting.status" | translate}} <p-sortIcon field="status" /></th>
         <th pSortableColumn="role">{{"user-setting.role" | translate}} <p-sortIcon field="role" /></th>
-        <th>{{"user-setting.edit" | translate}}</th>
+        <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-userData>
@@ -39,7 +39,7 @@
           </span>
         </td>
         <td>
-          <p-button class="p-button-sm" (onClick)="userEdit(userData)">{{"user-setting.edit" | translate}}</p-button>
+          <p-button class="p-button-sm" (onClick)="userEdit(userData)">{{"common-desc.edit" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>
