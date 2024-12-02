@@ -16,9 +16,9 @@
     "title": "et cetera",
     "sub-menu": {
       "sub-1": "my info",
-      "sub-2": "main ingredient method",
-      "sub-3": "user's info",
-      "sub-4": "user mapping"
+      "sub-2": "user's info",
+      "sub-3": "user mapping",
+      "sub-4": "main ingredient method"
     }
   },
   "menu-config": {

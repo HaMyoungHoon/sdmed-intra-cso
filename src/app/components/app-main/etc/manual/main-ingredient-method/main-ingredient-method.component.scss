@@ -23,7 +23,7 @@
 }
 .wrap-board table th {
   height: 33px;
-  background-color: #e1e1fa;
+  background-color: var(--highlight-bg);
   font-size: 12px;
   text-align: center;
   padding: 5px;

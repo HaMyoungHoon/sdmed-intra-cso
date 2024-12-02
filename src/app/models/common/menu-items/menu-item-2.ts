@@ -16,9 +16,15 @@ export function MenuItem2(): MenuItem {
       },
       {
         label: "menu-2.sub-menu.sub-2",
+        icon: "pi pi-fw pi-shop",
+        styleClass: "sub-menu",
+        routerLink: `/${FConstants.HOSPITAL_LIST_URL}`
+      },
+      {
+        label: "menu-2.sub-menu.sub-3",
         icon: "pi pi-fw pi-camera",
         styleClass: "sub-menu",
-        routerLink: "/menu-2/sub-2"
+        routerLink: `/${FConstants.PHARMA_LIST_URL}`
       }
     ]
   }

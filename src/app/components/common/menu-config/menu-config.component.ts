@@ -19,6 +19,7 @@ import {MenuModule} from "primeng/menu";
 import {Ripple} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
 
+
 @Component({
   selector: "app-menu-config",
   standalone: true,

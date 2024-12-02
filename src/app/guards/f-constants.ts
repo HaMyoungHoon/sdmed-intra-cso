@@ -12,6 +12,10 @@ export const API_CSO = "/apiCSO";
 
 export const DASH_BOARD_URL = "dashBoard";
 
+export const HOSPITAL_LIST_URL = "hospital-list";
+
+export const PHARMA_LIST_URL = "pharma-list";
+
 export const MEDICINE_LIST_URL = "medicine-list"
 
 export const MY_INFO_URL = "etc/myInfo";
