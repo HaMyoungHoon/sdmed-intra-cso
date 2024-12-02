@@ -11,13 +11,14 @@ import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from 'primeng/inputicon';
 import {ChipsModule} from 'primeng/chips';
 import {CheckboxModule} from 'primeng/checkbox';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 
 
 @NgModule({
   declarations: [UserMappingComponent],
-  imports: [
-    CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, Button, IconFieldModule, InputIconModule, ChipsModule, CheckboxModule
-  ]
+	imports: [
+		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, Button, IconFieldModule, InputIconModule, ChipsModule, CheckboxModule, ProgressSpinnerModule
+	]
 })
 export class UserMappingModule { }

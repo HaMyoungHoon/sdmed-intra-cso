@@ -13,9 +13,9 @@ export enum UserRole {
 export function allUserRoleDescArray(): string[] {
   const ret: string[] = [];
   Object.keys(UserRole).filter(x => isNaN(Number(x))).forEach(x => {
-    if (x != "Admin" && x != "CsoAdmin") {
+//    if (x != "Admin" && x != "CsoAdmin") {
       ret.push(StringToUserRoleDesc[x]);
-    }
+//    }
   });
   return ret;
 }

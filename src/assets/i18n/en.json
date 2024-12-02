@@ -98,6 +98,16 @@
       "filter-place-holder": "inner name",
       "search-code": "code",
       "search-name": "name"
+    },
+    "medicine-pick-list": {
+      "source-header": "medicine list",
+      "target-header": "in-charge",
+      "filter-place-holder": "name"
+    },
+    "save": {
+      "warn-hos": "empty hospital;",
+      "warn-pharma": "empty pharma list;",
+      "warn-medicine": "empty medicine list;"
     }
   },
   "user-edit-dialog": {
@@ -146,6 +156,7 @@
     "open": "open",
     "view": "view",
     "save": "save",
+    "refresh": "refresh",
     "close": "close"
   }
 }

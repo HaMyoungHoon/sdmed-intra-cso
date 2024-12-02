@@ -98,6 +98,16 @@
       "filter-place-holder": "내부명",
       "search-code": "코드",
       "search-name": "이름"
+    },
+    "medicine-pick-list": {
+      "source-header": "전체 약품",
+      "target-header": "담당 약품",
+      "filter-place-holder": "이름"
+    },
+    "save": {
+      "warn-hos": "병원 정보가 비어있습니다;",
+      "warn-pharma": "제약사 정보가 비어있습니다;",
+      "warn-medicine": "약품 정보가 비어있습니다;"
     }
   },
   "user-edit-dialog": {
@@ -146,6 +156,7 @@
     "open": "열기",
     "view": "보기",
     "save": "저장",
+    "refresh": "새로고침",
     "close": "닫기"
   }
 }

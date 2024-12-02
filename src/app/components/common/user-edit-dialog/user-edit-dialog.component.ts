@@ -69,7 +69,6 @@ export class UserEditDialogComponent {
         this.userService.getUserDataByPK(data.thisPK, true, true).then(x => {
           if (x.result) {
             this.userDataModel = x.data;
-            console.log(this.userDataModel);
             this.selectedUserStatus = statusToUserStatusDesc(x.data?.status);
             this.selectedUserRoles = flagToRoleDesc(x.data?.role);
             this.selectedUserDepts = flagToDeptDesc(x.data?.dept);

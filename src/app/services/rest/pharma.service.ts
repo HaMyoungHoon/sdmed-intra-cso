@@ -23,6 +23,10 @@ export class PharmaService {
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
     return this.httpResponse.get(`${this.baseUrl}/all/search`)
   }
+  getPharma(pharmaPK: string, pharmaOwnMedicineView: boolean = false): Promise<RestResult<PharmaModel>> {
+    this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
+    return this.httpResponse.get(`${this.baseUrl}/${pharmaPK}`);
+  }
   postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file, file.name);

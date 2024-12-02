@@ -10,6 +10,10 @@ import {UserRole, haveRole} from '../../../../../models/rest/user-role';
 import {HospitalService} from '../../../../../services/rest/hospital.service';
 import {PharmaService} from '../../../../../services/rest/pharma.service';
 import {debounceTime, Subject, Subscription} from 'rxjs';
+import {HosPharmaMedicinePairModel} from '../../../../../models/rest/HosPharmaMedicinePairModel';
+import {applyClass, tryCatchAsync} from '../../../../../guards/f-extensions';
+import {FactoryTarget} from '@angular/compiler';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user-mapping',
@@ -44,66 +48,160 @@ export class UserMappingComponent extends FComponentBase {
   medicineList: MedicineModel[] = [];
 
   isMobile: boolean = false;
-  constructor(private userService: UserService, private hospitalService: HospitalService, private pharmaService: PharmaService, private fDialogService: FDialogService) {
+  isLoading: boolean = false;
+  constructor(private userService: UserService, private hospitalService: HospitalService, private pharmaService: PharmaService, private fDialogService: FDialogService,
+              private translateService: TranslateService) {
     super();
   }
 
-  override ngInit(): void {
+  setLoading(data: boolean = true): void {
+    this.isLoading = data;
+  }
+  override async ngInit(): Promise<void> {
     this.isMobile = !navigator.userAgent.includes("Window");
-    this.userService.getMyRole().then(x => {
-      if (x.result) {
-        this.haveRole = haveRole(x.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
-        this.getAllList();
+    this.setLoading();
+    const ret = await tryCatchAsync(async() => await this.userService.getMyRole(),
+        e => this.fDialogService.error("ngInit", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.haveRole = haveRole(ret.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+        await this.getAllList();
+        this.initSearch();
         return;
       }
-      this.fDialogService.warn("ngInit", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("ngInit", x.message);
+      this.fDialogService.warn("ngInit", ret.msg);
+    }
+  }
+  async save(): Promise<void> {
+    const thisPK = this.hosPickListUser?.thisPK;
+    if (thisPK == null) {
+      return;
+    }
+    this.setLoading();
+    const hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[] = this.mergePairModel();
+    if (hosPharmaMedicinePairModel.length <= 0) {
+      this.translateService.get("user-mapping.save.warn-hos").subscribe(y => {
+        this.fDialogService.warn("save", y);
+      });
+      this.setLoading(false);
+      return;
+    }
+    if (hosPharmaMedicinePairModel.find(x => x.pharmaPK.length <= 0)) {
+      const findHos = this.hosPickListUser?.hosList.find(x => x.thisPK == hosPharmaMedicinePairModel.find(y => y.pharmaPK.length <= 0)?.hosPK);
+      this.translateService.get("user-mapping.save.warn-pharma").subscribe(y => {
+        this.fDialogService.warn("save", `${y}\n${findHos?.innerName}`);
+      });
+      this.setLoading(false);
+      return;
+    }
+    if (hosPharmaMedicinePairModel.find(x => x.medicinePK.length <= 0)) {
+      const findPharma = this.hosPickListUser?.hosList.find(x => x.pharmaList.find(y => y.thisPK == hosPharmaMedicinePairModel.find(z => z.medicinePK.length <= 0)?.pharmaPK));
+      this.translateService.get("user-mapping.save.warn-medicine").subscribe(y => {
+        this.fDialogService.warn("save", `${y}\n${findPharma?.innerName}->${findPharma?.pharmaList[0].innerName}`);
+      });
+      this.setLoading(false);
+      return;
+    }
+    const ret = await tryCatchAsync(async() => await this.userService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
+        e => this.fDialogService.error("save", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        return;
+      }
+      this.fDialogService.warn("save", ret.msg);
+    }
+  }
+  async refresh(): Promise<void> {
+    await this.getAllList();
+    await this.hosSearch();
+    await this.pharmaSearch();
+    await this.pharmaSearch();
+  }
+  mergePairModel(): HosPharmaMedicinePairModel[] {
+    const ret: HosPharmaMedicinePairModel[] = [];
+    this.hosPickListUser?.hosList?.forEach(x => {
+      let pushedHos = false;
+      x.pharmaList.forEach(y => {
+        let pushedPharma = false;
+        y.relationMedicineList.forEach(z => {
+          ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+            obj.hosPK = x.thisPK;
+            obj.pharmaPK = y.thisPK;
+            obj.medicinePK = z.thisPK;
+          }));
+          pushedPharma = true;
+          pushedHos = true;
+        });
+        if (!pushedPharma) {
+          ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+            obj.hosPK = x.thisPK;
+            obj.pharmaPK = y.thisPK;
+          }));
+          pushedHos = true;
+        }
+      });
+      if (!pushedHos) {
+        ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+          obj.hosPK = x.thisPK;
+        }));
+      }
     });
-    this.initSearch();
+    return ret;
   }
 
-  getAllList(): void {
-    this.userService.getUserAll().then(x => {
-      if (x.result) {
-        this.userList = x.data ?? [];
+  async getAllList(): Promise<void> {
+    this.setLoading();
+    const ret = await tryCatchAsync(async () => await this.userService.getUserAllBusiness().catch(),
+        e => this.fDialogService.error("getAllList", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.userList = ret.data ?? [];
         return;
       }
-      this.fDialogService.warn("getAllList", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("getAllList", x.message);
-    });
+      this.fDialogService.warn("getAllList", ret.msg);
+    }
   }
   initSearch(): void {
     this.hosSearchObserver = this.hosSearchSubject.pipe(debounceTime(this.hosSearchDebounceTime))
-      .subscribe((x) => {
+      .subscribe(async() => {
         this.hosSearchLoading = false;
-        this.hosSearch();
+        await this.hosSearch();
     });
     this.pharmaSearchObserver = this.pharmaSearchSubject.pipe(debounceTime(this.pharmaSearchDebounceTime))
-      .subscribe((x) => {
+      .subscribe(async() => {
         this.pharmaSearchLoading = false;
-        this.pharmaSearch();
+        await this.pharmaSearch();
       });
   }
 
-  userListOnSelect(event: any): void {
+  async userListOnSelect(_: any): Promise<void> {
     const buff = this.selectUser;
     if (buff == null) {
       this.hosPickListUser = undefined;
       return;
     }
-    this.userService.getUserDataByPK(buff.thisPK, true, true, true).then(x => {
-      if (x.result) {
-        this.hosPickListUser = x.data;
+    this.setLoading();
+    const ret = await tryCatchAsync(async() => await this.userService.getUserDataByPK(buff.thisPK, true, true, true),
+      e => this.fDialogService.error("userSelect", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.hosPickListUser = ret.data;
+        await this.hosSearch();
+        await this.pharmaSearch();
+        await this.medicineSearch();
         return;
       }
-      this.fDialogService.warn("userSelect", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("userSelect", x.message);
-    })
+      this.fDialogService.warn("userSelect", ret.msg);
+    }
   }
 
+  get sourceHosList(): HospitalModel[] {
+    return this.hosPickListUser?.hosList ?? [];
+  }
   get hosSearchStyle(): string {
     if (this.hosSearchLoading) return "pi pi-spinner pi-spin";
     else return "pi pi-search";
@@ -120,28 +218,32 @@ export class UserMappingComponent extends FComponentBase {
     }
     if (data.key == "Enter") {
       this.hosSearchLoading = true;
-      this.hosSearchSubject.next(data.data);
+      this.hosSearch().then();
+      this.hosSearchLoading = false;
     }
   }
-  hosSearch(): void {
+  async hosSearch(): Promise<void> {
     if (this.hosSearchValue.length <= 0) {
       this.hosList = [];
       return;
     }
-    this.hospitalService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode).then(x => {
-      if (x.result) {
-        this.hosList = x.data ?? [];
+    this.setLoading();
+    const ret = await tryCatchAsync(async() => this.hospitalService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
+      e =>       this.fDialogService.error("hosSearch", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.hosList = ret.data ?? [];
+        this.hosList = this.hosList.filter(x => !this.sourceHosList.some(y => y.thisPK == x.thisPK));
         return;
       }
-      this.fDialogService.warn("hosSearch", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("hosSearch", x.message);
-    });
+      this.fDialogService.warn("hosSearch", ret.msg);
+    }
   }
   get hosPickListDisable(): boolean {
     return this.hosPickListUser == null;
   }
-  hosPickListTargetSelect(event: any): void {
+  async hosPickListTargetSelect(event: any): Promise<void> {
     if (event.items.length > 1) {
       event.items.splice(0, event.items.length - 1);
     }
@@ -150,8 +252,13 @@ export class UserMappingComponent extends FComponentBase {
     } else {
       this.selectHos = undefined;
     }
+    await this.pharmaSearch();
   }
 
+  get sourcePharmaList(): PharmaModel[] {
+    const pharma = this.hosPickListUser?.hosList.find(x => x.thisPK == this.selectHos?.thisPK)?.pharmaList;
+    return pharma ?? [];
+  }
   get pharmaSearchStyle(): string {
     if (this.pharmaSearchLoading) return "pi pi-spinner pi-spin";
     else return "pi pi-search";
@@ -168,28 +275,32 @@ export class UserMappingComponent extends FComponentBase {
     }
     if (data.key == "Enter") {
       this.pharmaSearchLoading = true;
-      this.pharmaSearchSubject.next(data.data);
+      this.pharmaSearch().then();
+      this.pharmaSearchLoading = false;
     }
   }
-  pharmaSearch(): void {
+  async pharmaSearch(): Promise<void> {
     if (this.pharmaSearchValue.length <= 0) {
       this.pharmaList = [];
       return;
     }
-    this.pharmaService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode).then(x => {
-      if (x.result) {
-        this.pharmaList = x.data ?? [];
+    this.setLoading();
+    const ret = await tryCatchAsync(async() => this.pharmaService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
+      e => this.fDialogService.error("pharmaSearch", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.pharmaList = ret.data ?? [];
+        this.pharmaList = this.pharmaList.filter(x => !this.sourcePharmaList.some(y => y.thisPK == x.thisPK));
         return;
       }
-      this.fDialogService.warn("pharmaSearch", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("pharmaSearch", x.message);
-    });
+      this.fDialogService.warn("pharmaSearch", ret.msg);
+    }
   }
   get pharmaPickListDisable(): boolean {
     return this.selectHos == null;
   }
-  pharmaPickListTargetSelect(event: any): void {
+  async pharmaPickListTargetSelect(event: any): Promise<void> {
     if (event.items.length > 1) {
       event.items.splice(0, event.items.length - 1);
     }
@@ -198,7 +309,38 @@ export class UserMappingComponent extends FComponentBase {
     } else {
       this.selectPharma = undefined;
     }
+    await this.medicineSearch();
   }
+
+  get sourceMedicineList(): MedicineModel[] {
+    const medicine = this.sourcePharmaList.find(x => x.thisPK == this.selectPharma?.thisPK)?.relationMedicineList;
+    return medicine ?? [];
+  }
+  get medicinePickListDisable(): boolean {
+    return this.selectPharma == null;
+  }
+  async medicineSearch(): Promise<void> {
+    const pharma = this.selectPharma;
+    if (pharma == null) {
+      this.medicineList = [];
+      return;
+    }
+    this.setLoading();
+    const ret = await tryCatchAsync(async() => this.pharmaService.getPharma(pharma.thisPK, true),
+      e => this.fDialogService.error("medicineSearch", e.message));
+    this.setLoading(false);
+    if (ret) {
+      if (ret.result) {
+        this.medicineList = ret.data?.medicineList ?? [];
+        if (this.selectPharma) {
+          this.medicineList = this.medicineList.filter(x => !this.sourceMedicineList.some(y => y.thisPK == x.thisPK));
+        }
+        return;
+      }
+      this.fDialogService.warn("medicineSearch", ret.msg);
+    }
+  }
+
 
   ellipsis(data: string): string {
     if (data.length > 20) {

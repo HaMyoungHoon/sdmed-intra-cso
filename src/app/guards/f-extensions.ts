@@ -56,3 +56,30 @@ export function getSeverity(data?: UserStatus): any {
 
   return undefined;
 }
+
+export function tryCatch<T>(fn: () => T, onError?: (e: any) => void): T | null {
+  try {
+    return fn();
+  } catch (e: any) {
+    if (onError) {
+      onError(e);
+    }
+
+    return null;
+  }
+}
+export async function tryCatchAsync<T>(fn: () => Promise<T>, onError?: (e: any) => void): Promise<T | null> {
+  try {
+    return await fn();
+  } catch (e: any) {
+    if (onError) {
+      onError(e);
+    }
+    return null;
+  }
+}
+
+export function applyClass<T>(obj: T, fn: (obj: T) => void): T {
+  fn(obj);
+  return obj;
+}

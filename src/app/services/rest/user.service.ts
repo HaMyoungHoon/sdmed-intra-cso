@@ -25,6 +25,9 @@ export class UserService {
     this.httpResponse.addParam("size", size);
     return this.httpResponse.get(`${this.baseUrl}/all`);
   }
+  getUserAllBusiness(): Promise<RestResult<UserDataModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/all/business`);
+  }
   signIn(id: string, pw: string): Promise<RestResult<string>> {
     this.httpResponse.addParam("id", id);
     this.httpResponse.addParam("pw", pw);

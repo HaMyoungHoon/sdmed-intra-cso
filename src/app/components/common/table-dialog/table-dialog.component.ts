@@ -34,7 +34,6 @@ export class TableDialogComponent {
     return data;
   }
   select(): void {
-    console.log(this.selectedData);
     this.ref.close(this.selectedData);
   }
   get selectionMode(): "single" | "multiple" | null | undefined {
