@@ -1,7 +1,5 @@
 <div class="user-edit-dialog-container">
-  <div class="user-edit-dialog-loading" *ngIf="isLoading">
-    <p-progressSpinner class="w-4rem h-4rem" strokeWidth="4" />
-  </div>
+  <app-progress-spin [isLoading]="isLoading" />
   <div class="m-1">
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
     <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>

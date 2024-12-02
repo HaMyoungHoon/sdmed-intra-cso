@@ -8,10 +8,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: "app-table-dialog",
-  standalone: true,
   imports: [TableModule, Button, NgForOf, NgIf, TranslatePipe],
   templateUrl: "./table-dialog.component.html",
-  styleUrl: "./table-dialog.component.scss"
+  styleUrl: "./table-dialog.component.scss",
+  standalone: true,
 })
 export class TableDialogComponent {
   cols: TableDialogColumn[];

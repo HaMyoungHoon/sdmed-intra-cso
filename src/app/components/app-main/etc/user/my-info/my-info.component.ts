@@ -9,21 +9,22 @@ import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 
 @Component({
-    selector: "app-my-info",
-    templateUrl: "./my-info.component.html",
-    styleUrl: "./my-info.component.scss",
-    standalone: false
+  selector: "app-my-info",
+  templateUrl: "./my-info.component.html",
+  styleUrl: "./my-info.component.scss",
+  standalone: false
 })
 export class MyInfoComponent extends FComponentBase {
   userDataModel?: UserDataModel = undefined;
-  loading: boolean = true;
+  isLoading: boolean = true;
   constructor(private userService: UserService, private fDialogService: FDialogService) {
     super();
   }
 
   override ngInit(): void {
+    this.setLoading();
     this.userService.getUserDataByID().then(x => {
-      this.loading = false;
+      this.setLoading(false);
       if (x.result) {
         this.userDataModel = x.data;
         return;
@@ -31,9 +32,12 @@ export class MyInfoComponent extends FComponentBase {
 
       this.fDialogService.warn("getUserData", x.msg);
     }).catch(x => {
-      this.loading = false;
+      this.setLoading(false);
       this.fDialogService.error("getUserData", x.message);
     });
+  }
+  setLoading(data: boolean = true): void {
+    this.isLoading = data;
   }
 
   protected readonly getSeverity = getSeverity;

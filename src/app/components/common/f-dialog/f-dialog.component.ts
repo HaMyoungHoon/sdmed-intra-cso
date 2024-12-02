@@ -3,10 +3,10 @@ import {FDialogService} from "../../../services/common/f-dialog.service";
 
 @Component({
   selector: "app-f-dialog",
-  standalone: true,
   imports: [],
   templateUrl: "./f-dialog.component.html",
-  styleUrl: "./f-dialog.component.scss"
+  styleUrl: "./f-dialog.component.scss",
+  standalone: true,
 })
 export class FDialogComponent {
   constructor(private fDialogService: FDialogService) {

@@ -1,7 +1,5 @@
 <div class="flex flex-wrap flex-row user-mapping-container" *ngIf="haveRole">
-  <div class="user-mapping-loading" *ngIf="isLoading">
-    <p-progressSpinner class="w-4rem h-4rem" strokeWidth="4" />
-  </div>
+  <app-progress-spin [isLoading]="isLoading" />
   <div class="flex flex-column m-1">
     <div class="flex mb-1">
       <label class="align-self-center mr-1">{{"user-mapping.user-list.title" | translate}}</label>

@@ -1,34 +1,29 @@
-import {AfterViewInit, Component, ViewChild} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {MedicineService} from "../../../../services/rest/medicine.service";
-import {getLocalStorage, isExpired} from "../../../../guards/f-amhohwa";
-import * as FConstants from "../../../../guards/f-constants";
 import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {Table} from "primeng/table";
 import {SortEvent} from "primeng/api";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
+import {FComponentBase} from "../../../../guards/f-component-base";
 
 @Component({
-    selector: "app-medicine-list",
-    templateUrl: "./medicine-list.component.html",
-    styleUrl: "./medicine-list.component.scss",
-    standalone: false
+  selector: "app-medicine-list",
+  templateUrl: "./medicine-list.component.html",
+  styleUrl: "./medicine-list.component.scss",
+  standalone: false
 })
-export class MedicineListComponent implements AfterViewInit {
+export class MedicineListComponent extends FComponentBase {
   @ViewChild("medicineListTable") medicineListTable!: Table
   initValue?: MedicineModel[];
   medicineModel?: MedicineModel[];
   loading: boolean = true;
   isSorted: boolean | null = null;
   constructor(private medicineService: MedicineService, private fDialogService: FDialogService) {
+    super();
   }
 
-  ngAfterViewInit(): void {
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (isExpired(authToken)) {
-      return;
-    }
-
+  override ngInit(): void {
     this.medicineService.getMedicineAll().then(x => {
       if (x.result) {
         this.initValue = x.data;

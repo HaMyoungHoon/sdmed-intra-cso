@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {PharmaListComponent} from './pharma-list.component';
-import {PharmaListRoutingModule} from './pharma-list-routing.module';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {PharmaListComponent} from "./pharma-list.component";
+import {PharmaListRoutingModule} from "./pharma-list-routing.module";
 
 
 

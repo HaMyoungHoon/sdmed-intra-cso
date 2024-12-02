@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {HospitalListComponent} from './hospital-list.component';
+import { NgModule } from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {HospitalListComponent} from "./hospital-list.component";
 
 
 

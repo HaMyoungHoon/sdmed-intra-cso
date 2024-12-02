@@ -2,15 +2,15 @@ import { Component } from "@angular/core";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
-import {Button} from 'primeng/button';
-import {TranslatePipe} from '@ngx-translate/core';
+import {Button} from "primeng/button";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: "app-image-view-dialog",
-  standalone: true,
   imports: [ImageModule, TranslatePipe, Button],
   templateUrl: "./image-view-dialog.component.html",
-  styleUrl: "./image-view-dialog.component.scss"
+  styleUrl: "./image-view-dialog.component.scss",
+  standalone: true,
 })
 export class ImageViewDialogComponent {
   imageSrc: string;

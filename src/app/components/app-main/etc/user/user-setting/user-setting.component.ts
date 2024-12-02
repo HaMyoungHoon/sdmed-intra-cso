@@ -6,14 +6,14 @@ import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {getSeverity, tryCatchAsync} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../../models/rest/user-role";
-import {Table} from 'primeng/table';
-import {SortEvent} from 'primeng/api';
+import {Table} from "primeng/table";
+import {SortEvent} from "primeng/api";
 
 @Component({
-    selector: "app-user-setting",
-    templateUrl: "./user-setting.component.html",
-    styleUrl: "./user-setting.component.scss",
-    standalone: false
+  selector: "app-user-setting",
+  templateUrl: "./user-setting.component.html",
+  styleUrl: "./user-setting.component.scss",
+  standalone: false
 })
 export class UserSettingComponent extends FComponentBase {
   @ViewChild("userListTable") userListTable!: Table;

@@ -1,6 +1,5 @@
 import {MenuItem} from "primeng/api";
 import * as FConstants from "../../../guards/f-constants";
-import {USER_MAPPING_URL} from '../../../guards/f-constants';
 
 export function MenuItem3(): MenuItem {
   return {

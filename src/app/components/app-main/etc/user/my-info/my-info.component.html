@@ -1,5 +1,5 @@
 <div class="flex flex-row my-info-container">
-  <p-progressSpinner class="w-4rem h-4rem" strokeWidth="4" *ngIf="loading" />
+  <app-progress-spin [isLoading]="isLoading" />
   <p-accordion class="flex-auto" [multiple]="true" [activeIndex]="[0]">
     <p-accordionTab class="flex flex-column" header="{{'my-info.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
       <div class="flex">

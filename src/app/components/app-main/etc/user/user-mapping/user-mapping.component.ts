@@ -1,25 +1,24 @@
-import { Component } from '@angular/core';
-import {FComponentBase} from '../../../../../guards/f-component-base';
-import {UserService} from '../../../../../services/rest/user.service';
-import {UserDataModel} from '../../../../../models/rest/user-data-model';
-import {HospitalModel} from '../../../../../models/rest/hospital-model';
-import {PharmaModel} from '../../../../../models/rest/pharma-model';
-import {MedicineModel} from '../../../../../models/rest/medicine-model';
-import {FDialogService} from '../../../../../services/common/f-dialog.service';
-import {UserRole, haveRole} from '../../../../../models/rest/user-role';
-import {HospitalService} from '../../../../../services/rest/hospital.service';
-import {PharmaService} from '../../../../../services/rest/pharma.service';
-import {debounceTime, Subject, Subscription} from 'rxjs';
-import {HosPharmaMedicinePairModel} from '../../../../../models/rest/HosPharmaMedicinePairModel';
-import {applyClass, tryCatchAsync} from '../../../../../guards/f-extensions';
-import {FactoryTarget} from '@angular/compiler';
-import {TranslateService} from '@ngx-translate/core';
+import { Component } from "@angular/core";
+import {FComponentBase} from "../../../../../guards/f-component-base";
+import {UserService} from "../../../../../services/rest/user.service";
+import {UserDataModel} from "../../../../../models/rest/user-data-model";
+import {HospitalModel} from "../../../../../models/rest/hospital-model";
+import {PharmaModel} from "../../../../../models/rest/pharma-model";
+import {MedicineModel} from "../../../../../models/rest/medicine-model";
+import {FDialogService} from "../../../../../services/common/f-dialog.service";
+import {UserRole, haveRole} from "../../../../../models/rest/user-role";
+import {HospitalService} from "../../../../../services/rest/hospital.service";
+import {PharmaService} from "../../../../../services/rest/pharma.service";
+import {debounceTime, Subject, Subscription} from "rxjs";
+import {HosPharmaMedicinePairModel} from "../../../../../models/rest/HosPharmaMedicinePairModel";
+import {applyClass, tryCatchAsync} from "../../../../../guards/f-extensions";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
-    selector: 'app-user-mapping',
-    templateUrl: './user-mapping.component.html',
-    styleUrl: './user-mapping.component.scss',
-    standalone: false
+  selector: "app-user-mapping",
+  templateUrl: "./user-mapping.component.html",
+  styleUrl: "./user-mapping.component.scss",
+  standalone: false
 })
 export class UserMappingComponent extends FComponentBase {
   haveRole: boolean = false;

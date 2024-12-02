@@ -9,7 +9,6 @@ import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, 
 import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
 import {AccordionModule} from "primeng/accordion";
 import {NgIf} from "@angular/common";
-import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {TagModule} from "primeng/tag";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DropdownModule} from "primeng/dropdown";
@@ -20,14 +19,15 @@ import {TableModule} from "primeng/table";
 import {HospitalModel} from "../../../models/rest/hospital-model";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
-import {InputTextModule} from 'primeng/inputtext';
+import {InputTextModule} from "primeng/inputtext";
+import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
 
 @Component({
   selector: "app-user-edit-dialog",
-  standalone: true,
-  imports: [AccordionModule, NgIf, ProgressSpinnerModule, TagModule, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, Button, TableModule, ImageModule, InputTextModule],
+  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, Button, TableModule, ImageModule, InputTextModule, ProgressSpinComponent],
   templateUrl: "./user-edit-dialog.component.html",
-  styleUrl: "./user-edit-dialog.component.scss"
+  styleUrl: "./user-edit-dialog.component.scss",
+  standalone: true,
 })
 export class UserEditDialogComponent {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
