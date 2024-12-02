@@ -1,17 +1,26 @@
 <div class="user-setting-container">
-  <p-table [value]="userDataModel ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="userLoading"
+  <p-table #userListTable [value]="userDataModel ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
-      <p-button (onClick)="refreshUserDataModel()" icon="pi pi-refresh" />
+      <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" />
+      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" />
+      <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+      <p-iconField iconPosition="left" class="ml-auto">
+        <p-inputIcon>
+          <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input pInputText type="text" (input)="filterTable($event, 'contains')" placeholder="Search keyword" />
+      </p-iconField>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>{{"user-setting.id" | translate}}</th>
-        <th>{{"user-setting.name" | translate}}</th>
+        <th pSortableColumn="id">{{"user-setting.id" | translate}} <p-sortIcon field="id" /></th>
+        <th pSortableColumn="name">{{"user-setting.name" | translate}} <p-sortIcon field="name" /></th>
         <th>{{"user-setting.mail" | translate}}</th>
         <th>{{"user-setting.phone-number" | translate}}</th>
-        <th>{{"user-setting.status" | translate}}</th>
-        <th>{{"user-setting.role" | translate}}</th>
+        <th pSortableColumn="status">{{"user-setting.status" | translate}} <p-sortIcon field="status" /></th>
+        <th pSortableColumn="role">{{"user-setting.role" | translate}} <p-sortIcon field="role" /></th>
         <th>{{"user-setting.edit" | translate}}</th>
       </tr>
     </ng-template>

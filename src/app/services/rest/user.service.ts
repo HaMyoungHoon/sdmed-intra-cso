@@ -85,6 +85,13 @@ export class UserService {
     this.httpResponse.addParam("status", status);
     return this.httpResponse.put(`${this.baseUrl}/userStatusModify/pk`);
   }
+  putUserNameMailPhoneModifyByPK(userPK: string, name: string, mail: string, phoneNumber: string): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("userPK", userPK);
+    this.httpResponse.addParam("name", name);
+    this.httpResponse.addParam("mail", mail);
+    this.httpResponse.addParam("phoneNumber", phoneNumber);
+    return this.httpResponse.put(`${this.baseUrl}/userNameMailPhoneModify/pk`);
+  }
   putUserRoleDeptStatusModifyByPK(userPK: string, roles: UserRole[], depts: UserDept[], status: UserStatus): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("userPK", userPK);
     this.httpResponse.addParam("status", status);
@@ -112,8 +119,9 @@ export class UserService {
   }
   postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
-    formData.append("file", file, file.name);
-    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`, formData);
   }
   getSampleDownloadExcel(): Promise<any> {
     return this.httpResponse.getBlob(

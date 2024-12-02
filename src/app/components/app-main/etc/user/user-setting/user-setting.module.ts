@@ -10,13 +10,16 @@ import {FormsModule} from "@angular/forms";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {TagModule} from "primeng/tag";
+import {IconFieldModule} from "primeng/iconfield";
+import {InputIconModule} from "primeng/inputicon";
+import {InputTextModule} from "primeng/inputtext";
 
 
 
 @NgModule({
   declarations: [UserSettingComponent],
-  imports: [
-    CommonModule, UserSettingRoutingModule, TableModule, Button, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, ProgressSpinnerModule, TagModule
-  ]
+	imports: [
+		CommonModule, UserSettingRoutingModule, TableModule, Button, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, ProgressSpinnerModule, TagModule, IconFieldModule, InputIconModule, InputTextModule
+	]
 })
 export class UserSettingModule { }

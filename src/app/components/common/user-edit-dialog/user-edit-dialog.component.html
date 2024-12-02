@@ -1,84 +1,101 @@
-<p-progressSpinner class="flex h-full w-full absolute z-5 bg-auto" strokeWidth="4" *ngIf="loading"/>
-<div class="flex flex-column flex-wrap user-edit-dialog-container">
-  <div class="flex flex-row-reverse flex-wrap">
-    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
-    <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+<div class="user-edit-dialog-container">
+  <div class="user-edit-dialog-loading" *ngIf="isLoading">
+    <p-progressSpinner class="w-4rem h-4rem" strokeWidth="4" />
   </div>
-  <p-accordion class="flex-auto" [multiple]="true" [activeIndex]="[0]">
-    <p-accordionTab class="flex flex-column" header="{{'user-edit-dialog.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.id" | translate}}</label>
-        <label class="col-6">{{userDataModel?.id}}</label>
+  <div class="m-1">
+    <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-accordion [multiple]="true" [activeIndex]="[0]">
+    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.id" | translate}}</label>
+        <label class="col">{{userDataModel?.id}}</label>
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.name" | translate}}</label>
-        <label class="col-6">{{userDataModel?.name}}</label>
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.name" | translate}}</label>
+        <div class="col">
+          <input class="text-base" pInputText type="text" [(ngModel)]="name" />
+        </div>
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.mail" | translate}}</label>
-        <label class="col-6">{{userDataModel?.mail}}</label>
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.mail" | translate}}</label>
+        <div class="col">
+          <input class="text-base" pInputText type="text" [(ngModel)]="mail" />
+        </div>
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.phone-number" | translate}}</label>
-        <label class="col-6">{{userDataModel?.phoneNumber}}</label>
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.phone-number" | translate}}</label>
+        <div class="col">
+          <input class="text-base" pInputText type="text" [(ngModel)]="phoneNumber" />
+        </div>
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.role" | translate}}</label>
-        <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.role" | translate}}</label>
+        <p-multiSelect class="col" [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.dept" | translate}}</label>
-        <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.dept" | translate}}</label>
+        <p-multiSelect class="col" [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.status" | translate}}</label>
-        <p-dropdown [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.status" | translate}}</label>
+        <p-dropdown class="col" [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.reg-date" | translate}}</label>
-        <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.regDate))}}</label>
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.reg-date" | translate}}</label>
+        <label class="col">{{dateToYearFullString(stringToDate(userDataModel?.regDate))}}</label>
       </div>
-      <div class="flex">
-        <label class="col-6 mr-1">{{"user-edit-dialog.detail.last-login-date" | translate}}</label>
-        <label class="col-6">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
+      <div class="field grid">
+        <label class="col-fixed w-3">{{"user-edit-dialog.detail.last-login-date" | translate}}</label>
+        <label class="col">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
       </div>
-      <div class="flex">
-        <p-image class="m-1" width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel?.companyNumber ?? ''" (click)="taxpayerImageView()" />
-        <p-image class="m-1" width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel?.bankAccount ?? ''" (click)="bankAccountImageView()" />
+      <div class="field grid">
+        <label class="col-fixed m-1">{{userDataModel?.companyNumber}}</label>
+        <div class="col m-1">
+          <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel?.companyNumber ?? 'tax'" (click)="taxpayerImageView()" />
+        </div>
+        <label class="col-fixed m-1">{{userDataModel?.bankAccount}}</label>
+        <div class="col m-1">
+          <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel?.bankAccount ?? 'bank'" (click)="bankAccountImageView()" />
+        </div>
         <input #taxpayerImageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="taxpayerImageSelected($event)">
         <input #bankAccountImageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="bankAccountImageSelected($event)">
       </div>
     </p-accordionTab>
-    <p-accordionTab class="flex flex-row" header="{{'user-edit-dialog.accordion-header.in-charge' | translate}}" *ngIf="userDataModel?.hosList?.length ?? 0 > 0">
-      <p-table class="col-6" [value]="userDataModel?.hosList ?? []" [scrollable]="true" selectionMode="single" [(selection)]="selectedHosData"
-               styleClass="p-datatable-sm p-datatable-striped">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>{{"user-edit-dialog.hosData.code" | translate}}</th>
-            <th>{{"user-edit-dialog.hosData.inner-name" | translate}}</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-hosData>
-          <tr [pSelectableRow]="hosData">
-            <td>{{hosData.code}}</td>
-            <td><{{hosData.innerName}}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <p-table class="col-6" [value]="selectedHosData?.pharmaList ?? []" [scrollable]="true">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>{{"user-edit-dialog.pharmaData.code" | translate}}</th>
-            <th>{{"user-edit-dialog.pharmaData.inner-name" | translate}}</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-pharmaData>
-          <tr>
-            <th>{{pharmaData.code}}</th>
-            <th>{{pharmaData.innerName}}</th>
-          </tr>
-        </ng-template>
-      </p-table>
+    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.in-charge' | translate}}" *ngIf="userDataModel?.hosList?.length ?? 0 > 0">
+      <div class="formgrid grid">
+        <p-table class="field col" [value]="userDataModel?.hosList ?? []" [scrollable]="true" selectionMode="single" [(selection)]="selectedHosData"
+                 styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="w-2">{{"user-edit-dialog.hos-data.code" | translate}}</th>
+              <th>{{"user-edit-dialog.hos-data.inner-name" | translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-hosData>
+            <tr [pSelectableRow]="hosData">
+              <td>{{hosData.code}}</td>
+              <td><{{hosData.innerName}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-table class="field col" [value]="selectedHosData?.pharmaList ?? []" [scrollable]="true"
+                 styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="w-2">{{"user-edit-dialog.pharma-data.code" | translate}}</th>
+              <th>{{"user-edit-dialog.pharma-data.inner-name" | translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-pharmaData>
+            <tr>
+              <td>{{pharmaData.code}}</td>
+              <td>{{pharmaData.innerName}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </p-accordionTab>
   </p-accordion>
 </div>
