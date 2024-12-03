@@ -61,7 +61,7 @@
         <input #bankAccountImageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="bankAccountImageSelected($event)">
       </div>
     </p-accordionTab>
-    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.in-charge' | translate}}" *ngIf="userDataModel?.hosList?.length ?? 0 > 0">
+    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.in-charge' | translate}}" *ngIf="(userDataModel?.hosList?.length ?? 0) > 0">
       <div class="formgrid grid">
         <p-table class="field col" [value]="userDataModel?.hosList ?? []" [scrollable]="true" selectionMode="single" [(selection)]="selectedHosData"
                  styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">

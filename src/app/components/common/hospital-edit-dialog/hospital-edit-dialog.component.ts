@@ -70,7 +70,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
 
     this.setLoading();
     const ret = await restTry(async() => await this.hospitalService.getHospitalData(buff.thisPK),
-      e => this.fDialogService.error("getHospitalData", e.message));
+      e => this.fDialogService.error("getHospitalData", e));
     this.setLoading(false);
     if (ret.result) {
       this.hospitalModel = ret.data;
@@ -92,7 +92,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     buff.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     const ret = await restTry(async() => this.hospitalService.putHospitalDataModify(buff),
-      e => this.fDialogService.error("saveData", e.message));
+      e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
       this.ref.close(ret.data);
@@ -114,7 +114,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await restTry(async() => await this.hospitalService.postImageUpload(buff.thisPK, file),
-        e => this.fDialogService.error("imageSelected", e.message));
+        e => this.fDialogService.error("imageSelected", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
@@ -126,7 +126,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     }
   }
   get imageUrl(): string {
-    if (this.hospitalModel?.imageUrl?.length ?? 0 > 0) {
+    if ((this.hospitalModel?.imageUrl?.length ?? 0) > 0) {
       return this.hospitalModel!!.imageUrl;
     }
 

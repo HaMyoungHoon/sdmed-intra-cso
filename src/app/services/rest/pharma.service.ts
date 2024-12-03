@@ -27,10 +27,9 @@ export class PharmaService {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
     return this.httpResponse.get(`${this.baseUrl}/${pharmaPK}`);
   }
-  postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
+  postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);
-    this.httpResponse.addParam("applyDate", applyDate);
     this.httpResponse.setMultipartContentType();
     return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`, formData);
   }

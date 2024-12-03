@@ -86,7 +86,12 @@ export async function restTry<T>(fn: () => Promise<RestResult<T>>, onError?: (e:
     return await fn();
   } catch (e: any) {
     if (onError) {
-      onError(e);
+      const error = e.error as RestResult<T>;
+      if (error) {
+        return error;
+      } else {
+        onError(e.message);
+      }
     }
     return new RestResult<T>().default
   }

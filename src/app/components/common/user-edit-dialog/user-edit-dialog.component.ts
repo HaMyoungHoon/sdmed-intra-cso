@@ -61,7 +61,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       return;
     }
     const ret = await restTry(async() => await this.userService.getUserDataByPK(data.thisPK, true, true),
-      e => this.fDialogService.error("getUserData", e.message));
+      e => this.fDialogService.error("getUserData", e));
     if (ret.result) {
       this.userDataModel = ret.data;
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
@@ -86,10 +86,10 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.setLoading();
     // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
     const ret1 = await restTry(async() => await this.userService.putUserNameMailPhoneModifyByPK(buff.thisPK, name, mail, phoneNumber),
-        e => this.fDialogService.error("saveUserData", e.message));
+        e => this.fDialogService.error("saveUserData", e));
     if (ret1.result) {
       const ret2 = await restTry(async() => await this.userService.putUserRoleDeptStatusModifyByPK(buff.thisPK, roles, depts, status),
-        e => this.fDialogService.error("saveUserData", e.message));
+        e => this.fDialogService.error("saveUserData", e));
       this.setLoading(false);
       if (ret2.result) {
         this.ref.close(ret2.data);
@@ -106,7 +106,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
 
   get taxpayerImageUrl(): string {
-    if (this.userDataModel?.taxpayerImageUrl?.length ?? 0 > 0) {
+    if ((this.userDataModel?.taxpayerImageUrl?.length ?? 0) > 0) {
       return this.userDataModel!!.taxpayerImageUrl
     }
 
@@ -141,7 +141,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await restTry(async() => await this.userService.putUserTaxImageUploadByPK(buff.thisPK, file),
-        e => this.fDialogService.error("taxpayerImageView", e.message));
+        e => this.fDialogService.error("taxpayerImageView", e));
       this.taxpayerImageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
@@ -153,7 +153,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
   }
   get bankAccountImageUrl(): string {
-    if (this.userDataModel?.bankAccountImageUrl?.length ?? 0 > 0) {
+    if ((this.userDataModel?.bankAccountImageUrl?.length ?? 0) > 0) {
       return this.userDataModel!!.bankAccountImageUrl
     }
 
@@ -188,7 +188,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await restTry(async() => await this.userService.putUserBankImageUploadByPK(buff.thisPK, file),
-        e => this.fDialogService.error("bankAccountImageView", e.message));
+        e => this.fDialogService.error("bankAccountImageView", e));
       this.bankAccountImageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {

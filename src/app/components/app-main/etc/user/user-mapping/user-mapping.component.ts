@@ -49,7 +49,7 @@ export class UserMappingComponent extends FComponentBase {
   override async ngInit(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getMyRole(),
-        e => this.fDialogService.error("ngInit", e.message));
+        e => this.fDialogService.error("ngInit", e));
     this.setLoading(false);
     if (ret.result) {
       this.haveRole = haveRole(ret.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
@@ -90,7 +90,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     const ret = await restTry(async() => await this.userService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
-        e => this.fDialogService.error("save", e.message));
+        e => this.fDialogService.error("save", e));
     this.setLoading(false);
     if (ret.result) {
       return;
@@ -138,7 +138,7 @@ export class UserMappingComponent extends FComponentBase {
   async getAllList(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getUserAllBusiness().catch(),
-        e => this.fDialogService.error("getAllList", e.message));
+        e => this.fDialogService.error("getAllList", e));
     this.setLoading(false);
     if (ret.result) {
       this.userList = ret.data ?? [];
@@ -167,7 +167,7 @@ export class UserMappingComponent extends FComponentBase {
     }
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getUserDataByPK(buff.thisPK, true, true, true),
-      e => this.fDialogService.error("userSelect", e.message));
+      e => this.fDialogService.error("userSelect", e));
     this.setLoading(false);
     if (ret.result) {
       this.hosPickListUser = ret.data;
@@ -209,7 +209,7 @@ export class UserMappingComponent extends FComponentBase {
     }
     this.setLoading();
     const ret = await restTry(async() => await this.hospitalService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
-      e => this.fDialogService.error("hosSearch", e.message));
+      e => this.fDialogService.error("hosSearch", e));
     this.setLoading(false);
     if (ret.result) {
       this.hosList = ret.data ?? [];
@@ -264,7 +264,7 @@ export class UserMappingComponent extends FComponentBase {
     }
     this.setLoading();
     const ret = await restTry(async() => await this.pharmaService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
-      e => this.fDialogService.error("pharmaSearch", e.message));
+      e => this.fDialogService.error("pharmaSearch", e));
     this.setLoading(false);
     if (ret.result) {
       this.pharmaList = ret.data ?? [];
@@ -303,7 +303,7 @@ export class UserMappingComponent extends FComponentBase {
     }
     this.setLoading();
     const ret = await restTry(async() => await this.pharmaService.getPharma(pharma.thisPK, true),
-      e => this.fDialogService.error("medicineSearch", e.message));
+      e => this.fDialogService.error("medicineSearch", e));
     this.setLoading(false);
     if (ret.result) {
       this.medicineList = ret.data?.medicineList ?? [];

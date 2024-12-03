@@ -21,7 +21,7 @@ export class MyInfoComponent extends FComponentBase {
   override async ngInit(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getUserDataByID(),
-      e => this.fDialogService.error("getUserData", e.message));
+      e => this.fDialogService.error("getUserData", e));
     this.setLoading(false);
     if (ret.result) {
       this.userDataModel = ret.data;

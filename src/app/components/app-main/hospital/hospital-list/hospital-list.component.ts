@@ -30,7 +30,7 @@ export class HospitalListComponent extends FComponentBase {
   async getHospitalAll(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.hospitalService.getHospitalAll(),
-      e => this.fDialogService.error("getHospitalAll", e.message));
+      e => this.fDialogService.error("getHospitalAll", e));
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
@@ -39,7 +39,7 @@ export class HospitalListComponent extends FComponentBase {
     }
     this.fDialogService.warn("getHospitalAll", ret.msg);
   }
-  async refreshHospitalData(): Promise<void> {
+  async refreshData(): Promise<void> {
     await this.getHospitalAll();
   }
   uploadExcel(): void {
@@ -68,7 +68,7 @@ export class HospitalListComponent extends FComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await restTry(async() => await this.hospitalService.postDataUploadExcel(file),
-        e => this.fDialogService.error("excelSelected", e.message));
+        e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";
       if (ret.result) {

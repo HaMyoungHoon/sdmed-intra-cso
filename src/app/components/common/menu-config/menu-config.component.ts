@@ -55,7 +55,7 @@ export class MenuConfigComponent {
   }
   async tokenRefresh(): Promise<void> {
     const ret = await restTry(async() => await this.userService.tokenRefresh(),
-      e => this.fDialogService.error("refresh", e.message));
+      e => this.fDialogService.error("refresh", e));
     if (ret.result) {
       setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
       return;

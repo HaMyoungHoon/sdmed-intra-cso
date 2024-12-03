@@ -1,36 +1,22 @@
 import {Component} from "@angular/core";
-import {Button} from 'primeng/button';
-import {CalendarModule} from 'primeng/calendar';
-import {CardModule} from 'primeng/card';
-import {DropdownModule} from 'primeng/dropdown';
-import {ImageModule} from 'primeng/image';
-import {InputTextModule} from 'primeng/inputtext';
-import {NgIf} from '@angular/common';
-import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
-import {UserRole} from '../../../models/rest/user-role';
-import {HospitalModel} from '../../../models/rest/hospital-model';
-import {HospitalService} from '../../../services/rest/hospital.service';
-import {
-  allBillTypeDescArray,
-  BillType,
-  BillTypeDescToBillType,
-  billTypeToBillTypeDesc
-} from '../../../models/rest/bill-type';
-import {
-  allContractTypeDescArray, ContactTypeDescToContactType,
-  ContractType,
-  contractTypeToContractTypeDesc
-} from '../../../models/rest/contract-type';
-import {
-  allDeliveryDivDescArray,
-  DeliveryDiv,
-  DeliveryDivDescToDeliveryDiv,
-  deliveryDivToDeliveryDivDesc
-} from '../../../models/rest/delivery-div';
-import {restTry} from '../../../guards/f-extensions';
+import {Button} from "primeng/button";
+import {CalendarModule} from "primeng/calendar";
+import {CardModule} from "primeng/card";
+import {DropdownModule} from "primeng/dropdown";
+import {ImageModule} from "primeng/image";
+import {InputTextModule} from "primeng/inputtext";
+import {NgIf} from "@angular/common";
+import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TranslatePipe} from "@ngx-translate/core";
+import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
+import {UserRole} from "../../../models/rest/user-role";
+import {HospitalModel} from "../../../models/rest/hospital-model";
+import {HospitalService} from "../../../services/rest/hospital.service";
+import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../models/rest/bill-type";
+import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../models/rest/contract-type";
+import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../models/rest/delivery-div";
+import {restTry} from "../../../guards/f-extensions";
 
 @Component({
   selector: "app-hospital-add-dialog",
@@ -81,8 +67,9 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
     this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     const ret = await restTry(async() => this.hospitalService.postHospitalData(this.hospitalModel),
-      e => this.fDialogService.error("saveData", e.message));
+      e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
+    console.log(ret);
     if (ret.result) {
       this.ref.close(ret.data);
       return;

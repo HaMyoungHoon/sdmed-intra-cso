@@ -28,7 +28,7 @@ export class UserSettingComponent extends FComponentBase {
   async getUserDataModel(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getUserAll(),
-      e => this.fDialogService.error("getUserAll", e.message));
+      e => this.fDialogService.error("getUserAll", e));
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
@@ -50,7 +50,7 @@ export class UserSettingComponent extends FComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await restTry(async() => await this.userService.postDataUploadExcel(file),
-        e => this.fDialogService.error("excelSelected", e.message));
+        e => this.fDialogService.error("excelSelected", e));
       this.inputUploadExcel.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {

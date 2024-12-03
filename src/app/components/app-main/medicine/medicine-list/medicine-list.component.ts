@@ -24,7 +24,7 @@ export class MedicineListComponent extends FComponentBase {
   override async ngInit(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.medicineService.getMedicineAll(),
-      e => this.fDialogService.error("get medicine", e.message));
+      e => this.fDialogService.error("get medicine", e));
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];

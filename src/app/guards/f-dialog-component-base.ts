@@ -40,7 +40,7 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   async getMyRole(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getMyRole(),
-      e => this.fDialogService.error("getMyRole", e.message));
+      e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {
       this.myRole = ret.data;

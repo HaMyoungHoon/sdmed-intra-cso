@@ -28,7 +28,7 @@ export class SignDialogComponent extends FDialogComponentBase {
 
   async signIn(): Promise<void> {
     const ret = await restTry(async() => await this.userService.signIn(this.id, this.pw),
-        e => this.fDialogService.error("signIn catch", e.message));
+        e => this.fDialogService.error("signIn catch", e));
     if (ret.result) {
       setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
       this.ref.close();

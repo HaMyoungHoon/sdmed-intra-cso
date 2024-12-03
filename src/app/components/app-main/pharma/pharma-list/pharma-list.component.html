@@ -1,1 +1,42 @@
-<p>pharma-list works!</p>
+<div class="hospital-list-container">
+  <p-table #pharmaListTable [value]="pharmaList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, pharmaListTable, initValue, pharmaList)" [customSort]="true"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" />
+      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
+      <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
+      <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+      <p-iconField iconPosition="left" class="ml-auto">
+        <p-inputIcon>
+          <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input pInputText type="text" (input)="filterTable(pharmaListTable, $event, 'contains')" placeholder="Search keyword" />
+      </p-iconField>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="code">{{"pharma-list.code" | translate}} <p-sortIcon field="code" /></th>
+        <th pSortableColumn="orgName">{{"pharma-list.inner-name" | translate}} <p-sortIcon field="orgName" /></th>
+        <th pSortableColumn="innerName">{{"pharma-list.org-name" | translate}} <p-sortIcon field="innerName" /></th>
+        <th>{{"pharma-list.address" | translate}}</th>
+        <th>{{"pharma-list.etc1" | translate}}</th>
+        <th>{{"pharma-list.etc2" | translate}}</th>
+        <th>{{"common-desc.edit" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pharma>
+      <tr>
+        <td>{{pharma.code}}</td>
+        <td>{{pharma.orgName}}</td>
+        <td>{{pharma.innerName}}</td>
+        <td>{{pharma.address}}</td>
+        <td>{{ellipsis(pharma.etc1)}}</td>
+        <td>{{ellipsis(pharma.etc2)}}</td>
+        <td>
+          <p-button class="p-button-sm" (onClick)="pharmaEdit(pharma)" [disabled]="!haveRole">{{"common-desc.edit" | translate}}</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
