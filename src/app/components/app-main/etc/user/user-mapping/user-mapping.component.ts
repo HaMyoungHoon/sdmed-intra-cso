@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import {Component} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserService} from "../../../../../services/rest/user.service";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
@@ -6,7 +6,7 @@ import {HospitalModel} from "../../../../../models/rest/hospital-model";
 import {PharmaModel} from "../../../../../models/rest/pharma-model";
 import {MedicineModel} from "../../../../../models/rest/medicine-model";
 import {FDialogService} from "../../../../../services/common/f-dialog.service";
-import {UserRole, haveRole} from "../../../../../models/rest/user-role";
+import {haveRole, UserRole} from "../../../../../models/rest/user-role";
 import {HospitalService} from "../../../../../services/rest/hospital.service";
 import {PharmaService} from "../../../../../services/rest/pharma.service";
 import {debounceTime, Subject, Subscription} from "rxjs";
@@ -21,7 +21,6 @@ import {TranslateService} from "@ngx-translate/core";
   standalone: false
 })
 export class UserMappingComponent extends FComponentBase {
-  haveRole: boolean = false;
   userList: UserDataModel[] = [];
   selectUser?: UserDataModel;
 
@@ -47,15 +46,11 @@ export class UserMappingComponent extends FComponentBase {
   medicineList: MedicineModel[] = [];
 
   isMobile: boolean = false;
-  isLoading: boolean = false;
-  constructor(private userService: UserService, private hospitalService: HospitalService, private pharmaService: PharmaService, private fDialogService: FDialogService,
+  constructor(override userService: UserService, override fDialogService: FDialogService, private hospitalService: HospitalService, private pharmaService: PharmaService,
               private translateService: TranslateService) {
-    super();
+    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
-  }
   override async ngInit(): Promise<void> {
     this.isMobile = !navigator.userAgent.includes("Window");
     this.setLoading();

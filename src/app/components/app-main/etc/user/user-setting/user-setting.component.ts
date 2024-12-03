@@ -5,7 +5,7 @@ import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {customSort, filterTable, getSeverity, restTry} from "../../../../../guards/f-extensions";
-import {flagToRoleDesc} from "../../../../../models/rest/user-role";
+import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
 import {Table} from "primeng/table";
 
 @Component({
@@ -17,24 +17,20 @@ import {Table} from "primeng/table";
 export class UserSettingComponent extends FComponentBase {
   @ViewChild("userListTable") userListTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
-  isLoading: boolean = false;
   initValue: UserDataModel[] = [];
   userDataModel: UserDataModel[] = [];
   isSorted: boolean | null = null;
-  constructor(private userService: UserService, private fDialogService: FDialogService) {
-    super();
+  constructor(override userService: UserService, override fDialogService: FDialogService) {
+    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
   override async ngInit(): Promise<void> {
     await this.getUserDataModel();
   }
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
-  }
   async getUserDataModel(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getUserAll(),
-      e => this.fDialogService.error("getUserAll", e.message))
+      e => this.fDialogService.error("getUserAll", e.message));
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];

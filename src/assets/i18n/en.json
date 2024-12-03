@@ -44,6 +44,14 @@
     "etc": "etc",
     "apply-date": "apply date"
   },
+  "hospital-list": {
+    "code": "code",
+    "inner-name": "inner name",
+    "org-name": "org name",
+    "address": "address",
+    "etc1": "et cetera",
+    "etc2": "et cetera"
+  },
   "my-info": {
     "accordion-header": {
       "detail": "my info",

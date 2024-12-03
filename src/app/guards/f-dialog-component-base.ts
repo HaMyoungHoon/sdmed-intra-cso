@@ -1,28 +1,27 @@
-import {AfterViewInit, Component} from "@angular/core";
-import {getLocalStorage, isExpired} from "./f-amhohwa";
-import * as FConstants from "./f-constants";
+import {AfterViewInit, Component} from '@angular/core';
 import {UserService} from '../services/rest/user.service';
-import {restTry} from './f-extensions';
-import {haveRole, UserRole} from '../models/rest/user-role';
 import {FDialogService} from '../services/common/f-dialog.service';
+import {haveRole, UserRole} from '../models/rest/user-role';
+import {restTry} from './f-extensions';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 
 @Component({
   template: "",
   standalone: false
 })
-export abstract class FComponentBase implements AfterViewInit {
+export abstract class FDialogComponentBase implements AfterViewInit {
   myRole?: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
-  protected constructor(protected userService: UserService, protected fDialogService: FDialogService, protected arrayRole: Array<UserRole>) {
+  protected roleCheck: boolean = true;
+  protected constructor(protected ref: DynamicDialogRef, protected dialogService: DialogService,
+                        protected userService: UserService, protected fDialogService: FDialogService, protected arrayRole: Array<UserRole>) {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (isExpired(authToken)) {
-      return;
+    if (this.roleCheck) {
+      await this.getMyRole();
     }
-    await this.getMyRole();
     await this.ngInit();
   }
   async getMyRole(): Promise<void> {

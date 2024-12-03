@@ -3,7 +3,7 @@ import {UserService} from "../../../../../services/rest/user.service";
 import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {dateToYearFullString, getSeverity, restTry, stringToDate} from "../../../../../guards/f-extensions";
-import {flagToRoleDesc} from "../../../../../models/rest/user-role";
+import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
 import {flagToDeptDesc} from "../../../../../models/rest/user-dept";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {FComponentBase} from "../../../../../guards/f-component-base";
@@ -16,9 +16,8 @@ import {FComponentBase} from "../../../../../guards/f-component-base";
 })
 export class MyInfoComponent extends FComponentBase {
   userDataModel?: UserDataModel = undefined;
-  isLoading: boolean = true;
-  constructor(private userService: UserService, private fDialogService: FDialogService) {
-    super();
+  constructor(override userService: UserService, override fDialogService: FDialogService) {
+    super(userService, fDialogService, Array<UserRole>(UserRole.None));
   }
 
   override async ngInit(): Promise<void> {
@@ -32,9 +31,6 @@ export class MyInfoComponent extends FComponentBase {
     }
 
     this.fDialogService.warn("getUserData", ret.msg);
-  }
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
   }
 
   protected readonly getSeverity = getSeverity;

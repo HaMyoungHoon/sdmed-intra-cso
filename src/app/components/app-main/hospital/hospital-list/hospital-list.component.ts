@@ -5,6 +5,8 @@ import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-e
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {HospitalModel} from "../../../../models/rest/hospital-model";
 import {Table} from 'primeng/table';
+import {UserService} from '../../../../services/rest/user.service';
+import {UserRole} from '../../../../models/rest/user-role';
 
 @Component({
   selector: "app-hospital-list",
@@ -15,19 +17,17 @@ import {Table} from 'primeng/table';
 export class HospitalListComponent extends FComponentBase {
   @ViewChild("hospitalListTable") hospitalListTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
-  isLoading: boolean = false;
   initValue: HospitalModel[] = [];
   hospitalList: HospitalModel[] = [];
   isSorted: boolean | null = null;
-  constructor(private hospitalService: HospitalService, private fDialogService: FDialogService) {
-    super();
+  constructor(override userService: UserService, override fDialogService: FDialogService, private hospitalService: HospitalService) {
+    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }
 
   override async ngInit(): Promise<void> {
-    await this.getHospitalAll();
-  }
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
+    if (this.haveRole) {
+      await this.getHospitalAll();
+    }
   }
   async getHospitalAll(): Promise<void> {
     this.setLoading();
@@ -54,8 +54,8 @@ export class HospitalListComponent extends FComponentBase {
       this.setLoading();
       const ret = await restTry(async() => await this.hospitalService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e.message));
-      input.files = null;
       this.setLoading(false);
+      input.files = null;
       if (ret.result) {
         await this.getHospitalAll();
         return;

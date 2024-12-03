@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from "@angular/core";
+import {Component, ElementRef, ViewChild} from "@angular/core";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserService} from "../../../services/rest/user.service";
 import {UserDataModel} from "../../../models/rest/user-data-model";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToYearFullString, restTry, stringToDate} from "../../../guards/f-extensions";
-import {allUserRoleDescArray, flagToRoleDesc, haveRole, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
+import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
 import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
 import {AccordionModule} from "primeng/accordion";
@@ -21,6 +21,7 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {InputTextModule} from "primeng/inputtext";
 import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
+import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
 
 @Component({
   selector: "app-user-edit-dialog",
@@ -29,12 +30,9 @@ import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,
 })
-export class UserEditDialogComponent implements AfterViewInit {
+export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
-  isLoading: boolean = false;
-  myRole?: number = 0;
-  haveRole: boolean = false;
   name: string = "";
   mail: string = "";
   phoneNumber: string = "";
@@ -46,38 +44,22 @@ export class UserEditDialogComponent implements AfterViewInit {
   selectedUserDepts: any;
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData?: HospitalModel
-  constructor(private ref: DynamicDialogRef, private dialogService: DialogService, private fDialogService: FDialogService, private userService: UserService) {
+  constructor(override ref: DynamicDialogRef, override dialogService: DialogService, override userService: UserService, override fDialogService: FDialogService) {
+    super(ref, dialogService, userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(ref);
     this.userDataModel = dlg.data;
   }
-  async ngAfterViewInit(): Promise<void> {
-    this.setLoading();
-    if (await this.getMyRole() && this.haveRole) {
+  override async ngInit(): Promise<void> {
+    if (this.haveRole) {
       await this.getUserData();
     }
-    this.setLoading(false);
   }
 
   initLayoutData(): void {
     this.userRoleList = allUserRoleDescArray();
     this.userDeptList = allUserDeptDescArray();
     this.userStatusList = allUserStatusDescArray();
-  }
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
-  }
-  async getMyRole(): Promise<boolean> {
-    const ret = await restTry(async() => await this.userService.getMyRole(),
-      e => this.fDialogService.error("getMyRole", e.message));
-    if (ret.result) {
-      this.myRole = ret.data;
-      this.haveRole = haveRole(ret.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger))
-      return true;
-    }
-
-    this.fDialogService.warn("getMyRole", ret.msg);
-    return false;
   }
   async getUserData(): Promise<void> {
     const data = this.userDataModel;

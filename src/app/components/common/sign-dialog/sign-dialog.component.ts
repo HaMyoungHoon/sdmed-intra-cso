@@ -1,6 +1,6 @@
-import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
+import {Component} from "@angular/core";
 import {FDialogService} from "../../../services/common/f-dialog.service";
-import {DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserService} from "../../../services/rest/user.service";
 import {setLocalStorage} from "../../../guards/f-amhohwa";
 import * as FConstants from "../../../guards/f-constants";
@@ -10,6 +10,7 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {restTry} from '../../../guards/f-extensions';
+import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
 
 @Component({
   selector: "app-sign-dialog",
@@ -18,16 +19,14 @@ import {restTry} from '../../../guards/f-extensions';
   styleUrl: "./sign-dialog.component.scss",
   standalone: true,
 })
-export class SignDialogComponent {
+export class SignDialogComponent extends FDialogComponentBase {
   id: string;
   pw: string;
-  constructor(private cd: ChangeDetectorRef, private fDialogService: FDialogService,
-              private ref: DynamicDialogRef, private userService: UserService) {
+  constructor(override ref: DynamicDialogRef, override dialogService: DialogService, override userService: UserService, override fDialogService: FDialogService) {
+    super(ref, dialogService, userService, fDialogService, Array());
+    this.roleCheck = false;
     this.id = "";
     this.pw = "";
-    afterNextRender(() => {
-      this.cd.markForCheck();
-    });
   }
 
   async signIn(): Promise<void> {

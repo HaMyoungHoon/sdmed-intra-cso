@@ -46,12 +46,12 @@
     "apply-date": "적용일자"
   },
   "hospital-list": {
-    "code": "",
-    "innerName": "",
-    "orgName": "",
-    "address": "",
-    "etc1": "",
-    "etc2": ""
+    "code": "코드",
+    "inner-name": "내부명",
+    "org-name": "이름",
+    "address": "주소",
+    "etc1": "비고1",
+    "etc2": "비고2"
   },
   "my-info": {
     "accordion-header": {

@@ -6,6 +6,8 @@ import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {customSort, filterTable, restTry} from '../../../../guards/f-extensions';
+import {UserService} from '../../../../services/rest/user.service';
+import {UserRole} from '../../../../models/rest/user-role';
 
 @Component({
   selector: "app-medicine-list",
@@ -17,10 +19,9 @@ export class MedicineListComponent extends FComponentBase {
   @ViewChild("medicineListTable") medicineListTable!: Table
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
-  isLoading: boolean = true;
   isSorted: boolean | null = null;
-  constructor(private medicineService: MedicineService, private fDialogService: FDialogService) {
-    super();
+  constructor(override userService: UserService, override fDialogService: FDialogService, private medicineService: MedicineService) {
+    super(userService, fDialogService, Array<UserRole>(UserRole.None));
   }
 
   override async ngInit(): Promise<void> {
@@ -34,9 +35,6 @@ export class MedicineListComponent extends FComponentBase {
       return;
     }
     this.fDialogService.warn("get medicine", ret.msg);
-  }
-  setLoading(data: boolean = true): void {
-    this.isLoading = data;
   }
 
   priceHistoryDialogOpen(data: MedicineModel): void {

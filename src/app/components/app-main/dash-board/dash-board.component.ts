@@ -1,5 +1,8 @@
 import {Component} from "@angular/core";
 import {FComponentBase} from "../../../guards/f-component-base";
+import {UserService} from '../../../services/rest/user.service';
+import {FDialogService} from '../../../services/common/f-dialog.service';
+import {UserRole} from '../../../models/rest/user-role';
 
 @Component({
   selector: "app-dash-board",
@@ -8,10 +11,10 @@ import {FComponentBase} from "../../../guards/f-component-base";
   standalone: false
 })
 export class DashBoardComponent extends FComponentBase {
-  constructor() {
-    super();
+  constructor(override userService: UserService, override fDialogService: FDialogService) {
+    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
 
-  override ngInit(): void {
+  override async ngInit(): Promise<void> {
   }
 }
