@@ -14,7 +14,7 @@ import {getLocalStorage, getTokenExpiredDate, setLocalStorage} from "../../../gu
 import * as FConstants from "../../../guards/f-constants";
 import {UserService} from "../../../services/rest/user.service";
 import {FDialogService} from "../../../services/common/f-dialog.service";
-import {dateToMonthFullString} from "../../../guards/f-extensions";
+import {dateToMonthFullString, restTry} from "../../../guards/f-extensions";
 import {MenuModule} from "primeng/menu";
 import {Ripple} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
@@ -53,16 +53,13 @@ export class MenuConfigComponent {
   toggleMenu(): void {
     this.menuVisible = !this.menuVisible;
   }
-  tokenRefresh(): void {
-    this.userService.tokenRefresh().then(x => {
-      if (x.result) {
-        setLocalStorage(FConstants.AUTH_TOKEN, x.data ?? "");
-        return;
-      }
-      this.fDialogService.error("refresh", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("refresh", x.message);
-    });
+  async tokenRefresh(): Promise<void> {
+    const ret = await restTry(async() => await this.userService.tokenRefresh(),
+      e => this.fDialogService.error("refresh", e.message));
+    if (ret.result) {
+      setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
+      return;
+    }
   }
   get expiredDate(): string {
     return dateToMonthFullString(getTokenExpiredDate(getLocalStorage(FConstants.AUTH_TOKEN)));

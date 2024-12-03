@@ -4,7 +4,7 @@ import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
-import {customSort, filterTable, getSeverity, tryCatchAsync} from "../../../../../guards/f-extensions";
+import {customSort, filterTable, getSeverity, restTry} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../../models/rest/user-role";
 import {Table} from "primeng/table";
 
@@ -33,17 +33,15 @@ export class UserSettingComponent extends FComponentBase {
   }
   async getUserDataModel(): Promise<void> {
     this.setLoading();
-    const ret = await tryCatchAsync(async() => this.userService.getUserAll(),
+    const ret = await restTry(async() => await this.userService.getUserAll(),
       e => this.fDialogService.error("getUserAll", e.message))
     this.setLoading(false);
-    if (ret) {
-      if (ret.result) {
-        this.initValue = ret.data ?? [];
-        this.userDataModel = ret.data ?? [];
-        return;
-      }
-      this.fDialogService.warn("getUserAll", ret.msg);
+    if (ret.result) {
+      this.initValue = ret.data ?? [];
+      this.userDataModel = ret.data ?? [];
+      return;
     }
+    this.fDialogService.warn("getUserAll", ret.msg);
   }
 
   async refreshUserDataModel(): Promise<void> {
@@ -57,17 +55,15 @@ export class UserSettingComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await tryCatchAsync(async() => this.userService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.userService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e.message));
       input.files = null;
       this.setLoading(false);
-      if (ret) {
-        if (ret.result) {
-          await this.getUserDataModel();
-          return;
-        }
-        this.fDialogService.warn("excelSelected", ret.msg);
+      if (ret.result) {
+        await this.getUserDataModel();
+        return;
       }
+      this.fDialogService.warn("excelSelected", ret.msg);
     }
   }
 

@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
+import {restTry} from '../../../guards/f-extensions';
 
 @Component({
   selector: "app-sign-dialog",
@@ -29,35 +30,32 @@ export class SignDialogComponent {
     });
   }
 
-  signIn(): void {
-    this.userService.signIn(this.id, this.pw).then(x => {
-      if (x.result) {
-        setLocalStorage(FConstants.AUTH_TOKEN, x.data ?? "");
-        this.ref.close();
-        return;
-      }
-
-      this.fDialogService.warn("signIn", x.msg);
-    }).catch(x => {
-      this.fDialogService.error("signIn catch", x.message);
-    });
+  async signIn(): Promise<void> {
+    const ret = await restTry(async() => await this.userService.signIn(this.id, this.pw),
+        e => this.fDialogService.error("signIn catch", e.message));
+    if (ret.result) {
+      setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
+      this.ref.close();
+      return;
+    }
+    this.fDialogService.warn("signIn", ret.msg);
   }
-  idChange(data: any): void {
+  async idChange(data: any): Promise<void> {
     if (this.signInDisable) {
       return;
     }
 
     if (data.key == "Enter") {
-      this.signIn();
+      await this.signIn();
     }
   }
-  pwChange(data: any): void {
+  async pwChange(data: any): Promise<void> {
     if (this.signInDisable) {
       return;
     }
 
     if (data.key == "Enter") {
-      this.signIn();
+      await this.signIn();
     }
   }
 

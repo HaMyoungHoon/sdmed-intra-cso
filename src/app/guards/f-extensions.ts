@@ -1,6 +1,7 @@
 import {stringToUserStatus, UserStatus} from "../models/rest/user-status";
 import {Table} from 'primeng/table';
 import {SortEvent} from 'primeng/api';
+import {RestResult} from '../models/common/rest-result';
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -78,6 +79,16 @@ export async function tryCatchAsync<T>(fn: () => Promise<T>, onError?: (e: any) 
       onError(e);
     }
     return null;
+  }
+}
+export async function restTry<T>(fn: () => Promise<RestResult<T>>, onError?: (e: any) => void): Promise<RestResult<T>> {
+  try {
+    return await fn();
+  } catch (e: any) {
+    if (onError) {
+      onError(e);
+    }
+    return new RestResult<T>().default
   }
 }
 

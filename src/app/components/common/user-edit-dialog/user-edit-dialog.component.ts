@@ -1,9 +1,9 @@
-import {Component, ElementRef, ViewChild} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, ViewChild} from "@angular/core";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserService} from "../../../services/rest/user.service";
 import {UserDataModel} from "../../../models/rest/user-data-model";
 import {FDialogService} from "../../../services/common/f-dialog.service";
-import {dateToYearFullString, stringToDate} from "../../../guards/f-extensions";
+import {dateToYearFullString, restTry, stringToDate} from "../../../guards/f-extensions";
 import {allUserRoleDescArray, flagToRoleDesc, haveRole, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
 import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
@@ -29,7 +29,7 @@ import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,
 })
-export class UserEditDialogComponent {
+export class UserEditDialogComponent implements AfterViewInit {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
   isLoading: boolean = false;
@@ -49,7 +49,14 @@ export class UserEditDialogComponent {
   constructor(private ref: DynamicDialogRef, private dialogService: DialogService, private fDialogService: FDialogService, private userService: UserService) {
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(ref);
-    this.getUserData(dlg.data);
+    this.userDataModel = dlg.data;
+  }
+  async ngAfterViewInit(): Promise<void> {
+    this.setLoading();
+    if (await this.getMyRole() && this.haveRole) {
+      await this.getUserData();
+    }
+    this.setLoading(false);
   }
 
   initLayoutData(): void {
@@ -60,36 +67,37 @@ export class UserEditDialogComponent {
   setLoading(data: boolean = true): void {
     this.isLoading = data;
   }
-  getUserData(data: UserDataModel): void {
-    this.setLoading();
-    this.userService.getMyRole().then(x => {
-      this.setLoading(false);
-      if (x.result) {
-        this.myRole = x.data;
-        this.haveRole = haveRole(x.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger))
-        this.userService.getUserDataByPK(data.thisPK, true, true).then(x => {
-          if (x.result) {
-            this.userDataModel = x.data;
-            this.name = this.userDataModel?.name ?? "";
-            this.mail = this.userDataModel?.mail ?? "";
-            this.selectedUserStatus = statusToUserStatusDesc(x.data?.status);
-            this.selectedUserRoles = flagToRoleDesc(x.data?.role);
-            this.selectedUserDepts = flagToDeptDesc(x.data?.dept);
-            return;
-          }
-          this.fDialogService.warn("getUserData", x.msg);
-        }).catch(x => {
-          this.fDialogService.error("getUserData", x.message);
-        });
-        return;
-      }
-      this.fDialogService.warn("getUserData", x.msg);
-    }).catch(x => {
-      this.setLoading(false);
-      this.fDialogService.error("getUserData", x.message);
-    });
+  async getMyRole(): Promise<boolean> {
+    const ret = await restTry(async() => await this.userService.getMyRole(),
+      e => this.fDialogService.error("getMyRole", e.message));
+    if (ret.result) {
+      this.myRole = ret.data;
+      this.haveRole = haveRole(ret.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger))
+      return true;
+    }
+
+    this.fDialogService.warn("getMyRole", ret.msg);
+    return false;
   }
-  saveUserData(): void {
+  async getUserData(): Promise<void> {
+    const data = this.userDataModel;
+    if (data == null) {
+      return;
+    }
+    const ret = await restTry(async() => await this.userService.getUserDataByPK(data.thisPK, true, true),
+      e => this.fDialogService.error("getUserData", e.message));
+    if (ret.result) {
+      this.userDataModel = ret.data;
+      this.name = this.userDataModel?.name ?? "";
+      this.mail = this.userDataModel?.mail ?? "";
+      this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
+      this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
+      this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
+      return;
+    }
+    this.fDialogService.warn("getUserData", ret.msg);
+  }
+  async saveUserData(): Promise<void> {
     const buff = this.userDataModel
     if (buff == null) {
       return;
@@ -99,26 +107,22 @@ export class UserEditDialogComponent {
     const depts = stringArrayToUserDept(this.selectedUserDepts);
     const status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
-    this.userService.putUserNameMailPhoneModifyByPK(buff.thisPK, this.name, this.mail, this.phoneNumber).then(x => {
-      if (x.result) {
-        this.userService.putUserRoleDeptStatusModifyByPK(buff.thisPK, roles, depts, status).then(x => {
-          this.setLoading(false);
-          if (x.result) {
-            this.ref.close(x.data);
-            return;
-          }
-          this.fDialogService.warn("saveUserData", x.msg);
-        }).catch(x => {
-          this.setLoading(false);
-          this.fDialogService.error("saveUserData", x.message);
-        });
+    // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
+    const ret1 = await restTry(async() => await this.userService.putUserNameMailPhoneModifyByPK(buff.thisPK, this.name, this.mail, this.phoneNumber),
+        e => this.fDialogService.error("saveUserData", e.message));
+    if (ret1.result) {
+      const ret2 = await restTry(async() => await this.userService.putUserRoleDeptStatusModifyByPK(buff.thisPK, roles, depts, status),
+        e => this.fDialogService.error("saveUserData", e.message));
+      this.setLoading(false);
+      if (ret2.result) {
+        this.ref.close(ret2.data);
         return;
       }
-      this.fDialogService.warn("saveUserData", x.msg);
-    }).catch(x => {
-      this.setLoading(false);
-      this.fDialogService.error("saveUserData", x.message);
-    });
+      this.fDialogService.warn("saveUserData", ret2.msg);
+      return;
+    }
+    this.setLoading(false);
+    this.fDialogService.warn("saveUserData", ret1.msg);
   }
   closeThis(): void {
     this.ref.close(this.userDataModel);
@@ -150,7 +154,7 @@ export class UserEditDialogComponent {
       data: buff.taxpayerImageUrl
     });
   }
-  taxpayerImageSelected(event: any): void {
+  async taxpayerImageSelected(event: any): Promise<void> {
     const buff = this.userDataModel;
     if (buff == null) {
       return;
@@ -159,18 +163,15 @@ export class UserEditDialogComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      this.userService.putUserTaxImageUploadByPK(buff.thisPK, file).then(x => {
-        this.setLoading(false);
-        if (x.result) {
-          this.userDataModel!!.taxpayerImageUrl = x.data?.taxpayerImageUrl ?? ""
-          return;
-        }
+      const ret = await restTry(async() => await this.userService.putUserTaxImageUploadByPK(buff.thisPK, file),
+        e => this.fDialogService.error("taxpayerImageView", e.message));
+      this.setLoading(false);
+      if (ret.result) {
+        this.userDataModel!!.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
+        return;
+      }
 
-        this.fDialogService.warn("taxpayerImageView", x.msg);
-      }).catch(x => {
-        this.setLoading(false);
-        this.fDialogService.error("taxpayerImageView", x.message);
-      });
+      this.fDialogService.warn("taxpayerImageView", ret.msg);
     }
   }
   get bankAccountImageUrl(): string {
@@ -199,7 +200,7 @@ export class UserEditDialogComponent {
       data: buff.bankAccountImageUrl
     });
   }
-  bankAccountImageSelected(event: any): void {
+  async bankAccountImageSelected(event: any): Promise<void> {
     const buff = this.userDataModel;
     if (buff == null) {
       return;
@@ -208,18 +209,15 @@ export class UserEditDialogComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      this.userService.putUserBankImageUploadByPK(buff.thisPK, file).then(x => {
-        this.setLoading(false);
-        if (x.result) {
-          this.userDataModel!!.bankAccountImageUrl = x.data?.bankAccountImageUrl ?? ""
-          return;
-        }
+      const ret = await restTry(async() => await this.userService.putUserBankImageUploadByPK(buff.thisPK, file),
+        e => this.fDialogService.error("bankAccountImageView", e.message));
+    this.setLoading(false);
+    if (ret.result) {
+      this.userDataModel!!.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
+      return;
+    }
 
-        this.fDialogService.warn("bankAccountImageView", x.msg);
-      }).catch(x => {
-        this.setLoading(false);
-        this.fDialogService.error("bankAccountImageView", x.message);
-      });
+    this.fDialogService.warn("bankAccountImageView", ret.msg);
     }
   }
 

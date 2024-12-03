@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 import {UserService} from "../../../../../services/rest/user.service";
 import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
-import {dateToYearFullString, getSeverity, stringToDate} from "../../../../../guards/f-extensions";
+import {dateToYearFullString, getSeverity, restTry, stringToDate} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc} from "../../../../../models/rest/user-role";
 import {flagToDeptDesc} from "../../../../../models/rest/user-dept";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
@@ -21,20 +21,17 @@ export class MyInfoComponent extends FComponentBase {
     super();
   }
 
-  override ngInit(): void {
+  override async ngInit(): Promise<void> {
     this.setLoading();
-    this.userService.getUserDataByID().then(x => {
-      this.setLoading(false);
-      if (x.result) {
-        this.userDataModel = x.data;
-        return;
-      }
+    const ret = await restTry(async() => await this.userService.getUserDataByID(),
+      e => this.fDialogService.error("getUserData", e.message));
+    this.setLoading(false);
+    if (ret.result) {
+      this.userDataModel = ret.data;
+      return;
+    }
 
-      this.fDialogService.warn("getUserData", x.msg);
-    }).catch(x => {
-      this.setLoading(false);
-      this.fDialogService.error("getUserData", x.message);
-    });
+    this.fDialogService.warn("getUserData", ret.msg);
   }
   setLoading(data: boolean = true): void {
     this.isLoading = data;

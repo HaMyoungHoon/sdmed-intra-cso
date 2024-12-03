@@ -5,7 +5,7 @@ import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {customSort, filterTable} from '../../../../guards/f-extensions';
+import {customSort, filterTable, restTry} from '../../../../guards/f-extensions';
 
 @Component({
   selector: "app-medicine-list",
@@ -17,27 +17,26 @@ export class MedicineListComponent extends FComponentBase {
   @ViewChild("medicineListTable") medicineListTable!: Table
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
-  loading: boolean = true;
+  isLoading: boolean = true;
   isSorted: boolean | null = null;
   constructor(private medicineService: MedicineService, private fDialogService: FDialogService) {
     super();
   }
 
-  override ngInit(): void {
-    this.medicineService.getMedicineAll().then(x => {
-      if (x.result) {
-        this.initValue = x.data ?? [];
-        this.medicineModel = x.data ?? [];
-        this.loading = false;
-        return;
-      }
-
-      this.fDialogService.warn("get medicine", x.msg);
-      this.loading = false;
-    }).catch(x => {
-      this.fDialogService.error("get medicine", x.message);
-      this.loading = false;
-    });
+  override async ngInit(): Promise<void> {
+    this.setLoading();
+    const ret = await restTry(async() => await this.medicineService.getMedicineAll(),
+      e => this.fDialogService.error("get medicine", e.message));
+    this.setLoading(false);
+    if (ret.result) {
+      this.initValue = ret.data ?? [];
+      this.medicineModel = ret.data ?? [];
+      return;
+    }
+    this.fDialogService.warn("get medicine", ret.msg);
+  }
+  setLoading(data: boolean = true): void {
+    this.isLoading = data;
   }
 
   priceHistoryDialogOpen(data: MedicineModel): void {

@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {HospitalService} from "../../../../services/rest/hospital.service";
-import {customSort, ellipsis, filterTable, tryCatchAsync} from "../../../../guards/f-extensions";
+import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {HospitalModel} from "../../../../models/rest/hospital-model";
 import {Table} from 'primeng/table';
@@ -31,17 +31,15 @@ export class HospitalListComponent extends FComponentBase {
   }
   async getHospitalAll(): Promise<void> {
     this.setLoading();
-    const ret = await tryCatchAsync(async() => await this.hospitalService.getHospitalAll(),
+    const ret = await restTry(async() => await this.hospitalService.getHospitalAll(),
       e => this.fDialogService.error("getHospitalAll", e.message));
     this.setLoading(false);
-    if (ret) {
-      if (ret.result) {
-        this.initValue = ret.data ?? [];
-        this.hospitalList = ret.data ?? [];
-        return;
-      }
-      this.fDialogService.warn("getHospitalAll", ret.msg);
+    if (ret.result) {
+      this.initValue = ret.data ?? [];
+      this.hospitalList = ret.data ?? [];
+      return;
     }
+    this.fDialogService.warn("getHospitalAll", ret.msg);
   }
   async refreshHospitalData(): Promise<void> {
     await this.getHospitalAll();
@@ -54,17 +52,15 @@ export class HospitalListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await tryCatchAsync(async() => this.hospitalService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.hospitalService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e.message));
       input.files = null;
       this.setLoading(false);
-      if (ret) {
-        if (ret.result) {
-          await this.getHospitalAll();
-          return;
-        }
-        this.fDialogService.warn("excelSelected", ret.msg);
+      if (ret.result) {
+        await this.getHospitalAll();
+        return;
       }
+      this.fDialogService.warn("excelSelected", ret.msg);
     }
   }
   hospitalEdit(data: HospitalModel): void {
