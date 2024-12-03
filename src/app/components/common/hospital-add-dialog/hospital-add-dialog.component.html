@@ -7,7 +7,9 @@
   <p-card class="flex grid m-1" *ngIf="hospitalModel">
     <div class="field col grid">
       <label class="col-2 align-self-center">{{"hospital-edit-dialog.code" | translate}}</label>
-      <label class="col-4">{{hospitalModel.code}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.code" />
+      </div>
       <label class="col-2 align-self-center">{{"hospital-edit-dialog.org-name" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.orgName" />
@@ -95,14 +97,9 @@
     </div>
     <div class="field grid">
       <label class="col-2 align-self-center">{{"hospital-edit-dialog.taxpayer-number" | translate}}</label>
-      <div class="col-4 align-self-center">
+      <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.taxpayerNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.image-url" | translate}}</label>
-      <div class="col-4">
-        <p-image width="100" height="100" [src]="imageUrl" [alt]="hospitalModel.taxpayerNumber" (click)="imageView()" />
-      </div>
-      <input #imageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="imageSelected($event)">
     </div>
   </p-card>
 </div>

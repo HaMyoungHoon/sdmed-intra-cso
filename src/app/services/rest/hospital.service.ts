@@ -26,6 +26,9 @@ export class HospitalService {
   getHospitalData(thisPK: string): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.get(`${this.baseUrl}/${thisPK}`);
   }
+  postHospitalData(hospitalData: HospitalModel): Promise<RestResult<HospitalModel>> {
+    return this.httpResponse.post(`${this.baseUrl}/add`, hospitalData);
+  }
   postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);

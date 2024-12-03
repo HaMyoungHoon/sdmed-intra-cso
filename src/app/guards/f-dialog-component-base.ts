@@ -4,6 +4,7 @@ import {FDialogService} from "../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../models/rest/user-role";
 import {restTry} from "./f-extensions";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: "f-dialog-component-base",
@@ -20,11 +21,13 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   protected dialogService: DialogService;
   protected userService: UserService;
   protected fDialogService: FDialogService;
+  protected translateService: TranslateService;
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.ref = inject(DynamicDialogRef);
     this.dialogService = inject(DialogService);
     this.userService = inject(UserService);
     this.fDialogService = inject(FDialogService);
+    this.translateService = inject(TranslateService);
   }
 
   async ngAfterViewInit(): Promise<void> {
