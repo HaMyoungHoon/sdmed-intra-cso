@@ -14,6 +14,7 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   myRole?: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
+  isMobile: boolean = false;
   protected roleCheck: boolean = true;
   protected ref: DynamicDialogRef;
   protected dialogService: DialogService;
@@ -27,6 +28,7 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
+    this.isMobile = !navigator.userAgent.includes("Window");
     if (this.roleCheck) {
       await this.getMyRole();
     }

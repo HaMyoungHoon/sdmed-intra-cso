@@ -42,13 +42,11 @@ export class UserMappingComponent extends FComponentBase {
 
   medicineList: MedicineModel[] = [];
 
-  isMobile: boolean = false;
   constructor(private hospitalService: HospitalService, private pharmaService: PharmaService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
   override async ngInit(): Promise<void> {
-    this.isMobile = !navigator.userAgent.includes("Window");
     this.setLoading();
     const ret = await restTry(async() => await this.userService.getMyRole(),
         e => this.fDialogService.error("ngInit", e.message));

@@ -16,6 +16,7 @@ export abstract class FComponentBase implements AfterViewInit {
   myRole?: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
+  isMobile: boolean = false;
   protected userService: UserService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService
@@ -26,6 +27,7 @@ export abstract class FComponentBase implements AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
+    this.isMobile = !navigator.userAgent.includes("Window");
     const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
     if (isExpired(authToken)) {
       return;
