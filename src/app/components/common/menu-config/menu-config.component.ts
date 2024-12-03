@@ -107,4 +107,16 @@ export class MenuConfigComponent {
   get isDarkMode(): boolean {
     return this.configService.isDarkMode();
   }
+  isSVGIcon(item: MenuItem): boolean {
+    console.log(item);
+    const ret = item["path"];
+    return !!ret;
+  }
+  fillColor(): string {
+    if (this.isDarkMode) {
+      return "#FFFFFF";
+    } else {
+      return "#4b5563"
+    }
+  }
 }
