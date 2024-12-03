@@ -1,6 +1,4 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
-import {UserService} from "../../../../../services/rest/user.service";
-import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
@@ -20,8 +18,8 @@ export class UserSettingComponent extends FComponentBase {
   initValue: UserDataModel[] = [];
   userDataModel: UserDataModel[] = [];
   isSorted: boolean | null = null;
-  constructor(override userService: UserService, override fDialogService: FDialogService) {
-    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+  constructor() {
+    super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
   override async ngInit(): Promise<void> {
@@ -74,13 +72,13 @@ export class UserSettingComponent extends FComponentBase {
       height: "80%",
       data: data
     }).subscribe((x): void => {
-      const initTarget = this.userDataModel?.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      const initTarget = this.initValue.findIndex(y => y.thisPK == x.thisPK) ?? 0
       if (initTarget > 0) {
-        new UserDataModel().copyLhsToRhs(this.initValue!![initTarget], x);
+        new UserDataModel().copyLhsFromRhs(this.initValue[initTarget], x);
       }
-      const target = this.userDataModel?.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      const target = this.userDataModel.findIndex(y => y.thisPK == x.thisPK) ?? 0
       if (target > 0) {
-        new UserDataModel().copyLhsToRhs(this.userDataModel!![target], x);
+        new UserDataModel().copyLhsFromRhs(this.userDataModel[target], x);
       }
     });
   }

@@ -4,7 +4,7 @@ import {CommonService} from "../rest/common.service";
 import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
 import {getKeyName, LangType} from "../../models/common/lang-type";
 import * as FConstants from "../../guards/f-constants";
-import {restTry} from '../../guards/f-extensions';
+import {restTry} from "../../guards/f-extensions";
 
 @Injectable({
   providedIn: "root"

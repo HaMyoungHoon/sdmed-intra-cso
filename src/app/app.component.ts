@@ -17,7 +17,7 @@ import {AppConfigService} from "./services/common/app-config.service";
 export class AppComponent {
   constructor(private cd: ChangeDetectorRef, private router: Router,
               public languageService: LanguageService, private appConfigService: AppConfigService) {
-    languageService.onInit();
+    languageService.onInit().then();
     appConfigService.onInit();
   }
 }

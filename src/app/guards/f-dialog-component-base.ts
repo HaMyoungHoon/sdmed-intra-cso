@@ -1,11 +1,12 @@
-import {AfterViewInit, Component} from '@angular/core';
-import {UserService} from '../services/rest/user.service';
-import {FDialogService} from '../services/common/f-dialog.service';
-import {haveRole, UserRole} from '../models/rest/user-role';
-import {restTry} from './f-extensions';
-import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {AfterViewInit, Component, inject} from "@angular/core";
+import {UserService} from "../services/rest/user.service";
+import {FDialogService} from "../services/common/f-dialog.service";
+import {haveRole, UserRole} from "../models/rest/user-role";
+import {restTry} from "./f-extensions";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
+  selector: "f-dialog-component-base",
   template: "",
   standalone: false
 })
@@ -14,8 +15,15 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   haveRole: boolean = false;
   isLoading: boolean = false;
   protected roleCheck: boolean = true;
-  protected constructor(protected ref: DynamicDialogRef, protected dialogService: DialogService,
-                        protected userService: UserService, protected fDialogService: FDialogService, protected arrayRole: Array<UserRole>) {
+  protected ref: DynamicDialogRef;
+  protected dialogService: DialogService;
+  protected userService: UserService;
+  protected fDialogService: FDialogService;
+  protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
+    this.ref = inject(DynamicDialogRef);
+    this.dialogService = inject(DialogService);
+    this.userService = inject(UserService);
+    this.fDialogService = inject(FDialogService);
   }
 
   async ngAfterViewInit(): Promise<void> {

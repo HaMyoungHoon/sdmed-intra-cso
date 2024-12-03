@@ -1,12 +1,9 @@
 import { Component } from "@angular/core";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {Button} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";
-import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
-import {UserService} from '../../../services/rest/user.service';
-import {FDialogService} from '../../../services/common/f-dialog.service';
+import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 
 @Component({
   selector: "app-image-view-dialog",
@@ -20,11 +17,11 @@ export class ImageViewDialogComponent extends FDialogComponentBase {
   imageSize: number;
   minusHeightIntervalId: any = 0;
   plusHeightIntervalId: any = 0;
-  constructor(override ref: DynamicDialogRef, override dialogService: DialogService, override userService: UserService, override fDialogService: FDialogService) {
-    super(ref, dialogService, userService, fDialogService, Array());
+  constructor() {
+    super();
     this.roleCheck = false;
     this.imageSize = 100;
-    const dlg = this.dialogService.getInstance(ref);
+    const dlg = this.dialogService.getInstance(this.ref);
     this.imageSrc = dlg.data ?? FConstants.ASSETS_NO_IMAGE;
   }
 

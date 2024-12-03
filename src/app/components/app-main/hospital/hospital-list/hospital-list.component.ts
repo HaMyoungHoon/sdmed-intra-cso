@@ -2,10 +2,8 @@ import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {HospitalService} from "../../../../services/rest/hospital.service";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
-import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {HospitalModel} from "../../../../models/rest/hospital-model";
 import {Table} from 'primeng/table';
-import {UserService} from '../../../../services/rest/user.service';
 import {UserRole} from '../../../../models/rest/user-role';
 
 @Component({
@@ -20,8 +18,8 @@ export class HospitalListComponent extends FComponentBase {
   initValue: HospitalModel[] = [];
   hospitalList: HospitalModel[] = [];
   isSorted: boolean | null = null;
-  constructor(override userService: UserService, override fDialogService: FDialogService, private hospitalService: HospitalService) {
-    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
+  constructor(private hospitalService: HospitalService) {
+    super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }
 
   override async ngInit(): Promise<void> {
@@ -64,7 +62,25 @@ export class HospitalListComponent extends FComponentBase {
     }
   }
   hospitalEdit(data: HospitalModel): void {
-
+    this.fDialogService.openUserEditDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      width: "50%",
+      height: "80%",
+      data: data
+    }).subscribe((x): void => {
+      const initTarget = this.initValue?.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      if (initTarget > 0) {
+        new HospitalModel().copyLhsFromRhs(this.initValue[initTarget], x);
+      }
+      const target = this.hospitalList.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      if (target > 0) {
+        new HospitalModel().copyLhsFromRhs(this.hospitalList[target], x);
+      }
+    });
   }
 
   protected readonly customSort = customSort;

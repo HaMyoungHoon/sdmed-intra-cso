@@ -1,8 +1,5 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {UserService} from "../../../services/rest/user.service";
 import {UserDataModel} from "../../../models/rest/user-data-model";
-import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToYearFullString, restTry, stringToDate} from "../../../guards/f-extensions";
 import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
@@ -44,10 +41,10 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   selectedUserDepts: any;
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData?: HospitalModel
-  constructor(override ref: DynamicDialogRef, override dialogService: DialogService, override userService: UserService, override fDialogService: FDialogService) {
-    super(ref, dialogService, userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+  constructor() {
+    super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
     this.initLayoutData();
-    const dlg = this.dialogService.getInstance(ref);
+    const dlg = this.dialogService.getInstance(this.ref);
     this.userDataModel = dlg.data;
   }
   override async ngInit(): Promise<void> {

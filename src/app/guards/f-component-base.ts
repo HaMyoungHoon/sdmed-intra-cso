@@ -1,12 +1,14 @@
-import {AfterViewInit, Component} from "@angular/core";
+import {AfterViewInit, Component, inject} from "@angular/core";
 import {getLocalStorage, isExpired} from "./f-amhohwa";
 import * as FConstants from "./f-constants";
-import {UserService} from '../services/rest/user.service';
-import {restTry} from './f-extensions';
-import {haveRole, UserRole} from '../models/rest/user-role';
-import {FDialogService} from '../services/common/f-dialog.service';
+import {UserService} from "../services/rest/user.service";
+import {restTry} from "./f-extensions";
+import {haveRole, UserRole} from "../models/rest/user-role";
+import {FDialogService} from "../services/common/f-dialog.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+  selector: "f-component-base",
   template: "",
   standalone: false
 })
@@ -14,7 +16,13 @@ export abstract class FComponentBase implements AfterViewInit {
   myRole?: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
-  protected constructor(protected userService: UserService, protected fDialogService: FDialogService, protected arrayRole: Array<UserRole>) {
+  protected userService: UserService;
+  protected fDialogService: FDialogService;
+  protected translateService: TranslateService
+  protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
+    this.userService = inject(UserService);
+    this.fDialogService = inject(FDialogService);
+    this.translateService = inject(TranslateService);
   }
 
   async ngAfterViewInit(): Promise<void> {

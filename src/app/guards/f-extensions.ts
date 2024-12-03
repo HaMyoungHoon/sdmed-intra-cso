@@ -1,7 +1,7 @@
 import {stringToUserStatus, UserStatus} from "../models/rest/user-status";
-import {Table} from 'primeng/table';
-import {SortEvent} from 'primeng/api';
-import {RestResult} from '../models/common/rest-result';
+import {Table} from "primeng/table";
+import {SortEvent} from "primeng/api";
+import {RestResult} from "../models/common/rest-result";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;

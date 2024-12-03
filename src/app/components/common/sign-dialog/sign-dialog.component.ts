@@ -1,7 +1,4 @@
 import {Component} from "@angular/core";
-import {FDialogService} from "../../../services/common/f-dialog.service";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {UserService} from "../../../services/rest/user.service";
 import {setLocalStorage} from "../../../guards/f-amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import {PasswordModule} from "primeng/password";
@@ -9,8 +6,8 @@ import {FormsModule} from "@angular/forms";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
-import {restTry} from '../../../guards/f-extensions';
-import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
+import {restTry} from "../../../guards/f-extensions";
+import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 
 @Component({
   selector: "app-sign-dialog",
@@ -22,8 +19,8 @@ import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
 export class SignDialogComponent extends FDialogComponentBase {
   id: string;
   pw: string;
-  constructor(override ref: DynamicDialogRef, override dialogService: DialogService, override userService: UserService, override fDialogService: FDialogService) {
-    super(ref, dialogService, userService, fDialogService, Array());
+  constructor() {
+    super();
     this.roleCheck = false;
     this.id = "";
     this.pw = "";

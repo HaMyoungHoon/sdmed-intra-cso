@@ -1,18 +1,15 @@
 import {Component} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
-import {UserService} from "../../../../../services/rest/user.service";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {HospitalModel} from "../../../../../models/rest/hospital-model";
 import {PharmaModel} from "../../../../../models/rest/pharma-model";
 import {MedicineModel} from "../../../../../models/rest/medicine-model";
-import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../../../../../models/rest/user-role";
 import {HospitalService} from "../../../../../services/rest/hospital.service";
 import {PharmaService} from "../../../../../services/rest/pharma.service";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/HosPharmaMedicinePairModel";
 import {applyClass, restTry} from "../../../../../guards/f-extensions";
-import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: "app-user-mapping",
@@ -46,9 +43,8 @@ export class UserMappingComponent extends FComponentBase {
   medicineList: MedicineModel[] = [];
 
   isMobile: boolean = false;
-  constructor(override userService: UserService, override fDialogService: FDialogService, private hospitalService: HospitalService, private pharmaService: PharmaService,
-              private translateService: TranslateService) {
-    super(userService, fDialogService, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+  constructor(private hospitalService: HospitalService, private pharmaService: PharmaService) {
+    super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
   override async ngInit(): Promise<void> {

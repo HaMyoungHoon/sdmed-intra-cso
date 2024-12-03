@@ -9,6 +9,7 @@ import {HtmlEditDialogComponent} from "../../components/common/html-edit-dialog/
 import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
 import {UserEditDialogComponent} from "../../components/common/user-edit-dialog/user-edit-dialog.component";
 import {ImageViewDialogComponent} from "../../components/common/image-view-dialog/image-view-dialog.component";
+import {HospitalEditDialogComponent} from '../../components/common/hospital-edit-dialog/hospital-edit-dialog.component';
 
 @Injectable({
   providedIn: "root"
@@ -33,6 +34,10 @@ export class FDialogService {
   }
   openUserEditDialog(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(UserEditDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openHospitalEditDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(HospitalEditDialogComponent, config);
     return this.ref.onClose;
   }
   openHtmlEdit(config: DynamicDialogConfig): Observable<any> {

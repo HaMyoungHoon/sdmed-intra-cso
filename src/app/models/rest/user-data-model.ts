@@ -21,7 +21,7 @@ export class UserDataModel {
   lastLoginDate?: string = "";
   children: UserDataModel[] = [];
   hosList: HospitalModel[] = [];
-  copyLhsToRhs(lhs: UserDataModel, rhs: UserDataModel): void {
+  copyLhsFromRhs(lhs: UserDataModel, rhs: UserDataModel): void {
     lhs.pw = rhs.pw
     lhs.name = rhs.name
     lhs.mail = rhs.mail

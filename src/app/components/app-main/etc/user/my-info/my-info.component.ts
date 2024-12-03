@@ -1,9 +1,7 @@
 import {Component} from "@angular/core";
-import {UserService} from "../../../../../services/rest/user.service";
-import {FDialogService} from "../../../../../services/common/f-dialog.service";
 import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {dateToYearFullString, getSeverity, restTry, stringToDate} from "../../../../../guards/f-extensions";
-import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
+import {flagToRoleDesc} from "../../../../../models/rest/user-role";
 import {flagToDeptDesc} from "../../../../../models/rest/user-dept";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {FComponentBase} from "../../../../../guards/f-component-base";
@@ -16,8 +14,8 @@ import {FComponentBase} from "../../../../../guards/f-component-base";
 })
 export class MyInfoComponent extends FComponentBase {
   userDataModel?: UserDataModel = undefined;
-  constructor(override userService: UserService, override fDialogService: FDialogService) {
-    super(userService, fDialogService, Array<UserRole>(UserRole.None));
+  constructor() {
+    super();
   }
 
   override async ngInit(): Promise<void> {

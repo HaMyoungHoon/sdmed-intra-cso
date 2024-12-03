@@ -1,13 +1,10 @@
 import {Component, ViewChild} from "@angular/core";
 import {MedicineService} from "../../../../services/rest/medicine.service";
 import {MedicineModel} from "../../../../models/rest/medicine-model";
-import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {customSort, filterTable, restTry} from '../../../../guards/f-extensions';
-import {UserService} from '../../../../services/rest/user.service';
-import {UserRole} from '../../../../models/rest/user-role';
 
 @Component({
   selector: "app-medicine-list",
@@ -20,8 +17,8 @@ export class MedicineListComponent extends FComponentBase {
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
   isSorted: boolean | null = null;
-  constructor(override userService: UserService, override fDialogService: FDialogService, private medicineService: MedicineService) {
-    super(userService, fDialogService, Array<UserRole>(UserRole.None));
+  constructor(private medicineService: MedicineService) {
+    super();
   }
 
   override async ngInit(): Promise<void> {
