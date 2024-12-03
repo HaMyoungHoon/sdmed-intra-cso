@@ -60,15 +60,28 @@ export class FDialogService {
     this.add(level, title, detail);
   }
   warn(title: string, detail?: string): void {
+    if ((detail?.length ?? 0) <= 0) {
+      console.log(detail);
+      return;
+    }
     this.add(ToastLevel.warn, title, detail);
   }
   error(title: string, detail?: string): void {
+    if ((detail?.length ?? 0) <= 0) {
+      return;
+    }
     this.add(ToastLevel.error, title, detail);
   }
   info(title: string, detail?: string): void {
+    if ((detail?.length ?? 0) <= 0) {
+      return;
+    }
     this.add(ToastLevel.info, title, detail);
   }
   success(title: string, detail?: string): void {
+    if ((detail?.length ?? 0) <= 0) {
+      return;
+    }
     this.add(ToastLevel.success, title, detail);
   }
 
