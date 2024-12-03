@@ -1,10 +1,10 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {UserRole} from "../../../../models/rest/user-role";
-import {customSort, ellipsis, filterTable, restTry} from '../../../../guards/f-extensions';
-import {Table} from 'primeng/table';
-import {PharmaModel} from '../../../../models/rest/pharma-model';
-import {PharmaService} from '../../../../services/rest/pharma.service';
+import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
+import {Table} from "primeng/table";
+import {PharmaModel} from "../../../../models/rest/pharma-model";
+import {PharmaService} from "../../../../services/rest/pharma.service";
 
 @Component({
   selector: "app-pharma-list",

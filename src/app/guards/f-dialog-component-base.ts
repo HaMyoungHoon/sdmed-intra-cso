@@ -4,7 +4,7 @@ import {FDialogService} from "../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../models/rest/user-role";
 import {restTry} from "./f-extensions";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {TranslateService} from '@ngx-translate/core';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: "f-dialog-component-base",
