@@ -13,7 +13,7 @@ import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
   standalone: true,
 })
 export class ImageViewDialogComponent extends FDialogComponentBase {
-  imageSrc: string;
+  imageSrc: string[];
   imageSize: number;
   minusHeightIntervalId: any = 0;
   plusHeightIntervalId: any = 0;
@@ -22,7 +22,7 @@ export class ImageViewDialogComponent extends FDialogComponentBase {
     this.roleCheck = false;
     this.imageSize = 100;
     const dlg = this.dialogService.getInstance(this.ref);
-    this.imageSrc = dlg.data ?? FConstants.ASSETS_NO_IMAGE;
+    this.imageSrc = dlg.data ?? Array<string>(FConstants.ASSETS_NO_IMAGE);
   }
 
   minusHeightStart(): void {

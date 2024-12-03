@@ -155,6 +155,32 @@
       "inner-name": "inner name"
     }
   },
+  "hospital-edit-dialog": {
+    "code": "code",
+    "org-name": "name",
+    "inner-name": "inner name",
+    "owner-name": "owner",
+    "phone-number": "phone",
+    "fax-number": "fax",
+    "zip-code": "zip code",
+    "address": "address",
+    "address-detail": "address detail",
+    "business-type": "type",
+    "business-item": "item",
+    "bill-type": "bill type",
+    "contract-type": "contract type",
+    "delivery-div": "delivery div",
+    "license-number": "license number",
+    "nursing-home-number": "nursing home number",
+    "mail": "mail",
+    "mobile-phone": "contact number",
+    "open-date": "open date",
+    "close-date": "close date",
+    "taxpayer-number": "taxpayer number",
+    "image-url": "taxpayer image",
+    "etc1": "et cetera",
+    "etc2": "et cetera"
+  },
   "error": {
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
@@ -164,6 +190,8 @@
     "open": "open",
     "view": "view",
     "save": "save",
+    "edit": "edit",
+    "add": "add",
     "refresh": "refresh",
     "close": "close"
   }

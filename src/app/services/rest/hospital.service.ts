@@ -23,12 +23,26 @@ export class HospitalService {
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
     return this.httpResponse.get(`${this.baseUrl}/all/search`);
   }
+  getHospitalData(thisPK: string): Promise<RestResult<HospitalModel>> {
+    return this.httpResponse.get(`${this.baseUrl}/${thisPK}`);
+  }
   postDataUploadExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
-    formData.append("file", file, file.name);
-    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`, formData);
+  }
+  postImageUpload(thisPK: string, file: File): Promise<RestResult<HospitalModel>> {
+    const formData = new FormData();
+    formData.append("thisPK", thisPK);
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/imageUpload`, formData);
   }
   getSampleDownloadExcel(): Promise<any> {
     return this.httpResponse.get(`${this.baseUrl}/sampleDownloadExcel`);
+  }
+  putHospitalDataModify(hospitalData: HospitalModel): Promise<RestResult<HospitalModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/modify`, hospitalData);
   }
 }

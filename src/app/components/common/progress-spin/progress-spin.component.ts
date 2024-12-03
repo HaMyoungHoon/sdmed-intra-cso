@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {NgIf} from '@angular/common';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: "app-progress-spin",

@@ -11,7 +11,7 @@ import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {ChipsModule} from "primeng/chips";
 import {CheckboxModule} from "primeng/checkbox";
-import {ProgressSpinComponent} from '../../../../common/progress-spin/progress-spin.component';
+import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 
 
 

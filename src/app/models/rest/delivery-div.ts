@@ -6,6 +6,13 @@ export enum DeliveryDiv {
   Parcel = 4
 }
 
+export function allDeliveryDivDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(DeliveryDiv).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToDeliveryDivDesc[x]);
+  });
+  return ret;
+}
 export function stringToDeliveryDiv(data?: string): DeliveryDiv {
   if (data == null) {
     return DeliveryDiv.None;
@@ -39,4 +46,11 @@ export const StringToDeliveryDiv: { [key in string]: DeliveryDiv } = {
   "Direct2": DeliveryDiv.Direct2,
   "Direct3": DeliveryDiv.Direct3,
   "Parcel": DeliveryDiv.Parcel,
+}
+export const DeliveryDivDescToDeliveryDiv: { [key in string]: DeliveryDiv } = {
+  "미지정": DeliveryDiv.None,
+  "직배1호": DeliveryDiv.Direct1,
+  "직배2호": DeliveryDiv.Direct2,
+  "직배3호": DeliveryDiv.Direct3,
+  "택배": DeliveryDiv.Parcel,
 }

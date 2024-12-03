@@ -20,9 +20,10 @@ export class MedicineService {
   }
   postDataUploadExcel(applyDate: string, file: File): Promise<RestResult<string>> {
     const formData = new FormData();
-    formData.append("file", file, file.name);
+    formData.append("file", file);
     this.httpResponse.addParam("applyDate", applyDate);
-    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/dataUploadExcel`, formData);
   }
   getSampleDownloadExcel(): Promise<any> {
     return this.httpResponse.get(`${this.baseUrl}/sampleDownloadExcel`);

@@ -5,27 +5,27 @@
     <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="true" [activeIndex]="[0]">
-    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
+    <p-accordionTab class="" header="{{'user-edit-dialog.accordion-header.detail' | translate}}" *ngIf="userDataModel">
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.id" | translate}}</label>
-        <label class="col">{{userDataModel?.id}}</label>
+        <label class="col">{{userDataModel.id}}</label>
       </div>
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.name" | translate}}</label>
         <div class="col">
-          <input class="text-base" pInputText type="text" [(ngModel)]="name" />
+          <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.name" />
         </div>
       </div>
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.mail" | translate}}</label>
         <div class="col">
-          <input class="text-base" pInputText type="text" [(ngModel)]="mail" />
+          <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
         </div>
       </div>
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.phone-number" | translate}}</label>
         <div class="col">
-          <input class="text-base" pInputText type="text" [(ngModel)]="phoneNumber" />
+          <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
         </div>
       </div>
       <div class="field grid">
@@ -42,20 +42,20 @@
       </div>
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.reg-date" | translate}}</label>
-        <label class="col">{{dateToYearFullString(stringToDate(userDataModel?.regDate))}}</label>
+        <label class="col">{{dateToYearFullString(stringToDate(userDataModel.regDate))}}</label>
       </div>
       <div class="field grid">
         <label class="col-fixed w-3">{{"user-edit-dialog.detail.last-login-date" | translate}}</label>
-        <label class="col">{{dateToYearFullString(stringToDate(userDataModel?.lastLoginDate))}}</label>
+        <label class="col">{{dateToYearFullString(stringToDate(userDataModel.lastLoginDate))}}</label>
       </div>
       <div class="field grid">
-        <label class="col-fixed m-1">{{userDataModel?.companyNumber}}</label>
+        <label class="col-fixed m-1">{{userDataModel.companyNumber}}</label>
         <div class="col m-1">
-          <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel?.companyNumber ?? 'tax'" (click)="taxpayerImageView()" />
+          <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel.companyNumber" (click)="taxpayerImageView()" />
         </div>
-        <label class="col-fixed m-1">{{userDataModel?.bankAccount}}</label>
+        <label class="col-fixed m-1">{{userDataModel.bankAccount}}</label>
         <div class="col m-1">
-          <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel?.bankAccount ?? 'bank'" (click)="bankAccountImageView()" />
+          <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel.bankAccount" (click)="bankAccountImageView()" />
         </div>
         <input #taxpayerImageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="taxpayerImageSelected($event)">
         <input #bankAccountImageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="bankAccountImageSelected($event)">

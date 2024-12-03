@@ -17,8 +17,8 @@ import {HospitalModel} from "../../../models/rest/hospital-model";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {InputTextModule} from "primeng/inputtext";
-import {ProgressSpinComponent} from '../progress-spin/progress-spin.component';
-import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
+import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
+import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 
 @Component({
   selector: "app-user-edit-dialog",
@@ -30,9 +30,6 @@ import {FDialogComponentBase} from '../../../guards/f-dialog-component-base';
 export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
-  name: string = "";
-  mail: string = "";
-  phoneNumber: string = "";
   userDataModel?: UserDataModel;
   userRoleList: string[] = [];
   userDeptList: string[] = [];
@@ -67,8 +64,6 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       e => this.fDialogService.error("getUserData", e.message));
     if (ret.result) {
       this.userDataModel = ret.data;
-      this.name = this.userDataModel?.name ?? "";
-      this.mail = this.userDataModel?.mail ?? "";
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
@@ -82,12 +77,15 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       return;
     }
 
+    const name = this.userDataModel?.name ?? "";
+    const mail = this.userDataModel?.mail ?? "";
+    const phoneNumber = this.userDataModel?.phoneNumber ?? "";
     const roles = stringArrayToUserRole(this.selectedUserRoles);
     const depts = stringArrayToUserDept(this.selectedUserDepts);
     const status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
     // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
-    const ret1 = await restTry(async() => await this.userService.putUserNameMailPhoneModifyByPK(buff.thisPK, this.name, this.mail, this.phoneNumber),
+    const ret1 = await restTry(async() => await this.userService.putUserNameMailPhoneModifyByPK(buff.thisPK, name, mail, phoneNumber),
         e => this.fDialogService.error("saveUserData", e.message));
     if (ret1.result) {
       const ret2 = await restTry(async() => await this.userService.putUserRoleDeptStatusModifyByPK(buff.thisPK, roles, depts, status),
@@ -130,7 +128,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: buff.taxpayerImageUrl
+      data: Array<string>(buff.taxpayerImageUrl)
     });
   }
   async taxpayerImageSelected(event: any): Promise<void> {
@@ -144,6 +142,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       this.setLoading();
       const ret = await restTry(async() => await this.userService.putUserTaxImageUploadByPK(buff.thisPK, file),
         e => this.fDialogService.error("taxpayerImageView", e.message));
+      this.taxpayerImageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
         this.userDataModel!!.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
@@ -176,7 +175,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: buff.bankAccountImageUrl
+      data: Array<string>(buff.bankAccountImageUrl)
     });
   }
   async bankAccountImageSelected(event: any): Promise<void> {
@@ -190,13 +189,13 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       this.setLoading();
       const ret = await restTry(async() => await this.userService.putUserBankImageUploadByPK(buff.thisPK, file),
         e => this.fDialogService.error("bankAccountImageView", e.message));
-    this.setLoading(false);
-    if (ret.result) {
-      this.userDataModel!!.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
-      return;
-    }
-
-    this.fDialogService.warn("bankAccountImageView", ret.msg);
+      this.bankAccountImageInput.nativeElement.value = "";
+      this.setLoading(false);
+      if (ret.result) {
+        this.userDataModel!!.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
+        return;
+      }
+      this.fDialogService.warn("bankAccountImageView", ret.msg);
     }
   }
 

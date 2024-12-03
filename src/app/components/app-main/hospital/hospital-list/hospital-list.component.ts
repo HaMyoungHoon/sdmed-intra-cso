@@ -3,8 +3,8 @@ import {FComponentBase} from "../../../../guards/f-component-base";
 import {HospitalService} from "../../../../services/rest/hospital.service";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
 import {HospitalModel} from "../../../../models/rest/hospital-model";
-import {Table} from 'primeng/table';
-import {UserRole} from '../../../../models/rest/user-role';
+import {Table} from "primeng/table";
+import {UserRole} from "../../../../models/rest/user-role";
 
 @Component({
   selector: "app-hospital-list",
@@ -45,6 +45,23 @@ export class HospitalListComponent extends FComponentBase {
   uploadExcel(): void {
     this.inputUploadExcel.nativeElement.click();
   }
+  insertData(): void {
+    this.fDialogService.openHospitalAddDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      width: "50%",
+      height: "80%"
+    }).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
+      this.initValue.push(x);
+      this.hospitalList.push(x);
+    });
+  }
   async excelSelected(event: any): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -53,7 +70,7 @@ export class HospitalListComponent extends FComponentBase {
       const ret = await restTry(async() => await this.hospitalService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e.message));
       this.setLoading(false);
-      input.files = null;
+      this.inputUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.getHospitalAll();
         return;
@@ -62,7 +79,7 @@ export class HospitalListComponent extends FComponentBase {
     }
   }
   hospitalEdit(data: HospitalModel): void {
-    this.fDialogService.openUserEditDialog({
+    this.fDialogService.openHospitalEditDialog({
       modal: true,
       closable: false,
       closeOnEscape: true,
@@ -72,6 +89,9 @@ export class HospitalListComponent extends FComponentBase {
       height: "80%",
       data: data
     }).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
       const initTarget = this.initValue?.findIndex(y => y.thisPK == x.thisPK) ?? 0
       if (initTarget > 0) {
         new HospitalModel().copyLhsFromRhs(this.initValue[initTarget], x);

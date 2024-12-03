@@ -24,8 +24,8 @@ export class HospitalModel {
   nursingHomeNumber: string = "";
   mail: string = "";
   mobilePhone: string = "";
-  openDate?: string;
-  closeDate?: string;
+  openDate?: Date;
+  closeDate?: Date;
   etc1: string = "";
   etc2: string = "";
   imageUrl: string = "";

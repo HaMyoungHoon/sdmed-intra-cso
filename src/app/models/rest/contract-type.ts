@@ -4,6 +4,13 @@ export enum ContractType {
   Competitive = 2
 }
 
+export function allContractTypeDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(ContractType).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToContractTypeDesc[x]);
+  });
+  return ret;
+}
 export function stringToContractType(data?: string): ContractType {
   if (data == null) {
     return ContractType.None;
@@ -31,4 +38,9 @@ export const StringToContractType: { [key in string]: ContractType } = {
   "None": ContractType.None,
   "Veterinary": ContractType.Veterinary,
   "Competitive": ContractType.Competitive,
+}
+export const ContactTypeDescToContactType: { [key in string]: ContractType } = {
+  "미지정": ContractType.None,
+  "수의계약": ContractType.Veterinary,
+  "경쟁입찰": ContractType.Competitive,
 }

@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
-import {FComponentBase} from '../../../../guards/f-component-base';
-import {UserRole} from '../../../../models/rest/user-role';
+import {FComponentBase} from "../../../../guards/f-component-base";
+import {UserRole} from "../../../../models/rest/user-role";
 
 @Component({
   selector: "app-pharma-list",

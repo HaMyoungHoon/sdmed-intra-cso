@@ -51,7 +51,7 @@ export class UserSettingComponent extends FComponentBase {
       this.setLoading();
       const ret = await restTry(async() => await this.userService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e.message));
-      input.files = null;
+      this.inputUploadExcel.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
         await this.getUserDataModel();
@@ -72,6 +72,9 @@ export class UserSettingComponent extends FComponentBase {
       height: "80%",
       data: data
     }).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
       const initTarget = this.initValue.findIndex(y => y.thisPK == x.thisPK) ?? 0
       if (initTarget > 0) {
         new UserDataModel().copyLhsFromRhs(this.initValue[initTarget], x);

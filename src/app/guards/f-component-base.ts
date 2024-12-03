@@ -5,7 +5,7 @@ import {UserService} from "../services/rest/user.service";
 import {restTry} from "./f-extensions";
 import {haveRole, UserRole} from "../models/rest/user-role";
 import {FDialogService} from "../services/common/f-dialog.service";
-import {TranslateService} from '@ngx-translate/core';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: "f-component-base",

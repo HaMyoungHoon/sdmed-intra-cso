@@ -1,1 +1,106 @@
-<p>hospital-edit-dialog works!</p>
+<div class="flex flex-column flex-wrap hospital-edit-dialog-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <div class="m-1">
+    <p-button class="m-1" (onClick)="saveData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-card class="flex grid m-1" *ngIf="hospitalModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.code" | translate}}</label>
+      <label class="col-4">{{hospitalModel.code}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.org-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.orgName" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.inner-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.innerName" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.owner-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.ownerName" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.phone-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.phoneNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.fax-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.faxNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.zip-code" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.zipCode" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.address" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.address" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.address-detail" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.addressDetail" />
+      </div>
+    </div>
+  </p-card>
+  <p-card class="flex grid m-1" *ngIf="hospitalModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.business-type" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.businessType" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.business-item" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.businessItem" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.bill-type" | translate}}</label>
+      <p-dropdown class="col-4" [options]="billTypeList" [(ngModel)]="selectBillType" />
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.contract-type" | translate}}</label>
+      <p-dropdown class="col-4" [options]="contractTypeList" [(ngModel)]="selectContractType" />
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.delivery-div" | translate}}</label>
+      <p-dropdown class="col-4" [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.license-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.licenseNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.nursing-home-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.nursingHomeNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.mail" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.mail" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.mobile-phone" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.mobilePhone" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.open-date" | translate}}</label>
+      <p-calendar class="col-4" [(ngModel)]="hospitalModel.openDate" dateFormat="yy-mm-dd" />
+      <!--
+      <label class="col-4">{{dateToYearFullString(stringToDate(hospitalModel.openDate))}}</label>
+      -->
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.close-date" | translate}}</label>
+      <p-calendar class="col-4" [(ngModel)]="hospitalModel.closeDate" dateFormat="yy-mm-dd" />
+      <!--
+      <label class="col-4">{{dateToYearFullString(stringToDate(hospitalModel.closeDate))}}</label>
+      -->
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.etc1" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.etc1" />
+      </div>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.etc2" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" [(ngModel)]="hospitalModel.etc2" />
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.taxpayer-number" | translate}}</label>
+      <label class="col-4">{{hospitalModel.taxpayerNumber}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit-dialog.image-url" | translate}}</label>
+      <div class="col-4">
+        <p-image width="100" height="100" [src]="imageUrl" [alt]="hospitalModel.taxpayerNumber" (click)="imageView()" />
+      </div>
+      <input #imageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="imageSelected($event)">
+    </div>
+  </p-card>
+</div>

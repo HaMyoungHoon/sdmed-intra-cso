@@ -4,7 +4,7 @@ import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {customSort, filterTable, restTry} from '../../../../guards/f-extensions';
+import {customSort, filterTable, restTry} from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-medicine-list",

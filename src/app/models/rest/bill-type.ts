@@ -5,6 +5,13 @@ export enum BillType {
   Monthly = 3,
 }
 
+export function allBillTypeDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(BillType).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToBillTypeDesc[x]);
+  });
+  return ret;
+}
 export function stringToBillType(data?: string): BillType {
   if (data == null) {
     return BillType.None;
@@ -35,4 +42,10 @@ export const StringToBillType: { [key in string]: BillType } = {
   "Unpublished": BillType.Unpublished,
   "Unit": BillType.Unit,
   "Monthly": BillType.Monthly
+}
+export const BillTypeDescToBillType: { [key in string]: BillType } = {
+  "미지정": BillType.None,
+  "미발행": BillType.Unpublished,
+  "건발행": BillType.Unit,
+  "월발행": BillType.Monthly
 }
