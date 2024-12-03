@@ -1,5 +1,5 @@
 <div class="user-setting-container">
-  <p-table #userListTable [value]="userDataModel ?? []" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+  <p-table #userListTable [value]="userDataModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, userListTable, initValue, userDataModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">

@@ -1,5 +1,5 @@
 <div class="medicine-list-container">
-  <p-table #medicineListTable [value]="medicineModel ?? []" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+  <p-table #medicineListTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['name', 'kdCode', 'pharmaName', 'mainIngredientCode']" (sortFunction)="customSort($event, isSorted, medicineListTable, initValue, medicineModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-striped">
     <ng-template pTemplate="caption">
