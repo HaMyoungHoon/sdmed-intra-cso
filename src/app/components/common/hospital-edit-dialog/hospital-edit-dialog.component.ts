@@ -91,7 +91,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     buff.contractType = ContactTypeDescToContactType[this.selectContractType];
     buff.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => this.hospitalService.putHospitalDataModify(buff),
+    const ret = await restTry(async() => await this.hospitalService.putHospitalDataModify(buff),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

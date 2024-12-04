@@ -5,6 +5,7 @@ import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-e
 import {Table} from "primeng/table";
 import {PharmaModel} from "../../../../models/rest/pharma-model";
 import {PharmaService} from "../../../../services/rest/pharma.service";
+import {HospitalModel} from "../../../../models/rest/hospital-model";
 
 @Component({
   selector: "app-pharma-list",
@@ -46,14 +47,34 @@ export class PharmaListComponent extends FComponentBase {
     this.inputUploadExcel.nativeElement.click();
   }
   insertData(): void {
-
+    this.fDialogService.openPharmaAddDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      width: "50%",
+      height: "80%",
+    }).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
+      const initTarget = this.initValue?.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      if (initTarget > 0) {
+        new PharmaModel().copyLhsFromRhs(this.initValue[initTarget], x);
+      }
+      const target = this.pharmaList.findIndex(y => y.thisPK == x.thisPK) ?? 0
+      if (target > 0) {
+        new PharmaModel().copyLhsFromRhs(this.pharmaList[target], x);
+      }
+    });
   }
   async excelSelected(event: any): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => this.pharmaService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.pharmaService.postDataUploadExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       if (ret.result) {
@@ -64,7 +85,28 @@ export class PharmaListComponent extends FComponentBase {
     }
   }
   pharmaEdit(data: PharmaModel): void {
-
+    this.fDialogService.openPharmaEditDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      width: "50%",
+      height: "80%",
+      data: data
+    }).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
+      const initTarget = this.initValue?.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (initTarget >= 0) {
+        new PharmaModel().copyLhsFromRhs(this.initValue[initTarget], x);
+      }
+      const target = this.pharmaList.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (target >= 0) {
+        new PharmaModel().copyLhsFromRhs(this.pharmaList[target], x);
+      }
+    });
   }
 
   protected readonly customSort = customSort;

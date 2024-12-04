@@ -11,6 +11,8 @@ import {UserEditDialogComponent} from "../../components/common/user-edit-dialog/
 import {ImageViewDialogComponent} from "../../components/common/image-view-dialog/image-view-dialog.component";
 import {HospitalEditDialogComponent} from "../../components/common/hospital-edit-dialog/hospital-edit-dialog.component";
 import {HospitalAddDialogComponent} from "../../components/common/hospital-add-dialog/hospital-add-dialog.component";
+import {PharmaEditDialogComponent} from "../../components/common/pharma-edit-dialog/pharma-edit-dialog.component";
+import {PharmaAddDialogComponent} from "../../components/common/pharma-add-dialog/pharma-add-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -42,7 +44,15 @@ export class FDialogService {
     return this.ref.onClose;
   }
   openHospitalAddDialog(config: DynamicDialogConfig): Observable<any> {
-    this.ref = this.dialogService.open(HospitalAddDialogComponent, config)
+    this.ref = this.dialogService.open(HospitalAddDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openPharmaEditDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(PharmaEditDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openPharmaAddDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(PharmaAddDialogComponent, config);
     return this.ref.onClose;
   }
   openHtmlEdit(config: DynamicDialogConfig): Observable<any> {

@@ -6,6 +6,13 @@ export enum PharmaGroup {
   Pharmaceutical = 4,
 }
 
+export function allPharmaGroupDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(PharmaGroup).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToPharmaGroupDesc[x]);
+  });
+  return ret;
+}
 export function stringToPharmaGroup(data?: string): PharmaGroup {
   if (data == null) {
     return PharmaGroup.None;
@@ -39,4 +46,11 @@ export const StringToPharmaGroup: { [key in string]: PharmaGroup } = {
   "Supplier": PharmaGroup.Supplier,
   "ETC": PharmaGroup.ETC,
   "Pharmaceutical": PharmaGroup.Pharmaceutical,
+}
+export const PharmaGroupDescToPharmaGroup: { [key in string]: PharmaGroup } = {
+  "미지정": PharmaGroup.None,
+  "공급받는자": PharmaGroup.Recipient,
+  "공급사": PharmaGroup.Supplier,
+  "기타": PharmaGroup.ETC,
+  "정산제약사": PharmaGroup.Pharmaceutical,
 }

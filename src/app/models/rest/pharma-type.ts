@@ -6,6 +6,13 @@ export enum PharmaType {
   Pharmaceutical = 4,
 }
 
+export function allPharmaTypeDescArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(PharmaType).filter(x => isNaN(Number(x))).forEach(x => {
+    ret.push(StringToPharmaTypeDesc[x]);
+  });
+  return ret;
+}
 export function stringToPharmaType(data?: string): PharmaType {
   if (data == null) {
     return PharmaType.None;
@@ -39,4 +46,11 @@ export const StringToPharmaType: { [key in string]: PharmaType } = {
   "Wholesale": PharmaType.Wholesale,
   "GeneralHospital": PharmaType.GeneralHospital,
   "Pharmaceutical": PharmaType.Pharmaceutical,
+}
+export const PharmaTypeDescToPharmaType: { [key in string]: PharmaType } = {
+  "미지정": PharmaType.None,
+  "기타": PharmaType.ETC,
+  "도매업체": PharmaType.Wholesale,
+  "종합병원": PharmaType.GeneralHospital,
+  "통계제약사": PharmaType.Pharmaceutical,
 }

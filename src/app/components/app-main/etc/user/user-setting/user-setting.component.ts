@@ -75,12 +75,12 @@ export class UserSettingComponent extends FComponentBase {
       if (x == null) {
         return;
       }
-      const initTarget = this.initValue.findIndex(y => y.thisPK == x.thisPK) ?? 0
-      if (initTarget > 0) {
+      const initTarget = this.initValue.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (initTarget >= 0) {
         new UserDataModel().copyLhsFromRhs(this.initValue[initTarget], x);
       }
-      const target = this.userDataModel.findIndex(y => y.thisPK == x.thisPK) ?? 0
-      if (target > 0) {
+      const target = this.userDataModel.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (target >= 0) {
         new UserDataModel().copyLhsFromRhs(this.userDataModel[target], x);
       }
     });

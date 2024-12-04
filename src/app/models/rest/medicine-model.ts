@@ -1,18 +1,18 @@
-import {MedicinePriceModel} from "./MedicinePriceModel";
+import {MedicinePriceModel} from "./medicine-price-model";
+import {MedicineSubModel} from "./medicine-sub-model";
+import {MedicineIngredientModel} from "./medicine-ingredient-model";
 
-export interface MedicineModel {
-  thisPK: string;
-  serialNumber: number;
-  method: string;
-  classify: string;
-  mainIngredientCode: string;
-  kdCode: string;
-  name: string;
-  pharmaName: string;
-  standard: string;
-  unit: string;
-  general: boolean;
-  maxPrice: number;
-  ancestorCode: number;
-  medicinePriceModel: MedicinePriceModel[]
+export class MedicineModel {
+  thisPK: string = "";
+  code: number = 0;
+  mainIngredientCode: string = "";
+  kdCode: number = 0;
+  standardCode: number = 0;
+  pharma: string = "";
+  name: string = ""
+  customPrice: number = 0;
+  maxPrice: number = 0;
+  medicineSubModel: MedicineSubModel = new MedicineSubModel();
+  medicineIngredientModel: MedicineIngredientModel = new MedicineIngredientModel();
+  medicinePriceModel: MedicinePriceModel[] = [];
 }

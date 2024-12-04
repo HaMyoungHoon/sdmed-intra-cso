@@ -1,6 +1,6 @@
 <div class="medicine-list-container">
   <p-table #medicineListTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['name', 'kdCode', 'pharmaName', 'mainIngredientCode']" (sortFunction)="customSort($event, isSorted, medicineListTable, initValue, medicineModel)" [customSort]="true"
+           [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, medicineListTable, initValue, medicineModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-striped">
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -16,22 +16,22 @@
       <tr>
         <th pSortableColumn="name" style="min-width: 50rem">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
         <th>{{"medicine-list.kd-code" | translate}}</th>
-        <th pSortableColumn="pharmaName" style="width: 20rem">{{"medicine-list.pharma-name" | translate}} <p-sortIcon field="pharmaName" /></th>
-        <th pSortableColumn="mainIngredientCode" style="width: 20rem">{{"medicine-list.main-ingredient-code" | translate}} <p-sortIcon field="mainIngredientCode" /></th>
-        <th>{{"medicine-list.div" | translate}}</th>
-        <th>{{"medicine-list.max-price" | translate}}</th>
+        <th pSortableColumn="pharma" style="width: 20rem">{{"medicine-list.pharma-name" | translate}} <p-sortIcon field="pharma" /></th>
+        <th style="width: 20rem">{{"medicine-list.main-ingredient-code" | translate}}</th>
+        <th pSortableColumn="maxPrice">{{"medicine-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
+        <th>{{"medicine-list.custom-price" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
       <tr [ngClass]="{'zero-price': item.maxPrice === 0}">
         <td>{{item.name}}</td>
         <td>{{item.kdCode}}</td>
-        <td>{{item.pharmaName}}</td>
-        <td>{{item.mainIngredientCode}}</td>
-        <td>{{item.general ? ("medicine-list.general" | translate) : ("medicine-list.special" | translate)}}</td>
+        <td>{{item.pharma}}</td>
+        <td>{{item.medicineIngredientModel.mainIngredientName}}</td>
         <td>{{item.maxPrice}}</td>
+        <td>{{item.customPrice}}</td>
         <td>
-          <p-button (onClick)="priceHistoryDialogOpen(item)">{{"medicine-list.price-history" | translate}}</p-button>
+          <p-button (onClick)="priceHistoryDialogOpen(item)" [disabled]="disablePriceHistory(item)">{{"medicine-list.price-history" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>

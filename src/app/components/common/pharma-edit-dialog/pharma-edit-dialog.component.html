@@ -1,0 +1,127 @@
+<div class="flex flex-column flex-wrap pharma-edit-dialog-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <div class="m-1">
+    <p-button class="m-1" (onClick)="saveData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-card class="flex grid m-1" *ngIf="pharmaModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.code" | translate}}</label>
+      <label class="col-4">{{pharmaModel.code}}</label>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.org-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.orgName" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.inner-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.innerName" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.owner-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.ownerName" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.phone-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.phoneNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.fax-number" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.faxNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.zip-code" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.zipCode" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.address" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.address" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.address-detail" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.addressDetail" />
+      </div>
+    </div>
+  </p-card>
+  <p-card class="flex grid m-1" *ngIf="pharmaModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.business-type" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessType" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.business-item" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessItem" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.bill-type" | translate}}</label>
+      <p-dropdown class="col-4" [options]="billTypeList" [(ngModel)]="selectBillType" />
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.contract-type" | translate}}</label>
+      <p-dropdown class="col-4" [options]="contractTypeList" [(ngModel)]="selectContractType" />
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.pharma-type" | translate}}</label>
+      <p-dropdown class="col-4" [options]="pharmaTypeList" [(ngModel)]="selectPharmaType" />
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.pharma-group" | translate}}</label>
+      <p-dropdown class="col-4" [options]="pharmaGroupList" [(ngModel)]="selectPharmaGroup" />
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.delivery-div" | translate}}</label>
+      <p-dropdown class="col-4" [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.mail" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mail" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.mobile-phone" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mobilePhone" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.open-date" | translate}}</label>
+      <p-calendar class="col-4" [(ngModel)]="pharmaModel.openDate" dateFormat="yy-mm-dd" />
+      <!--
+      <label class="col-4">{{dateToYearFullString(stringToDate(pharmaModel.openDate))}}</label>
+      -->
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.close-date" | translate}}</label>
+      <p-calendar class="col-4" [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" />
+      <!--
+      <label class="col-4">{{dateToYearFullString(stringToDate(pharmaModel.closeDate))}}</label>
+      -->
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.etc1" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc1" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.etc2" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc2" />
+      </div>
+    </div>
+    <div class="field grid">
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.taxpayer-number" | translate}}</label>
+      <div class="col-4 align-self-center">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.taxpayerNumber" />
+      </div>
+      <label class="col-2 align-self-center">{{"pharma-edit-dialog.image-url" | translate}}</label>
+      <div class="col-4">
+        <p-image width="100" height="100" [src]="imageUrl" [alt]="pharmaModel.taxpayerNumber" (click)="imageView()" />
+      </div>
+      <input #imageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="imageSelected($event)">
+    </div>
+  </p-card>
+  <p-card class="flex grid m-1" header="{{'pharma-edit-dialog.medicine-pick-list.header' | translate}}" *ngIf="pharmaModel">
+    <div class="flex align-self-center">
+      <p-checkbox class="flex h-fit align-self-center mr-1" [(ngModel)]="isMedicineSearchTypeCode" [binary]="true" />
+      <p-iconField class="flex h-fit" iconPosition="left">
+        <p-inputIcon [styleClass]="medicineSearchStyle" />
+        <input pInputText type="text" [(ngModel)]="medicineSearchValue" placeholder="{{medicineSearchPlaceHolder | translate}}" (keydown)="medicineSearchChange($event)" />
+      </p-iconField>
+    </div>
+    <p-pickList class="flex col-12" [source]="medicineList" [target]="pharmaModel.medicineList" [dragdrop]="true"
+                [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
+                sourceHeader="{{'pharma-edit-dialog.medicine-pick-list.source-header' | translate}}" targetHeader="{{'pharma-edit-dialog.medicine-pick-list.target-header' | translate}}"
+                filterMatchMode="contains" filterBy="innerName"
+                sourceFilterPlaceholder="{{'pharma-edit-dialog.medicine-pick-list.filter-place-holder' | translate}}"
+                [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
+                targetFilterPlaceholder="{{'pharma-edit-dialog.medicine-pick-list.filter-place-holder' | translate}}">
+      <ng-template pTemplate="item" let-medicine>
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <div>{{medicine.kdCode}}</div>
+          <div>{{ellipsis(medicine.name)}}</div>
+        </div>
+      </ng-template>
+    </p-pickList>
+  </p-card>
+</div>

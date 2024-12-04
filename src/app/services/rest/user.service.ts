@@ -6,7 +6,7 @@ import {RestPage} from "../../models/common/rest-page";
 import {UserStatus} from "../../models/rest/user-status";
 import {UserRole} from "../../models/rest/user-role";
 import {UserDept} from "../../models/rest/user-dept";
-import {HosPharmaMedicinePairModel} from "../../models/rest/HosPharmaMedicinePairModel";
+import {HosPharmaMedicinePairModel} from "../../models/rest/hos-pharma-medicine-pair-model";
 
 @Injectable({
   providedIn: "root"

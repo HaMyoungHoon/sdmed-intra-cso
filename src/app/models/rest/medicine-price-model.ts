@@ -2,6 +2,6 @@ export interface MedicinePriceModel {
   thisPK: string;
   kdCode: string;
   maxPrice: number;
-  etc: string;
+  ancestorCode: string;
   applyDate: string;
 }

@@ -8,7 +8,7 @@ import {haveRole, UserRole} from "../../../../../models/rest/user-role";
 import {HospitalService} from "../../../../../services/rest/hospital.service";
 import {PharmaService} from "../../../../../services/rest/pharma.service";
 import {debounceTime, Subject, Subscription} from "rxjs";
-import {HosPharmaMedicinePairModel} from "../../../../../models/rest/HosPharmaMedicinePairModel";
+import {HosPharmaMedicinePairModel} from "../../../../../models/rest/hos-pharma-medicine-pair-model";
 import {applyClass, restTry} from "../../../../../guards/f-extensions";
 
 @Component({
@@ -47,17 +47,11 @@ export class UserMappingComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    this.setLoading();
-    const ret = await restTry(async() => await this.userService.getMyRole(),
-        e => this.fDialogService.error("ngInit", e));
-    this.setLoading(false);
-    if (ret.result) {
-      this.haveRole = haveRole(ret.data, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+    if (this.haveRole) {
       await this.getAllList();
       this.initSearch();
       return;
     }
-    this.fDialogService.warn("ngInit", ret.msg);
   }
   async save(): Promise<void> {
     const thisPK = this.hosPickListUser?.thisPK;
@@ -161,6 +155,8 @@ export class UserMappingComponent extends FComponentBase {
 
   async userListOnSelect(_: any): Promise<void> {
     const buff = this.selectUser;
+    this.selectHos = undefined;
+    this.selectPharma = undefined;
     if (buff == null) {
       this.hosPickListUser = undefined;
       return;
@@ -302,7 +298,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.pharmaService.getPharma(pharma.thisPK, true),
+    const ret = await restTry(async() => await this.pharmaService.getPharmaData(pharma.thisPK, true),
       e => this.fDialogService.error("medicineSearch", e));
     this.setLoading(false);
     if (ret.result) {
