@@ -43,7 +43,7 @@ export class HospitalService {
     return this.httpResponse.post(`${this.baseUrl}/imageUpload`, formData);
   }
   getSampleDownloadExcel(): Promise<any> {
-    return this.httpResponse.get(`${this.baseUrl}/sampleDownloadExcel`);
+    return this.httpResponse.getBlob(`${this.baseUrl}/sampleDownloadExcel`);
   }
   putHospitalDataModify(hospitalData: HospitalModel): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.put(`${this.baseUrl}/modify`, hospitalData);

@@ -9,13 +9,14 @@ import {InputTextModule} from "primeng/inputtext";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
+import {TooltipModule} from "primeng/tooltip";
 
 
 
 @NgModule({
   declarations: [PharmaListComponent],
-	imports: [
-		CommonModule, PharmaListRoutingModule, Button, IconFieldModule, InputIconModule, InputTextModule, PrimeTemplate, TableModule, TranslatePipe
-	]
+  imports: [
+    CommonModule, PharmaListRoutingModule, Button, IconFieldModule, InputIconModule, InputTextModule, PrimeTemplate, TableModule, TranslatePipe, TooltipModule
+  ]
 })
 export class PharmaListModule { }

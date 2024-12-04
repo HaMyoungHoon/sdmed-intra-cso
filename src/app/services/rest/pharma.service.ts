@@ -48,7 +48,7 @@ export class PharmaService {
     return this.httpResponse.post(`${this.baseUrl}/imageUpload`, formData);
   }
   getSampleDownloadExcel(): Promise<any> {
-    return this.httpResponse.get(`${this.baseUrl}/sampleDownloadExcel`);
+    return this.httpResponse.getBlob(`${this.baseUrl}/sampleDownloadExcel`);
   }
   putPharmDataModify(pharmaData: PharmaModel): Promise<RestResult<PharmaModel>> {
     return this.httpResponse.put(`${this.baseUrl}/modify`, pharmaData);

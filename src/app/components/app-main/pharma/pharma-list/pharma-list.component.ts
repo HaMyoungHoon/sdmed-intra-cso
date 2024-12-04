@@ -5,7 +5,7 @@ import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-e
 import {Table} from "primeng/table";
 import {PharmaModel} from "../../../../models/rest/pharma-model";
 import {PharmaService} from "../../../../services/rest/pharma.service";
-import {HospitalModel} from "../../../../models/rest/hospital-model";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-pharma-list",
@@ -34,8 +34,10 @@ export class PharmaListComponent extends FComponentBase {
       e => this.fDialogService.error("getPharmaAll", e));
     this.setLoading(false);
     if (ret.result) {
-      this.initValue = ret.data ?? [];
-      this.pharmaList = ret.data ?? [];
+//      this.initValue = ret.data ?? [];
+      this.initValue = ret.data?.filter(x => !x.innerName.includes("[X]")) ?? [];
+//      this.pharmaList = ret.data ?? [];
+      this.pharmaList = ret.data?.filter(x => !x.innerName.includes("[X]")) ?? [];
       return;
     }
     this.fDialogService.warn("getPharmaAll", ret.msg);
@@ -67,6 +69,14 @@ export class PharmaListComponent extends FComponentBase {
       if (target > 0) {
         new PharmaModel().copyLhsFromRhs(this.pharmaList[target], x);
       }
+    });
+  }
+  async sampleDown(): Promise<void> {
+    this.pharmaService.getSampleDownloadExcel().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "pharmaSampleExcel.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
     });
   }
   async excelSelected(event: any): Promise<void> {

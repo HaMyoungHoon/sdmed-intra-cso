@@ -300,6 +300,7 @@
     "edit": "edit",
     "add": "add",
     "refresh": "refresh",
-    "close": "close"
+    "close": "close",
+    "sample-download": "sample download"
   }
 }

@@ -5,6 +5,7 @@ import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-e
 import {HospitalModel} from "../../../../models/rest/hospital-model";
 import {Table} from "primeng/table";
 import {UserRole} from "../../../../models/rest/user-role";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-hospital-list",
@@ -33,8 +34,10 @@ export class HospitalListComponent extends FComponentBase {
       e => this.fDialogService.error("getHospitalAll", e));
     this.setLoading(false);
     if (ret.result) {
-      this.initValue = ret.data ?? [];
-      this.hospitalList = ret.data ?? [];
+//      this.initValue = ret.data ?? [];
+      this.initValue = ret.data?.filter(x => !x.innerName.includes("[X]")) ?? [];
+//      this.hospitalList = ret.data ?? [];
+      this.hospitalList = ret.data?.filter(x => !x.innerName.includes("[X]")) ?? [];
       return;
     }
     this.fDialogService.warn("getHospitalAll", ret.msg);
@@ -60,6 +63,14 @@ export class HospitalListComponent extends FComponentBase {
       }
       this.initValue.push(x);
       this.hospitalList.push(x);
+    });
+  }
+  async sampleDown(): Promise<void> {
+    this.hospitalService.getSampleDownloadExcel().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "hospitalSampleExcel.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
     });
   }
   async excelSelected(event: any): Promise<void> {
