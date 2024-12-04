@@ -16,7 +16,8 @@ export const HOSPITAL_LIST_URL = "hospital-list";
 
 export const PHARMA_LIST_URL = "pharma-list";
 
-export const MEDICINE_LIST_URL = "medicine-list"
+export const MEDICINE_PRICE_LIST_URL = "medicine-price-list"
+export const MEDICINE_LIST_URL = "medicine-list";
 
 export const MY_INFO_URL = "etc/myInfo";
 export const USER_INFO_URL = "etc/userInfo";

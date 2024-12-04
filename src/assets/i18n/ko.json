@@ -10,7 +10,8 @@
     "sub-menu": {
       "sub-1": "약제급여목록표",
       "sub-2": "병원목록",
-      "sub-3": "제약사목록"
+      "sub-3": "제약사목록",
+      "sub-4": "약품목록"
     }
   },
   "menu-3": {
@@ -32,7 +33,7 @@
       "refresh": "로그인 연장"
     }
   },
-  "medicine-list": {
+  "medicine-price-list": {
     "name": "제품명",
     "kd-code": "보험코드",
     "pharma-name": "판매사",

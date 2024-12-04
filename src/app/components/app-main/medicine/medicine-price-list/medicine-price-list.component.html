@@ -1,0 +1,39 @@
+<div class="medicine-price-list-container">
+  <p-table #medicineListTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, medicineListTable, initValue, medicineModel)" [customSort]="true"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input pInputText type="text" (input)="filterTable(medicineListTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconField>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name" style="min-width: 50rem">{{"medicine-price-list.name" | translate}} <p-sortIcon field="name" /></th>
+        <th>{{"medicine-price-list.kd-code" | translate}}</th>
+        <th pSortableColumn="pharma" style="width: 20rem">{{"medicine-price-list.pharma-name" | translate}} <p-sortIcon field="pharma" /></th>
+        <th style="width: 20rem">{{"medicine-price-list.main-ingredient-code" | translate}}</th>
+        <th pSortableColumn="maxPrice">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
+        <th>{{"medicine-price-list.custom-price" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr [ngClass]="{'zero-price': item.maxPrice === 0}">
+        <td>{{item.name}}</td>
+        <td>{{item.kdCode}}</td>
+        <td>{{item.pharma}}</td>
+        <td>{{item.medicineIngredientModel.mainIngredientName}}</td>
+        <td>{{item.maxPrice}}</td>
+        <td>{{item.customPrice}}</td>
+        <td>
+          <p-button (onClick)="priceHistoryDialogOpen(item)" [disabled]="disablePriceHistory(item)">{{"medicine-price-list.price-history" | translate}}</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

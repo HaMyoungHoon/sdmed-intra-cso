@@ -10,11 +10,11 @@ export function MenuItem2(): MenuItem {
     items: [
       {
         label: "menu-2.sub-menu.sub-1",
-        "path": "M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z",
+        "path": "M260-361v-40H160v-80h200v-80H200q-17 0-28.5-11.5T160-601v-160q0-17 11.5-28.5T200-801h60v-40h80v40h100v80H240v80h160q17 0 28.5 11.5T440-601v160q0 17-11.5 28.5T400-401h-60v40h-80Zm298 240L388-291l56-56 114 114 226-226 56 56-282 282Z",
         "viewBox": "0 -900 900 900",
         "height": "18px",
         "width": "18px",
-        routerLink: `/${FConstants.MEDICINE_LIST_URL}`
+        routerLink: `/${FConstants.MEDICINE_PRICE_LIST_URL}`
       },
       {
         label: "menu-2.sub-menu.sub-2",
@@ -31,6 +31,14 @@ export function MenuItem2(): MenuItem {
         "height": "18px",
         "width": "18px",
         routerLink: `/${FConstants.PHARMA_LIST_URL}`
+      },
+      {
+        label: "menu-2.sub-menu.sub-4",
+        "path": "m678-134 46-46-64-64-46 46q-14 14-14 32t14 32q14 14 32 14t32-14Zm102-102 46-46q14-14 14-32t-14-32q-14-14-32-14t-32 14l-46 46 64 64ZM735-77q-37 37-89 37t-89-37q-37-37-37-89t37-89l148-148q37-37 89-37t89 37q37 37 37 89t-37 89L735-77ZM200-200v-560 560Zm0 80q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v245q-20-5-40-5t-40 3v-243H200v560h243q-3 20-3 40t5 40H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM280-600v-80h400v80H280Zm0 160v-80h400v34q-8 5-15.5 11.5T649-460l-20 20H280Zm0 160v-80h269l-49 49q-8 8-14.5 15.5T474-280H280Z",
+        "viewBox": "0 -900 900 900",
+        "height": "18px",
+        "width": "18px",
+        routerLink: `/${FConstants.MEDICINE_LIST_URL}`
       }
     ]
   }

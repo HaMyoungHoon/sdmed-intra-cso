@@ -8,8 +8,10 @@
   "menu-2": {
     "title": "menu 2",
     "sub-menu": {
-      "sub-1": "pharma benefits list",
-      "sub-2": "menu 2 menu 2"
+      "sub-1": "medicine price list",
+      "sub-2": "hospital list",
+      "sub-3": "pharma list",
+      "sub-4": "medicine list"
     }
   },
   "menu-3": {
@@ -31,7 +33,7 @@
       "refresh": "login refresh"
     }
   },
-  "medicine-list": {
+  "medicine-price-list": {
     "name": "product name",
     "kd-code": "insurance code",
     "pharma-name": "pharma name",
