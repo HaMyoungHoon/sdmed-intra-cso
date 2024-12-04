@@ -34,10 +34,10 @@ export class PharmaListComponent extends FComponentBase {
       e => this.fDialogService.error("getPharmaAll", e));
     this.setLoading(false);
     if (ret.result) {
-//      this.initValue = ret.data ?? [];
-      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
-//      this.pharmaList = ret.data ?? [];
-      this.pharmaList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.initValue = ret.data ?? [];
+//      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.pharmaList = ret.data ?? [];
+//      this.pharmaList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
       return;
     }
     this.fDialogService.warn("getPharmaAll", ret.msg);

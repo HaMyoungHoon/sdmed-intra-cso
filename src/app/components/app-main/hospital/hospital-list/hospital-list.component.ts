@@ -34,10 +34,10 @@ export class HospitalListComponent extends FComponentBase {
       e => this.fDialogService.error("getHospitalAll", e));
     this.setLoading(false);
     if (ret.result) {
-//      this.initValue = ret.data ?? [];
-      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
-//      this.hospitalList = ret.data ?? [];
-      this.hospitalList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.initValue = ret.data ?? [];
+//      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.hospitalList = ret.data ?? [];
+//      this.hospitalList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
       return;
     }
     this.fDialogService.warn("getHospitalAll", ret.msg);
