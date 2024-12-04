@@ -23,7 +23,9 @@ export class UserSettingComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    await this.getUserDataModel();
+    if (this.haveRole) {
+      await this.getUserDataModel();
+    }
   }
   async getUserDataModel(): Promise<void> {
     this.setLoading();

@@ -22,6 +22,12 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
+    if (this.haveRole) {
+      await this.getMedicinePriceList();
+      return;
+    }
+  }
+  async getMedicinePriceList(): Promise<void> {
     this.setLoading();
     const ret = await restTry(async() => await this.medicineService.getMedicineAll(),
       e => this.fDialogService.error("get medicine", e));

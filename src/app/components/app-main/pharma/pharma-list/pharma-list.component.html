@@ -3,7 +3,7 @@
            [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, pharmaListTable, initValue, pharmaList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
-      <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" />
+      <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
       <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
       <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
       <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />

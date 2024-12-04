@@ -3,8 +3,8 @@
            [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, userListTable, initValue, userDataModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
-      <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" />
-      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" />
+      <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" [disabled]="!haveRole" />
+      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" />
       <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
       <p-iconField iconPosition="left" class="ml-auto">
         <p-inputIcon>
