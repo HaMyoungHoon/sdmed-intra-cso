@@ -1,10 +1,10 @@
 import {Component, ViewChild} from "@angular/core";
-import {MedicineService} from "../../../../services/rest/medicine.service";
 import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {customSort, filterTable, restTry} from "../../../../guards/f-extensions";
+import {MedicinePriceListService} from "../../../../services/rest/medicine-price-list.service";
 
 @Component({
   selector: "app-medicine-price-list",
@@ -17,7 +17,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
   isSorted: boolean | null = null;
-  constructor(private medicineService: MedicineService) {
+  constructor(private thisService: MedicinePriceListService) {
     super();
   }
 
@@ -29,7 +29,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
   async getMedicinePriceList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.medicineService.getMedicineAll(),
+    const ret = await restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("get medicine", e));
     this.setLoading(false);
     if (ret.result) {
@@ -46,7 +46,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     col.push(new TableDialogColumn().build("ancestorCode", "medicine-price-list.ancestor-code"))
     col.push(new TableDialogColumn().build("applyDate", "medicine-price-list.apply-date"))
     this.setLoading();
-    const ret = await restTry(async() => await this.medicineService.getMedicinePriceList(data.kdCode),
+    const ret = await restTry(async() => await this.thisService.getHistoryList(data.kdCode),
     e => this.fDialogService.error("priceList", e));
     this.setLoading(false);
     if (!ret.result) {
