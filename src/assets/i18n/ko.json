@@ -301,6 +301,7 @@
     "add": "추가",
     "refresh": "새로고침",
     "close": "닫기",
-    "sample-download": "샘플 다운로드"
+    "sample-download": "샘플 다운로드",
+    "in-visible": "숨김"
   }
 }

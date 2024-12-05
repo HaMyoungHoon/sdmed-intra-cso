@@ -16,8 +16,8 @@ import {allContractTypeDescArray, ContractType, ContactTypeDescToContactType, co
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../models/rest/delivery-div";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
-import {HospitalService} from "../../../services/rest/hospital.service";
 import {CalendarModule} from "primeng/calendar";
+import {HospitalListService} from "../../../services/rest/hospital-list.service";
 
 @Component({
   selector: "app-hospital-edit-dialog",
@@ -46,7 +46,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
-  constructor(private hospitalService: HospitalService) {
+  constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
@@ -69,7 +69,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     }
 
     this.setLoading();
-    const ret = await restTry(async() => await this.hospitalService.getHospitalData(buff.thisPK),
+    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK),
       e => this.fDialogService.error("getHospitalData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -91,7 +91,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     buff.contractType = ContactTypeDescToContactType[this.selectContractType];
     buff.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.hospitalService.putHospitalDataModify(buff),
+    const ret = await restTry(async() => await this.thisService.putData(buff),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -113,7 +113,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.hospitalService.postImageUpload(buff.thisPK, file),
+      const ret = await restTry(async() => await this.thisService.postImage(buff.thisPK, file),
         e => this.fDialogService.error("imageSelected", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);

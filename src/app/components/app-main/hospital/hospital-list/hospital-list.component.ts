@@ -1,11 +1,11 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {HospitalService} from "../../../../services/rest/hospital.service";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
 import {HospitalModel} from "../../../../models/rest/hospital-model";
 import {Table} from "primeng/table";
 import {UserRole} from "../../../../models/rest/user-role";
 import {saveAs} from "file-saver";
+import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 
 @Component({
   selector: "app-hospital-list",
@@ -19,7 +19,7 @@ export class HospitalListComponent extends FComponentBase {
   initValue: HospitalModel[] = [];
   hospitalList: HospitalModel[] = [];
   isSorted: boolean | null = null;
-  constructor(private hospitalService: HospitalService) {
+  constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }
 
@@ -30,7 +30,7 @@ export class HospitalListComponent extends FComponentBase {
   }
   async getHospitalAll(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.hospitalService.getHospitalAll(),
+    const ret = await restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getHospitalAll", e));
     this.setLoading(false);
     if (ret.result) {
@@ -66,7 +66,7 @@ export class HospitalListComponent extends FComponentBase {
     });
   }
   async sampleDown(): Promise<void> {
-    this.hospitalService.getSampleDownloadExcel().then(x => {
+    this.thisService.getExcelSample().then(x => {
       const blob = URL.createObjectURL(x.body);
       saveAs(blob, "hospitalSampleExcel.xlsx");
     }).catch(x => {
@@ -78,7 +78,7 @@ export class HospitalListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.hospitalService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";

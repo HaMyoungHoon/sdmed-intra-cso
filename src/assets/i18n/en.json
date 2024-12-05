@@ -301,6 +301,7 @@
     "add": "add",
     "refresh": "refresh",
     "close": "close",
-    "sample-download": "sample download"
+    "sample-download": "sample download",
+    "in-visible": "invisible"
   }
 }

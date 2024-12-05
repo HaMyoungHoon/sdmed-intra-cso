@@ -12,11 +12,11 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 import {UserRole} from "../../../models/rest/user-role";
 import {HospitalModel} from "../../../models/rest/hospital-model";
-import {HospitalService} from "../../../services/rest/hospital.service";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../models/rest/bill-type";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../models/rest/delivery-div";
 import {restTry} from "../../../guards/f-extensions";
+import {HospitalListService} from "../../../services/rest/hospital-list.service";
 
 @Component({
   selector: "app-hospital-add-dialog",
@@ -33,7 +33,7 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
-  constructor(private hospitalService: HospitalService) {
+  constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }
 
@@ -66,7 +66,7 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
     this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
     this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.hospitalService.postHospitalData(this.hospitalModel),
+    const ret = await restTry(async() => await this.thisService.postData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     console.log(ret);
