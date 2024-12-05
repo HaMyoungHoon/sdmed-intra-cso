@@ -65,6 +65,13 @@ export class MedicinePriceListComponent extends FComponentBase {
       }
     });
   }
+  getApplyDate(data: MedicineModel): string {
+    if (data.medicinePriceModel.length <= 0) {
+      return "None";
+    }
+
+    return data.medicinePriceModel[0].applyDate;
+  }
   disablePriceHistory(data: MedicineModel): boolean {
     return data.medicinePriceModel.length <= 0;
   }

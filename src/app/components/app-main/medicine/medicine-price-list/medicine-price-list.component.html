@@ -20,6 +20,8 @@
         <th style="width: 20rem">{{"medicine-price-list.main-ingredient-code" | translate}}</th>
         <th pSortableColumn="maxPrice">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
         <th>{{"medicine-price-list.custom-price" | translate}}</th>
+        <th>{{"medicine-price-list.apply-date" | translate}}</th>
+        <th>{{"medicine-price-list.price-history" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
@@ -30,6 +32,7 @@
         <td>{{item.medicineIngredientModel.mainIngredientName}}</td>
         <td>{{item.maxPrice}}</td>
         <td>{{item.customPrice}}</td>
+        <td>{{getApplyDate(item)}}</td>
         <td>
           <p-button (onClick)="priceHistoryDialogOpen(item)" [disabled]="disablePriceHistory(item)">{{"medicine-price-list.price-history" | translate}}</p-button>
         </td>
