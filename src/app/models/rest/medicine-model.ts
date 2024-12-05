@@ -12,6 +12,7 @@ export class MedicineModel {
   name: string = ""
   customPrice: number = 0;
   maxPrice: number = 0;
+  inVisible: boolean = false;
   medicineSubModel: MedicineSubModel = new MedicineSubModel();
   medicineIngredientModel: MedicineIngredientModel = new MedicineIngredientModel();
   medicinePriceModel: MedicinePriceModel[] = [];
