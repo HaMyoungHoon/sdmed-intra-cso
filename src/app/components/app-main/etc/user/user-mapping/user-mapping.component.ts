@@ -209,7 +209,6 @@ export class UserMappingComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.hosList = ret.data ?? [];
-//      this.hosList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
       this.hosList = this.hosList.filter(x => !this.sourceHosList.some(y => y.thisPK == x.thisPK));
       return;
     }
@@ -265,7 +264,6 @@ export class UserMappingComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.pharmaList = ret.data ?? [];
-//      this.pharmaList = ret.data?.filter(x => x.innerName.startsWith("[X]")) ?? [];
       this.pharmaList = this.pharmaList.filter(x => !this.sourcePharmaList.some(y => y.thisPK == x.thisPK));
       return;
     }

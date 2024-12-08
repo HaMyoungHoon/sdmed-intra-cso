@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {RestResult} from "../../models/common/rest-result";
 import {HospitalModel} from "../../models/rest/hospital-model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HospitalListService {
 //  private baseUrl = "/apiCSO/intra/hospitalList";

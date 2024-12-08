@@ -4,8 +4,8 @@ import {UserRole} from "../../../../models/rest/user-role";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
 import {Table} from "primeng/table";
 import {PharmaModel} from "../../../../models/rest/pharma-model";
-import {PharmaService} from "../../../../services/rest/pharma.service";
 import {saveAs} from "file-saver";
+import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 
 @Component({
   selector: "app-pharma-list",
@@ -19,7 +19,7 @@ export class PharmaListComponent extends FComponentBase {
   initValue: PharmaModel[] = [];
   pharmaList: PharmaModel[] = [];
   isSorted: boolean | null = null;
-  constructor(private pharmaService: PharmaService) {
+  constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
   }
 
@@ -30,14 +30,12 @@ export class PharmaListComponent extends FComponentBase {
   }
   async getPharmaAll(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.pharmaService.getPharmaAll(),
+    const ret = await restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getPharmaAll", e));
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-//      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
-      this.pharmaList = ret.data ?? [];
-//      this.pharmaList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.pharmaList = [...this.initValue];
       return;
     }
     this.fDialogService.warn("getPharmaAll", ret.msg);
@@ -61,18 +59,12 @@ export class PharmaListComponent extends FComponentBase {
       if (x == null) {
         return;
       }
-      const initTarget = this.initValue?.findIndex(y => y.thisPK == x.thisPK) ?? 0
-      if (initTarget > 0) {
-        new PharmaModel().copyLhsFromRhs(this.initValue[initTarget], x);
-      }
-      const target = this.pharmaList.findIndex(y => y.thisPK == x.thisPK) ?? 0
-      if (target > 0) {
-        new PharmaModel().copyLhsFromRhs(this.pharmaList[target], x);
-      }
+      this.initValue.unshift(new PharmaModel().init(x));
+      this.pharmaList.unshift(new PharmaModel().init(x));
     });
   }
   async sampleDown(): Promise<void> {
-    this.pharmaService.getSampleDownloadExcel().then(x => {
+    this.thisService.getExcelSample().then(x => {
       const blob = URL.createObjectURL(x.body);
       saveAs(blob, "pharmaSampleExcel.xlsx");
     }).catch(x => {
@@ -84,7 +76,7 @@ export class PharmaListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.pharmaService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       if (ret.result) {

@@ -40,6 +40,8 @@
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.addressDetail" />
       </div>
+      <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
+      <p-dropdown class="col-4" [options]="[true, false]" [(ngModel)]="pharmaModel.inVisible" />
     </div>
   </p-card>
   <p-card class="flex grid m-1" *ngIf="pharmaModel">
@@ -112,7 +114,7 @@
     <p-pickList class="flex col-12" [source]="medicineList" [target]="pharmaModel.medicineList" [dragdrop]="true"
                 [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
                 sourceHeader="{{'pharma-edit-dialog.medicine-pick-list.source-header' | translate}}" targetHeader="{{'pharma-edit-dialog.medicine-pick-list.target-header' | translate}}"
-                filterMatchMode="contains" filterBy="innerName"
+                filterMatchMode="contains" filterBy="name"
                 sourceFilterPlaceholder="{{'pharma-edit-dialog.medicine-pick-list.filter-place-holder' | translate}}"
                 [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
                 targetFilterPlaceholder="{{'pharma-edit-dialog.medicine-pick-list.filter-place-holder' | translate}}">

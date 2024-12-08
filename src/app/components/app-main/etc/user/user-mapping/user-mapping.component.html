@@ -65,7 +65,7 @@
     <p-pickList class="flex col-12" [source]="medicineList" [target]="sourceMedicineList" [disabled]="medicinePickListDisable" [dragdrop]="true"
                 [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
                 sourceHeader="{{'user-mapping.medicine-pick-list.source-header' | translate}}" targetHeader="{{'user-mapping.medicine-pick-list.target-header' | translate}}"
-                filterMatchMode="contains" filterBy="innerName"
+                filterMatchMode="contains" filterBy="name"
                 sourceFilterPlaceholder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}"
                 [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
                 targetFilterPlaceholder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}">

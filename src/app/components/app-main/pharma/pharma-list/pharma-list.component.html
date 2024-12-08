@@ -3,17 +3,19 @@
            [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, pharmaListTable, initValue, pharmaList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
-      <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
-      <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
-      <p-iconField iconPosition="left" class="ml-auto">
-        <p-inputIcon>
-          <i class="pi pi-search"></i>
-        </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable(pharmaListTable, $event, 'contains')" placeholder="Search keyword" />
-      </p-iconField>
+      <div class="flex">
+        <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
+        <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+        <p-iconField iconPosition="left" class="ml-auto justify-content-end">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input pInputText type="text" (input)="filterTable(pharmaListTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconField>
+      </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>

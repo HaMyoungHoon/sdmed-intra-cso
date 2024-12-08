@@ -34,7 +34,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-      this.medicineModel = ret.data ?? [];
+      this.medicineModel = [...this.initValue];
       return;
     }
     this.fDialogService.warn("get medicine", ret.msg);

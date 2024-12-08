@@ -35,9 +35,7 @@ export class HospitalListComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-//      this.initValue = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
-      this.hospitalList = ret.data ?? [];
-//      this.hospitalList = ret.data?.filter(x => !x.innerName.startsWith("[X]")) ?? [];
+      this.hospitalList = [...this.initValue];
       return;
     }
     this.fDialogService.warn("getHospitalAll", ret.msg);
@@ -61,8 +59,8 @@ export class HospitalListComponent extends FComponentBase {
       if (x == null) {
         return;
       }
-      this.initValue.push(x);
-      this.hospitalList.push(x);
+      this.initValue.unshift(x);
+      this.hospitalList.unshift(x);
     });
   }
   async sampleDown(): Promise<void> {

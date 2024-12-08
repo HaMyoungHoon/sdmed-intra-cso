@@ -1,6 +1,5 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
-import {PharmaService} from "../../../services/rest/pharma.service";
 import {UserRole} from "../../../models/rest/user-role";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../models/rest/bill-type";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../models/rest/contract-type";
@@ -27,6 +26,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {debounceTime, Subject, Subscription} from "rxjs";
+import {PharmaListService} from "../../../services/rest/pharma-list.service";
 
 @Component({
   selector: "app-pharma-edit-dialog",
@@ -56,7 +56,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   medicineSearchSubject: Subject<string> = new Subject<string>();
   medicineSearchObserver?: Subscription;
   medicineSearchDebounceTime: number = 1000;
-  constructor(private pharmaService: PharmaService, private medicineService: MedicineService) {
+  constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
@@ -85,7 +85,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     }
 
     this.setLoading();
-    const ret = await restTry(async() => await this.pharmaService.getPharmaData(buff.thisPK, true),
+    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK, true),
       e => this.fDialogService.error("getPharmaData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -116,7 +116,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       return;
     }
 
-    const ret = await restTry(async() => await this.pharmaService.putPharmDataModify(buff),
+    const ret = await restTry(async() => await this.thisService.putData(buff),
       e => this.fDialogService.error("saveData", e));
     if (ret.result) {
       this.ref.close(ret.data);
@@ -130,7 +130,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       return false;
     }
     const medicineList = buff.medicineList.map(x => x.thisPK);
-    const ret = await restTry(async() => await this.pharmaService.putPharmaModMedicine(buff.thisPK, medicineList),
+    const ret = await restTry(async() => await this.thisService.putMedicine(buff.thisPK, medicineList),
       e => this.fDialogService.error("medicineListModify", e));
     if (ret.result) {
       return true;
@@ -151,7 +151,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.pharmaService.postImageUpload(buff.thisPK, file),
+      const ret = await restTry(async() => await this.thisService.postImage(buff.thisPK, file),
         e => this.fDialogService.error("imageSelected", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
@@ -194,7 +194,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     if (this.medicineSearchValue.length <= 0) {
       return;
     }
-    const ret = await restTry(async() => await this.medicineService.getMedicineAllSearch(this.medicineSearchValue, this.isMedicineSearchTypeCode),
+    const ret = await restTry(async() => await this.thisService.getMedicine(this.medicineSearchValue, this.isMedicineSearchTypeCode),
       e => this.fDialogService.error("medicineSearch", e));
     if (ret.result) {
       this.medicineList = ret.data ?? [];

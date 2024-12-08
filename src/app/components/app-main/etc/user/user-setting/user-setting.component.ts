@@ -34,7 +34,7 @@ export class UserSettingComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-      this.userDataModel = ret.data ?? [];
+      this.userDataModel = [...this.initValue];
       return;
     }
     this.fDialogService.warn("getUserAll", ret.msg);
