@@ -74,14 +74,8 @@
       </div>
       <label class="col-2 align-self-center">{{"pharma-add-dialog.open-date" | translate}}</label>
       <p-calendar class="col-4" [(ngModel)]="pharmaModel.openDate" dateFormat="yy-mm-dd" />
-      <!--
-      <label class="col-4">{{dateToYearFullString(stringToDate(pharmaModel.openDate))}}</label>
-      -->
       <label class="col-2 align-self-center">{{"pharma-add-dialog.close-date" | translate}}</label>
       <p-calendar class="col-4" [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" />
-      <!--
-      <label class="col-4">{{dateToYearFullString(stringToDate(pharmaModel.closeDate))}}</label>
-      -->
       <label class="col-2 align-self-center">{{"pharma-add-dialog.etc1" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc1" />
