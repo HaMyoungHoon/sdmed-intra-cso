@@ -98,7 +98,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("saveData", ret.msg);
   }
   closeThis(): void {
-    this.ref.close(this.hospitalModel);
+    this.ref.close();
   }
 
   async imageSelected(event: any): Promise<void> {

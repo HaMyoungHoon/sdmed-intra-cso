@@ -63,7 +63,9 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    await this.getPharmaData();
+    if (this.haveRole) {
+      await this.getPharmaData();
+    }
   }
   initLayoutData(): void {
     this.medicineSearchObserver = this.medicineSearchSubject.pipe(debounceTime(this.medicineSearchDebounceTime))
@@ -133,7 +135,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     return false;
   }
   closeThis(): void {
-    this.ref.close(this.pharmaModel);
+    this.ref.close();
   }
 
   async imageSelected(event: any): Promise<void> {

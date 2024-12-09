@@ -99,7 +99,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("saveUserData", ret1.msg);
   }
   closeThis(): void {
-    this.ref.close(this.userDataModel);
+    this.ref.close();
   }
 
   get taxpayerImageUrl(): string {

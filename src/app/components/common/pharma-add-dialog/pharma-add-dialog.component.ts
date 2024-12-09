@@ -80,7 +80,7 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
     this.pharmaModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
 
-    const ret = await restTry(async() => this.thisService.postData(this.pharmaModel),
+    const ret = await restTry(async() => await this.thisService.postData(this.pharmaModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
