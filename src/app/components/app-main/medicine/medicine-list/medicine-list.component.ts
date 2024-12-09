@@ -88,7 +88,7 @@ export class MedicineListComponent extends FComponentBase {
       this.fDialogService.warn("excelSelected", ret.msg);
     }
   }
-  pharmaEdit(data: MedicineModel): void {
+  medicineEdit(data: MedicineModel): void {
     this.fDialogService.openPharmaEditDialog({
       modal: true,
       closable: false,
