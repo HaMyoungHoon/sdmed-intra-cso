@@ -20,7 +20,7 @@ export function stringToMedicineMethod(data?: string): MedicineMethod {
 
   return StringToMedicineMethod[data];
 }
-export function MedicineMethodToMedicineMethodDesc(medicineMethod?: MedicineMethod | string): string {
+export function medicineMethodToMedicineMethodDesc(medicineMethod?: MedicineMethod | string): string {
   if (typeof(medicineMethod) == "string") {
     return StringToMedicineMethodDesc[medicineMethod];
   }

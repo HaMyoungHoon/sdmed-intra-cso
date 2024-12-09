@@ -17,7 +17,7 @@ export function stringToMedicineDiv(data?: string): MedicineDiv {
 
   return StringToMedicineDiv[data];
 }
-export function MedicineDivToMedicineDivDesc(medicineDiv?: MedicineDiv | string): string {
+export function medicineDivToMedicineDivDesc(medicineDiv?: MedicineDiv | string): string {
   if (typeof(medicineDiv) == "string") {
     return StringToMedicineDivDesc[medicineDiv];
   }

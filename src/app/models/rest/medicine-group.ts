@@ -20,7 +20,7 @@ export function stringToMedicineGroup(data?: string): MedicineGroup {
 
   return StringToMedicineGroup[data];
 }
-export function MedicineGroupToMedicineGroupDesc(medicineGroup?: MedicineGroup | string): string {
+export function medicineGroupToMedicineGroupDesc(medicineGroup?: MedicineGroup | string): string {
   if (typeof(medicineGroup) == "string") {
     return StringToMedicineGroupDesc[medicineGroup];
   }

@@ -26,7 +26,7 @@ export function stringToMedicineRank(data?: string): MedicineRank {
 
   return StringToMedicineRank[data];
 }
-export function MedicineRankToMedicineRankDesc(medicineRank?: MedicineRank | string): string {
+export function medicineRankToMedicineRankDesc(medicineRank?: MedicineRank | string): string {
   if (typeof(medicineRank) == "string") {
     return StringToMedicineRankDesc[medicineRank];
   }

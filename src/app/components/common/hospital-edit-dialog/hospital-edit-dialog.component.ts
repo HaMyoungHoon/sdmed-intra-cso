@@ -40,9 +40,9 @@ import {HospitalListService} from "../../../services/rest/hospital-list.service"
 export class HospitalEditDialogComponent extends FDialogComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
   hospitalModel?: HospitalModel;
-  billTypeList: string[] = [];
-  contractTypeList: string[] = [];
-  deliveryDivList: string[] = [];
+  billTypeList: string[] = allBillTypeDescArray();
+  contractTypeList: string[] = allContractTypeDescArray();
+  deliveryDivList: string[] = allDeliveryDivDescArray();
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
@@ -58,9 +58,6 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   }
 
   initLayoutData(): void {
-    this.billTypeList = allBillTypeDescArray();
-    this.contractTypeList = allContractTypeDescArray();
-    this.deliveryDivList = allDeliveryDivDescArray();
   }
   async getHospitalData(): Promise<void> {
     const buff = this.hospitalModel;

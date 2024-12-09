@@ -27,9 +27,9 @@ import {HospitalListService} from "../../../services/rest/hospital-list.service"
 })
 export class HospitalAddDialogComponent extends FDialogComponentBase {
   hospitalModel: HospitalModel = new HospitalModel();
-  billTypeList: string[] = [];
-  contractTypeList: string[] = [];
-  deliveryDivList: string[] = [];
+  billTypeList: string[] = allBillTypeDescArray();
+  contractTypeList: string[] = allContractTypeDescArray();
+  deliveryDivList: string[] = allDeliveryDivDescArray();
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
@@ -38,9 +38,6 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    this.billTypeList = allBillTypeDescArray();
-    this.contractTypeList = allContractTypeDescArray();
-    this.deliveryDivList = allDeliveryDivDescArray();
   }
 
   async saveData(): Promise<void> {

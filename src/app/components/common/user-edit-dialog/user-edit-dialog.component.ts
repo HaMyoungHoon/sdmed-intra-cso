@@ -31,9 +31,9 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
   userDataModel?: UserDataModel;
-  userRoleList: string[] = [];
-  userDeptList: string[] = [];
-  userStatusList: string[] = [];
+  userRoleList: string[] = allUserRoleDescArray();
+  userDeptList: string[] = allUserDeptDescArray();
+  userStatusList: string[] = allUserStatusDescArray();
   selectedUserRoles: any;
   selectedUserDepts: any;
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
@@ -51,9 +51,6 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
 
   initLayoutData(): void {
-    this.userRoleList = allUserRoleDescArray();
-    this.userDeptList = allUserDeptDescArray();
-    this.userStatusList = allUserStatusDescArray();
   }
   async getUserData(): Promise<void> {
     const data = this.userDataModel;

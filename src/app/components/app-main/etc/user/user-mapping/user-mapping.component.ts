@@ -4,7 +4,7 @@ import {UserDataModel} from "../../../../../models/rest/user-data-model";
 import {HospitalModel} from "../../../../../models/rest/hospital-model";
 import {PharmaModel} from "../../../../../models/rest/pharma-model";
 import {MedicineModel} from "../../../../../models/rest/medicine-model";
-import {haveRole, UserRole} from "../../../../../models/rest/user-role";
+import {UserRole} from "../../../../../models/rest/user-role";
 import {HospitalService} from "../../../../../services/rest/hospital.service";
 import {PharmaService} from "../../../../../services/rest/pharma.service";
 import {debounceTime, Subject, Subscription} from "rxjs";

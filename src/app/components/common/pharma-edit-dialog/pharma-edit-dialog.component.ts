@@ -19,7 +19,6 @@ import {NgIf} from "@angular/common";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MedicineService} from "../../../services/rest/medicine.service";
 import {MedicineModel} from "../../../models/rest/medicine-model";
 import {PickListModule} from "primeng/picklist";
 import {CheckboxModule} from "primeng/checkbox";
@@ -38,11 +37,11 @@ import {PharmaListService} from "../../../services/rest/pharma-list.service";
 export class PharmaEditDialogComponent extends FDialogComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
   pharmaModel?: PharmaModel;
-  billTypeList: string[] = [];
-  pharmaTypeList: string[] = [];
-  pharmaGroupList: string[] = [];
-  contractTypeList: string[] = [];
-  deliveryDivList: string[] = [];
+  billTypeList: string[] = allBillTypeDescArray();
+  pharmaTypeList: string[] = allPharmaTypeDescArray();
+  pharmaGroupList: string[] = allPharmaGroupDescArray();
+  contractTypeList: string[] = allContractTypeDescArray();
+  deliveryDivList: string[] = allDeliveryDivDescArray();
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectPharmaType: string = pharmaTypeToPharmaTypeDesc(PharmaType.None);
   selectPharmaGroup: string = pharmaGroupToPharmaGroupDesc(PharmaGroup.None);
@@ -67,11 +66,6 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     await this.getPharmaData();
   }
   initLayoutData(): void {
-    this.billTypeList = allBillTypeDescArray();
-    this.pharmaTypeList = allPharmaTypeDescArray();
-    this.pharmaGroupList = allPharmaGroupDescArray();
-    this.contractTypeList = allContractTypeDescArray();
-    this.deliveryDivList = allDeliveryDivDescArray();
     this.medicineSearchObserver = this.medicineSearchSubject.pipe(debounceTime(this.medicineSearchDebounceTime))
       .subscribe(async() => {
         this.medicineSearchLoading = false;

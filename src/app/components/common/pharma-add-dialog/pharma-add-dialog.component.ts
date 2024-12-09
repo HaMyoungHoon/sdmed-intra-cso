@@ -33,11 +33,11 @@ import {restTry} from "../../../guards/f-extensions";
 })
 export class PharmaAddDialogComponent extends FDialogComponentBase {
   pharmaModel: PharmaModel = new PharmaModel();
-  billTypeList: string[] = [];
-  pharmaTypeList: string[] = [];
-  pharmaGroupList: string[] = [];
-  contractTypeList: string[] = [];
-  deliveryDivList: string[] = [];
+  billTypeList: string[] = allBillTypeDescArray();
+  pharmaTypeList: string[] = allPharmaTypeDescArray();
+  pharmaGroupList: string[] = allPharmaGroupDescArray();
+  contractTypeList: string[] = allContractTypeDescArray();
+  deliveryDivList: string[] = allDeliveryDivDescArray();
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectPharmaType: string = pharmaTypeToPharmaTypeDesc(PharmaType.None);
   selectPharmaGroup: string = pharmaGroupToPharmaGroupDesc(PharmaGroup.None);
@@ -52,11 +52,6 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
 
   }
   initLayoutData(): void {
-    this.billTypeList = allBillTypeDescArray();
-    this.pharmaTypeList = allPharmaTypeDescArray();
-    this.pharmaGroupList = allPharmaGroupDescArray();
-    this.contractTypeList = allContractTypeDescArray();
-    this.deliveryDivList = allDeliveryDivDescArray();
   }
 
   async saveData(): Promise<void> {

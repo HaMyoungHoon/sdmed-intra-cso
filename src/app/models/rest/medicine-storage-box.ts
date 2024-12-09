@@ -17,7 +17,7 @@ export function stringToMedicineStorageBox(data?: string): MedicineStorageBox {
 
   return StringToMedicineStorageBox[data];
 }
-export function MedicineStorageBoxToMedicineStorageBoxDesc(medicineStorageBox?: MedicineStorageBox | string): string {
+export function medicineStorageBoxToMedicineStorageBoxDesc(medicineStorageBox?: MedicineStorageBox | string): string {
   if (typeof(medicineStorageBox) == "string") {
     return StringToMedicineStorageBoxDesc[medicineStorageBox];
   }
