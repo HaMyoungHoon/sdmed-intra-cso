@@ -5,6 +5,7 @@ import {MedicineGroup} from "./medicine-group";
 import {MedicineRank} from "./medicine-rank";
 import {MedicineStorageTemp} from "./medicine-storage-temp";
 import {MedicineStorageBox} from "./medicine-storage-box";
+import {MedicineDiv} from "./medicine-div";
 
 export class MedicineSubModel {
   thisPK: string = "";
@@ -15,6 +16,7 @@ export class MedicineSubModel {
   medicineMethod: MedicineMethod = MedicineMethod.ETC;
   medicineCategory: MedicineCategory = MedicineCategory.ETC;
   medicineGroup: MedicineGroup = MedicineGroup.Medicine;
+  medicineDiv: MedicineDiv = MedicineDiv.Open;
   medicineRank: MedicineRank = MedicineRank.None;
   medicineStorageTemp: MedicineStorageTemp = MedicineStorageTemp.RoomTemp;
   medicineStorageBox: MedicineStorageBox = MedicineStorageBox.Confidential;
