@@ -5,9 +5,7 @@ import {UserSettingComponent} from "./user-setting.component";
 
 
 @NgModule({
-  imports: [
-    RouterModule.forChild([{path: "", component: UserSettingComponent}])
-  ],
+  imports: [RouterModule.forChild([{path: "", component: UserSettingComponent}])],
   exports: [RouterModule]
 })
 export class UserSettingRoutingModule { }

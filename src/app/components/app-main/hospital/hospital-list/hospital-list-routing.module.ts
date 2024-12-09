@@ -5,9 +5,7 @@ import {HospitalListComponent} from "./hospital-list.component";
 
 
 @NgModule({
-  imports: [
-    RouterModule.forChild([{path:"", component: HospitalListComponent}])
-  ],
+  imports: [RouterModule.forChild([{path:"", component: HospitalListComponent}])],
   exports: [RouterModule]
 })
 export class HospitalListRoutingModule { }

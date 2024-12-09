@@ -5,9 +5,7 @@ import {MedicinePriceListComponent} from "./medicine-price-list.component";
 
 
 @NgModule({
-  imports: [
-    RouterModule.forChild([{path:"", component: MedicinePriceListComponent}])
-  ],
+  imports: [RouterModule.forChild([{path:"", component: MedicinePriceListComponent}])],
   exports: [RouterModule]
 })
 export class MedicinePriceListRoutingModule { }
