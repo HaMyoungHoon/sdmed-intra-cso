@@ -13,7 +13,7 @@ import {Table} from "primeng/table";
   standalone: false
 })
 export class UserSettingComponent extends FComponentBase {
-  @ViewChild("userListTable") userListTable!: Table;
+  @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   initValue: UserDataModel[] = [];
   userDataModel: UserDataModel[] = [];

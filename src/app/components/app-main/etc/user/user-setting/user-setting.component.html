@@ -1,6 +1,6 @@
 <div class="user-setting-container">
-  <p-table #userListTable [value]="userDataModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, userListTable, initValue, userDataModel)" [customSort]="true"
+  <p-table #listTable [value]="userDataModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, listTable, initValue, userDataModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" [disabled]="!haveRole" />
@@ -10,7 +10,7 @@
         <p-inputIcon>
           <i class="pi pi-search"></i>
         </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable(userListTable, $event, 'contains')" placeholder="Search keyword" />
+        <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
       </p-iconField>
     </ng-template>
     <ng-template pTemplate="header">
