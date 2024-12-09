@@ -81,7 +81,6 @@ export class FDialogService {
   }
   warn(title: string, detail?: string): void {
     if ((detail?.length ?? 0) <= 0) {
-      console.log(detail);
       return;
     }
     this.add(ToastLevel.warn, title, detail);

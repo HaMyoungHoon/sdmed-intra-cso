@@ -1,6 +1,6 @@
 <div class="medicine-list-container">
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
+           [globalFilterFields]="['code', 'name', 'medicineIngredientModel.mainIngredientName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -19,23 +19,25 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="code">{{"pharma-list.code" | translate}} <p-sortIcon field="code" /></th>
-        <th pSortableColumn="orgName">{{"pharma-list.inner-name" | translate}} <p-sortIcon field="orgName" /></th>
-        <th pSortableColumn="innerName">{{"pharma-list.org-name" | translate}} <p-sortIcon field="innerName" /></th>
-        <th>{{"pharma-list.address" | translate}}</th>
-        <th>{{"pharma-list.etc1" | translate}}</th>
-        <th>{{"pharma-list.etc2" | translate}}</th>
+        <th pSortableColumn="code">{{"medicine-list.code" | translate}} <p-sortIcon field="code" /></th>
+        <th pSortableColumn="name">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
+        <th>{{"medicine-list.main-ingredient-name" | translate}}</th>
+        <th>{{"medicine-list.custom-price" | translate}}</th>
+        <th>{{"medicine-list.max-price" | translate}}</th>
+        <th>{{"medicine-list.etc1" | translate}}</th>
+        <th>{{"medicine-list.etc2" | translate}}</th>
         <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-medicine>
       <tr>
         <td>{{medicine.code}}</td>
-        <td>{{medicine.orgName}}</td>
-        <td>{{medicine.innerName}}</td>
-        <td>{{medicine.address}}</td>
-        <td>{{ellipsis(medicine.etc1)}}</td>
-        <td>{{ellipsis(medicine.etc2)}}</td>
+        <td>{{medicine.name}}</td>
+        <td>{{medicine.medicineIngredientModel.mainIngredientName}}</td>
+        <td>{{medicine.customPrice}}</td>
+        <td>{{medicine.maxPrice}}</td>
+        <td>{{ellipsis(medicine.medicineSubModel.etc1)}}</td>
+        <td>{{ellipsis(medicine.medicineSubModel.etc2)}}</td>
         <td>
           <p-button class="p-button-sm" (onClick)="medicineEdit(medicine)" [disabled]="!haveRole">{{"common-desc.edit" | translate}}</p-button>
         </td>

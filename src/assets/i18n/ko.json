@@ -63,6 +63,15 @@
     "etc1": "비고1",
     "etc2": "비고2"
   },
+  "medicine-list": {
+    "code": "코드",
+    "name": "이름",
+    "main-ingredient-name": "주성분이름",
+    "custom-price": "지정가",
+    "max-price": "상한가",
+    "etc1": "비고1",
+    "etc2": "비고2"
+  },
   "my-info": {
     "accordion-header": {
       "detail": "내 정보",
@@ -294,6 +303,7 @@
     "kd-code": "kd 코드",
     "standard-code": "표준코드",
     "name": "이름",
+    "pharma": "제약사",
     "custom-price": "지정가",
     "standard": "규격",
     "account-unit": "계산단위",
@@ -313,13 +323,13 @@
   "medicine-add-dialog": {
     "warn": {
       "code": "코드를 입력해주세요.",
-      "org-name": "이름을 입력해주세요.",
-      "inner-name": "내부명을 입력해주세요."
+      "name": "이름을 입력해주세요."
     },
     "code": "코드",
     "main-ingredient-code": "주성분코드",
     "kd-code": "kd 코드",
     "standard-code": "표준코드",
+    "pharma": "제약사",
     "name": "이름",
     "custom-price": "지정가",
     "standard": "규격",

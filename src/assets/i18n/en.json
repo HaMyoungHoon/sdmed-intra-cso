@@ -63,6 +63,15 @@
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
+  "medicine-list": {
+    "code": "code",
+    "name": "name",
+    "main-ingredient-name": "main ingredient name",
+    "custom-price": "custom price",
+    "max-price": "max price",
+    "etc1": "et cetera",
+    "etc2": "et cetera"
+  },
   "my-info": {
     "accordion-header": {
       "detail": "my info",
@@ -293,6 +302,7 @@
     "main-ingredient-code": "main ingredient code",
     "kd-code": "kd code",
     "standard-code": "standard code",
+    "pharma": "pharma",
     "name": "name",
     "custom-price": "custom price",
     "standard": "standard",
@@ -313,13 +323,13 @@
   "medicine-add-dialog": {
     "warn": {
       "code": "plz input code",
-      "org-name": "plz input org name",
-      "inner-name": "plz input inner name"
+      "name": "plz input name"
     },
     "code": "code",
     "main-ingredient-code": "main ingredient code",
     "kd-code": "kd code",
     "standard-code": "standard code",
+    "pharma": "pharma",
     "name": "name",
     "custom-price": "custom price",
     "standard": "standard",

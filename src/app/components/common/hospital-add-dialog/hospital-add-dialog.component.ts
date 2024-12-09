@@ -66,7 +66,6 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
     const ret = await restTry(async() => await this.thisService.postData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
-    console.log(ret);
     if (ret.result) {
       this.ref.close(ret.data);
       return;

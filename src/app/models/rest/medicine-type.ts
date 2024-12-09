@@ -28,12 +28,12 @@ export const MedicineTypeDesc: { [key in MedicineType]: string } = {
   [MedicineType.Expert]: "전문",
 }
 export const StringToMedicineTypeDesc: { [key in string]: string } = {
-  "None": "일반",
-  "Recipient": "전문",
+  "General": "일반",
+  "Expert": "전문",
 }
 export const StringToMedicineType: { [key in string]: MedicineType } = {
-  "None": MedicineType.General,
-  "Recipient": MedicineType.Expert,
+  "General": MedicineType.General,
+  "Expert": MedicineType.Expert,
 }
 export const MedicineTypeDescToMedicineType: { [key in string]: MedicineType } = {
   "일반": MedicineType.General,

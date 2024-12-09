@@ -24,7 +24,7 @@ export class MedicineListComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (!this.haveRole) {
+    if (this.haveRole) {
       await this.getMedicineAll();
     }
   }
@@ -89,7 +89,7 @@ export class MedicineListComponent extends FComponentBase {
     }
   }
   medicineEdit(data: MedicineModel): void {
-    this.fDialogService.openPharmaEditDialog({
+    this.fDialogService.openMedicineEditDialog({
       modal: true,
       closable: false,
       closeOnEscape: true,

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import {RestResult} from "../../models/common/rest-result";
 import {MedicineModel} from "../../models/rest/medicine-model";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
+import {MedicineIngredientModel} from "../../models/rest/medicine-ingredient-model";
 
 @Injectable({
   providedIn: "root"
@@ -17,6 +18,9 @@ export class MedicineListService {
   }
   getData(thisPK: string): Promise<RestResult<MedicineModel>> {
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
+  }
+  getMainIngredientList(): Promise<RestResult<MedicineIngredientModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/list/mainIngredient`);
   }
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
