@@ -13,6 +13,8 @@ import {HospitalEditDialogComponent} from "../../components/common/hospital-edit
 import {HospitalAddDialogComponent} from "../../components/common/hospital-add-dialog/hospital-add-dialog.component";
 import {PharmaEditDialogComponent} from "../../components/common/pharma-edit-dialog/pharma-edit-dialog.component";
 import {PharmaAddDialogComponent} from "../../components/common/pharma-add-dialog/pharma-add-dialog.component";
+import {MedicineEditDialogComponent} from "../../components/common/medicine-edit-dialog/medicine-edit-dialog.component";
+import {MedicineAddDialogComponent} from "../../components/common/medicine-add-dialog/medicine-add-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -53,6 +55,14 @@ export class FDialogService {
   }
   openPharmaAddDialog(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(PharmaAddDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openMedicineEditDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(MedicineEditDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openMedicineAddDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(MedicineAddDialogComponent, config);
     return this.ref.onClose;
   }
   openHtmlEdit(config: DynamicDialogConfig): Observable<any> {
