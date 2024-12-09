@@ -60,6 +60,24 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
   }
 
   async saveData(): Promise<void> {
+    if (this.pharmaModel.code <= 0) {
+      this.translateService.get("pharma-add-dialog.warn.code").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return
+    }
+    if (this.pharmaModel.orgName.length <= 0) {
+      this.translateService.get("pharma-add-dialog.warn.org-name").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
+    if (this.pharmaModel.innerName.length <= 0) {
+      this.translateService.get("pharma-add-dialog.warn.inner-name").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
     this.pharmaModel.billType = BillTypeDescToBillType[this.selectBillType];
     this.pharmaModel.pharmaType = PharmaTypeDescToPharmaType[this.selectPharmaType];
     this.pharmaModel.pharmaGroup = PharmaGroupDescToPharmaGroup[this.selectPharmaType];
