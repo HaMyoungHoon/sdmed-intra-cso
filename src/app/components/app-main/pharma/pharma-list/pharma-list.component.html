@@ -1,14 +1,17 @@
-<div class="hospital-list-container">
+<div class="pharma-list-container">
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <div class="flex">
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
-        <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" pTooltip="{{'pharma-list.post-pharma-data' | translate}}"/>
         <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
-        <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+        <p-button class="m-1" (onClick)="uploadPharmaMedicineExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" pTooltip="{{'pharma-list.post-pharma-medicine' | translate}}" />
+        <p-button class="m-1" (onClick)="pharmaMedicineSampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
+        <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
+        <input #inputPharmaMedicineUploadExcel class="collapse" type="file" accept=".xlsx" (change)="pharmaMedicineExcelSelected($event)">
         <p-iconField iconPosition="left" class="ml-auto justify-content-end">
           <p-inputIcon>
             <i class="pi pi-search"></i>

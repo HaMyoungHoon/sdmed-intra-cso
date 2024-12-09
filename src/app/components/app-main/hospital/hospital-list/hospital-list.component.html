@@ -7,7 +7,7 @@
       <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
       <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
       <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
-      <input #inputUploadExcel type="file" style="display: none;" accept=".xlsx" (change)="excelSelected($event)">
+      <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
       <p-iconField iconPosition="left" class="ml-auto">
         <p-inputIcon>
           <i class="pi pi-search"></i>

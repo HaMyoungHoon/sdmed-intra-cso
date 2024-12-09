@@ -94,7 +94,7 @@
       <div class="col-4">
         <p-image width="100" height="100" [src]="imageUrl" [alt]="pharmaModel.taxpayerNumber" (click)="imageView()" />
       </div>
-      <input #imageInput type="file" style="display: none;" accept=".jpg,.jpeg,.png,.webp" (change)="imageSelected($event)">
+      <input #imageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp" (change)="imageSelected($event)">
     </div>
   </p-card>
   <p-card class="flex grid m-1" header="{{'pharma-edit-dialog.medicine-pick-list.header' | translate}}" *ngIf="pharmaModel">

@@ -56,6 +56,8 @@
     "etc2": "비고2"
   },
   "pharma-list": {
+    "post-pharma-data": "제약사 엑셀 업로드",
+    "post-pharma-medicine": "제약사-약품 엑셀 업로드",
     "code": "코드",
     "inner-name": "내부명",
     "org-name": "이름",

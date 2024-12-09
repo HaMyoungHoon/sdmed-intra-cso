@@ -81,6 +81,7 @@ export class MedicineListComponent extends FComponentBase {
       const ret = await restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
+      this.inputUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.getMedicineAll();
         return;

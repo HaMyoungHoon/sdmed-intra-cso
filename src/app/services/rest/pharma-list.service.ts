@@ -49,4 +49,14 @@ export class PharmaListService {
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
     return this.httpResponse.get(`${this.baseUrl}/medicine/list`);
   }
+
+  getPharmaMedicineExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample/pharmaMedicine`);
+  }
+  postPharmaMedicineExcel(file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/file/excel/pharmaMedicine`, formData);
+  }
 }

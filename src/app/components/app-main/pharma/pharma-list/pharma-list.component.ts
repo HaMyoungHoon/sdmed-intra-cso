@@ -16,6 +16,7 @@ import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 export class PharmaListComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
+  @ViewChild("inputPharmaMedicineUploadExcel") inputPharmaMedicineUploadExcel!: ElementRef<HTMLInputElement>;
   initValue: PharmaModel[] = [];
   viewList: PharmaModel[] = [];
   isSorted: boolean | null = null;
@@ -79,6 +80,34 @@ export class PharmaListComponent extends FComponentBase {
       const ret = await restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
+      this.inputUploadExcel.nativeElement.value = "";
+      if (ret.result) {
+        await this.getPharmaAll();
+        return;
+      }
+      this.fDialogService.warn("excelSelected", ret.msg);
+    }
+  }
+  uploadPharmaMedicineExcel(): void {
+    this.inputPharmaMedicineUploadExcel.nativeElement.click();
+  }
+  pharmaMedicineSampleDown(): void {
+    this.thisService.getPharmaMedicineExcelSample().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "pharmaSampleExcel.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
+    });
+  }
+  async pharmaMedicineExcelSelected(event: any): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.setLoading();
+      const ret = await restTry(async() => await this.thisService.postPharmaMedicineExcel(file),
+        e => this.fDialogService.error("excelSelected", e));
+      this.setLoading(false);
+      this.inputPharmaMedicineUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.getPharmaAll();
         return;
