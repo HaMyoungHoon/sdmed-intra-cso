@@ -11,7 +11,6 @@ import {InputIconModule} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {NgIf} from "@angular/common";
 import {PickListModule} from "primeng/picklist";
-import {PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {PharmaListService} from "../../../services/rest/pharma-list.service";
