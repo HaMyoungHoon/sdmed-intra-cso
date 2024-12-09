@@ -13,7 +13,7 @@ import {MedicinePriceListService} from "../../../../services/rest/medicine-price
   standalone: false
 })
 export class MedicinePriceListComponent extends FComponentBase {
-  @ViewChild("medicineListTable") medicineListTable!: Table
+  @ViewChild("listTable") listTable!: Table
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
   isSorted: boolean | null = null;

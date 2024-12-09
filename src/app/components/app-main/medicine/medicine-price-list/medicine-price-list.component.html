@@ -1,6 +1,6 @@
 <div class="medicine-price-list-container">
-  <p-table #medicineListTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, medicineListTable, initValue, medicineModel)" [customSort]="true"
+  <p-table #listTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-striped">
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -8,7 +8,7 @@
           <p-inputIcon>
             <i class="pi pi-search"></i>
           </p-inputIcon>
-          <input pInputText type="text" (input)="filterTable(medicineListTable, $event, 'contains')" placeholder="Search keyword" />
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
         </p-iconField>
       </div>
     </ng-template>
