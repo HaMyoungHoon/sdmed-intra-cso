@@ -1,6 +1,6 @@
 <div class="hospital-list-container">
-  <p-table #pharmaListTable [value]="pharmaList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, pharmaListTable, initValue, pharmaList)" [customSort]="true"
+  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -13,7 +13,7 @@
           <p-inputIcon>
             <i class="pi pi-search"></i>
           </p-inputIcon>
-          <input pInputText type="text" (input)="filterTable(pharmaListTable, $event, 'contains')" placeholder="Search keyword" />
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
         </p-iconField>
       </div>
     </ng-template>

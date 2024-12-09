@@ -14,10 +14,10 @@ import {HospitalListService} from "../../../../services/rest/hospital-list.servi
   standalone: false,
 })
 export class HospitalListComponent extends FComponentBase {
-  @ViewChild("hospitalListTable") hospitalListTable!: Table;
+  @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   initValue: HospitalModel[] = [];
-  hospitalList: HospitalModel[] = [];
+  viewList: HospitalModel[] = [];
   isSorted: boolean | null = null;
   constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
@@ -35,7 +35,7 @@ export class HospitalListComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-      this.hospitalList = [...this.initValue];
+      this.viewList = [...this.initValue];
       return;
     }
     this.fDialogService.warn("getHospitalAll", ret.msg);
@@ -59,8 +59,8 @@ export class HospitalListComponent extends FComponentBase {
       if (x == null) {
         return;
       }
-      this.initValue.unshift(x);
-      this.hospitalList.unshift(x);
+      this.initValue.unshift(new HospitalModel().init(x));
+      this.viewList.unshift(new HospitalModel().init(x));
     });
   }
   async sampleDown(): Promise<void> {
@@ -105,9 +105,9 @@ export class HospitalListComponent extends FComponentBase {
       if (initTarget >= 0) {
         new HospitalModel().copyLhsFromRhs(this.initValue[initTarget], x);
       }
-      const target = this.hospitalList.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      const target = this.viewList.findIndex(y => y.thisPK == x.thisPK) ?? -1
       if (target >= 0) {
-        new HospitalModel().copyLhsFromRhs(this.hospitalList[target], x);
+        new HospitalModel().copyLhsFromRhs(this.viewList[target], x);
       }
     });
   }

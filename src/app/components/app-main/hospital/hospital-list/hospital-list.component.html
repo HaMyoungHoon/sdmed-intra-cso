@@ -1,6 +1,6 @@
 <div class="hospital-list-container">
-  <p-table #hospitalListTable [value]="hospitalList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, hospitalListTable, initValue, hospitalList)" [customSort]="true"
+  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template pTemplate="caption">
       <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
@@ -12,7 +12,7 @@
         <p-inputIcon>
           <i class="pi pi-search"></i>
         </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable(hospitalListTable, $event, 'contains')" placeholder="Search keyword" />
+        <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
       </p-iconField>
     </ng-template>
     <ng-template pTemplate="header">

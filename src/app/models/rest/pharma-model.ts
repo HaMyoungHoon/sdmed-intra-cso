@@ -36,35 +36,35 @@ export class PharmaModel {
   relationMedicineList: MedicineModel[] = [];
 
   init(data: PharmaModel): PharmaModel {
-    this.thisPK = data.thisPK
-    this.code = data.code
-    this.orgName = data.orgName
-    this.innerName = data.innerName
-    this.ownerName = data.ownerName
-    this.taxpayerNumber = data.taxpayerNumber
-    this.phoneNumber = data.phoneNumber
-    this.faxNumber = data.faxNumber
-    this.zipCode = data.zipCode
-    this.address = data.address
-    this.addressDetail = data.addressDetail
-    this.businessType = data.businessType
-    this.businessItem = data.businessItem
-    this.billType = data.billType
-    this.pharmaType = data.pharmaType
-    this.pharmaGroup = data.pharmaGroup
-    this.contractType = data.contractType
-    this.deliveryDiv = data.deliveryDiv
-    this.mail = data.mail
-    this.mobilePhone = data.mobilePhone
-    this.openDate = data.openDate
-    this.closeDate = data.closeDate
-    this.etc1 = data.etc1
-    this.etc2 = data.etc2
-    this.imageUrl = data.imageUrl
-    this.inVisible = data.inVisible
-    this.medicineList = data.medicineList
-    this.relationMedicineList = data.relationMedicineList
-    return this
+    this.thisPK = data.thisPK;
+    this.code = data.code;
+    this.orgName = data.orgName;
+    this.innerName = data.innerName;
+    this.ownerName = data.ownerName;
+    this.taxpayerNumber = data.taxpayerNumber;
+    this.phoneNumber = data.phoneNumber;
+    this.faxNumber = data.faxNumber;
+    this.zipCode = data.zipCode;
+    this.address = data.address;
+    this.addressDetail = data.addressDetail;
+    this.businessType = data.businessType;
+    this.businessItem = data.businessItem;
+    this.billType = data.billType;
+    this.pharmaType = data.pharmaType;
+    this.pharmaGroup = data.pharmaGroup;
+    this.contractType = data.contractType;
+    this.deliveryDiv = data.deliveryDiv;
+    this.mail = data.mail;
+    this.mobilePhone = data.mobilePhone;
+    this.openDate = data.openDate;
+    this.closeDate = data.closeDate;
+    this.etc1 = data.etc1;
+    this.etc2 = data.etc2;
+    this.imageUrl = data.imageUrl;
+    this.inVisible = data.inVisible;
+    this.medicineList = data.medicineList;
+    this.relationMedicineList = data.relationMedicineList;
+    return this;
   }
   copyLhsFromRhs(lhs: PharmaModel, rhs: PharmaModel): void {
     lhs.thisPK = rhs.thisPK;

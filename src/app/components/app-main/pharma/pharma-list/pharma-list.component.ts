@@ -14,10 +14,10 @@ import {PharmaListService} from "../../../../services/rest/pharma-list.service";
   styleUrl: "./pharma-list.component.scss",
 })
 export class PharmaListComponent extends FComponentBase {
-  @ViewChild("pharmaListTable") pharmaListTable!: Table;
+  @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   initValue: PharmaModel[] = [];
-  pharmaList: PharmaModel[] = [];
+  viewList: PharmaModel[] = [];
   isSorted: boolean | null = null;
   constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
@@ -35,7 +35,7 @@ export class PharmaListComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initValue = ret.data ?? [];
-      this.pharmaList = [...this.initValue];
+      this.viewList = [...this.initValue];
       return;
     }
     this.fDialogService.warn("getPharmaAll", ret.msg);
@@ -60,7 +60,7 @@ export class PharmaListComponent extends FComponentBase {
         return;
       }
       this.initValue.unshift(new PharmaModel().init(x));
-      this.pharmaList.unshift(new PharmaModel().init(x));
+      this.viewList.unshift(new PharmaModel().init(x));
     });
   }
   async sampleDown(): Promise<void> {
@@ -104,9 +104,9 @@ export class PharmaListComponent extends FComponentBase {
       if (initTarget >= 0) {
         new PharmaModel().copyLhsFromRhs(this.initValue[initTarget], x);
       }
-      const target = this.pharmaList.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      const target = this.viewList.findIndex(y => y.thisPK == x.thisPK) ?? -1
       if (target >= 0) {
-        new PharmaModel().copyLhsFromRhs(this.pharmaList[target], x);
+        new PharmaModel().copyLhsFromRhs(this.viewList[target], x);
       }
     });
   }
