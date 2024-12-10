@@ -8,6 +8,7 @@ import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {restTry} from "../../../guards/f-extensions";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
+import {UserService} from "../../../services/rest/user.service";
 
 @Component({
   selector: "app-sign-dialog",
@@ -19,7 +20,7 @@ import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 export class SignDialogComponent extends FDialogComponentBase {
   id: string;
   pw: string;
-  constructor() {
+  constructor(private thisService: UserService) {
     super();
     this.roleCheck = false;
     this.id = "";
@@ -27,7 +28,7 @@ export class SignDialogComponent extends FDialogComponentBase {
   }
 
   async signIn(): Promise<void> {
-    const ret = await restTry(async() => await this.userService.signIn(this.id, this.pw),
+    const ret = await restTry(async() => await this.thisService.signIn(this.id, this.pw),
         e => this.fDialogService.error("signIn catch", e));
     if (ret.result) {
       setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");

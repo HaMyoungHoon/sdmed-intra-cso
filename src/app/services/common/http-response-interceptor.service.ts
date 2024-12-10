@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {lastValueFrom, map, Observable} from "rxjs";
 import {RestResult} from "../../models/common/rest-result";
 
