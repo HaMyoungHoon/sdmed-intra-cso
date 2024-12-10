@@ -1,4 +1,5 @@
 import * as CryptoJS from "crypto-js";
+import {AUTH_TOKEN} from "./f-constants";
 
 export let getLocalStorage = (key: string): string => {
   return decrypt(localStorage.getItem(key));
@@ -30,6 +31,9 @@ export function decrypt(data : string | null): string {
     return "";
   }
   return CryptoJS.AES.decrypt(data, AES_KEY).toString(CryptoJS.enc.Utf8);
+}
+export function getRandomUUID(): string {
+  return crypto.randomUUID()
 }
 
 const AES_KEY = "6574852065748520"
@@ -115,4 +119,18 @@ export function isExpired(token: string): boolean {
   const now = Math.floor(new Date().getTime() / 1000);
   const exp = getTokenExpired(token);
   return now > exp;
+}
+export function getThisPK(): string {
+  const token = getLocalStorage(AUTH_TOKEN);
+  return getTokenThisPK(token);
+}
+export function getTokenThisPK(token: string): string {
+  if (token.length <= 0) {
+    return "";
+  }
+  try {
+    return (JSON.parse(token.split(".")[1]));
+  } catch {
+    return "";
+  }
 }
