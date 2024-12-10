@@ -5,6 +5,7 @@ import {haveRole, UserRole} from "../models/rest/user-role";
 import {restTry} from "./f-extensions";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslateService} from "@ngx-translate/core";
+import {CommonService} from "../services/rest/common.service";
 
 @Component({
   selector: "f-dialog-component-base",
@@ -19,13 +20,13 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   protected roleCheck: boolean = true;
   protected ref: DynamicDialogRef;
   protected dialogService: DialogService;
-  protected userService: UserService;
+  protected commonService: CommonService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService;
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.ref = inject(DynamicDialogRef);
     this.dialogService = inject(DialogService);
-    this.userService = inject(UserService);
+    this.commonService = inject(CommonService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
   }
@@ -39,7 +40,7 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   }
   async getMyRole(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.userService.getMyRole(),
+    const ret = await restTry(async() => await this.commonService.getMyRole(),
       e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {
