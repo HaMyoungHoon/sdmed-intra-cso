@@ -81,6 +81,7 @@
     },
     "detail": {
       "id": "id",
+      "password": "password",
       "name": "name",
       "mail": "mail",
       "phone-number": "phone",
@@ -155,7 +156,9 @@
       "dept": "dept",
       "status": "status",
       "reg-date": "reg date",
-      "last-login-date": "login date"
+      "last-login-date": "login date",
+      "taxpayer-image": "tax payer",
+      "bank-account-image": "bank account"
     },
     "child": {
       "id": "아이디",
@@ -176,6 +179,15 @@
       "code": "code",
       "inner-name": "inner name"
     }
+  },
+  "password-change-dialog": {
+    "warn": {
+      "after-pw": "plz input more than 4 character",
+      "confirm-pw": "password un match"
+    },
+    "current-pw": "current pw",
+    "after-pw": "after pw",
+    "confirm-pw": "confirm pw"
   },
   "hospital-edit-dialog": {
     "code": "code",
@@ -362,7 +374,9 @@
     "add": "add",
     "refresh": "refresh",
     "close": "close",
+    "change": "change",
     "sample-download": "sample download",
-    "in-visible": "invisible"
+    "in-visible": "invisible",
+    "logout": "logout"
   }
 }

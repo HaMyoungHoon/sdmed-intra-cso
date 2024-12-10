@@ -81,6 +81,7 @@
     },
     "detail": {
       "id": "아이디",
+      "password": "비밀번호",
       "name": "이름",
       "mail": "메일",
       "phone-number": "번호",
@@ -155,7 +156,9 @@
       "dept": "부서",
       "status": "상태",
       "reg-date": "등록일",
-      "last-login-date": "마지막 로그인일"
+      "last-login-date": "마지막 로그인일",
+      "taxpayer-image": "세금계산서",
+      "bank-account-image": "은행계좌"
     },
     "child": {
       "id": "아이디",
@@ -176,6 +179,15 @@
       "code": "코드",
       "inner-name": "내부명"
     }
+  },
+  "password-change-dialog": {
+    "warn": {
+      "after-pw": "4자 이상 입력해주세요.",
+      "confirm-pw": "바꿀 비밀번호와 확인이 일치하지 않습니다."
+    },
+    "current-pw": "현재 비밀번호",
+    "after-pw": "바꿀 비밀번호",
+    "confirm-pw": "비밀번호 확인"
   },
   "hospital-edit-dialog": {
     "code": "코드",
@@ -362,7 +374,9 @@
     "add": "추가",
     "refresh": "새로고침",
     "close": "닫기",
+    "change": "변경",
     "sample-download": "샘플 다운로드",
-    "in-visible": "숨김"
+    "in-visible": "숨김",
+    "logout": "로그아웃"
   }
 }
