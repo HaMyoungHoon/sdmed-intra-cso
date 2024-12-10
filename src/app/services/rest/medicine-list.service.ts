@@ -8,8 +8,7 @@ import {MedicineIngredientModel} from "../../models/rest/medicine-ingredient-mod
   providedIn: "root"
 })
 export class MedicineListService {
-//  private baseUrl = "/apiCSO/intra/medicineList";
-  private baseUrl = "http://localhost:25801/intra/medicineList";
+  private baseUrl = "/apiCSO/intra/medicineList";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 

@@ -12,8 +12,7 @@ import {HosPharmaMedicinePairModel} from "../../models/rest/hos-pharma-medicine-
   providedIn: "root"
 })
 export class UserService {
-//  private baseUrl = "/apiCSO/v1/user";
-  private baseUrl = "http://localhost:25801/v1/user";
+  private baseUrl = "/apiCSO/v1/user";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 

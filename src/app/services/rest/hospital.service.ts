@@ -7,8 +7,7 @@ import {HospitalModel} from "../../models/rest/hospital-model";
   providedIn: "root"
 })
 export class HospitalService {
-//  private baseUrl = "/apiCSO/v1/hospital";
-  private baseUrl = "http://localhost:25801/v1/hospital";
+  private baseUrl = "/apiCSO/v1/hospital";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
