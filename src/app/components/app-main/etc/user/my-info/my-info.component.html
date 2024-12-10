@@ -3,8 +3,15 @@
   <p-accordion class="flex-auto" [multiple]="true" [activeIndex]="[0]">
     <p-accordionTab class="flex flex-column" header="{{'my-info.accordion-header.detail' | translate}}" *ngIf="userDataModel?.id != undefined">
       <div class="flex">
+        <p-button (click)="logout()">{{"common-desc.logout" | translate}}</p-button>
+      </div>
+      <div class="flex">
         <label class="col-6 mr-1">{{"my-info.detail.id" | translate}}</label>
         <label class="col-6">{{userDataModel?.id}}</label>
+      </div>
+      <div class="flex">
+        <label class="col-6 mr-1">{{"my-info.detail.password" | translate}}</label>
+        <p-button class="col-6" (click)="passwordChange()">{{"common-desc.edit" | translate}}</p-button>
       </div>
       <div class="flex">
         <label class="col-6 mr-1">{{"my-info.detail.name" | translate}}</label>

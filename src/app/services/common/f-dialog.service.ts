@@ -15,6 +15,7 @@ import {PharmaEditDialogComponent} from "../../components/common/pharma-edit-dia
 import {PharmaAddDialogComponent} from "../../components/common/pharma-add-dialog/pharma-add-dialog.component";
 import {MedicineEditDialogComponent} from "../../components/common/medicine-edit-dialog/medicine-edit-dialog.component";
 import {MedicineAddDialogComponent} from "../../components/common/medicine-add-dialog/medicine-add-dialog.component";
+import {PasswordChangeDialogComponent} from "../../components/common/password-change-dialog/password-change-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -35,6 +36,10 @@ export class FDialogService {
   }
   openTable(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(TableDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openPasswordChangeDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(PasswordChangeDialogComponent, config);
     return this.ref.onClose;
   }
   openUserEditDialog(config: DynamicDialogConfig): Observable<any> {
