@@ -8,7 +8,6 @@ import {UserStatus} from "../../models/rest/user-status";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
 import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
-import {HosPharmaMedicinePairModel} from "../../models/rest/hos-pharma-medicine-pair-model";
 
 @Injectable({
   providedIn: "root"
