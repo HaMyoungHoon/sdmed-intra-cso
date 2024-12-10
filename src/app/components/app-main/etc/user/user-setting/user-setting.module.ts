@@ -12,13 +12,14 @@ import {TagModule} from "primeng/tag";
 import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
+import {TooltipModule} from "primeng/tooltip";
 
 
 
 @NgModule({
   declarations: [UserSettingComponent],
 	imports: [
-		CommonModule, UserSettingRoutingModule, TableModule, Button, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, TagModule, IconFieldModule, InputIconModule, InputTextModule
+		CommonModule, UserSettingRoutingModule, TableModule, Button, TranslatePipe, DropdownModule, FormsModule, MultiSelectModule, TagModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule
 	]
 })
 export class UserSettingModule { }

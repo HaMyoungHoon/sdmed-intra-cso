@@ -5,6 +5,8 @@ import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
 import {customSort, filterTable, getSeverity, restTry} from "../../../../../guards/f-extensions";
 import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
 import {Table} from "primeng/table";
+import {UserInfoService} from "../../../../../services/rest/user-info.service";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-user-setting",
@@ -18,7 +20,7 @@ export class UserSettingComponent extends FComponentBase {
   initValue: UserDataModel[] = [];
   userDataModel: UserDataModel[] = [];
   isSorted: boolean | null = null;
-  constructor() {
+  constructor(private thisService: UserInfoService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
@@ -29,7 +31,7 @@ export class UserSettingComponent extends FComponentBase {
   }
   async getUserDataModel(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.userService.getUserAll(),
+    const ret = await restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getUserAll", e));
     this.setLoading(false);
     if (ret.result) {
@@ -51,7 +53,7 @@ export class UserSettingComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.userService.postDataUploadExcel(file),
+      const ret = await restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.inputUploadExcel.nativeElement.value = "";
       this.setLoading(false);
@@ -61,6 +63,14 @@ export class UserSettingComponent extends FComponentBase {
       }
       this.fDialogService.warn("excelSelected", ret.msg);
     }
+  }
+  async sampleDown(): Promise<void> {
+    this.thisService.getExcelSample().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "userSampleExcel.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
+    });
   }
 
   userEdit(data: UserDataModel): void {
