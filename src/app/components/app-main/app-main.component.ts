@@ -3,13 +3,11 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {MenuConfigComponent} from "../common/menu-config/menu-config.component";
-import {UserService} from "../../services/rest/user.service";
 import {getLocalStorage, isExpired, removeLocalStorage} from "../../guards/f-amhohwa";
 import * as FConstants from "../../guards/f-constants";
 import {FDialogService} from "../../services/common/f-dialog.service";
 import {Button} from "primeng/button";
 import {NgIf} from "@angular/common";
-import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-app-main",
@@ -21,7 +19,7 @@ import {saveAs} from "file-saver";
 export class AppMainComponent implements AfterViewInit {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;
   viewPage: boolean;
-  constructor(private cd: ChangeDetectorRef, private userService: UserService, private router: Router, private fDialogService: FDialogService) {
+  constructor(private cd: ChangeDetectorRef, private router: Router, private fDialogService: FDialogService) {
     this.viewPage = false;
   }
 
@@ -84,26 +82,6 @@ export class AppMainComponent implements AfterViewInit {
     return false;
   }
   test(): void {
-    this.userService.getSampleDownloadExcel().then(x => {
-      saveAs(x.body, "sampleExcel.xlsx");
-    }).catch(x => {
-      this.fDialogService.error("download", x.message);
-    });
-//    let id = "김미리";
-//    let roles: UserRole[] = [
-//      UserRole.Employee,
-//      UserRole.UserChildChanger,
-//      UserRole.UserFileUploader
-//    ];
-//    this.userService.putUserRoleModify(id, roles).then(x => {
-//      if (x.result) {
-//
-//        return;
-//      }
-//
-//      this.fDialogService.warn("test", x.msg);
-//    }).catch(x => {
-//      this.fDialogService.error("test", x.message);
-//    });
+
   }
 }

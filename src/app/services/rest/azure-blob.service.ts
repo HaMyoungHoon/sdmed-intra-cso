@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import {BlobHTTPHeaders, BlobServiceClient, BlockBlobUploadResponse} from "@azure/storage-blob";
+import { Injectable } from "@angular/core";
+import {BlobServiceClient, BlockBlobUploadResponse} from "@azure/storage-blob";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AzureBlobService {
   private blobUrl = "https://mhhablob1.blob.core.windows.net";

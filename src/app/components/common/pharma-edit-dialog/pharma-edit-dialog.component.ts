@@ -5,7 +5,7 @@ import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTy
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../models/rest/delivery-div";
 import {PharmaModel} from "../../../models/rest/pharma-model";
-import {ellipsis, restTry} from "../../../guards/f-extensions";
+import {ellipsis, getFileExt, isImage, restTry, tryCatchAsync} from "../../../guards/f-extensions";
 import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../models/rest/pharma-type";
 import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../models/rest/pharma-group";
 import * as FConstants from "../../../guards/f-constants";
@@ -26,6 +26,7 @@ import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {PharmaListService} from "../../../services/rest/pharma-list.service";
+import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 
 @Component({
   selector: "app-pharma-edit-dialog",
@@ -55,7 +56,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   medicineSearchSubject: Subject<string> = new Subject<string>();
   medicineSearchObserver?: Subscription;
   medicineSearchDebounceTime: number = 1000;
-  constructor(private thisService: PharmaListService) {
+  constructor(private thisService: PharmaListService, private azureBlobService: AzureBlobService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
@@ -145,10 +146,27 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postImage(buff.thisPK, file),
-        e => this.fDialogService.error("imageSelected", e));
+      const file = input.files[0];
+      const ext = await getFileExt(file);
+      if (!isImage(ext)) {
+        this.setLoading(false);
+        this.fDialogService.warn("imageView", "only image file");
+        return;
+      }
+
+      const blobModel = this.thisService.getBlobModel(file, ext);
+      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
+        e => this.fDialogService.error("imageView", e));
+      if (sasKey.result != true) {
+        this.fDialogService.warn("imageView", sasKey.msg);
+        this.setLoading(false);
+        return;
+      }
+      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
+        e => this.fDialogService.error("imageView", e));
+      const ret = await restTry(async() => await this.thisService.putImage(buff.thisPK, blobModel),
+        e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
@@ -156,7 +174,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
         return;
       }
 
-      this.fDialogService.warn("imageSelected", ret.msg);
+      this.fDialogService.warn("imageView", ret.msg);
     }
   }
   get imageUrl(): string {

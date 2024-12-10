@@ -7,7 +7,7 @@ import {Button} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {CardModule} from "primeng/card";
 import {NgIf} from "@angular/common";
-import {restTry} from "../../../guards/f-extensions";
+import {getFileExt, isImage, restTry, tryCatchAsync} from "../../../guards/f-extensions";
 import {InputTextModule} from "primeng/inputtext";
 import {FormsModule} from "@angular/forms";
 import {DropdownModule} from "primeng/dropdown";
@@ -18,6 +18,7 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {CalendarModule} from "primeng/calendar";
 import {HospitalListService} from "../../../services/rest/hospital-list.service";
+import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 
 @Component({
   selector: "app-hospital-edit-dialog",
@@ -46,7 +47,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
-  constructor(private thisService: HospitalListService) {
+  constructor(private thisService: HospitalListService, private azureBlobService: AzureBlobService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
@@ -108,10 +109,27 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postImage(buff.thisPK, file),
-        e => this.fDialogService.error("imageSelected", e));
+      const file = input.files[0];
+      const ext = await getFileExt(file);
+      if (!isImage(ext)) {
+        this.setLoading(false);
+        this.fDialogService.warn("imageView", "only image file");
+        return;
+      }
+
+      const blobModel = this.thisService.getBlobModel(file, ext);
+      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
+        e => this.fDialogService.error("imageView", e));
+      if (sasKey.result != true) {
+        this.fDialogService.warn("imageView", sasKey.msg);
+        this.setLoading(false);
+        return;
+      }
+      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
+        e => this.fDialogService.error("imageView", e));
+      const ret = await restTry(async() => await this.thisService.putImage(buff.thisPK, blobModel),
+        e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
@@ -119,7 +137,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
         return;
       }
 
-      this.fDialogService.warn("imageSelected", ret.msg);
+      this.fDialogService.warn("imageView", ret.msg);
     }
   }
   get imageUrl(): string {

@@ -8,6 +8,7 @@ import {UserStatus} from "../../models/rest/user-status";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
 import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
+import {HosPharmaMedicinePairModel} from "../../models/rest/hos-pharma-medicine-pair-model";
 
 @Injectable({
   providedIn: "root"
@@ -55,10 +56,10 @@ export class UserInfoService {
     return this.httpResponse.put(`${this.baseUrl}/userRoleDeptStatusModify/pk`, json);
   }
   putUserTaxImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/taxImage/${thisPK}`, blobModel);
+    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/taxImage`, blobModel);
   }
   putUserBankImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/bankImage/${thisPK}`, blobModel);
+    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/bankImage`, blobModel);
   }
 
   getBlobModel(userId: string, file: File, ext: string): BlobUploadModel {

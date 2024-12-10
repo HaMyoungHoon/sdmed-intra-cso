@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, inject} from "@angular/core";
-import {UserService} from "../services/rest/user.service";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../models/rest/user-role";
 import {restTry} from "./f-extensions";

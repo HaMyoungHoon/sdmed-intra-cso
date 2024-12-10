@@ -5,11 +5,10 @@ import {HospitalModel} from "../../../../../models/rest/hospital-model";
 import {PharmaModel} from "../../../../../models/rest/pharma-model";
 import {MedicineModel} from "../../../../../models/rest/medicine-model";
 import {UserRole} from "../../../../../models/rest/user-role";
-import {HospitalService} from "../../../../../services/rest/hospital.service";
-import {PharmaService} from "../../../../../services/rest/pharma.service";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/hos-pharma-medicine-pair-model";
 import {applyClass, restTry} from "../../../../../guards/f-extensions";
+import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
 
 @Component({
   selector: "app-user-mapping",
@@ -42,7 +41,7 @@ export class UserMappingComponent extends FComponentBase {
 
   medicineList: MedicineModel[] = [];
 
-  constructor(private hospitalService: HospitalService, private pharmaService: PharmaService) {
+  constructor(private thisService: UserMappingService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
@@ -83,7 +82,7 @@ export class UserMappingComponent extends FComponentBase {
       this.setLoading(false);
       return;
     }
-    const ret = await restTry(async() => await this.userService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
+    const ret = await restTry(async() => await this.thisService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
         e => this.fDialogService.error("save", e));
     this.setLoading(false);
     if (ret.result) {
@@ -131,7 +130,7 @@ export class UserMappingComponent extends FComponentBase {
 
   async getAllList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.userService.getUserAllBusiness().catch(),
+    const ret = await restTry(async() => await this.thisService.getUserAllBusiness(),
         e => this.fDialogService.error("getAllList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -162,7 +161,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.userService.getUserDataByPK(buff.thisPK, true, true, true),
+    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK, true, true, true),
       e => this.fDialogService.error("userSelect", e));
     this.setLoading(false);
     if (ret.result) {
@@ -204,7 +203,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.hospitalService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
+    const ret = await restTry(async() => await this.thisService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
       e => this.fDialogService.error("hosSearch", e));
     this.setLoading(false);
     if (ret.result) {
@@ -259,7 +258,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.pharmaService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
+    const ret = await restTry(async() => await this.thisService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
       e => this.fDialogService.error("pharmaSearch", e));
     this.setLoading(false);
     if (ret.result) {
@@ -298,7 +297,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.pharmaService.getPharmaData(pharma.thisPK, true),
+    const ret = await restTry(async() => await this.thisService.getPharmaData(pharma.thisPK, true),
       e => this.fDialogService.error("medicineSearch", e));
     this.setLoading(false);
     if (ret.result) {

@@ -145,6 +145,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
+      this.setLoading();
       const file = input.files[0];
       const ext = await getFileExt(file);
       if (!isImage(ext)) {
@@ -207,6 +208,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
+      this.setLoading();
       const file = input.files[0];
       const ext = await getFileExt(file);
       if (!isImage(ext)) {

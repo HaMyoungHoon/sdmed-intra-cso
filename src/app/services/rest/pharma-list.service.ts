@@ -3,12 +3,17 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {PharmaModel} from "../../models/rest/pharma-model";
 import {RestResult} from "../../models/common/rest-result";
 import {MedicineModel} from "../../models/rest/medicine-model";
+import {BlobUploadModel} from "../../models/rest/blob-upload-model";
+import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
+import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
 
 @Injectable({
   providedIn: "root"
 })
 export class PharmaListService {
   private baseUrl = "/apiCSO/intra/pharmaList";
+  private blobUrl = "https://mhhablob1.blob.core.windows.net";
+  private containerName = "mhhablob1";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
@@ -57,5 +62,14 @@ export class PharmaListService {
     formData.append("file", file);
     this.httpResponse.setMultipartContentType();
     return this.httpResponse.post(`${this.baseUrl}/file/excel/pharmaMedicine`, formData);
+  }
+  putImage(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<PharmaModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/image`, blobModel);
+  }
+  getBlobModel(file: File, ext: string): BlobUploadModel {
+    const thisPK = getThisPK();
+    const blobName = `pharma/${currentDateYYYYMMdd()}/${getRandomUUID()}.${ext}`;
+    const blobUrl = `${this.blobUrl}/${this.containerName}/${blobName}`;
+    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, getMimeTypeExt(ext));
   }
 }

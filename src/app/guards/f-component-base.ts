@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, inject} from "@angular/core";
 import {getLocalStorage, isExpired} from "./f-amhohwa";
 import * as FConstants from "./f-constants";
-import {UserService} from "../services/rest/user.service";
 import {restTry} from "./f-extensions";
 import {haveRole, UserRole} from "../models/rest/user-role";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {TranslateService} from "@ngx-translate/core";
+import {CommonService} from "../services/rest/common.service";
 
 @Component({
   selector: "f-component-base",
@@ -17,11 +17,11 @@ export abstract class FComponentBase implements AfterViewInit {
   haveRole: boolean = false;
   isLoading: boolean = false;
   isMobile: boolean = false;
-  protected userService: UserService;
+  protected commonService: CommonService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
-    this.userService = inject(UserService);
+    this.commonService = inject(CommonService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
   }
@@ -37,7 +37,7 @@ export abstract class FComponentBase implements AfterViewInit {
   }
   async getMyRole(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.userService.getMyRole(),
+    const ret = await restTry(async() => await this.commonService.getMyRole(),
       e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {
