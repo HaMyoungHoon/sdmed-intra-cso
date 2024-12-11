@@ -1,8 +1,7 @@
-import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from "@angular/core";
+import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
 import * as FConstants from "../../guards/f-constants"
 import {AppConfig} from "../../models/common/app-config";
 import {AppState} from "../../models/common/app-state";
-import {Subject} from "rxjs";
 import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
 import {isPlatformBrowser} from "@angular/common";
 

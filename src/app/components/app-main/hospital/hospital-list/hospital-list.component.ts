@@ -7,7 +7,6 @@ import {UserRole} from "../../../../models/rest/user-role";
 import {saveAs} from "file-saver";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import * as FConstants from "../../../../guards/f-constants";
-import {HOSPITAL_LIST_URL} from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-hospital-list",

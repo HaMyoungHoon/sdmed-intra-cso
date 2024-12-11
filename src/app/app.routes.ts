@@ -1,7 +1,6 @@
 import { Routes } from "@angular/router";
 import * as FConstants from "./guards/f-constants"
 import {AppMainComponent} from "./components/app-main/app-main.component";
-import {USER_EDIT_URL} from "./guards/f-constants";
 
 export const routes: Routes = [
   { path: "", component: AppMainComponent,

@@ -101,7 +101,7 @@ export class MenuConfigComponent {
   changeTheme(toDark: boolean): void {
     this.configService.changeTheme(toDark);
   }
-  changeNewTab(event: any): void {
+  changeNewTab(_: any): void {
     this.configService.changeNewTab(this.isNewTab);
   }
 
