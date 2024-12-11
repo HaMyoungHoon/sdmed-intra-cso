@@ -5,6 +5,7 @@ import {restTry} from "./f-extensions";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
+import {AzureBlobService} from "../services/rest/azure-blob.service";
 
 @Component({
   selector: "f-dialog-component-base",
@@ -22,12 +23,14 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   protected commonService: CommonService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService;
+  protected azureBlobService: AzureBlobService;
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.ref = inject(DynamicDialogRef);
     this.dialogService = inject(DialogService);
     this.commonService = inject(CommonService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
+    this.azureBlobService = inject(AzureBlobService);
   }
 
   async ngAfterViewInit(): Promise<void> {

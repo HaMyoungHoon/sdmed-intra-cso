@@ -6,6 +6,7 @@ import {Table} from "primeng/table";
 import {PharmaModel} from "../../../../models/rest/pharma-model";
 import {saveAs} from "file-saver";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
+import * as FConstants from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-pharma-list",
@@ -48,6 +49,11 @@ export class PharmaListComponent extends FComponentBase {
     this.inputUploadExcel.nativeElement.click();
   }
   insertData(): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(FConstants.PHARMA_NEW_URL);
+      return;
+    }
     this.fDialogService.openPharmaAddDialog({
       modal: true,
       closable: false,
@@ -116,6 +122,11 @@ export class PharmaListComponent extends FComponentBase {
     }
   }
   pharmaEdit(data: PharmaModel): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.PHARMA_LIST_URL}/${data.thisPK}`);
+      return;
+    }
     this.fDialogService.openPharmaEditDialog({
       modal: true,
       closable: false,

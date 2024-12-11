@@ -31,7 +31,8 @@
       "en": "english",
       "ko": "한글",
       "refresh": "login refresh"
-    }
+    },
+    "is-new-tab": "opens in a new tab if possible."
   },
   "medicine-price-list": {
     "name": "product name",
@@ -141,7 +142,7 @@
       "warn-medicine": "empty medicine list;"
     }
   },
-  "user-edit-dialog": {
+  "user-edit": {
     "accordion-header": {
       "detail": "user info edit",
       "child": "하위 유저",
@@ -189,7 +190,7 @@
     "after-pw": "after pw",
     "confirm-pw": "confirm pw"
   },
-  "hospital-edit-dialog": {
+  "hospital-edit": {
     "code": "code",
     "org-name": "name",
     "inner-name": "inner name",
@@ -215,7 +216,7 @@
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
-  "hospital-add-dialog": {
+  "hospital-add": {
     "warn": {
       "code": "plz input code",
       "org-name": "plz input org name",
@@ -311,7 +312,7 @@
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
-  "medicine-edit-dialog": {
+  "medicine-edit": {
     "code": "code",
     "main-ingredient-code": "main ingredient code",
     "kd-code": "kd code",
@@ -334,7 +335,7 @@
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
-  "medicine-add-dialog": {
+  "medicine-add": {
     "warn": {
       "code": "plz input code",
       "name": "plz input name"

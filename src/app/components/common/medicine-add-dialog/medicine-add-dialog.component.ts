@@ -11,44 +11,14 @@ import {PaginatorModule} from "primeng/paginator";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MedicineModel} from "../../../models/rest/medicine-model";
-import {
-  allMedicineTypeDescArray,
-  MedicineType, MedicineTypeDescToMedicineType,
-  medicineTypeToMedicineTypeDesc
-} from "../../../models/rest/medicine-type";
-import {
-  allMedicineMethodDescArray,
-  MedicineMethod, MedicineMethodDescToMedicineMethod,
-  medicineMethodToMedicineMethodDesc
-} from "../../../models/rest/medicine-method";
-import {
-  allMedicineCategoryDescArray, MedicineCategory, MedicineCategoryDescToMedicineCategory,
-  medicineCategoryToMedicineCategoryDesc
-} from "../../../models/rest/medicine-category";
-import {
-  allMedicineGroupDescArray,
-  MedicineGroup, MedicineGroupDescToMedicineGroup,
-  medicineGroupToMedicineGroupDesc
-} from "../../../models/rest/medicine-group";
-import {
-  allMedicineDivDescArray,
-  MedicineDiv,
-  MedicineDivDescToMedicineDiv,
-  medicineDivToMedicineDivDesc
-} from "../../../models/rest/medicine-div";
-import {
-  allMedicineRankDescArray,
-  MedicineRank, MedicineRankDescToMedicineRank,
-  medicineRankToMedicineRankDesc
-} from "../../../models/rest/medicine-rank";
-import {
-  allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp,
-  medicineStorageTempToMedicineStorageTempDesc
-} from "../../../models/rest/medicine-storage-temp";
-import {
-  allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox,
-  medicineStorageBoxToMedicineStorageBoxDesc
-} from "../../../models/rest/medicine-storage-box";
+import {allMedicineTypeDescArray, MedicineType, MedicineTypeDescToMedicineType, medicineTypeToMedicineTypeDesc} from "../../../models/rest/medicine-type";
+import {allMedicineMethodDescArray, MedicineMethod, MedicineMethodDescToMedicineMethod, medicineMethodToMedicineMethodDesc} from "../../../models/rest/medicine-method";
+import {allMedicineCategoryDescArray, MedicineCategory, MedicineCategoryDescToMedicineCategory, medicineCategoryToMedicineCategoryDesc} from "../../../models/rest/medicine-category";
+import {allMedicineGroupDescArray, MedicineGroup, MedicineGroupDescToMedicineGroup, medicineGroupToMedicineGroupDesc} from "../../../models/rest/medicine-group";
+import {allMedicineDivDescArray, MedicineDiv, MedicineDivDescToMedicineDiv, medicineDivToMedicineDivDesc} from "../../../models/rest/medicine-div";
+import {allMedicineRankDescArray, MedicineRank, MedicineRankDescToMedicineRank, medicineRankToMedicineRankDesc} from "../../../models/rest/medicine-rank";
+import {allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp, medicineStorageTempToMedicineStorageTempDesc} from "../../../models/rest/medicine-storage-temp";
+import {allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox, medicineStorageBoxToMedicineStorageBoxDesc} from "../../../models/rest/medicine-storage-box";
 import {restTry} from "../../../guards/f-extensions";
 import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
 import {MedicineIngredientModel} from "../../../models/rest/medicine-ingredient-model";
@@ -105,13 +75,13 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
 
   async saveData(): Promise<void> {
     if (this.medicineModel.code <= 0) {
-      this.translateService.get("medicine-add-dialog.warn.code").subscribe(x => {
+      this.translateService.get("medicine-add.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return
     }
     if (this.medicineModel.name.length <= 0) {
-      this.translateService.get("medicine-add-dialog.warn.name").subscribe(x => {
+      this.translateService.get("medicine-add.warn.name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;

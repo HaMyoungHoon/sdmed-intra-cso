@@ -6,37 +6,37 @@
   </div>
   <p-card class="flex grid m-1" *ngIf="hospitalModel">
     <div class="field col grid">
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.code" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.code" | translate}}</label>
       <label class="col-4">{{hospitalModel.code}}</label>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.org-name" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.org-name" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.orgName" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.inner-name" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.inner-name" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.innerName" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.owner-name" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.owner-name" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.ownerName" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.phone-number" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.phone-number" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.phoneNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.fax-number" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.fax-number" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.faxNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.zip-code" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.zip-code" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.zipCode" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.address" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.address" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.address" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.address-detail" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.address-detail" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.addressDetail" />
       </div>
@@ -46,55 +46,55 @@
     <div class="field col grid">
       <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
       <p-dropdown class="col-4" [options]="[true, false]" [(ngModel)]="hospitalModel.inVisible" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.business-type" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.business-type" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.businessType" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.business-item" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.business-item" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.businessItem" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.bill-type" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.bill-type" | translate}}</label>
       <p-dropdown class="col-4" [options]="billTypeList" [(ngModel)]="selectBillType" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.contract-type" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.contract-type" | translate}}</label>
       <p-dropdown class="col-4" [options]="contractTypeList" [(ngModel)]="selectContractType" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.delivery-div" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.delivery-div" | translate}}</label>
       <p-dropdown class="col-4" [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.license-number" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.license-number" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.licenseNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.nursing-home-number" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.nursing-home-number" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.nursingHomeNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.mail" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.mail" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.mail" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.mobile-phone" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.mobile-phone" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.mobilePhone" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.open-date" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.open-date" | translate}}</label>
       <p-calendar class="col-4" [(ngModel)]="hospitalModel.openDate" dateFormat="yy-mm-dd" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.close-date" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.close-date" | translate}}</label>
       <p-calendar class="col-4" [(ngModel)]="hospitalModel.closeDate" dateFormat="yy-mm-dd" />
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.etc1" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.etc1" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="hospitalModel.etc1" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.etc2" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.etc2" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="hospitalModel.etc2" />
       </div>
     </div>
     <div class="field grid">
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.taxpayer-number" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.taxpayer-number" | translate}}</label>
       <div class="col-4 align-self-center">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.taxpayerNumber" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-edit-dialog.image-url" | translate}}</label>
+      <label class="col-2 align-self-center">{{"hospital-edit.image-url" | translate}}</label>
       <div class="col-4">
         <p-image width="100" height="100" [src]="imageUrl" [alt]="hospitalModel.taxpayerNumber" (click)="imageView()" />
       </div>

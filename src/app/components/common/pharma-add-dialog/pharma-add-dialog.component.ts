@@ -45,13 +45,10 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
   constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
-    this.initLayoutData();
   }
 
   override async ngInit(): Promise<void> {
 
-  }
-  initLayoutData(): void {
   }
 
   async saveData(): Promise<void> {

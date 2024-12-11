@@ -18,7 +18,6 @@ import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {CalendarModule} from "primeng/calendar";
 import {HospitalListService} from "../../../services/rest/hospital-list.service";
-import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 
 @Component({
   selector: "app-hospital-edit-dialog",
@@ -40,38 +39,32 @@ import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 })
 export class HospitalEditDialogComponent extends FDialogComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
-  hospitalModel?: HospitalModel;
+  hospitalModel: HospitalModel = new HospitalModel();
   billTypeList: string[] = allBillTypeDescArray();
   contractTypeList: string[] = allContractTypeDescArray();
   deliveryDivList: string[] = allDeliveryDivDescArray();
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
-  constructor(private thisService: HospitalListService, private azureBlobService: AzureBlobService) {
+  constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
-    this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
-    this.hospitalModel = dlg.data;
+    this.hospitalModel.thisPK = dlg.data.thisPK;
   }
 
   override async ngInit(): Promise<void> {
-    await this.getHospitalData();
-  }
-
-  initLayoutData(): void {
-  }
-  async getHospitalData(): Promise<void> {
-    const buff = this.hospitalModel;
-    if (buff == null) {
-      return;
+    if (this.haveRole) {
+      await this.getHospitalData();
     }
+  }
 
+  async getHospitalData(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK),
+    const ret = await restTry(async() => await this.thisService.getData(this.hospitalModel.thisPK),
       e => this.fDialogService.error("getHospitalData", e));
     this.setLoading(false);
     if (ret.result) {
-      this.hospitalModel = ret.data;
+      this.hospitalModel = ret.data ?? new HospitalModel();
       this.selectBillType = billTypeToBillTypeDesc(ret.data?.billType);
       this.selectContractType = contractTypeToContractTypeDesc(ret.data?.contractType);
       this.selectDeliveryDiv = deliveryDivToDeliveryDivDesc(ret.data?.deliveryDiv);
@@ -81,15 +74,11 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   }
 
   async saveData(): Promise<void> {
-    const buff = this.hospitalModel;
-    if (buff == null) {
-      return;
-    }
-    buff.billType = BillTypeDescToBillType[this.selectBillType];
-    buff.contractType = ContactTypeDescToContactType[this.selectContractType];
-    buff.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
+    this.hospitalModel.billType = BillTypeDescToBillType[this.selectBillType];
+    this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
+    this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.putData(buff),
+    const ret = await restTry(async() => await this.thisService.putData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -103,10 +92,6 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   }
 
   async imageSelected(event: any): Promise<void> {
-    const buff = this.hospitalModel;
-    if (buff == null) {
-      return;
-    }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.setLoading();
@@ -128,12 +113,12 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
       }
       await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
-      const ret = await restTry(async() => await this.thisService.putImage(buff.thisPK, blobModel),
+      const ret = await restTry(async() => await this.thisService.putImage(this.hospitalModel.thisPK, blobModel),
         e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
-        this.hospitalModel!!.imageUrl = ret.data?.imageUrl ?? ""
+        this.hospitalModel.imageUrl = ret.data?.imageUrl ?? ""
         return;
       }
 
@@ -141,19 +126,14 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     }
   }
   get imageUrl(): string {
-    if ((this.hospitalModel?.imageUrl?.length ?? 0) > 0) {
-      return this.hospitalModel!!.imageUrl;
+    if (this.hospitalModel.imageUrl.length > 0) {
+      return this.hospitalModel.imageUrl;
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
   imageView(): void {
-    const buff = this.hospitalModel;
-    if (buff == null) {
-      return;
-    }
-
-    if (buff.imageUrl.length <= 0) {
+    if (this.hospitalModel.imageUrl.length <= 0) {
       this.imageInput.nativeElement.click();
       return;
     }
@@ -163,7 +143,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: Array<string>(buff.imageUrl)
+      data: Array<string>(this.hospitalModel.imageUrl)
     });
   }
 }

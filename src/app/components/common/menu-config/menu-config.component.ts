@@ -18,25 +18,26 @@ import {dateToMonthFullString, restTry} from "../../../guards/f-extensions";
 import {MenuModule} from "primeng/menu";
 import {Ripple} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
+import {CheckboxModule} from "primeng/checkbox";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
   selector: "app-menu-config",
-  imports: [ToolbarModule, Button, SidebarModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, Ripple, BadgeModule ],
+  imports: [ToolbarModule, Button, SidebarModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, Ripple, BadgeModule, CheckboxModule, FormsModule],
   templateUrl: "./menu-config.component.html",
   styleUrl: "./menu-config.component.scss",
   standalone: true,
 })
 export class MenuConfigComponent {
-  menuButtonVisible: boolean;
-  menuVisible: boolean;
-  menuItems: MenuItem[];
+  menuButtonVisible: boolean = false;
+  menuVisible: boolean = false;
+  menuItems: MenuItem[] = [];
+  isNewTab: boolean = false;
   scale: number = 14;
   scales: number[] = [10,12,14,16,18];
   constructor(private cd: ChangeDetectorRef, private langService: LanguageService, private configService: AppConfigService, private userService: UserService, private fDialogService: FDialogService) {
-    this.menuButtonVisible = false;
-    this.menuVisible = false;
-    this.menuItems = [];
+    this.isNewTab = this.configService.isNewTab();
     this.scale = this.configService.getScale();
     afterNextRender(() => {
       this.cd.markForCheck();
@@ -99,6 +100,9 @@ export class MenuConfigComponent {
   }
   changeTheme(toDark: boolean): void {
     this.configService.changeTheme(toDark);
+  }
+  changeNewTab(event: any): void {
+    this.configService.changeNewTab(this.isNewTab);
   }
 
   get isKoLang(): boolean {

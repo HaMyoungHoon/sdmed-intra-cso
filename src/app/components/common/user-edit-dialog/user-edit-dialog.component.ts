@@ -1,13 +1,6 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {UserDataModel} from "../../../models/rest/user-data-model";
-import {
-  dateToYearFullString,
-  getFileExt,
-  isImage,
-  restTry,
-  stringToDate,
-  tryCatchAsync
-} from "../../../guards/f-extensions";
+import {dateToYearFullString, getFileExt, isImage, restTry, stringToDate, tryCatchAsync} from "../../../guards/f-extensions";
 import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
 import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
@@ -27,7 +20,6 @@ import {InputTextModule} from "primeng/inputtext";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 import {UserInfoService} from "../../../services/rest/user-info.service";
-import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 import {TooltipModule} from "primeng/tooltip";
 
 @Component({
@@ -40,17 +32,16 @@ import {TooltipModule} from "primeng/tooltip";
 export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
-  userDataModel?: UserDataModel;
+  userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
   userDeptList: string[] = allUserDeptDescArray();
   userStatusList: string[] = allUserStatusDescArray();
   selectedUserRoles: any;
   selectedUserDepts: any;
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
-  selectedHosData?: HospitalModel
-  constructor(private thisService: UserInfoService, private azureBlobService: AzureBlobService) {
+  selectedHosData: HospitalModel = new HospitalModel();
+  constructor(private thisService: UserInfoService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
-    this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
     this.userDataModel = dlg.data;
   }
@@ -60,17 +51,11 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
   }
 
-  initLayoutData(): void {
-  }
   async getUserData(): Promise<void> {
-    const data = this.userDataModel;
-    if (data == null) {
-      return;
-    }
-    const ret = await restTry(async() => await this.thisService.getData(data.thisPK, true, true),
+    const ret = await restTry(async() => await this.thisService.getData(this.userDataModel.thisPK, true, true),
       e => this.fDialogService.error("getUserData", e));
     if (ret.result) {
-      this.userDataModel = ret.data;
+      this.userDataModel = ret.data ?? new UserDataModel();
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
@@ -79,11 +64,6 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("getUserData", ret.msg);
   }
   async saveUserData(): Promise<void> {
-    const buff = this.userDataModel
-    if (buff == null) {
-      return;
-    }
-
     const name = this.userDataModel?.name ?? "";
     const mail = this.userDataModel?.mail ?? "";
     const phoneNumber = this.userDataModel?.phoneNumber ?? "";
@@ -92,10 +72,10 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     const status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
     // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
-    const ret1 = await restTry(async() => await this.thisService.putUserNameMailPhoneModifyByPK(buff.thisPK, name, mail, phoneNumber),
+    const ret1 = await restTry(async() => await this.thisService.putUserNameMailPhoneModifyByPK(this.userDataModel.thisPK, name, mail, phoneNumber),
         e => this.fDialogService.error("saveUserData", e));
     if (ret1.result) {
-      const ret2 = await restTry(async() => await this.thisService.putUserRoleDeptStatusModifyByPK(buff.thisPK, roles, depts, status),
+      const ret2 = await restTry(async() => await this.thisService.putUserRoleDeptStatusModifyByPK(this.userDataModel.thisPK, roles, depts, status),
         e => this.fDialogService.error("saveUserData", e));
       this.setLoading(false);
       if (ret2.result) {
@@ -113,19 +93,14 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
 
   get taxpayerImageUrl(): string {
-    if ((this.userDataModel?.taxpayerImageUrl?.length ?? 0) > 0) {
-      return this.userDataModel!!.taxpayerImageUrl
+    if (this.userDataModel.taxpayerImageUrl.length > 0) {
+      return this.userDataModel.taxpayerImageUrl
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
   taxpayerImageView(): void {
-    const buff = this.userDataModel;
-    if (buff == null) {
-      return;
-    }
-
-    if (buff.taxpayerImageUrl.length <= 0) {
+    if (this.userDataModel.taxpayerImageUrl.length <= 0) {
       this.taxpayerImageInput.nativeElement.click();
       return;
     }
@@ -135,14 +110,10 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: Array<string>(buff.taxpayerImageUrl)
+      data: Array<string>(this.userDataModel.taxpayerImageUrl)
     });
   }
   async taxpayerImageSelected(event: any): Promise<void> {
-    const buff = this.userDataModel;
-    if (buff == null) {
-      return;
-    }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.setLoading();
@@ -153,7 +124,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
         this.fDialogService.warn("taxpayerImageView", "only image file");
         return;
       }
-      const blobModel = this.thisService.getBlobModel(buff.id, file, ext);
+      const blobModel = this.thisService.getBlobModel(this.userDataModel.id, file, ext);
       const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
         e => this.fDialogService.error("taxpayerImageView", e));
       if (sasKey.result != true) {
@@ -164,31 +135,26 @@ export class UserEditDialogComponent extends FDialogComponentBase {
 
       await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
         e => this.fDialogService.error("taxpayerImageView", e));
-      const ret = await restTry(async() => await this.thisService.putUserTaxImageUrl(buff.thisPK, blobModel),
+      const ret = await restTry(async() => await this.thisService.putUserTaxImageUrl(this.userDataModel.thisPK, blobModel),
           e => this.fDialogService.error("taxpayerImageView", e));
       this.taxpayerImageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
-        this.userDataModel!!.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
+        this.userDataModel.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
         return;
       }
       this.fDialogService.warn("taxpayerImageView", ret.msg);
     }
   }
   get bankAccountImageUrl(): string {
-    if ((this.userDataModel?.bankAccountImageUrl?.length ?? 0) > 0) {
-      return this.userDataModel!!.bankAccountImageUrl
+    if (this.userDataModel.bankAccountImageUrl.length > 0) {
+      return this.userDataModel.bankAccountImageUrl
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
   bankAccountImageView(): void {
-    const buff = this.userDataModel;
-    if (buff == null) {
-      return;
-    }
-
-    if (buff.bankAccountImageUrl.length <= 0) {
+    if (this.userDataModel.bankAccountImageUrl.length <= 0) {
       this.bankAccountImageInput.nativeElement.click();
       return;
     }
@@ -198,14 +164,10 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: Array<string>(buff.bankAccountImageUrl)
+      data: Array<string>(this.userDataModel.bankAccountImageUrl)
     });
   }
   async bankAccountImageSelected(event: any): Promise<void> {
-    const buff = this.userDataModel;
-    if (buff == null) {
-      return;
-    }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.setLoading();
@@ -216,7 +178,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
         this.fDialogService.warn("bankAccountImageView", "only image file");
         return;
       }
-      const blobModel = this.thisService.getBlobModel(buff.id, file, ext);
+      const blobModel = this.thisService.getBlobModel(this.userDataModel.id, file, ext);
       const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
         e => this.fDialogService.error("bankAccountImageView", e));
       if (sasKey.result != true) {
@@ -226,20 +188,16 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       }
       await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
           e => this.fDialogService.error("bankAccountImageView", e));
-      const ret = await restTry(async() => await this.thisService.putUserBankImageUrl(buff.thisPK, blobModel),
+      const ret = await restTry(async() => await this.thisService.putUserBankImageUrl(this.userDataModel.thisPK, blobModel),
         e => this.fDialogService.error("bankAccountImageView", e));
       this.bankAccountImageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
-        this.userDataModel!!.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
+        this.userDataModel.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
         return;
       }
       this.fDialogService.warn("bankAccountImageView", ret.msg);
     }
-  }
-
-  hosListSelection(): void {
-
   }
 
   protected readonly stringToDate = stringToDate;

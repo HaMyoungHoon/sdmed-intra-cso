@@ -37,7 +37,7 @@ import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplet
   standalone: true
 })
 export class MedicineEditDialogComponent extends FDialogComponentBase{
-  medicineModel?: MedicineModel;
+  medicineModel: MedicineModel = new MedicineModel();
   medicineTypeList: string[] = allMedicineTypeDescArray();
   medicineMethodList: string[] = allMedicineMethodDescArray();
   medicineCategoryList: string[] = allMedicineCategoryDescArray();
@@ -72,16 +72,12 @@ export class MedicineEditDialogComponent extends FDialogComponentBase{
   }
 
   async getMedicineData(): Promise<void> {
-    const buff = this.medicineModel;
-    if (buff == null) {
-      return;
-    }
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK),
+    const ret = await restTry(async() => await this.thisService.getData(this.medicineModel.thisPK),
       e => this.fDialogService.error("getMedicineData", e));
     this.setLoading(false);
     if (ret.result) {
-      this.medicineModel = ret.data;
+      this.medicineModel = ret.data ?? new MedicineModel();
       this.selectMedicineType = medicineTypeToMedicineTypeDesc(ret.data?.medicineSubModel.medicineType);
       this.selectMedicineMethod = medicineMethodToMedicineMethodDesc(ret.data?.medicineSubModel.medicineMethod);
       this.selectMedicineCategory = medicineCategoryToMedicineCategoryDesc(ret.data?.medicineSubModel.medicineCategory);
@@ -90,7 +86,7 @@ export class MedicineEditDialogComponent extends FDialogComponentBase{
       this.selectMedicineRank = medicineRankToMedicineRankDesc(ret.data?.medicineSubModel.medicineRank);
       this.selectMedicineStorageTemp = medicineStorageTempToMedicineStorageTempDesc(ret.data?.medicineSubModel.medicineStorageTemp);
       this.selectMedicineStorageBox = medicineStorageBoxToMedicineStorageBoxDesc(ret.data?.medicineSubModel.medicineStorageBox);
-      this.selectedMainIngredient = this.medicineModel?.medicineIngredientModel ?? new MedicineIngredientModel();
+      this.selectedMainIngredient = this.medicineModel.medicineIngredientModel;
       return;
     }
     this.fDialogService.warn("getMedicineData", ret.msg);
@@ -108,21 +104,17 @@ export class MedicineEditDialogComponent extends FDialogComponentBase{
     this.fDialogService.warn("getMainIngredientList", ret.msg);
   }
   async saveData(): Promise<void> {
-    const buff = this.medicineModel;
-    if (buff == null) {
-      return;
-    }
-    buff.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
-    buff.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];
-    buff.medicineSubModel.medicineCategory = MedicineCategoryDescToMedicineCategory[this.selectMedicineCategory];
-    buff.medicineSubModel.medicineGroup = MedicineGroupDescToMedicineGroup[this.selectMedicineGroup];
-    buff.medicineSubModel.medicineDiv = MedicineDivDescToMedicineDiv[this.selectMedicineDiv];
-    buff.medicineSubModel.medicineRank = MedicineRankDescToMedicineRank[this.selectMedicineRank];
-    buff.medicineSubModel.medicineStorageTemp = MedicineStorageTempDescToMedicineStorageTemp[this.selectMedicineStorageTemp];
-    buff.medicineSubModel.medicineStorageBox = MedicineStorageBoxDescToMedicineStorageBox[this.selectMedicineStorageBox];
-    buff.mainIngredientCode = this.selectedMainIngredient.mainIngredientCode;
+    this.medicineModel.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
+    this.medicineModel.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];
+    this.medicineModel.medicineSubModel.medicineCategory = MedicineCategoryDescToMedicineCategory[this.selectMedicineCategory];
+    this.medicineModel.medicineSubModel.medicineGroup = MedicineGroupDescToMedicineGroup[this.selectMedicineGroup];
+    this.medicineModel.medicineSubModel.medicineDiv = MedicineDivDescToMedicineDiv[this.selectMedicineDiv];
+    this.medicineModel.medicineSubModel.medicineRank = MedicineRankDescToMedicineRank[this.selectMedicineRank];
+    this.medicineModel.medicineSubModel.medicineStorageTemp = MedicineStorageTempDescToMedicineStorageTemp[this.selectMedicineStorageTemp];
+    this.medicineModel.medicineSubModel.medicineStorageBox = MedicineStorageBoxDescToMedicineStorageBox[this.selectMedicineStorageBox];
+    this.medicineModel.mainIngredientCode = this.selectedMainIngredient.mainIngredientCode;
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.putData(buff),
+    const ret = await restTry(async() => await this.thisService.putData(this.medicineModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

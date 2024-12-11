@@ -26,7 +26,6 @@ import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {PharmaListService} from "../../../services/rest/pharma-list.service";
-import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 
 @Component({
   selector: "app-pharma-edit-dialog",
@@ -37,7 +36,7 @@ import {AzureBlobService} from "../../../services/rest/azure-blob.service";
 })
 export class PharmaEditDialogComponent extends FDialogComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
-  pharmaModel?: PharmaModel;
+  pharmaModel: PharmaModel = new PharmaModel();
   billTypeList: string[] = allBillTypeDescArray();
   pharmaTypeList: string[] = allPharmaTypeDescArray();
   pharmaGroupList: string[] = allPharmaGroupDescArray();
@@ -56,11 +55,11 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   medicineSearchSubject: Subject<string> = new Subject<string>();
   medicineSearchObserver?: Subscription;
   medicineSearchDebounceTime: number = 1000;
-  constructor(private thisService: PharmaListService, private azureBlobService: AzureBlobService) {
+  constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
     this.initLayoutData();
     const dlg = this.dialogService.getInstance(this.ref);
-    this.pharmaModel = dlg.data;
+    this.pharmaModel.thisPK = dlg.data.thisPK;
   }
 
   override async ngInit(): Promise<void> {
@@ -76,17 +75,12 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       });
   }
   async getPharmaData(): Promise<void> {
-    const buff = this.pharmaModel;
-    if (buff == null) {
-      return;
-    }
-
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK, true),
+    const ret = await restTry(async() => await this.thisService.getData(this.pharmaModel.thisPK, true),
       e => this.fDialogService.error("getPharmaData", e));
     this.setLoading(false);
     if (ret.result) {
-      this.pharmaModel = ret.data;
+      this.pharmaModel = ret.data ?? new PharmaModel();
       this.selectBillType = billTypeToBillTypeDesc(ret.data?.billType);
       this.selectPharmaType = pharmaTypeToPharmaTypeDesc(ret.data?.pharmaType);
       this.selectPharmaGroup = pharmaGroupToPharmaGroupDesc(ret.data?.pharmaGroup);
@@ -97,24 +91,20 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("getPharmaData", ret.msg);
   }
   async saveData(): Promise<void> {
-    const buff = this.pharmaModel;
-    if (buff == null) {
-      return;
-    }
-
-    buff.billType = BillTypeDescToBillType[this.selectBillType];
-    buff.pharmaType = PharmaTypeDescToPharmaType[this.selectPharmaType];
-    buff.pharmaGroup = PharmaGroupDescToPharmaGroup[this.selectPharmaType];
-    buff.contractType = ContactTypeDescToContactType[this.selectContractType];
-    buff.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
+    this.pharmaModel.billType = BillTypeDescToBillType[this.selectBillType];
+    this.pharmaModel.pharmaType = PharmaTypeDescToPharmaType[this.selectPharmaType];
+    this.pharmaModel.pharmaGroup = PharmaGroupDescToPharmaGroup[this.selectPharmaType];
+    this.pharmaModel.contractType = ContactTypeDescToContactType[this.selectContractType];
+    this.pharmaModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     if (!await this.medicineListModify()) {
       this.setLoading(false);
       return;
     }
 
-    const ret = await restTry(async() => await this.thisService.putData(buff),
+    const ret = await restTry(async() => await this.thisService.putData(this.pharmaModel),
       e => this.fDialogService.error("saveData", e));
+    this.setLoading(false);
     if (ret.result) {
       this.ref.close(ret.data);
       return;
@@ -122,12 +112,8 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("saveData", ret.msg);
   }
   async medicineListModify(): Promise<boolean> {
-    const buff = this.pharmaModel;
-    if (buff == null) {
-      return false;
-    }
-    const medicineList = buff.medicineList.map(x => x.thisPK);
-    const ret = await restTry(async() => await this.thisService.putMedicine(buff.thisPK, medicineList),
+    const medicineList = this.pharmaModel.medicineList.map(x => x.thisPK);
+    const ret = await restTry(async() => await this.thisService.putMedicine(this.pharmaModel.thisPK, medicineList),
       e => this.fDialogService.error("medicineListModify", e));
     if (ret.result) {
       return true;
@@ -140,10 +126,6 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   }
 
   async imageSelected(event: any): Promise<void> {
-    const buff = this.pharmaModel;
-    if (buff == null) {
-      return;
-    }
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.setLoading();
@@ -165,12 +147,12 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       }
       await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
-      const ret = await restTry(async() => await this.thisService.putImage(buff.thisPK, blobModel),
+      const ret = await restTry(async() => await this.thisService.putImage(this.pharmaModel.thisPK, blobModel),
         e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
-        this.pharmaModel!!.imageUrl = ret.data?.imageUrl ?? ""
+        this.pharmaModel.imageUrl = ret.data?.imageUrl ?? ""
         return;
       }
 
@@ -178,19 +160,14 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     }
   }
   get imageUrl(): string {
-    if ((this.pharmaModel?.imageUrl?.length ?? 0) > 0) {
-      return this.pharmaModel!!.imageUrl;
+    if (this.pharmaModel.imageUrl.length > 0) {
+      return this.pharmaModel.imageUrl;
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
   imageView(): void {
-    const buff = this.pharmaModel;
-    if (buff == null) {
-      return;
-    }
-
-    if (buff.imageUrl.length <= 0) {
+    if (this.pharmaModel.imageUrl.length <= 0) {
       this.imageInput.nativeElement.click();
       return;
     }
@@ -200,7 +177,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      data: Array<string>(buff.imageUrl)
+      data: Array<string>(this.pharmaModel.imageUrl)
     });
   }
 

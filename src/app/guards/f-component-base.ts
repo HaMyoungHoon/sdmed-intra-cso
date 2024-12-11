@@ -6,6 +6,8 @@ import {haveRole, UserRole} from "../models/rest/user-role";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
+import {AppConfigService} from "../services/common/app-config.service";
+import {AzureBlobService} from "../services/rest/azure-blob.service";
 
 @Component({
   selector: "f-component-base",
@@ -19,11 +21,15 @@ export abstract class FComponentBase implements AfterViewInit {
   isMobile: boolean = false;
   protected commonService: CommonService;
   protected fDialogService: FDialogService;
-  protected translateService: TranslateService
+  protected translateService: TranslateService;
+  protected configService: AppConfigService;
+  protected azureBlobService: AzureBlobService;
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.commonService = inject(CommonService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
+    this.configService = inject(AppConfigService);
+    this.azureBlobService = inject(AzureBlobService);
   }
 
   async ngAfterViewInit(): Promise<void> {

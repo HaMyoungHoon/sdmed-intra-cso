@@ -42,19 +42,19 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
 
   async saveData(): Promise<void> {
     if (this.hospitalModel.code <= 0) {
-      this.translateService.get("hospital-add-dialog.warn.code").subscribe(x => {
+      this.translateService.get("hospital-add.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return
     }
     if (this.hospitalModel.orgName.length <= 0) {
-      this.translateService.get("hospital-add-dialog.warn.org-name").subscribe(x => {
+      this.translateService.get("hospital-add.warn.org-name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;
     }
     if (this.hospitalModel.innerName.length <= 0) {
-      this.translateService.get("hospital-add-dialog.warn.inner-name").subscribe(x => {
+      this.translateService.get("hospital-add.warn.inner-name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;

@@ -7,6 +7,7 @@ import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
 import {Table} from "primeng/table";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {saveAs} from "file-saver";
+import * as FConstants from "../../../../../guards/f-constants";
 
 @Component({
   selector: "app-user-setting",
@@ -74,6 +75,11 @@ export class UserSettingComponent extends FComponentBase {
   }
 
   userEdit(data: UserDataModel): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.USER_INFO_URL}/${data.thisPK}`);
+      return;
+    }
     this.fDialogService.openUserEditDialog({
       modal: true,
       closable: false,

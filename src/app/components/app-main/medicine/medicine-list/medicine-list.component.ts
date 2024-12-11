@@ -6,6 +6,7 @@ import {MedicineModel} from "../../../../models/rest/medicine-model";
 import {UserRole} from "../../../../models/rest/user-role";
 import {MedicineListService} from "../../../../services/rest/medicine-list.service";
 import {saveAs} from "file-saver";
+import * as FConstants from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-medicine-list",
@@ -49,6 +50,11 @@ export class MedicineListComponent extends FComponentBase {
     this.inputUploadExcel.nativeElement.click();
   }
   insertData(): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(FConstants.MEDICINE_NEW_URL);
+      return;
+    }
     this.fDialogService.openMedicineAddDialog({
       modal: true,
       closable: false,
@@ -90,6 +96,11 @@ export class MedicineListComponent extends FComponentBase {
     }
   }
   medicineEdit(data: MedicineModel): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.MEDICINE_LIST_URL}/${data.thisPK}`);
+      return;
+    }
     this.fDialogService.openMedicineEditDialog({
       modal: true,
       closable: false,

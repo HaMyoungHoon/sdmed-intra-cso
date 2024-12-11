@@ -13,6 +13,7 @@ export class AppConfigService {
   private _config: AppConfig = {
     theme: FConstants.DEF_LIGHT_THEME,
     darkMode: false,
+    newTab: false,
     scale: 14,
   }
   state: AppState = {
@@ -37,6 +38,7 @@ export class AppConfigService {
   }
   onConfigUpdate(): void {
     this._config.darkMode = this.isDarkMode();
+    this._config.newTab = this.isNewTab();
     this._config.scale = this.getScale();
   }
   showMenu(): void {
@@ -56,6 +58,9 @@ export class AppConfigService {
   }
   hideNews(): void {
     this.state.newsActive = false;
+  }
+  isNewTab(): boolean {
+    return getLocalStorage(FConstants.STORAGE_KEY_IS_NEW_TAB) == "true";
   }
   getScale(): number {
     let scale = +getLocalStorage(FConstants.STORAGE_KEY_SCALE);
@@ -81,6 +86,10 @@ export class AppConfigService {
     });
     this.onConfigUpdate();
     setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, `${toDark}`);
+  }
+  changeNewTab(newTab: boolean): void {
+    this.onConfigUpdate();
+    setLocalStorage(FConstants.STORAGE_KEY_IS_NEW_TAB, `${newTab}`);
   }
   changeScale(value: number): void {
     if (value < 10) {
