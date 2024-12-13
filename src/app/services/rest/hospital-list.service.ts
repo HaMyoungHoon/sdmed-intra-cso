@@ -22,6 +22,10 @@ export class HospitalListService {
   getData(thisPK: string): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
   }
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);
@@ -31,17 +35,15 @@ export class HospitalListService {
   postData(hospitalModel: HospitalModel): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.post(`${this.baseUrl}/data`, hospitalModel);
   }
-  getExcelSample(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
-  }
-  putData(hospitalModel: HospitalModel): Promise<RestResult<HospitalModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/data`, hospitalModel);
-  }
   postImage(thisPK: string, file: File): Promise<RestResult<HospitalModel>> {
     const formData = new FormData();
     formData.append("file", file);
     this.httpResponse.setMultipartContentType();
-    return this.httpResponse.post(`${this.baseUrl}/file/${thisPK}/image`);
+    return this.httpResponse.post(`${this.baseUrl}/file/${thisPK}/image`, formData);
+  }
+
+  putData(hospitalModel: HospitalModel): Promise<RestResult<HospitalModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data`, hospitalModel);
   }
   putImage(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/image`, blobModel);

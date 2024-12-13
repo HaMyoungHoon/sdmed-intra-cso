@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import {RestResult} from "../../models/common/rest-result";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
+import {UserDataModel} from "../../models/rest/user-data-model";
 
 @Injectable({
   providedIn: "root"
@@ -10,6 +11,18 @@ export class CommonService {
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
+  signIn(id: string, pw: string): Promise<RestResult<string>> {
+    this.httpResponse.addParam("id", id);
+    this.httpResponse.addParam("pw", pw);
+    return this.httpResponse.get(`${this.baseUrl}/signIn`);
+  }
+  signUp(confirmPW: string, data: UserDataModel): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("confirmPW", confirmPW);
+    return this.httpResponse.post(`${this.baseUrl}/signUp`, data);
+  }
+  tokenRefresh(): Promise<RestResult<string>> {
+    return this.httpResponse.post(`${this.baseUrl}/tokenRefresh`);
+  }
   setLanguage(lang: string): Promise<RestResult<null>> {
     this.httpResponse.addParam("lang", lang);
     return this.httpResponse.post(`${this.baseUrl}/lang`);

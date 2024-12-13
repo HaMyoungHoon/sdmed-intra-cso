@@ -8,7 +8,7 @@ import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {restTry} from "../../../guards/f-extensions";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
-import {UserService} from "../../../services/rest/user.service";
+import {CommonService} from "../../../services/rest/common.service";
 
 @Component({
   selector: "app-sign-dialog",
@@ -20,7 +20,7 @@ import {UserService} from "../../../services/rest/user.service";
 export class SignDialogComponent extends FDialogComponentBase {
   id: string;
   pw: string;
-  constructor(private thisService: UserService) {
+  constructor(private thisService: CommonService) {
     super();
     this.roleCheck = false;
     this.id = "";

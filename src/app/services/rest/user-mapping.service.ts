@@ -14,32 +14,32 @@ export class UserMappingService {
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
-  getUserAllBusiness(): Promise<RestResult<UserDataModel[]>> {
-    return this.httpResponse.get(`${this.baseUrl}/all/business`);
+  getList(): Promise<RestResult<UserDataModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/list`);
   }
   getData(thisPK: string, childView: boolean = false, relationView: boolean = false, pharmaOwnMedicineView: boolean = false): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("childView", childView);
     this.httpResponse.addParam("relationView", relationView);
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
-    return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
+    return this.httpResponse.get(`${this.baseUrl}/data/user/${thisPK}`);
   }
   getHospitalAllSearch(searchString: string, isSearchTypeCode: boolean = false): Promise<RestResult<HospitalModel[]>> {
     this.httpResponse.addParam("searchString", searchString);
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
-    return this.httpResponse.get(`${this.baseUrl}/all/hospitalSearch`);
+    return this.httpResponse.get(`${this.baseUrl}/list/hospitalSearch`);
   }
   getPharmaAllSearch(searchString: string, isSearchTypeCode: boolean = false): Promise<RestResult<PharmaModel[]>> {
     this.httpResponse.addParam("searchString", searchString);
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
-    return this.httpResponse.get(`${this.baseUrl}/all/pharmaSearch`)
+    return this.httpResponse.get(`${this.baseUrl}/list/pharmaSearch`)
   }
   getPharmaData(pharmaPK: string, pharmaOwnMedicineView: boolean = false): Promise<RestResult<PharmaModel>> {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
-    return this.httpResponse.get(`${this.baseUrl}/${pharmaPK}`);
+    return this.httpResponse.get(`${this.baseUrl}/data/pharma${pharmaPK}`);
   }
 
   putUserRelationModifyByPK(userPK: string, hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[]): Promise<RestResult<UserDataModel>> {
     this.httpResponse.addParam("userPK", userPK);
-    return this.httpResponse.put(`${this.baseUrl}/userRelModify/pk`, hosPharmaMedicinePairModel);
+    return this.httpResponse.put(`${this.baseUrl}/data/user/pk`, hosPharmaMedicinePairModel);
   }
 }

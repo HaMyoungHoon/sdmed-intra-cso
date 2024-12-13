@@ -12,7 +12,6 @@ import {MainMenuItem} from "../../../models/common/main-menu-item";
 import {LangType} from "../../../models/common/lang-type";
 import {getLocalStorage, getTokenExpiredDate, setLocalStorage} from "../../../guards/f-amhohwa";
 import * as FConstants from "../../../guards/f-constants";
-import {UserService} from "../../../services/rest/user.service";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToMonthFullString, restTry} from "../../../guards/f-extensions";
 import {MenuModule} from "primeng/menu";
@@ -20,6 +19,7 @@ import {Ripple} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
 import {CheckboxModule} from "primeng/checkbox";
 import {FormsModule} from "@angular/forms";
+import {CommonService} from "../../../services/rest/common.service";
 
 
 @Component({
@@ -36,7 +36,7 @@ export class MenuConfigComponent {
   isNewTab: boolean = false;
   scale: number = 14;
   scales: number[] = [10,12,14,16,18];
-  constructor(private cd: ChangeDetectorRef, private langService: LanguageService, private configService: AppConfigService, private userService: UserService, private fDialogService: FDialogService) {
+  constructor(private cd: ChangeDetectorRef, private langService: LanguageService, private configService: AppConfigService, private commonService: CommonService, private fDialogService: FDialogService) {
     this.isNewTab = this.configService.isNewTab();
     this.scale = this.configService.getScale();
     afterNextRender(() => {
@@ -55,7 +55,7 @@ export class MenuConfigComponent {
     this.menuVisible = !this.menuVisible;
   }
   async tokenRefresh(): Promise<void> {
-    const ret = await restTry(async() => await this.userService.tokenRefresh(),
+    const ret = await restTry(async() => await this.commonService.tokenRefresh(),
       e => this.fDialogService.error("refresh", e));
     if (ret.result) {
       setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");

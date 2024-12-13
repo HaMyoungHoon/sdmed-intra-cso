@@ -21,6 +21,10 @@ export class MedicineListService {
   getMainIngredientList(): Promise<RestResult<MedicineIngredientModel[]>> {
     return this.httpResponse.get(`${this.baseUrl}/list/mainIngredient`);
   }
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);
@@ -29,9 +33,6 @@ export class MedicineListService {
   }
   postData(medicineModel: MedicineModel): Promise<RestResult<MedicineModel>> {
     return this.httpResponse.post(`${this.baseUrl}/data`, medicineModel);
-  }
-  getExcelSample(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
   }
   putData(medicineModel: MedicineModel): Promise<RestResult<MedicineModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data`, medicineModel);

@@ -18,4 +18,18 @@ export class MedicinePriceListService {
     this.httpResponse.addParam("kdCode", kdCode);
     return this.httpResponse.get(`${this.baseUrl}/list/price`);
   }
+
+  postMedicinePriceUpload(applyDate: string, file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    this.httpResponse.addParam("applyDate", applyDate);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/file/priceExcel`, formData);
+  }
+  postMedicineIngredientUpload(file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/file/ingredientExcel`, formData);
+  }
 }

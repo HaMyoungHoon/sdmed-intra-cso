@@ -24,6 +24,18 @@ export class PharmaListService {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
   }
+  getMedicine(searchString: string, isSearchTypeCode: boolean = false): Promise<RestResult<MedicineModel[]>> {
+    this.httpResponse.addParam("searchString", searchString);
+    this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
+    return this.httpResponse.get(`${this.baseUrl}/medicine/list`);
+  }
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+  getPharmaMedicineExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample/pharmaMedicine`);
+  }
+
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);
@@ -33,29 +45,11 @@ export class PharmaListService {
   postData(pharmaModel: PharmaModel): Promise<RestResult<PharmaModel>> {
     return this.httpResponse.post(`${this.baseUrl}/data`, pharmaModel);
   }
-  getExcelSample(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
-  }
-  putData(pharmaModel: PharmaModel): Promise<RestResult<PharmaModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/data`, pharmaModel);
-  }
   postImage(thisPK: string, file: File): Promise<RestResult<PharmaModel>> {
     const formData = new FormData();
     formData.append("file", file);
     this.httpResponse.setMultipartContentType();
-    return this.httpResponse.post(`${this.baseUrl}/file/${thisPK}/image`);
-  }
-  putMedicine(thisPK: string, medicinePKList: string[]): Promise<RestResult<PharmaModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/data/${thisPK}/medicine/list`, medicinePKList);
-  }
-  getMedicine(searchString: string, isSearchTypeCode: boolean = false): Promise<RestResult<MedicineModel[]>> {
-    this.httpResponse.addParam("searchString", searchString);
-    this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
-    return this.httpResponse.get(`${this.baseUrl}/medicine/list`);
-  }
-
-  getPharmaMedicineExcelSample(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample/pharmaMedicine`);
+    return this.httpResponse.post(`${this.baseUrl}/file/${thisPK}/image`, formData);
   }
   postPharmaMedicineExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
@@ -63,9 +57,17 @@ export class PharmaListService {
     this.httpResponse.setMultipartContentType();
     return this.httpResponse.post(`${this.baseUrl}/file/excel/pharmaMedicine`, formData);
   }
+
+  putData(pharmaModel: PharmaModel): Promise<RestResult<PharmaModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data`, pharmaModel);
+  }
+  putMedicine(thisPK: string, medicinePKList: string[]): Promise<RestResult<PharmaModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data/${thisPK}/medicine/list`, medicinePKList);
+  }
   putImage(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<PharmaModel>> {
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/image`, blobModel);
   }
+
   getBlobModel(file: File, ext: string): BlobUploadModel {
     const thisPK = getThisPK();
     const blobName = `pharma/${currentDateYYYYMMdd()}/${getRandomUUID()}.${ext}`;

@@ -130,7 +130,7 @@ export class UserMappingComponent extends FComponentBase {
 
   async getAllList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getUserAllBusiness(),
+    const ret = await restTry(async() => await this.thisService.getList(),
         e => this.fDialogService.error("getAllList", e));
     this.setLoading(false);
     if (ret.result) {

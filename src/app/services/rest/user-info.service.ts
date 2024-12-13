@@ -28,31 +28,25 @@ export class UserInfoService {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
   }
+  getListChildAble(): Promise<RestResult<UserDataModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/list/childAble`);
+  }
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+
+  postChildModify(thisPK: string, childPK: string[]): Promise<RestResult<string>> {
+    return this.httpResponse.post(`${this.baseUrl}/data/${thisPK}`, childPK);
+  }
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);
     this.httpResponse.setMultipartContentType();
     return this.httpResponse.post(`${this.baseUrl}/file/excel`, formData);
   }
-  getExcelSample(): Promise<any> {
-    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
-  }
-  putUserNameMailPhoneModifyByPK(userPK: string, name: string, mail: string, phoneNumber: string): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("userPK", userPK);
-    this.httpResponse.addParam("name", name);
-    this.httpResponse.addParam("mail", mail);
-    this.httpResponse.addParam("phoneNumber", phoneNumber);
-    return this.httpResponse.put(`${this.baseUrl}/userNameMailPhoneModify/pk`);
-  }
-  putUserRoleDeptStatusModifyByPK(userPK: string, roles: UserRole[], depts: UserDept[], status: UserStatus): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("userPK", userPK);
-    this.httpResponse.addParam("status", status);
-    const json = {
-      "roles": roles.map((x) => UserRole[x]),
-      "depts": depts.map((x) => UserDept[x]),
-      "status": status
-    };
-    return this.httpResponse.put(`${this.baseUrl}/userRoleDeptStatusModify/pk`, json);
+
+  putUser(userData: UserDataModel): Promise<RestResult<UserDataModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data`, userData);
   }
   putUserTaxImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/taxImage`, blobModel);
