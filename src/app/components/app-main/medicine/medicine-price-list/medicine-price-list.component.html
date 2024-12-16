@@ -1,15 +1,24 @@
 <div class="medicine-price-list-container">
-  <p-table #listTable [value]="medicineModel" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+  <p-table #listTable [value]="medicineModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-striped">
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm">
     <ng-template pTemplate="caption">
       <div class="flex">
-        <p-iconField iconPosition="left" class="ml-auto">
-          <p-inputIcon>
-            <i class="pi pi-search"></i>
-          </p-inputIcon>
-          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-        </p-iconField>
+        <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
+        <p-calendar class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!haveRole" />
+        <p-button class="m-1" (onClick)="uploadPriceExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.price-excel' | translate}}" />
+        <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.main-ingredient-excel' | translate}}" />
+        <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">
+        <input #inputMainIngredientUploadExcel class="collapse" type="file" accept=".xlsx" (change)="mainIngredientExcelSelected($event)">
+        <div class="ml-auto justify-content-end">
+          <label class="m-1 align-self-center">{{dateToMonthYYYYMMdd(lastApplyDate)}}</label>
+          <p-iconField iconPosition="left" class="m-1">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+          </p-iconField>
+        </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">

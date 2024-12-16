@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
-import {PharmaModel} from "../../models/rest/pharma-model";
+import {PharmaModel} from "../../models/rest/pharma/pharma-model";
 import {RestResult} from "../../models/common/rest-result";
-import {MedicineModel} from "../../models/rest/medicine-model";
+import {MedicineModel} from "../../models/rest/medicine/medicine-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
 import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";

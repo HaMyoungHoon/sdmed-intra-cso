@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {RestResult} from "../../models/common/rest-result";
-import {HospitalModel} from "../../models/rest/hospital-model";
+import {HospitalModel} from "../../models/rest/hospital/hospital-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
 import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";

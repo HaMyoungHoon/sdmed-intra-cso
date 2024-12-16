@@ -34,7 +34,25 @@
     },
     "is-new-tab": "opens in a new tab if possible."
   },
+  "dash-board": {
+    "header": {
+      "view-type-my-child": "child only",
+      "view-type-all": "all",
+      "view-type-date": "date",
+      "start-date": "start date",
+      "end-date": "end date"
+    },
+    "request": {
+      "request-date": "req date",
+      "response-type": "res type",
+      "request-type": "req type",
+      "request-user-id": "req user",
+      "response-date": "res date"
+    }
+  },
   "medicine-price-list": {
+    "price-excel": "medicine price upload",
+    "main-ingredient-excel": "main ingredient code upload",
     "name": "product name",
     "kd-code": "insurance code",
     "pharma-name": "pharma name",
@@ -110,8 +128,7 @@
     "mail": "mail",
     "phone-number": "phone",
     "status": "status",
-    "role": "role",
-    "edit": "edit"
+    "role": "role"
   },
   "user-mapping": {
     "user-list": {
@@ -145,7 +162,7 @@
   "user-edit": {
     "accordion-header": {
       "detail": "user info edit",
-      "child": "하위 유저",
+      "child": "child",
       "in-charge": "inCharge"
     },
     "detail": {
@@ -179,6 +196,11 @@
     "pharma-data": {
       "code": "code",
       "inner-name": "inner name"
+    },
+    "user-pick-list": {
+      "source-header": "all user",
+      "target-header": "child",
+      "filter-place-holder": "id"
     }
   },
   "password-change-dialog": {
@@ -372,6 +394,7 @@
     "view": "view",
     "save": "save",
     "edit": "edit",
+    "move": "move",
     "add": "add",
     "refresh": "refresh",
     "close": "close",
@@ -379,5 +402,14 @@
     "sample-download": "sample download",
     "in-visible": "invisible",
     "logout": "logout"
+  },
+  "primeng": {
+    "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "dayNamesMin": ["Su","Mo","Tu","We","Th","Fr","Sa"],
+    "monthNames": ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    "monthNamesShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "today": "Today",
+    "weekHeader": "Wk"
   }
 }

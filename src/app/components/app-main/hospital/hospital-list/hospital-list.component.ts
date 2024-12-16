@@ -1,9 +1,9 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
-import {HospitalModel} from "../../../../models/rest/hospital-model";
+import {HospitalModel} from "../../../../models/rest/hospital/hospital-model";
 import {Table} from "primeng/table";
-import {UserRole} from "../../../../models/rest/user-role";
+import {UserRole} from "../../../../models/rest/user/user-role";
 import {saveAs} from "file-saver";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import * as FConstants from "../../../../guards/f-constants";

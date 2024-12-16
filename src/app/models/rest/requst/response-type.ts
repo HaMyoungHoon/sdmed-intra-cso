@@ -1,9 +1,10 @@
 export enum ResponseType {
   None = 0,
-  OK = 1,
-  Pending = 2,
-  Ignore = 3,
-  Reject = 4
+  Recep = 1,
+  OK = 2,
+  Pending = 3,
+  Ignore = 4,
+  Reject = 5
 }
 
 export function allResponseTypeDescArray(): string[] {
@@ -28,13 +29,31 @@ export function responseTypeToResponseTypeDesc(responseType?: ResponseType | str
 }
 export const ResponseTypeDesc: { [key in ResponseType]: string } = {
   [ResponseType.None]: "미지정",
+  [ResponseType.Recep]: "수신",
   [ResponseType.OK]: "완료",
   [ResponseType.Pending]: "팬딩",
   [ResponseType.Ignore]: "무시",
   [ResponseType.Reject]: "거부",
 }
+export const ResponseTypeToPropertyBackgroundName: { [key in ResponseType]: string } = {
+  [ResponseType.None]: "--yellow-500",
+  [ResponseType.Recep]: "--blue-500",
+  [ResponseType.OK]: "--green-500",
+  [ResponseType.Pending]: "--orange-500",
+  [ResponseType.Ignore]: "--red-500",
+  [ResponseType.Reject]: "--gray-500",
+}
+export const ResponseTypeToPropertyHoverBackgroundName: { [key in ResponseType]: string } = {
+  [ResponseType.None]: "--yellow-400",
+  [ResponseType.Recep]: "--blue-400",
+  [ResponseType.OK]: "--green-400",
+  [ResponseType.Pending]: "--orange-400",
+  [ResponseType.Ignore]: "--red-400",
+  [ResponseType.Reject]: "--gray-400",
+}
 export const StringToResponseTypeDesc: { [key in string]: string } = {
   "None": "미지정",
+  "Recep": "수신",
   "OK": "완료",
   "Pending": "팬딩",
   "Ignore": "무시",
@@ -42,6 +61,7 @@ export const StringToResponseTypeDesc: { [key in string]: string } = {
 }
 export const StringToResponseType: { [key in string]: ResponseType } = {
   "None": ResponseType.None,
+  "Recep": ResponseType.Recep,
   "OK": ResponseType.OK,
   "Pending": ResponseType.Pending,
   "Ignore": ResponseType.Ignore,
@@ -49,8 +69,25 @@ export const StringToResponseType: { [key in string]: ResponseType } = {
 }
 export const ResponseTypeDescToResponseType: { [key in string]: ResponseType } = {
   "미지정":ResponseType.None,
+  "수신":ResponseType.Recep,
   "완료":ResponseType.OK,
   "팬딩":ResponseType.Pending,
   "무시":ResponseType.Ignore,
   "거부":ResponseType.Reject,
+}
+export const stringToPropertyBackgroundName: { [key in string]: string } = {
+  "None": "--yellow-500",
+  "Recep": "--blue-500",
+  "OK": "--green-500",
+  "Pending": "--orange-500",
+  "Ignore": "--red-500",
+  "Reject": "--gray-500",
+}
+export const stringToPropertyHoverBackgroundName: { [key in string]: string } = {
+  "None": "--yellow-400",
+  "Recep": "--blue-400",
+  "OK": "--green-400",
+  "Pending": "--orange-400",
+  "Ignore": "--red-400",
+  "Reject": "--gray-400",
 }

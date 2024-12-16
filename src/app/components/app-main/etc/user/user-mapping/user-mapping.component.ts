@@ -1,12 +1,12 @@
 import {Component} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
-import {UserDataModel} from "../../../../../models/rest/user-data-model";
-import {HospitalModel} from "../../../../../models/rest/hospital-model";
-import {PharmaModel} from "../../../../../models/rest/pharma-model";
-import {MedicineModel} from "../../../../../models/rest/medicine-model";
-import {UserRole} from "../../../../../models/rest/user-role";
+import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
+import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model";
+import {PharmaModel} from "../../../../../models/rest/pharma/pharma-model";
+import {MedicineModel} from "../../../../../models/rest/medicine/medicine-model";
+import {UserRole} from "../../../../../models/rest/user/user-role";
 import {debounceTime, Subject, Subscription} from "rxjs";
-import {HosPharmaMedicinePairModel} from "../../../../../models/rest/hos-pharma-medicine-pair-model";
+import {HosPharmaMedicinePairModel} from "../../../../../models/rest/user/hos-pharma-medicine-pair-model";
 import {applyClass, restTry} from "../../../../../guards/f-extensions";
 import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
 

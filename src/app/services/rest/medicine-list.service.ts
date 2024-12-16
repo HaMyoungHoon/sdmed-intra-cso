@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import {RestResult} from "../../models/common/rest-result";
-import {MedicineModel} from "../../models/rest/medicine-model";
+import {MedicineModel} from "../../models/rest/medicine/medicine-model";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
-import {MedicineIngredientModel} from "../../models/rest/medicine-ingredient-model";
+import {MedicineIngredientModel} from "../../models/rest/medicine/medicine-ingredient-model";
 
 @Injectable({
   providedIn: "root"

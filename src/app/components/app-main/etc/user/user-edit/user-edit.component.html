@@ -94,5 +94,21 @@
         </p-table>
       </div>
     </p-accordionTab>
+    <p-accordionTab header="{{'user-edit.accordion-header.child' | translate}}">
+      <p-pickList class="flex col-12" [source]="childAble" [target]="userDataModel.children" [disabled]="userDataModel.motherPK.length > 0" [dragdrop]="true"
+                  [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
+                  sourceHeader="{{'user-edit.user-pick-list.source-header' | translate}}" targetHeader="{{'user-edit.user-pick-list.target-header' | translate}}"
+                  filterMatchMode="contains" filterBy="id"
+                  sourceFilterPlaceholder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}"
+                  [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
+                  targetFilterPlaceholder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}">
+        <ng-template pTemplate="item" let-user>
+          <div class="flex flex-wrap p-2 align-items-center gap-3">
+            <div>{{user.id}}</div>
+            <div>{{user.name}}</div>
+          </div>
+        </ng-template>
+      </p-pickList>
+    </p-accordionTab>
   </p-accordion>
 </div>

@@ -1,9 +1,9 @@
 import {Component} from "@angular/core";
-import {UserDataModel} from "../../../../../models/rest/user-data-model";
-import {dateToYearFullString, getSeverity, restTry, stringToDate} from "../../../../../guards/f-extensions";
-import {flagToRoleDesc} from "../../../../../models/rest/user-role";
-import {flagToDeptDesc} from "../../../../../models/rest/user-dept";
-import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
+import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
+import {dateToYearFullString, getUserStatusSeverity, restTry, stringToDate} from "../../../../../guards/f-extensions";
+import {flagToRoleDesc} from "../../../../../models/rest/user/user-role";
+import {flagToDeptDesc} from "../../../../../models/rest/user/user-dept";
+import {statusToUserStatusDesc} from "../../../../../models/rest/user/user-status";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {MyInfoService} from "../../../../../services/rest/my-info.service";
 import {removeLocalStorage} from "../../../../../guards/f-amhohwa";
@@ -49,7 +49,7 @@ export class MyInfoComponent extends FComponentBase {
     this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
   }
 
-  protected readonly getSeverity = getSeverity;
+  protected readonly getSeverity = getUserStatusSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
   protected readonly flagToDeptDesc = flagToDeptDesc;
   protected readonly dateToYearFullString = dateToYearFullString;

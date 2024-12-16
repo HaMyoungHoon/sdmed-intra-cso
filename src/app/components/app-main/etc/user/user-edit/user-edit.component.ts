@@ -1,10 +1,21 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
-import {UserDataModel} from "../../../../../models/rest/user-data-model";
-import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole} from "../../../../../models/rest/user-role";
-import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../../../models/rest/user-dept";
-import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus} from "../../../../../models/rest/user-status";
-import {HospitalModel} from "../../../../../models/rest/hospital-model";
+import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
+import {
+  allUserRoleDescArray,
+  flagToRoleDesc,
+  stringArrayToUserRole,
+  UserRole,
+  userRoleToFlag
+} from "../../../../../models/rest/user/user-role";
+import {
+  allUserDeptDescArray,
+  flagToDeptDesc,
+  stringArrayToUserDept,
+  userDeptToFlag
+} from "../../../../../models/rest/user/user-dept";
+import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus} from "../../../../../models/rest/user/user-status";
+import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {getFileExt, isImage, restTry, tryCatchAsync, stringToDate, dateToYearFullString} from "../../../../../guards/f-extensions";
 import * as FConstants from "../../../../../guards/f-constants";
@@ -19,6 +30,7 @@ import {ActivatedRoute} from "@angular/router";
 export class UserEditComponent extends FComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
+  childAble: UserDataModel[] = [];
   userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
   userDeptList: string[] = allUserDeptDescArray();
@@ -34,6 +46,7 @@ export class UserEditComponent extends FComponentBase {
   override async ngInit(): Promise<void> {
     if (this.haveRole) {
       await this.getUserData();
+      await this.getChildAble();
     }
   }
 
@@ -49,29 +62,37 @@ export class UserEditComponent extends FComponentBase {
     }
     this.fDialogService.warn("getUserData", ret.msg);
   }
+  async getChildAble(): Promise<void> {
+    const ret = await restTry(async() => await this.thisService.getListChildAble(this.userDataModel.thisPK),
+      e => this.fDialogService.error("getChildAble", e));
+    if (ret.result) {
+      this.childAble = ret.data ?? [];
+      return;
+    }
+    this.fDialogService.warn("getChildAble", ret.msg);
+  }
   async saveUserData(): Promise<void> {
-    const name = this.userDataModel?.name ?? "";
-    const mail = this.userDataModel?.mail ?? "";
-    const phoneNumber = this.userDataModel?.phoneNumber ?? "";
-    const roles = stringArrayToUserRole(this.selectedUserRoles);
-    const depts = stringArrayToUserDept(this.selectedUserDepts);
-    const status = StatusDescToUserStatus[this.selectedUserStatus];
+    this.userDataModel.role = userRoleToFlag(stringArrayToUserRole(this.selectedUserRoles));
+    this.userDataModel.dept = userDeptToFlag(stringArrayToUserDept(this.selectedUserDepts));
+    this.userDataModel.status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
-    // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
-    const ret1 = await restTry(async() => await this.thisService.putUserNameMailPhoneModifyByPK(this.userDataModel.thisPK, name, mail, phoneNumber),
+    const ret = await restTry(async() => await this.thisService.putUser(this.userDataModel),
       e => this.fDialogService.error("saveUserData", e));
-    if (ret1.result) {
-      const ret2 = await restTry(async() => await this.thisService.putUserRoleDeptStatusModifyByPK(this.userDataModel.thisPK, roles, depts, status),
-        e => this.fDialogService.error("saveUserData", e));
-      this.setLoading(false);
-      if (ret2.result) {
-        return;
-      }
-      this.fDialogService.warn("saveUserData", ret2.msg);
+    if (ret.result) {
+      await this.saveUserChildData();
       return;
     }
     this.setLoading(false);
-    this.fDialogService.warn("saveUserData", ret1.msg);
+    this.fDialogService.warn("saveUserData", ret.msg);
+  }
+  async saveUserChildData(): Promise<void> {
+    const ret = await restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
+      e => this.fDialogService.error("saveUserChildData", e));
+    this.setLoading(false);
+    if (ret.result) {
+      return;
+    }
+    this.fDialogService.warn("saveUserData", ret.msg);
   }
 
   get taxpayerImageUrl(): string {

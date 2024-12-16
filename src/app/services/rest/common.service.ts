@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {RestResult} from "../../models/common/rest-result";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
-import {UserDataModel} from "../../models/rest/user-data-model";
+import {UserDataModel} from "../../models/rest/user/user-data-model";
 
 @Injectable({
   providedIn: "root"

@@ -1,9 +1,9 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {UserRole} from "../../../../models/rest/user-role";
+import {UserRole} from "../../../../models/rest/user/user-role";
 import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
 import {Table} from "primeng/table";
-import {PharmaModel} from "../../../../models/rest/pharma-model";
+import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {saveAs} from "file-saver";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import * as FConstants from "../../../../guards/f-constants";

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import {HosPharmaMedicinePairModel} from "../../models/rest/hos-pharma-medicine-pair-model";
+import {HosPharmaMedicinePairModel} from "../../models/rest/user/hos-pharma-medicine-pair-model";
 import {RestResult} from "../../models/common/rest-result";
-import {UserDataModel} from "../../models/rest/user-data-model";
+import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
-import {HospitalModel} from "../../models/rest/hospital-model";
-import {PharmaModel} from "../../models/rest/pharma-model";
+import {HospitalModel} from "../../models/rest/hospital/hospital-model";
+import {PharmaModel} from "../../models/rest/pharma/pharma-model";
 
 @Injectable({
   providedIn: "root"

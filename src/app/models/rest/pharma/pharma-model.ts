@@ -1,9 +1,11 @@
-import {BillType} from "./bill-type";
-import {ContractType} from "./contract-type";
-import {DeliveryDiv} from "./delivery-div";
-import {PharmaModel} from "./pharma-model";
+import {BillType} from "../bill-type";
+import {PharmaType} from "./pharma-type";
+import {PharmaGroup} from "./pharma-group";
+import {ContractType} from "../contract-type";
+import {DeliveryDiv} from "../delivery-div";
+import {MedicineModel} from "../medicine/medicine-model";
 
-export class HospitalModel {
+export class PharmaModel {
   thisPK: string = "";
   code: number = 0;
   orgName: string = "";
@@ -18,10 +20,10 @@ export class HospitalModel {
   businessType: string = "";
   businessItem: string = "";
   billType: BillType = BillType.None;
+  pharmaType: PharmaType = PharmaType.None;
+  pharmaGroup: PharmaGroup = PharmaGroup.None;
   contractType: ContractType = ContractType.None;
   deliveryDiv: DeliveryDiv = DeliveryDiv.None;
-  licenseNumber: string = "";
-  nursingHomeNumber: string = "";
   mail: string = "";
   mobilePhone: string = "";
   openDate?: Date;
@@ -30,9 +32,10 @@ export class HospitalModel {
   etc2: string = "";
   imageUrl: string = "";
   inVisible: boolean = false;
-  pharmaList: PharmaModel[] = [];
+  medicineList: MedicineModel[] = [];
+  relationMedicineList: MedicineModel[] = [];
 
-  init(data: HospitalModel): HospitalModel {
+  init(data: PharmaModel): PharmaModel {
     this.thisPK = data.thisPK;
     this.code = data.code;
     this.orgName = data.orgName;
@@ -47,10 +50,10 @@ export class HospitalModel {
     this.businessType = data.businessType;
     this.businessItem = data.businessItem;
     this.billType = data.billType;
+    this.pharmaType = data.pharmaType;
+    this.pharmaGroup = data.pharmaGroup;
     this.contractType = data.contractType;
     this.deliveryDiv = data.deliveryDiv;
-    this.licenseNumber = data.licenseNumber;
-    this.nursingHomeNumber = data.nursingHomeNumber;
     this.mail = data.mail;
     this.mobilePhone = data.mobilePhone;
     this.openDate = data.openDate;
@@ -59,10 +62,11 @@ export class HospitalModel {
     this.etc2 = data.etc2;
     this.imageUrl = data.imageUrl;
     this.inVisible = data.inVisible;
-    this.pharmaList = data.pharmaList;
+    this.medicineList = data.medicineList;
+    this.relationMedicineList = data.relationMedicineList;
     return this;
   }
-  copyLhsFromRhs(lhs: HospitalModel, rhs: HospitalModel): void {
+  copyLhsFromRhs(lhs: PharmaModel, rhs: PharmaModel): void {
     lhs.thisPK = rhs.thisPK;
     lhs.code = rhs.code;
     lhs.orgName = rhs.orgName;
@@ -77,10 +81,10 @@ export class HospitalModel {
     lhs.businessType = rhs.businessType;
     lhs.businessItem = rhs.businessItem;
     lhs.billType = rhs.billType;
+    lhs.pharmaType = rhs.pharmaType;
+    lhs.pharmaGroup = rhs.pharmaGroup;
     lhs.contractType = rhs.contractType;
     lhs.deliveryDiv = rhs.deliveryDiv;
-    lhs.licenseNumber = rhs.licenseNumber;
-    lhs.nursingHomeNumber = rhs.nursingHomeNumber;
     lhs.mail = rhs.mail;
     lhs.mobilePhone = rhs.mobilePhone;
     lhs.openDate = rhs.openDate;
@@ -89,6 +93,7 @@ export class HospitalModel {
     lhs.etc2 = rhs.etc2;
     lhs.imageUrl = rhs.imageUrl;
     lhs.inVisible = rhs.inVisible;
-    lhs.pharmaList = rhs.pharmaList;
+    lhs.medicineList = rhs.medicineList;
+    lhs.relationMedicineList = rhs.relationMedicineList;
   }
 }

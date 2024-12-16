@@ -3,5 +3,5 @@ export interface MedicinePriceModel {
   kdCode: string;
   maxPrice: number;
   ancestorCode: string;
-  applyDate: string;
+  applyDate: Date;
 }

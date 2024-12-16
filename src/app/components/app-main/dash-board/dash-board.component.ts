@@ -1,7 +1,5 @@
 import {Component} from "@angular/core";
 import {FComponentBase} from "../../../guards/f-component-base";
-import {UserRole} from "../../../models/rest/user-role";
-
 @Component({
   selector: "app-dash-board",
   templateUrl: "./dash-board.component.html",
@@ -10,9 +8,6 @@ import {UserRole} from "../../../models/rest/user-role";
 })
 export class DashBoardComponent extends FComponentBase {
   constructor() {
-    super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
-  }
-
-  override async ngInit(): Promise<void> {
+    super();
   }
 }

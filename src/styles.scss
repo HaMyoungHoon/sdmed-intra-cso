@@ -11,8 +11,20 @@ app-menu-config .p-menu {
 app-menu-config .p-menu a {
   text-decoration-line: none;
 }
+app-user-edit .p-picklist-source-wrapper {
+  margin-right: 0.25rem !important;
+}
+app-user-edit-dialog .p-picklist-source-wrapper {
+  margin-right: 0.25rem !important;
+}
 app-user-mapping .p-picklist-source-wrapper {
   margin-right: 0.25rem !important;
+}
+app-user-edit .p-picklist-transfer-buttons {
+  display: none !important;
+}
+app-user-edit-dialog .p-picklist-transfer-buttons {
+  display: none !important;
 }
 app-user-mapping .p-picklist-transfer-buttons {
   display: none !important;

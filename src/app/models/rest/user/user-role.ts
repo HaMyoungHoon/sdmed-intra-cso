@@ -58,11 +58,14 @@ export function haveRole(flags?: number, data: UserRole[] = []): boolean {
   if (flags == null || flags == 0) {
     return false;
   }
+  if (data.length <= 0) {
+    return true;
+  }
   for (const buff of data) {
     if (buff.valueOf() == 0) {
       return true;
     }
-    if (buff.valueOf() & flags) {
+    if ((buff.valueOf() & flags) != 0) {
       return true;
     }
   }

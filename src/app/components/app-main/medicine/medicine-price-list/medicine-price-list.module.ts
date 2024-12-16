@@ -9,13 +9,16 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
+import {TooltipModule} from "primeng/tooltip";
+import {CalendarModule} from "primeng/calendar";
+import {FormsModule} from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [MedicinePriceListComponent],
   imports: [
-    CommonModule, MedicinePriceListRoutingModule, TableModule, Button, TagModule, TranslatePipe, IconFieldModule, InputIconModule, InputTextModule
+    CommonModule, MedicinePriceListRoutingModule, TableModule, Button, TagModule, TranslatePipe, IconFieldModule, InputIconModule, InputTextModule, TooltipModule, CalendarModule, FormsModule
   ]
 })
 export class MedicinePriceListModule { }

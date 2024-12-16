@@ -1,9 +1,9 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
-import {UserDataModel} from "../../../../../models/rest/user-data-model";
-import {statusToUserStatusDesc} from "../../../../../models/rest/user-status";
-import {customSort, filterTable, getSeverity, restTry} from "../../../../../guards/f-extensions";
-import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user-role";
+import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
+import {statusToUserStatusDesc} from "../../../../../models/rest/user/user-status";
+import {customSort, filterTable, getUserStatusSeverity, restTry} from "../../../../../guards/f-extensions";
+import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user/user-role";
 import {Table} from "primeng/table";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {saveAs} from "file-saver";
@@ -105,7 +105,7 @@ export class UserSettingComponent extends FComponentBase {
   }
 
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
-  protected readonly getSeverity = getSeverity;
+  protected readonly getSeverity = getUserStatusSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
   protected readonly customSort = customSort
   protected readonly filterTable = filterTable

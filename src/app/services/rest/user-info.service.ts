@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {RestResult} from "../../models/common/rest-result";
-import {UserDataModel} from "../../models/rest/user-data-model";
-import {UserRole} from "../../models/rest/user-role";
-import {UserDept} from "../../models/rest/user-dept";
-import {UserStatus} from "../../models/rest/user-status";
+import {UserDataModel} from "../../models/rest/user/user-data-model";
+import {UserRole} from "../../models/rest/user/user-role";
+import {UserDept} from "../../models/rest/user/user-dept";
+import {UserStatus} from "../../models/rest/user/user-status";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
 import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
@@ -28,8 +28,8 @@ export class UserInfoService {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
   }
-  getListChildAble(): Promise<RestResult<UserDataModel[]>> {
-    return this.httpResponse.get(`${this.baseUrl}/list/childAble`);
+  getListChildAble(thisPK: string): Promise<RestResult<UserDataModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/list/childAble/${thisPK}`);
   }
   getExcelSample(): Promise<any> {
     return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);

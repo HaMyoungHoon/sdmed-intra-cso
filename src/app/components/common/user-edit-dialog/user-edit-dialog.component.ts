@@ -1,9 +1,20 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
-import {UserDataModel} from "../../../models/rest/user-data-model";
+import {UserDataModel} from "../../../models/rest/user/user-data-model";
 import {dateToYearFullString, getFileExt, isImage, restTry, stringToDate, tryCatchAsync} from "../../../guards/f-extensions";
-import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole} from "../../../models/rest/user-role";
-import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user-status";
-import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept} from "../../../models/rest/user-dept";
+import {
+  allUserRoleDescArray,
+  flagToRoleDesc,
+  stringArrayToUserRole,
+  UserRole,
+  userRoleToFlag
+} from "../../../models/rest/user/user-role";
+import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../models/rest/user/user-status";
+import {
+  allUserDeptDescArray,
+  flagToDeptDesc,
+  stringArrayToUserDept,
+  userDeptToFlag
+} from "../../../models/rest/user/user-dept";
 import {AccordionModule} from "primeng/accordion";
 import {NgIf} from "@angular/common";
 import {TagModule} from "primeng/tag";
@@ -13,7 +24,7 @@ import {FormsModule} from "@angular/forms";
 import {MultiSelectModule} from "primeng/multiselect";
 import {Button} from "primeng/button";
 import {TableModule} from "primeng/table";
-import {HospitalModel} from "../../../models/rest/hospital-model";
+import {HospitalModel} from "../../../models/rest/hospital/hospital-model";
 import {ImageModule} from "primeng/image";
 import * as FConstants from "../../../guards/f-constants";
 import {InputTextModule} from "primeng/inputtext";
@@ -64,29 +75,18 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("getUserData", ret.msg);
   }
   async saveUserData(): Promise<void> {
-    const name = this.userDataModel?.name ?? "";
-    const mail = this.userDataModel?.mail ?? "";
-    const phoneNumber = this.userDataModel?.phoneNumber ?? "";
-    const roles = stringArrayToUserRole(this.selectedUserRoles);
-    const depts = stringArrayToUserDept(this.selectedUserDepts);
-    const status = StatusDescToUserStatus[this.selectedUserStatus];
+    this.userDataModel.role = userRoleToFlag(stringArrayToUserRole(this.selectedUserRoles));
+    this.userDataModel.dept = userDeptToFlag(stringArrayToUserDept(this.selectedUserDepts));
+    this.userDataModel.status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
-    // 솔직히 한 방에 해도 되는데 쫌 귀찮쓰
-    const ret1 = await restTry(async() => await this.thisService.putUserNameMailPhoneModifyByPK(this.userDataModel.thisPK, name, mail, phoneNumber),
-        e => this.fDialogService.error("saveUserData", e));
-    if (ret1.result) {
-      const ret2 = await restTry(async() => await this.thisService.putUserRoleDeptStatusModifyByPK(this.userDataModel.thisPK, roles, depts, status),
-        e => this.fDialogService.error("saveUserData", e));
-      this.setLoading(false);
-      if (ret2.result) {
-        this.ref.close(ret2.data);
-        return;
-      }
-      this.fDialogService.warn("saveUserData", ret2.msg);
+    const ret = await restTry(async() => await this.thisService.putUser(this.userDataModel),
+      e => this.fDialogService.error("saveUserData", e));
+    this.setLoading(false);
+    if (ret.result) {
+      this.ref.close(ret.data);
       return;
     }
-    this.setLoading(false);
-    this.fDialogService.warn("saveUserData", ret1.msg);
+    this.fDialogService.warn("saveUserData", ret.msg);
   }
   closeThis(): void {
     this.ref.close();

@@ -8,6 +8,6 @@ export class RequestModel {
   responseUserPK: string = "";
   requestType: RequestType = RequestType.SignUp;
   responseType: ResponseType = ResponseType.None;
-  requestDate: string = "";
-  responseDate: string = "";
+  requestDate: Date = new Date;
+  responseDate?: Date;
 }

@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
-import {UserRole} from "../../../models/rest/user-role";
-import {HospitalModel} from "../../../models/rest/hospital-model";
+import {UserRole} from "../../../models/rest/user/user-role";
+import {HospitalModel} from "../../../models/rest/hospital/hospital-model";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {Button} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";

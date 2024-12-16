@@ -1,5 +1,5 @@
 import {UserStatus} from "./user-status";
-import {HospitalModel} from "./hospital-model";
+import {HospitalModel} from "../hospital/hospital-model";
 
 export class UserDataModel {
   thisPK: string = "";
@@ -19,6 +19,7 @@ export class UserDataModel {
   bankAccount: string = "";
   regDate: string = "";
   lastLoginDate?: string = "";
+  motherPK: string = "";
   children: UserDataModel[] = [];
   hosList: HospitalModel[] = [];
   copyLhsFromRhs(lhs: UserDataModel, rhs: UserDataModel): void {

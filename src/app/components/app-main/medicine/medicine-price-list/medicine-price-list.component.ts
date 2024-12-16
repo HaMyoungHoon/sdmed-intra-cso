@@ -1,10 +1,11 @@
-import {Component, ViewChild} from "@angular/core";
-import {MedicineModel} from "../../../../models/rest/medicine-model";
+import {Component, ElementRef, ViewChild} from "@angular/core";
+import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {customSort, filterTable, restTry} from "../../../../guards/f-extensions";
+import {customSort, dateToMonthYYYYMMdd, dateToYearFullString, filterTable, restTry, stringToDate} from "../../../../guards/f-extensions";
 import {MedicinePriceListService} from "../../../../services/rest/medicine-price-list.service";
+import {UserRole} from "../../../../models/rest/user/user-role";
 
 @Component({
   selector: "app-medicine-price-list",
@@ -13,7 +14,11 @@ import {MedicinePriceListService} from "../../../../services/rest/medicine-price
   standalone: false
 })
 export class MedicinePriceListComponent extends FComponentBase {
-  @ViewChild("listTable") listTable!: Table
+  @ViewChild("listTable") listTable!: Table;
+  @ViewChild("inputPriceUploadExcel") inputPriceUploadExcel!: ElementRef<HTMLInputElement>;
+  @ViewChild("inputMainIngredientUploadExcel") inputMainIngredientUploadExcel!: ElementRef<HTMLInputElement>;
+  lastApplyDate?: Date;
+  applyDate: Date = new Date();
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
   isSorted: boolean | null = null;
@@ -35,9 +40,21 @@ export class MedicinePriceListComponent extends FComponentBase {
     if (ret.result) {
       this.initValue = ret.data ?? [];
       this.medicineModel = [...this.initValue];
+      await this.getLastApplyDate();
       return;
     }
     this.fDialogService.warn("get medicine", ret.msg);
+  }
+  async getLastApplyDate(): Promise<void> {
+    this.setLoading();
+    const ret = await restTry(async() => await this.thisService.getMedicinePriceApplyDate(),
+      e => this.fDialogService.error("getLastApplyDate", e));
+    this.setLoading(false);
+    if (ret.result) {
+      this.lastApplyDate = stringToDate(ret.data);
+      return;
+    }
+    this.fDialogService.warn("getLastApplyDate", ret.data);
   }
 
   async priceHistoryDialogOpen(data: MedicineModel): Promise<void> {
@@ -70,12 +87,57 @@ export class MedicinePriceListComponent extends FComponentBase {
       return "None";
     }
 
-    return data.medicinePriceModel[0].applyDate;
+    return dateToMonthYYYYMMdd(data.medicinePriceModel[0].applyDate);
   }
   disablePriceHistory(data: MedicineModel): boolean {
     return data.medicinePriceModel.length <= 0;
   }
 
+  async refresh(): Promise<void> {
+    return await this.getMedicinePriceList();
+  }
+  async uploadPriceExcel(): Promise<void> {
+    this.inputPriceUploadExcel.nativeElement.click();
+  }
+  async uploadMainIngredientExcel(): Promise<void> {
+    this.inputMainIngredientUploadExcel.nativeElement.click();
+  }
+  async priceExcelSelected(event: any): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.setLoading();
+      const file = input.files[0];
+      const ret = await restTry(async() => await this.thisService.postMedicinePriceUpload(dateToYearFullString(this.applyDate), file),
+        e => this.fDialogService.error("uploadPriceExcel", e));
+      if (ret.result) {
+        await this.refresh();
+        return;
+      }
+      this.fDialogService.warn("uploadPriceExcel", ret.msg);
+      this.setLoading(false);
+    }
+  }
+  async mainIngredientExcelSelected(event: any): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.setLoading();
+      const file = input.files[0];
+      const ret = await restTry(async() => await this.thisService.postMedicineIngredientUpload(file),
+        e => this.fDialogService.error("uploadPriceExcel", e));
+      if (ret.result) {
+        await this.refresh();
+        return;
+      }
+      this.fDialogService.warn("uploadPriceExcel", ret.msg);
+      this.setLoading(false);
+    }
+  }
+
+  get isAdmin(): boolean {
+    return ((this.myRole & UserRole.Admin.valueOf()) != 0) || ((this.myRole & UserRole.CsoAdmin.valueOf()) != 0)
+  }
+
   protected readonly customSort = customSort
   protected readonly filterTable = filterTable;
+  protected readonly dateToMonthYYYYMMdd = dateToMonthYYYYMMdd;
 }

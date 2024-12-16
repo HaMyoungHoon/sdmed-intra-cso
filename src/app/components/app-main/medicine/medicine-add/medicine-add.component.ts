@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {MedicineModel} from "../../../../models/rest/medicine-model";
-import {allMedicineTypeDescArray, MedicineType, MedicineTypeDescToMedicineType, medicineTypeToMedicineTypeDesc} from "../../../../models/rest/medicine-type";
-import {allMedicineMethodDescArray, MedicineMethod, MedicineMethodDescToMedicineMethod, medicineMethodToMedicineMethodDesc} from "../../../../models/rest/medicine-method";
-import {allMedicineCategoryDescArray, MedicineCategory, MedicineCategoryDescToMedicineCategory, medicineCategoryToMedicineCategoryDesc} from "../../../../models/rest/medicine-category";
-import {allMedicineGroupDescArray, MedicineGroup, MedicineGroupDescToMedicineGroup, medicineGroupToMedicineGroupDesc} from "../../../../models/rest/medicine-group";
-import {allMedicineDivDescArray, MedicineDiv, MedicineDivDescToMedicineDiv, medicineDivToMedicineDivDesc} from "../../../../models/rest/medicine-div";
-import {allMedicineRankDescArray, MedicineRank, MedicineRankDescToMedicineRank, medicineRankToMedicineRankDesc} from "../../../../models/rest/medicine-rank";
-import {allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp, medicineStorageTempToMedicineStorageTempDesc} from "../../../../models/rest/medicine-storage-temp";
-import {allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox, medicineStorageBoxToMedicineStorageBoxDesc} from "../../../../models/rest/medicine-storage-box";
-import {MedicineIngredientModel} from "../../../../models/rest/medicine-ingredient-model";
+import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
+import {allMedicineTypeDescArray, MedicineType, MedicineTypeDescToMedicineType, medicineTypeToMedicineTypeDesc} from "../../../../models/rest/medicine/medicine-type";
+import {allMedicineMethodDescArray, MedicineMethod, MedicineMethodDescToMedicineMethod, medicineMethodToMedicineMethodDesc} from "../../../../models/rest/medicine/medicine-method";
+import {allMedicineCategoryDescArray, MedicineCategory, MedicineCategoryDescToMedicineCategory, medicineCategoryToMedicineCategoryDesc} from "../../../../models/rest/medicine/medicine-category";
+import {allMedicineGroupDescArray, MedicineGroup, MedicineGroupDescToMedicineGroup, medicineGroupToMedicineGroupDesc} from "../../../../models/rest/medicine/medicine-group";
+import {allMedicineDivDescArray, MedicineDiv, MedicineDivDescToMedicineDiv, medicineDivToMedicineDivDesc} from "../../../../models/rest/medicine/medicine-div";
+import {allMedicineRankDescArray, MedicineRank, MedicineRankDescToMedicineRank, medicineRankToMedicineRankDesc} from "../../../../models/rest/medicine/medicine-rank";
+import {allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp, medicineStorageTempToMedicineStorageTempDesc} from "../../../../models/rest/medicine/medicine-storage-temp";
+import {allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox, medicineStorageBoxToMedicineStorageBoxDesc} from "../../../../models/rest/medicine/medicine-storage-box";
+import {MedicineIngredientModel} from "../../../../models/rest/medicine/medicine-ingredient-model";
 import {MedicineListService} from "../../../../services/rest/medicine-list.service";
-import {UserRole} from "../../../../models/rest/user-role";
+import {UserRole} from "../../../../models/rest/user/user-role";
 import {restTry} from "../../../../guards/f-extensions";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 

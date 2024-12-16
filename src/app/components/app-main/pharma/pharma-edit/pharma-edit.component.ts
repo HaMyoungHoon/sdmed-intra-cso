@@ -1,13 +1,13 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {UserRole} from "../../../../models/rest/user-role";
-import {PharmaModel} from "../../../../models/rest/pharma-model";
+import {UserRole} from "../../../../models/rest/user/user-role";
+import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
-import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../../models/rest/pharma-type";
-import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../../models/rest/pharma-group";
+import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../../models/rest/pharma/pharma-type";
+import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../../models/rest/pharma/pharma-group";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
-import {MedicineModel} from "../../../../models/rest/medicine-model";
+import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import {getFileExt, isImage, restTry, tryCatchAsync, ellipsis} from "../../../../guards/f-extensions";

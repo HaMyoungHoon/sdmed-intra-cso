@@ -14,13 +14,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
 import {TooltipModule} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
+import {PickListModule} from "primeng/picklist";
 
 
 
 @NgModule({
   declarations: [UserEditComponent],
-  imports: [
-    CommonModule, UserEditRoutingModule, AccordionModule, Button, DropdownModule, ImageModule, InputTextModule, MultiSelectModule, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, TooltipModule, TranslatePipe, FormsModule
-  ]
+	imports: [
+		CommonModule, UserEditRoutingModule, AccordionModule, Button, DropdownModule, ImageModule, InputTextModule, MultiSelectModule, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, TooltipModule, TranslatePipe, FormsModule, PickListModule
+	]
 })
 export class UserEditModule { }

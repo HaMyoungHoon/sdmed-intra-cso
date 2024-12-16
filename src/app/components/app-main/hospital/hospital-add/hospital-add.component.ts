@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {UserRole} from "../../../../models/rest/user-role";
-import {HospitalModel} from "../../../../models/rest/hospital-model";
+import {UserRole} from "../../../../models/rest/user/user-role";
+import {HospitalModel} from "../../../../models/rest/hospital/hospital-model";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";

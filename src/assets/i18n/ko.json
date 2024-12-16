@@ -34,7 +34,25 @@
     },
     "is-new-tab": "가능한 경우 새 탭으로 엽니다."
   },
+  "dash-board": {
+    "header": {
+      "view-type-my-child": "담당만",
+      "view-type-all": "전부",
+      "view-type-date": "날짜 기준",
+      "start-date": "시작일",
+      "end-date": "종료일"
+    },
+    "request": {
+      "request-date": "요청일",
+      "response-type": "응답타입",
+      "request-type": "요청타입",
+      "request-user-id": "요청자",
+      "response-date": "응답일"
+    }
+  },
   "medicine-price-list": {
+    "price-excel": "약가 업로드",
+    "main-ingredient-excel": "주성분코드 업로드",
     "name": "제품명",
     "kd-code": "보험코드",
     "pharma-name": "판매사",
@@ -110,8 +128,7 @@
     "mail": "메일",
     "phone-number": "번호",
     "status": "상태",
-    "role": "권한",
-    "edit": "편집"
+    "role": "권한"
   },
   "user-mapping": {
     "user-list": {
@@ -179,6 +196,11 @@
     "pharma-data": {
       "code": "코드",
       "inner-name": "내부명"
+    },
+    "user-pick-list": {
+      "source-header": "전체 유저",
+      "target-header": "담당 유저",
+      "filter-place-holder": "아이디"
     }
   },
   "password-change-dialog": {
@@ -373,11 +395,21 @@
     "save": "저장",
     "edit": "편집",
     "add": "추가",
+    "move": "이동",
     "refresh": "새로고침",
     "close": "닫기",
     "change": "변경",
     "sample-download": "샘플 다운로드",
     "in-visible": "숨김",
     "logout": "로그아웃"
+  },
+  "primeng": {
+    "dayNames": ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+    "dayNamesShort": ["일", "월", "화", "수", "목", "금", "토"],
+    "dayNamesMin": ["일", "월", "화", "수", "목", "금", "토"],
+    "monthNames": ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+    "monthNamesShort": ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+    "today": "오늘",
+    "weekHeader": "주"
   }
 }

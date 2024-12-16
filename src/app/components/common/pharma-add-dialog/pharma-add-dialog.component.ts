@@ -14,13 +14,13 @@ import {PickListModule} from "primeng/picklist";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {PharmaListService} from "../../../services/rest/pharma-list.service";
-import {PharmaModel} from "../../../models/rest/pharma-model";
+import {PharmaModel} from "../../../models/rest/pharma/pharma-model";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../models/rest/bill-type";
-import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../models/rest/pharma-type";
-import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../models/rest/pharma-group";
+import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../models/rest/pharma/pharma-type";
+import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../models/rest/pharma/pharma-group";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../models/rest/delivery-div";
-import {UserRole} from "../../../models/rest/user-role";
+import {UserRole} from "../../../models/rest/user/user-role";
 import {FDialogComponentBase} from "../../../guards/f-dialog-component-base";
 import {restTry} from "../../../guards/f-extensions";
 

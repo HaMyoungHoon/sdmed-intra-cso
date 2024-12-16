@@ -1,8 +1,9 @@
-import {stringToUserStatus, UserStatus} from "../models/rest/user-status";
+import {stringToUserStatus, UserStatus} from "../models/rest/user/user-status";
 import {Table} from "primeng/table";
 import {SortEvent} from "primeng/api";
 import {RestResult} from "../models/common/rest-result";
 import * as FContentsType from "./f-contents-type";
+import {ResponseType, stringToResponseType} from "../models/rest/requst/response-type";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -36,22 +37,55 @@ export function dateToYearFullString(date?: Date): string {
 
   return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-
 export function dateToMonthFullString(date?: Date): string {
   if (date == null) {
-    return "????-??-?? ??:??:??";
+    return "??-?? ??:??:??";
   }
   return `${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-export function stringToDate(dateString?: string): Date | undefined {
+export function dateToMonthYYYYMMdd(date?: Date): string {
+  if (date == null) {
+    return "????-??-??"
+  }
+  if (typeof(date) == "string") {
+    date = stringToDate(date);
+  }
+
+  return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)}`;
+}
+export function calcDateDiffDay(startDate: Date, endDate: Date): number {
+  const diffMs = endDate.getTime() - startDate.getTime();
+  const msToDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diffMs / msToDay);
+}
+
+export function stringToDate(dateString?: string): Date {
   if (dateString == null) {
-    return undefined;
+    return new Date();
   }
 
   return new Date(dateString);
 }
+export function plusDays(targetDate: Date, days: number): Date {
+  const ret = new Date();
+  ret.setDate(targetDate.getDate() + days);
+  return ret;
+}
 
-export function getSeverity(data?: UserStatus): any {
+export function getResponseTypeSeverity(data?: ResponseType): any {
+  if (typeof(data) == "string") {
+    data = stringToResponseType(data);
+  }
+  switch (data) {
+    case ResponseType.None: return "warning";
+    case ResponseType.Recep: return "info";
+    case ResponseType.OK: return "success";
+    case ResponseType.Pending: return "warning";
+    case ResponseType.Ignore: return "danger";
+    case ResponseType.Reject: return "danger";
+  }
+}
+export function getUserStatusSeverity(data?: UserStatus): any {
   if (typeof(data) == "string") {
     data = stringToUserStatus(data);
   }
