@@ -1,0 +1,260 @@
+import {Component, Input, Output, EventEmitter, TemplateRef, ContentChild, AfterContentInit, inject} from "@angular/core";
+import {ellipsis, findIndexInList} from "../../../guards/f-extensions";
+import {CdkDrag, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {FilterService} from "primeng/api";
+import {FilterModel} from "../../../models/common/filter-model";
+import {IconField} from "primeng/iconfield";
+import {InputText} from "primeng/inputtext";
+import {InputIcon} from "primeng/inputicon";
+
+@Component({
+  selector: "app-custom-pick-list",
+  imports: [CdkDropList, CdkDropListGroup, CdkDrag, NgForOf, NgTemplateOutlet, NgIf, IconField, InputText, InputIcon, NgClass],
+  templateUrl: "./custom-pick-list.component.html",
+  styleUrl: "./custom-pick-list.component.scss",
+  standalone: true,
+})
+export class CustomPickListComponent implements AfterContentInit {
+  @Input() disable: boolean = false;
+  @Input() useFilter: boolean = true;
+  @Input() ignoreCase: boolean = true;
+  @Input() filterMatchMode: "contains" | "startsWith" | "endsWith" | "equals" | "notEquals" | "in" | "lt" | "lte" | "gt" | "gte" = "contains";
+  @Input() filterLocale: string | undefined;
+  @Input() filterFields: string[] = [];
+  @Input() sourceFilterPlaceHolder: string | TemplateRef<HTMLElement> = "";
+  @Input() targetFilterPlaceHolder: string | TemplateRef<HTMLElement> = "";
+  filterValueSource: string = "";
+  filterValueTarget: string = "";
+  filteredSourceList: any[] = [];
+  filteredTargetList: any[] = [];
+  @Output() onSourceFilter: EventEmitter<FilterModel> = new EventEmitter<FilterModel>();
+  @Output() onTargetFilter: EventEmitter<FilterModel> = new EventEmitter<FilterModel>();
+  @Input() sourceList: any[] = [];
+  @Input() targetList: any[] = [];
+  @Input() selectedSource: any;
+  @Output() selectedSourceChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() selectedTarget: any;
+  @Output() selectedTargetChange: EventEmitter<any> = new EventEmitter<any>();
+  @ContentChild("sourceItem", { descendants: false }) sourceItemTemplate?: TemplateRef<any>;
+  @ContentChild("targetItem", { descendants: false }) targetItemTemplate?: TemplateRef<any>;
+  @ContentChild("defTemplate", { descendants: false }) defTemplate!: TemplateRef<any>;
+  draggedSource?: any;
+  draggedTarget?: any;
+  @Output() sourceDropChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() targetDropChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sourceDragChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() targetDragChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sourceSelectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() targetSelectChange: EventEmitter<any> = new EventEmitter<any>();
+  filterService = inject(FilterService);
+  constructor() {
+  }
+
+  ngAfterContentInit(): void {
+  }
+
+  onSourceFilterChange(data: any): void {
+    const value = (data.target as HTMLInputElement).value;
+    this.sourceFilter(value);
+  }
+  onTargetFilterChange(data: any): void {
+    const value = (data.target as HTMLInputElement).value;
+    this.targetFilter(value);
+  }
+  sourceFilter(value: string = ""): void {
+    this.filterValueSource = this.ignoreCase ? value.trim().toLocaleLowerCase(this.filterLocale) : value.trim();
+    this.filter(<any[]>this.sourceList, true);
+  }
+  targetFilter(value: string = ""): void {
+    this.filterValueTarget = this.ignoreCase ? value.trim().toLocaleLowerCase(this.filterLocale) : value.trim();
+    this.filter(<any[]>this.targetList, false);
+  }
+  filter(data: any[], isSource: boolean = true): void {
+    const searchFields = this.filterFields.length <= 0 ? [""] : this.filterFields;
+    if (isSource) {
+      if (this.filterValueSource) {
+        this.filteredSourceList = this.filterService.filter(data, searchFields, this.filterValueSource, this.filterMatchMode, this.filterLocale);
+      } else {
+        this.filteredSourceList = [...this.sourceList];
+      }
+      this.onSourceFilter.emit({ query: this.filterValueSource, value: this.filteredSourceList });
+    } else {
+      if (this.filterValueTarget) {
+        this.filteredTargetList = this.filterService.filter(data, searchFields, this.filterValueTarget, this.filterMatchMode, this.filterLocale);
+      } else {
+        this.filteredTargetList = [...this.targetList];
+      }
+      this.onTargetFilter.emit({ query: this.filterValueTarget, value: this.filteredTargetList });
+    }
+  }
+  getDropIndexes(fromIndex: number, toIndex: number, isSource: boolean, isTransfer: boolean, data: any[] | any): { previousIndex: number, currentIndex: number } {
+    let previousIndex: number;
+    let currentIndex: number;
+    if (isSource) {
+      previousIndex = isTransfer ? (this.filterValueTarget ? findIndexInList(data, this.targetList) : fromIndex) : this.filterValueSource ? findIndexInList(data, this.sourceList) : fromIndex;
+      currentIndex = this.filterValueSource ? this.findFilteredCurrentIndex(<any[]>this.filteredSourceList, toIndex, this.sourceList) : toIndex;
+    } else {
+      previousIndex = isTransfer ? (this.filterValueSource ? findIndexInList(data, this.sourceList) : fromIndex) : this.filterValueTarget ? findIndexInList(data, this.targetList) : fromIndex;
+      currentIndex = this.filterValueTarget ? this.findFilteredCurrentIndex(<any[]>this.filteredTargetList, toIndex, this.targetList) : toIndex;
+    }
+
+    return { previousIndex, currentIndex };
+  }
+  findFilteredCurrentIndex(filteredList: any[], index: number, list: any): number {
+    if (filteredList.length == index) {
+      return findIndexInList(filteredList[index - 1], list);
+    } else {
+      return findIndexInList(filteredList[index], list);
+    }
+  }
+  toTargetDrop(data: any): void {
+    const isTransfer = data.previousContainer === data.container;
+    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, true, isTransfer, data.item.data);
+    if (isTransfer) {
+      moveItemInArray(data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
+      this.filter(<any[]>this.sourceList, true);
+    } else {
+      transferArrayItem(data.previousContainer.data, data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
+      if (this.filteredTargetList) this.filteredTargetList.splice(data.previousIndex, 1);
+      if (this.draggedTarget === this.selectedTarget) {
+        this.targetSelect(undefined);
+      }
+      this.filter(<any[]>this.sourceList, true);
+    }
+    this.draggedTarget = undefined;
+    this.sourceDropChange.emit(data);
+  }
+  toSourceDrop(data: any): void {
+    const isTransfer = data.previousContainer === data.container;
+    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, false, isTransfer, data.item.data);
+    if (data.previousContainer === data.container) {
+      moveItemInArray(data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
+      this.filter(<any[]>this.targetList, false);
+    } else {
+      transferArrayItem(data.previousContainer.data, data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
+      if (this.filteredSourceList) this.filteredSourceList.splice(data.previousIndex, 1);
+      if (this.draggedSource === this.selectedSource) {
+        this.sourceSelect(undefined);
+      }
+      this.filter(<any[]>this.targetList, false);
+    }
+    this.draggedSource = undefined;
+    this.targetDropChange.emit(data);
+  }
+  sourceDrag(event: any, data: any): void {
+    this.draggedSource = data;
+    this.sourceDragChange.emit(data);
+  }
+  targetDrag(event: any, data: any): void {
+    this.draggedTarget = data;
+    this.targetDragChange.emit(data);
+  }
+  sourceSelect(source: any): void {
+    if (this.disable) {
+      return;
+    }
+
+    if (source === this.selectedSource) {
+      this.sourceSelectChange.emit(undefined);
+      this.selectedSource = undefined;
+      this.selectedSourceChange.emit(undefined);
+    } else {
+      this.sourceSelectChange.emit(source);
+      this.selectedSource = source;
+      this.selectedSourceChange.emit(source);
+    }
+  }
+  targetSelect(target: any): void {
+    if (this.disable) {
+      return;
+    }
+
+    if (target === this.selectedTarget) {
+      this.targetSelectChange.emit(undefined);
+      this.selectedTarget = undefined;
+      this.selectedTargetChange.emit(undefined);
+    } else {
+      this.targetSelectChange.emit(target);
+      this.selectedTarget = target;
+      this.selectedTargetChange.emit(target);
+    }
+  }
+  haveSelected(div?: HTMLDivElement | { data: any, div: HTMLDivElement }): boolean {
+    if (div instanceof HTMLDivElement) {
+      return div.classList.contains(this.customPickBoxSelected);
+    } else {
+      return div?.div?.classList?.contains(this.customPickBoxSelected) == true;
+    }
+  }
+  addSelected(div?: HTMLDivElement | { data: any, div: HTMLDivElement }): void {
+    if (div instanceof HTMLDivElement) {
+      div.classList.add(this.customPickBoxSelected);
+    } else {
+      div?.div?.classList?.add(this.customPickBoxSelected);
+    }
+  }
+  removeSelected(div?: HTMLDivElement | {data: any, div: HTMLDivElement }): void {
+    if (div instanceof HTMLDivElement) {
+      div.classList.remove(this.customPickBoxSelected);
+    } else {
+      div?.div?.classList?.remove(this.customPickBoxSelected);
+    }
+  }
+  isSelectedSource(data: any): string[] {
+    const ret: string[] = [];
+    if (this.selectedSource === data) {
+      ret.push(this.customPickBoxSelected);
+    }
+    if (this.disable) {
+      ret.push(this.pDisable);
+    }
+    return ret;
+  }
+  isSelectedTarget(data: any): string[] {
+    const ret: string[] = [];
+    if (this.selectedTarget === data) {
+      ret.push(this.customPickBoxSelected);
+    }
+    if (this.disable) {
+      ret.push(this.pDisable);
+    }
+    return ret;
+  }
+  get visibleSource(): any[] {
+    if (this.filteredSourceList && this.filteredSourceList.length > 0) {
+      return this.filteredSourceList;
+    }
+
+    return this.sourceList;
+  }
+  get visibleTarget(): any[] {
+    if (this.filteredTargetList && this.filteredTargetList.length > 0) {
+      return this.filteredTargetList;
+    }
+
+    return this.targetList;
+  }
+
+  get customPickBoxSelected(): string {
+    return "custom-pick-box-selected";
+  }
+  get pDisable(): string {
+    return "p-disabled";
+  }
+
+  get sourceTemplateOutlet(): TemplateRef<any> {
+    return this.sourceItemTemplate ? this.sourceItemTemplate : this.defTemplate;
+  }
+  sourceTemplateOutletContext(data: any): any {
+    return { $implicit: data };
+  }
+  get targetTemplateOutlet(): TemplateRef<any> {
+    return this.targetItemTemplate ? this.targetItemTemplate : this.defTemplate;
+  }
+  targetTemplateOutletContext(data: any): any {
+    return { $implicit: data };
+  }
+
+	protected readonly ellipsis = ellipsis;
+}

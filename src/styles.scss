@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
 
@@ -11,31 +10,46 @@ app-menu-config .p-menu {
 app-menu-config .p-menu a {
   text-decoration-line: none;
 }
-app-user-edit .p-picklist-source-wrapper {
-  margin-right: 0.25rem !important;
-}
-app-user-edit-dialog .p-picklist-source-wrapper {
-  margin-right: 0.25rem !important;
-}
-app-user-mapping .p-picklist-source-wrapper {
-  margin-right: 0.25rem !important;
-}
-app-user-edit .p-picklist-transfer-buttons {
-  display: none !important;
-}
-app-user-edit-dialog .p-picklist-transfer-buttons {
-  display: none !important;
-}
-app-user-mapping .p-picklist-transfer-buttons {
-  display: none !important;
-}
+app-user-edit .p-picklist-source-wrapper,
+app-user-edit-dialog .p-picklist-source-wrapper,
+app-user-mapping .p-picklist-source-wrapper,
 app-pharma-edit-dialog .p-picklist-source-wrapper {
-  margin-right: 0.25rem !important;;
+  margin-right: 0.25rem !important;
 }
-app-pharma-edit-dialog .p-picklist-transfer-buttons {
+/*
+app-user-edit .p-picklist-transfer-controls,
+app-user-edit-dialog .p-picklist-transfer-controls,
+app-user-mapping .p-picklist-transfer-controls,
+app-pharma-edit-dialog .p-picklist-transfer-controls,
+app-pharma-edit .p-picklist-transfer-controls {
   display: none !important;
+}
+*/
+.p-picklist-list-container {
+  min-width: 25rem !important;
+}
+app-user-mapping .p-listbox-list-container {
+  min-height: 30rem;
 }
 
+app-pharma-add-dialog .p-inputwrapper,
+app-pharma-add .p-inputwrapper,
+app-pharma-edit-dialog .p-inputwrapper,
+app-pharma-edit .p-inputwrapper,
+app-medicine-add-dialog .p-inputwrapper,
+app-medicine-add .p-inputwrapper,
+app-medicine-add-dialog .p-autocomplete-input,
+app-medicine-add .p-autocomplete-input,
+app-medicine-edit-dialog .p-inputwrapper,
+app-medicine-edit .p-inputwrapper,
+app-medicine-edit-dialog .p-autocomplete-input,
+app-medicine-edit .p-autocomplete-input,
+app-hospital-add-dialog .p-inputwrapper,
+app-hospital-add .p-inputwrapper,
+app-hospital-edit-dialog .p-inputwrapper,
+app-hospital-edit .p-inputwrapper  {
+  width: 20rem;
+}
 
 .collapse {
   display: none;

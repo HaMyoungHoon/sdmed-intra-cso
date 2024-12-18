@@ -3,22 +3,22 @@ import { CommonModule } from "@angular/common";
 import {MedicinePriceListRoutingModule} from "./medicine-price-list-routing.module";
 import {MedicinePriceListComponent} from "./medicine-price-list.component";
 import {TableModule} from "primeng/table";
-import {Button} from "primeng/button";
+import {ButtonModule} from "primeng/button";
 import {TagModule} from "primeng/tag";
 import {TranslatePipe} from "@ngx-translate/core";
-import {IconFieldModule} from "primeng/iconfield";
-import {InputIconModule} from "primeng/inputicon";
+import {IconField} from "primeng/iconfield";
+import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
-import {TooltipModule} from "primeng/tooltip";
-import {CalendarModule} from "primeng/calendar";
+import {Tooltip} from "primeng/tooltip";
 import {FormsModule} from "@angular/forms";
+import {DatePicker} from "primeng/datepicker";
 
 
 
 @NgModule({
   declarations: [MedicinePriceListComponent],
   imports: [
-    CommonModule, MedicinePriceListRoutingModule, TableModule, Button, TagModule, TranslatePipe, IconFieldModule, InputIconModule, InputTextModule, TooltipModule, CalendarModule, FormsModule
+    CommonModule, MedicinePriceListRoutingModule, TableModule, ButtonModule, TagModule, TranslatePipe, IconField, InputIcon, InputTextModule, Tooltip, FormsModule, DatePicker
   ]
 })
 export class MedicinePriceListModule { }

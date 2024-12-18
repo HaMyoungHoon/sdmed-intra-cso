@@ -2,26 +2,26 @@
   <p-table #listTable [value]="medicineModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm">
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
-        <p-calendar class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!haveRole" />
+        <p-date-picker class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!isAdmin" />
         <p-button class="m-1" (onClick)="uploadPriceExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.price-excel' | translate}}" />
         <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.main-ingredient-excel' | translate}}" />
         <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">
         <input #inputMainIngredientUploadExcel class="collapse" type="file" accept=".xlsx" (change)="mainIngredientExcelSelected($event)">
-        <div class="ml-auto justify-content-end">
+        <div class="flex ml-auto justify-content-end">
           <label class="m-1 align-self-center">{{dateToMonthYYYYMMdd(lastApplyDate)}}</label>
-          <p-iconField iconPosition="left" class="m-1">
-            <p-inputIcon>
+          <p-iconfield iconPosition="left" class="m-1">
+            <p-inputicon>
               <i class="pi pi-search"></i>
-            </p-inputIcon>
+            </p-inputicon>
             <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-          </p-iconField>
+          </p-iconfield>
         </div>
       </div>
     </ng-template>
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="name" style="min-width: 50rem">{{"medicine-price-list.name" | translate}} <p-sortIcon field="name" /></th>
         <th>{{"medicine-price-list.kd-code" | translate}}</th>
@@ -33,7 +33,7 @@
         <th>{{"medicine-price-list.price-history" | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-item>
+    <ng-template #body let-item>
       <tr [ngClass]="{'zero-price': item.maxPrice === 0}">
         <td>{{item.name}}</td>
         <td>{{item.kdCode}}</td>

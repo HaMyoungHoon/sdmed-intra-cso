@@ -9,6 +9,8 @@ import {MessageService} from "primeng/api";
 import {FDialogService} from "./services/common/f-dialog.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {provideTranslateLoader} from "./guards/http-loader-factory";
+import {providePrimeNG} from "primeng/config";
+import Noir from "./app-theme"
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +28,9 @@ export const appConfig: ApplicationConfig = {
       withEnabledBlockingInitialNavigation()
     ),
     provideAnimationsAsync(),
+    providePrimeNG({
+      theme: Noir
+    }),
     MessageService,
     FDialogService,
     DialogService

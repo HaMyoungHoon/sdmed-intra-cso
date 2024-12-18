@@ -5,7 +5,7 @@ import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
 import {getKeyName, LangType} from "../../models/common/lang-type";
 import * as FConstants from "../../guards/f-constants";
 import {restTry} from "../../guards/f-extensions";
-import {PrimeNGConfig} from "primeng/api";
+import {PrimeNG} from "primeng/config";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +13,7 @@ import {PrimeNGConfig} from "primeng/api";
 export class LanguageService {
   langList: string[];
 
-  constructor(private translateService: TranslateService, private commonService: CommonService, private primeNGConfig: PrimeNGConfig) {
+  constructor(private translateService: TranslateService, private commonService: CommonService, private primeNGConfig: PrimeNG) {
     this.langList = Object.keys(LangType);
   }
   async onInit(): Promise<void> {

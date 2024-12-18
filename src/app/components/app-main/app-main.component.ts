@@ -6,12 +6,12 @@ import {MenuConfigComponent} from "../common/menu-config/menu-config.component";
 import {getLocalStorage, isExpired, removeLocalStorage} from "../../guards/f-amhohwa";
 import * as FConstants from "../../guards/f-constants";
 import {FDialogService} from "../../services/common/f-dialog.service";
-import {Button} from "primeng/button";
 import {NgIf} from "@angular/common";
+import {ButtonModule} from "primeng/button";
 
 @Component({
   selector: "app-app-main",
-  imports: [InputSwitchModule, RouterOutlet, FormsModule, MenuConfigComponent, Button, NgIf],
+  imports: [InputSwitchModule, RouterOutlet, FormsModule, MenuConfigComponent, NgIf, ButtonModule],
   templateUrl: "./app-main.component.html",
   styleUrl: "./app-main.component.scss",
   standalone: true

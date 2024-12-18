@@ -1,0 +1,104 @@
+<div class="flex flex-column flex-wrap medicine-add-dialog-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <div class="m-1">
+    <p-button class="m-1" (onClick)="saveData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-card class="flex grid m-1" *ngIf="medicineModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"medicine-add.code" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.code" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.main-ingredient-code" | translate}}</label>
+      <div class="col-4">
+        <p-autoComplete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
+          <ng-template #item let-mainIngredient>
+            <div>{{mainIngredient.mainIngredientCode}}</div>
+            <div>{{mainIngredient.mainIngredientName}}</div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.kd-code" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.kdCode" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.standard-code" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.standardCode" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.pharma" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.pharma" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.name" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.custom-price" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.customPrice" />
+      </div>
+    </div>
+  </p-card>
+  <p-card class="flex grid m-1" *ngIf="medicineModel">
+    <div class="field col grid">
+      <label class="col-2 align-self-center">{{"medicine-add.standard" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.standard" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.account-unit" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.accountUnit" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineTypeList" [(ngModel)]="selectMedicineType" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineMethodList" [(ngModel)]="selectMedicineMethod" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineCategoryList" [(ngModel)]="selectMedicineCategory" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineGroupList" [(ngModel)]="selectMedicineGroup" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineRankList" [(ngModel)]="selectMedicineRank" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineStorageTempList" [(ngModel)]="selectMedicineStorageTemp" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
+      <div class="col-4">
+        <p-select [options]="medicineStorageBoxList" [(ngModel)]="selectMedicineStorageBox" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.package-unit" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.packageUnit" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.unit" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.unit" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.etc1" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.medicineSubModel.etc1" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-add.etc2" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.medicineSubModel.etc2" />
+      </div>
+    </div>
+  </p-card>
+</div>

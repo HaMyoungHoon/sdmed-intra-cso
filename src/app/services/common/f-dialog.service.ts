@@ -4,18 +4,18 @@ import {MessageService} from "primeng/api";
 import {ToastLevel} from "../../models/common/toast-level";
 import {ToastItem} from "../../models/common/toast-item";
 import {Observable} from "rxjs";
-import {TableDialogComponent} from "../../components/common/table-dialog/table-dialog.component";
-import {HtmlEditDialogComponent} from "../../components/common/html-edit-dialog/html-edit-dialog.component";
-import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
-import {UserEditDialogComponent} from "../../components/common/user-edit-dialog/user-edit-dialog.component";
-import {ImageViewDialogComponent} from "../../components/common/image-view-dialog/image-view-dialog.component";
-import {HospitalEditDialogComponent} from "../../components/common/hospital-edit-dialog/hospital-edit-dialog.component";
-import {HospitalAddDialogComponent} from "../../components/common/hospital-add-dialog/hospital-add-dialog.component";
-import {PharmaEditDialogComponent} from "../../components/common/pharma-edit-dialog/pharma-edit-dialog.component";
-import {PharmaAddDialogComponent} from "../../components/common/pharma-add-dialog/pharma-add-dialog.component";
-import {MedicineEditDialogComponent} from "../../components/common/medicine-edit-dialog/medicine-edit-dialog.component";
-import {MedicineAddDialogComponent} from "../../components/common/medicine-add-dialog/medicine-add-dialog.component";
-import {PasswordChangeDialogComponent} from "../../components/common/password-change-dialog/password-change-dialog.component";
+import {TableDialogComponent} from "../../components/common/dialog/table-dialog/table-dialog.component";
+import {HtmlEditDialogComponent} from "../../components/common/dialog/html-edit-dialog/html-edit-dialog.component";
+import {SignDialogComponent} from "../../components/common/dialog/sign-dialog/sign-dialog.component";
+import {UserEditDialogComponent} from "../../components/common/dialog/user-edit-dialog/user-edit-dialog.component";
+import {ImageViewDialogComponent} from "../../components/common/dialog/image-view-dialog/image-view-dialog.component";
+import {HospitalEditDialogComponent} from "../../components/common/dialog/hospital-edit-dialog/hospital-edit-dialog.component";
+import {HospitalAddDialogComponent} from "../../components/common/dialog/hospital-add-dialog/hospital-add-dialog.component";
+import {PharmaEditDialogComponent} from "../../components/common/dialog/pharma-edit-dialog/pharma-edit-dialog.component";
+import {PharmaAddDialogComponent} from "../../components/common/dialog/pharma-add-dialog/pharma-add-dialog.component";
+import {MedicineEditDialogComponent} from "../../components/common/dialog/medicine-edit-dialog/medicine-edit-dialog.component";
+import {MedicineAddDialogComponent} from "../../components/common/dialog/medicine-add-dialog/medicine-add-dialog.component";
+import {PasswordChangeDialogComponent} from "../../components/common/dialog/password-change-dialog/password-change-dialog.component";
 
 @Injectable({
   providedIn: "root"

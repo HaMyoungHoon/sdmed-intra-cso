@@ -6,8 +6,8 @@
       <p-button class="p-button-sm mr-1" (click)="save()">{{"common-desc.save" | translate}}</p-button>
       <p-button class="p-button-sm" icon="pi pi-refresh" (click)="refresh()"></p-button>
     </div>
-    <p-listbox class="flex h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" (onChange)="userListOnSelect($event)">
-      <ng-template pTemplate="item" let-user>
+    <p-listbox class="flex h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" optionLabel="name" (onChange)="userListOnSelect($event)">
+      <ng-template #item let-user>
         <div class="flex align-items-center gap-2">
           <div>{{user.id}}</div>
           <div>{{user.name}}</div>
@@ -18,43 +18,57 @@
   <div class="flex flex-column m-1">
     <div class="flex align-self-center">
       <p-checkbox class="flex h-fit align-self-center mr-1" [(ngModel)]="isHosSearchTypeCode" [binary]="true" />
-      <p-iconField class="flex h-fit" iconPosition="left">
-        <p-inputIcon [styleClass]="hosSearchStyle" />
+      <p-iconfield class="flex h-fit" iconPosition="left">
+        <p-inputicon [styleClass]="hosSearchStyle" />
         <input pInputText type="text" [(ngModel)]="hosSearchValue" placeholder="{{hosSearchPlaceHolder | translate}}" (keydown)="hosSearchChange($event)" />
-      </p-iconField>
+      </p-iconfield>
     </div>
-    <p-pickList class="flex col-12" [source]="hosList" [target]="sourceHosList" [disabled]="hosPickListDisable" [dragdrop]="true"
-                [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
+    <app-custom-pick-list class="flex col-12" [disable]="hosPickListDisable" [sourceList]="hosList" [targetList]="sourceHosList"
+                          [(selectedTarget)]="selectHos" [filterFields]="['code', 'innerName']"
+                          sourceFilterPlaceHolder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}"
+                          targetFilterPlaceHolder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}"
+                          (targetSelectChange)="hosPickListTargetSelect2($event)">
+      <ng-template #sourceItem let-source>
+        <div>{{source.code}}</div>
+        <div>{{source.innerName}}</div>
+      </ng-template>
+      <ng-template #targetItem let-target>
+        <div>{{target.code}}</div>
+        <div>{{target.innerName}}</div>
+      </ng-template>
+    </app-custom-pick-list>
+    <!--
+    <p-pick-list class="flex col-12" [source]="hosList" [target]="sourceHosList" [disabled]="hosPickListDisable" [dragdrop]="true"
                 sourceHeader="{{'user-mapping.hos-pick-list.source-header' | translate}}" targetHeader="{{'user-mapping.hos-pick-list.target-header' | translate}}"
                 filterMatchMode="contains" filterBy="innerName" (onTargetSelect)="hosPickListTargetSelect($event)"
                 sourceFilterPlaceholder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}"
                 [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
                 targetFilterPlaceholder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}">
-      <ng-template pTemplate="item" let-hos>
+      <ng-template let-hos pTemplate="item">
         <div class="flex flex-wrap p-2 align-items-center gap-3">
           <div>{{hos.code}}</div>
           <div>{{ellipsis(hos.innerName)}}</div>
         </div>
       </ng-template>
-    </p-pickList>
+    </p-pick-list>
+    -->
   </div>
   <div class="flex flex-column m-1">
     <div class="flex align-self-center">
       <p-checkbox class="flex h-fit align-self-center mr-1" [(ngModel)]="isPharmaSearchTypeCode" [binary]="true" />
-      <p-iconField class="flex h-fit" iconPosition="left">
-        <p-inputIcon [styleClass]="pharmaSearchStyle" />
+      <p-iconfield class="flex h-fit" iconPosition="left">
+        <p-inputicon [styleClass]="pharmaSearchStyle" />
         <input pInputText type="text" [(ngModel)]="pharmaSearchValue" placeholder="{{pharmaSearchPlaceHolder | translate}}" (keydown)="pharmaSearchChange($event)" />
-      </p-iconField>
+      </p-iconfield>
     </div>
     <p-pickList class="flex col-12" [source]="pharmaList" [target]="sourcePharmaList" [disabled]="pharmaPickListDisable" [dragdrop]="true"
-                [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
                 sourceHeader="{{'user-mapping.pharma-pick-list.source-header' | translate}}" targetHeader="{{'user-mapping.pharma-pick-list.target-header' | translate}}"
                 filterMatchMode="contains" filterBy="innerName" (onTargetSelect)="pharmaPickListTargetSelect($event)"
                 sourceFilterPlaceholder="{{'user-mapping.pharma-pick-list.filter-place-holder' | translate}}"
                 [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
                 targetFilterPlaceholder="{{'user-mapping.pharma-pick-list.filter-place-holder' | translate}}">
-      <ng-template pTemplate="item" let-pharma>
-        <div class="flex flex-wrap p-2 align-items-center gap-3">
+      <ng-template #item let-pharma>
+        <div class="flex flex-wrap p-2 align-items-center gap-3" >
           <div>{{pharma.code}}</div>
           <div>{{ellipsis(pharma.innerName)}}</div>
         </div>
@@ -63,13 +77,12 @@
   </div>
   <div class="flex flex-column m-1">
     <p-pickList class="flex col-12" [source]="medicineList" [target]="sourceMedicineList" [disabled]="medicinePickListDisable" [dragdrop]="true"
-                [sourceStyle]="{height: '30rem', width: '25rem'}" [targetStyle]="{height: '30rem', width: '25rem'}"
                 sourceHeader="{{'user-mapping.medicine-pick-list.source-header' | translate}}" targetHeader="{{'user-mapping.medicine-pick-list.target-header' | translate}}"
                 filterMatchMode="contains" filterBy="name"
                 sourceFilterPlaceholder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}"
                 [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" breakpoint="1400px"
                 targetFilterPlaceholder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}">
-      <ng-template pTemplate="item" let-medicine>
+      <ng-template #item let-medicine>
         <div class="flex flex-wrap p-2 align-items-center gap-3">
           <div>{{medicine.kdCode}}</div>
           <div>{{ellipsis(medicine.name)}}</div>

@@ -1,6 +1,10 @@
 export interface AppState {
-  configActive?: boolean;
+  preset?: string;
+  primary?: string;
+  surface?: string;
+  darkTheme?: boolean;
   menuActive?: boolean;
-  newsActive?: boolean;
-  announcement?: any;
+//  RTL?: boolean;
+  isNewTab: boolean;
+  scale: number;
 }

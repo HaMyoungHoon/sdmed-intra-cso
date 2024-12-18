@@ -1,0 +1,111 @@
+<div class="user-edit-dialog-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <div class="m-1">
+    <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+  </div>
+  <p-accordion [multiple]="multipleEnable" [value]="['0']">
+    <p-accordion-panel *ngIf="userDataModel" value="0">
+      <p-accordion-header>{{"user-edit.accordion-header.detail" | translate}}</p-accordion-header>
+      <p-accordion-content>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.id" | translate}}</label>
+          <label class="col">{{userDataModel.id}}</label>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.name" | translate}}</label>
+          <div class="col">
+            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.name" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.mail" | translate}}</label>
+          <div class="col">
+            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.phone-number" | translate}}</label>
+          <div class="col">
+            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.role" | translate}}</label>
+          <div class="col">
+            <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.dept" | translate}}</label>
+          <div class="col">
+            <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.status" | translate}}</label>
+          <div class="col">
+            <p-select [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.reg-date" | translate}}</label>
+          <label class="col">{{dateToYearFullString(stringToDate(userDataModel.regDate))}}</label>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed w-3">{{"user-edit.detail.last-login-date" | translate}}</label>
+          <label class="col">{{dateToYearFullString(stringToDate(userDataModel.lastLoginDate))}}</label>
+        </div>
+        <div class="field grid">
+          <label class="col-fixed m-1">{{userDataModel.companyNumber}}</label>
+          <div class="col m-1">
+            <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel.companyNumber" (click)="taxpayerImageView()" pTooltip="{{'user-edit.detail.taxpayer-image' | translate}}"/>
+          </div>
+          <label class="col-fixed m-1">{{userDataModel.bankAccount}}</label>
+          <div class="col m-1">
+            <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel.bankAccount" (click)="bankAccountImageView()" pTooltip="{{'user-edit.detail.bank-account-image' | translate}}"/>
+          </div>
+          <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="taxpayerImageSelected($event)">
+          <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="bankAccountImageSelected($event)">
+        </div>
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel *ngIf="userDataModel.hosList.length > 0" value="1">
+      <p-accordion-header>{{"user-edit.accordion-header.in-charge" | translate}}</p-accordion-header>
+      <p-accordion-content>
+        <div class="formgrid grid">
+          <p-table class="field col" [value]="userDataModel.hosList" [scrollable]="true" selectionMode="single" [(selection)]="selectedHosData"
+                   styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+            <ng-template #header>
+              <tr>
+                <th class="w-2">{{"user-edit.hos-data.code" | translate}}</th>
+                <th>{{"user-edit.hos-data.inner-name" | translate}}</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-hosData>
+              <tr [pSelectableRow]="hosData">
+                <td>{{hosData.code}}</td>
+                <td><{{hosData.innerName}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <p-table class="field col" [value]="selectedHosData.pharmaList" [scrollable]="true"
+                   styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+            <ng-template #header>
+              <tr>
+                <th class="w-2">{{"user-edit.pharma-data.code" | translate}}</th>
+                <th>{{"user-edit.pharma-data.inner-name" | translate}}</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-pharmaData>
+              <tr>
+                <td>{{pharmaData.code}}</td>
+                <td>{{pharmaData.innerName}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+</div>

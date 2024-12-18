@@ -1,0 +1,75 @@
+.custom-pick-container {
+  width: 25rem;
+  max-width: 100%;
+  margin: 0 10px 10px 0;
+  display: inline-block;
+  vertical-align: top;
+  scroll-behavior: smooth;
+}
+
+.custom-pick-list {
+  height: 30rem;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  background: var(--p-form-field-background);;
+  border-radius: 4px;
+  overflow-x: hidden;
+  display: block;
+  overflow-y: scroll;
+}
+
+.custom-filter-container {
+  margin: 10px !important;
+}
+.custom-filter {
+  width: 100% !important;
+}
+
+.custom-pick-box {
+  padding: 10px 10px;
+  border-bottom: solid 1px #ccc;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: var(--p-form-field-background);
+  font-size: 14px;
+}
+.custom-pick-box:hover {
+  background: var(--p-listbox-option-focus-background);
+}
+.custom-pick-box-selected {
+  border-radius: var(--p-listbox-option-border-radius);
+  color: var(--p-listbox-option-selected-color);
+  background: var(--p-listbox-option-selected-background);
+}
+.custom-pick-box-selected:hover {
+  background: var(--p-listbox-option-selected-focus-background);
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.custom-pick-box:last-child {
+  border: none;
+}
+
+.custom-pick-list.cdk-drop-list-dragging .custom-pick-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

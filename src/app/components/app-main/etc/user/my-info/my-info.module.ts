@@ -7,7 +7,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {CardModule} from "primeng/card";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
-import {Button} from "primeng/button";
+import {ButtonModule} from "primeng/button";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 
 
@@ -15,7 +15,7 @@ import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-s
 @NgModule({
   declarations: [MyInfoComponent],
 	imports: [
-		CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, Button, ProgressSpinComponent
+		CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, ButtonModule, ProgressSpinComponent
 	]
 })
 export class MyInfoModule { }

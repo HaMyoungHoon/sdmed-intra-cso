@@ -2,22 +2,22 @@
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['code', 'name', 'medicineIngredientModel.mainIngredientName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
         <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
-        <p-iconField iconPosition="left" class="ml-auto justify-content-end">
-          <p-inputIcon>
+        <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
+          <p-inputicon>
             <i class="pi pi-search"></i>
-          </p-inputIcon>
+          </p-inputicon>
           <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-        </p-iconField>
+        </p-iconfield>
       </div>
     </ng-template>
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="code">{{"medicine-list.code" | translate}} <p-sortIcon field="code" /></th>
         <th pSortableColumn="name">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
@@ -29,7 +29,7 @@
         <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-medicine>
+    <ng-template #body let-medicine>
       <tr>
         <td>{{medicine.code}}</td>
         <td>{{medicine.name}}</td>

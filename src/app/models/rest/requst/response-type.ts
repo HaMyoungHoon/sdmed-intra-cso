@@ -36,20 +36,20 @@ export const ResponseTypeDesc: { [key in ResponseType]: string } = {
   [ResponseType.Reject]: "거부",
 }
 export const ResponseTypeToPropertyBackgroundName: { [key in ResponseType]: string } = {
-  [ResponseType.None]: "--yellow-500",
-  [ResponseType.Recep]: "--blue-500",
-  [ResponseType.OK]: "--green-500",
-  [ResponseType.Pending]: "--orange-500",
-  [ResponseType.Ignore]: "--red-500",
-  [ResponseType.Reject]: "--gray-500",
+  [ResponseType.None]: "--p-yellow-500",
+  [ResponseType.Recep]: "--p-blue-500",
+  [ResponseType.OK]: "--p-green-500",
+  [ResponseType.Pending]: "--p-orange-500",
+  [ResponseType.Ignore]: "--p-red-500",
+  [ResponseType.Reject]: "--p-gray-500",
 }
 export const ResponseTypeToPropertyHoverBackgroundName: { [key in ResponseType]: string } = {
-  [ResponseType.None]: "--yellow-400",
-  [ResponseType.Recep]: "--blue-400",
-  [ResponseType.OK]: "--green-400",
-  [ResponseType.Pending]: "--orange-400",
-  [ResponseType.Ignore]: "--red-400",
-  [ResponseType.Reject]: "--gray-400",
+  [ResponseType.None]: "--p-yellow-400",
+  [ResponseType.Recep]: "--p-blue-400",
+  [ResponseType.OK]: "--p-green-400",
+  [ResponseType.Pending]: "--p-orange-400",
+  [ResponseType.Ignore]: "--p-red-400",
+  [ResponseType.Reject]: "--p-gray-400",
 }
 export const StringToResponseTypeDesc: { [key in string]: string } = {
   "None": "미지정",
@@ -76,18 +76,18 @@ export const ResponseTypeDescToResponseType: { [key in string]: ResponseType } =
   "거부":ResponseType.Reject,
 }
 export const stringToPropertyBackgroundName: { [key in string]: string } = {
-  "None": "--yellow-500",
-  "Recep": "--blue-500",
-  "OK": "--green-500",
-  "Pending": "--orange-500",
-  "Ignore": "--red-500",
-  "Reject": "--gray-500",
+  "None": "--p-yellow-500",
+  "Recep": "--p-blue-500",
+  "OK": "--p-green-500",
+  "Pending": "--p-orange-500",
+  "Ignore": "--p-red-500",
+  "Reject": "--p-gray-500",
 }
 export const stringToPropertyHoverBackgroundName: { [key in string]: string } = {
-  "None": "--yellow-400",
-  "Recep": "--blue-400",
-  "OK": "--green-400",
-  "Pending": "--orange-400",
-  "Ignore": "--red-400",
-  "Reject": "--gray-400",
+  "None": "--p-yellow-400",
+  "Recep": "--p-blue-400",
+  "OK": "--p-green-400",
+  "Pending": "--p-orange-400",
+  "Ignore": "--p-red-400",
+  "Reject": "--p-gray-400",
 }

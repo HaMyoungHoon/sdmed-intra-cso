@@ -2,8 +2,8 @@
   <app-progress-spin [isLoading]="isLoading" />
   <div class="w-full flex flex-wrap justify-content-center">
     <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole" />
-    <p-calendar #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
-    <p-calendar #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
+    <p-date-picker #startDatePicker [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
+    <p-date-picker #endDatePicker [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
   </div>
   <div class="w-full flex flex-wrap justify-content-center">
     <p-chart class="col-6" type="pie" [data]="chartData1" [options]="chartOption1" />

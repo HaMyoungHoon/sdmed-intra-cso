@@ -2,27 +2,26 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {PharmaEditComponent} from "./pharma-edit.component";
 import {PharmaEditRoutingModule} from "./pharma-edit-routing.module";
-import {Button} from "primeng/button";
-import {CalendarModule} from "primeng/calendar";
+import {ButtonModule} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {CheckboxModule} from "primeng/checkbox";
-import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
-import {IconFieldModule} from "primeng/iconfield";
+import {IconField} from "primeng/iconfield";
 import {ImageModule} from "primeng/image";
-import {InputIconModule} from "primeng/inputicon";
+import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {PickListModule} from "primeng/picklist";
-import {PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {Select} from "primeng/select";
+import {DatePicker} from "primeng/datepicker";
 
 
 
 @NgModule({
   declarations: [PharmaEditComponent],
   imports: [
-    CommonModule, PharmaEditRoutingModule, Button, CalendarModule, CardModule, CheckboxModule, DropdownModule, FormsModule, IconFieldModule, ImageModule, InputIconModule, InputTextModule, PickListModule, PrimeTemplate, ProgressSpinComponent, TranslatePipe
+    CommonModule, PharmaEditRoutingModule, ButtonModule, CardModule, CheckboxModule, FormsModule, IconField, ImageModule, InputIcon, InputTextModule, PickListModule, ProgressSpinComponent, TranslatePipe, Select, DatePicker
   ]
 })
 export class PharmaEditModule { }

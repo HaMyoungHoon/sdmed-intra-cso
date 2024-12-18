@@ -176,6 +176,10 @@ export function customSort<T>(event: SortEvent, isSorted: boolean | null, table:
   }
 }
 
+export function findIndexInList<T = any>(value: T, list: T[]): number {
+  return list.indexOf(value)
+}
+
 export function ellipsis(data?: string, length: number = 20): string {
   if (data == null) {
     return "";

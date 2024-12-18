@@ -6,19 +6,22 @@ import {ListboxModule} from "primeng/listbox";
 import {FormsModule} from "@angular/forms";
 import {PickListModule} from "primeng/picklist";
 import {TranslatePipe} from "@ngx-translate/core";
-import {Button} from "primeng/button";
-import {IconFieldModule} from "primeng/iconfield";
-import {InputIconModule} from "primeng/inputicon";
-import {ChipsModule} from "primeng/chips";
+import {ButtonModule} from "primeng/button";
+import {IconField} from "primeng/iconfield";
+import {InputIcon} from "primeng/inputicon";
+import {Chip} from "primeng/chip";
 import {CheckboxModule} from "primeng/checkbox";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
+import {InputTextModule} from "primeng/inputtext";
+import {CdkDrag, CdkDropList, CdkDropListGroup} from "@angular/cdk/drag-drop";
+import {CustomPickListComponent} from "../../../../common/custom-pick-list/custom-pick-list.component";
 
 
 
 @NgModule({
   declarations: [UserMappingComponent],
-  imports: [
-    CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, Button, IconFieldModule, InputIconModule, ChipsModule, CheckboxModule, ProgressSpinComponent
-  ]
+	imports: [
+		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, ButtonModule, IconField, InputIcon, Chip, CheckboxModule, ProgressSpinComponent, InputTextModule, CdkDropListGroup, CdkDrag, CdkDropList, CustomPickListComponent
+	]
 })
 export class UserMappingModule { }

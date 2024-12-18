@@ -1,25 +1,15 @@
-import {Component, ElementRef, ViewChild} from "@angular/core";
+import {Component, ElementRef, input, model, ModelSignal, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
-import {
-  allUserRoleDescArray,
-  flagToRoleDesc,
-  stringArrayToUserRole,
-  UserRole,
-  userRoleToFlag
-} from "../../../../../models/rest/user/user-role";
-import {
-  allUserDeptDescArray,
-  flagToDeptDesc,
-  stringArrayToUserDept,
-  userDeptToFlag
-} from "../../../../../models/rest/user/user-dept";
+import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole, userRoleToFlag} from "../../../../../models/rest/user/user-role";
+import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept, userDeptToFlag} from "../../../../../models/rest/user/user-dept";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus} from "../../../../../models/rest/user/user-status";
 import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {getFileExt, isImage, restTry, tryCatchAsync, stringToDate, dateToYearFullString} from "../../../../../guards/f-extensions";
 import * as FConstants from "../../../../../guards/f-constants";
 import {ActivatedRoute} from "@angular/router";
+import {transformToBoolean} from "primeng/utils";
 
 @Component({
   selector: "app-user-edit",
@@ -202,6 +192,8 @@ export class UserEditComponent extends FComponentBase {
       this.fDialogService.warn("bankAccountImageView", ret.msg);
     }
   }
+
+  multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
 
   protected readonly stringToDate = stringToDate;
   protected readonly dateToYearFullString = dateToYearFullString;

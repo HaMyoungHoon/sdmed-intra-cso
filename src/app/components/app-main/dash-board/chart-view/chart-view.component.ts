@@ -5,7 +5,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {calcDateDiffDay, dateToMonthYYYYMMdd, plusDays, restTry} from "../../../../guards/f-extensions";
 import {ChartData, ChartDataset} from "chart.js";
 import {responseTypeToResponseTypeDesc, stringToPropertyBackgroundName, stringToPropertyHoverBackgroundName} from "../../../../models/rest/requst/response-type";
-import {Calendar} from "primeng/calendar";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: "app-chart-view",
@@ -14,8 +14,8 @@ import {Calendar} from "primeng/calendar";
   standalone: false,
 })
 export class ChartViewComponent extends FComponentBase {
-  @ViewChild("startCalendar") startCalendar !: Calendar;
-  @ViewChild("endCalendar") endCalendar !: Calendar;
+  @ViewChild("startDatePicker") startDatePicker !: DatePicker;
+  @ViewChild("endDatePicker") endDatePicker !: DatePicker;
   chartOption1: any;
   chartData1: ChartData<"pie", number[]> = new class implements ChartData<"pie", number[]> {
     datasets: ChartDataset<"pie", number[]>[] = [];
@@ -158,7 +158,7 @@ export class ChartViewComponent extends FComponentBase {
     const diffDay = calcDateDiffDay(this.startDate, this.endDate);
     if (diffDay > 366) {
       this.endDate.setTime(this.startDate.getTime() + 365 * 1000 * 24 * 60 * 60);
-      this.endCalendar.updateInputfield();
+      this.endDatePicker.updateInputfield();
     }
   }
   async endDateChange(data: any): Promise<void> {
@@ -171,53 +171,53 @@ export class ChartViewComponent extends FComponentBase {
     const diffDay = calcDateDiffDay(this.startDate, this.endDate);
     if (diffDay > 366) {
       this.startDate.setTime(this.endDate.getTime() - 365 * 1000 * 24 * 60 * 60);
-      this.startCalendar.updateInputfield();
+      this.startDatePicker.updateInputfield();
     }
   }
 
   randomBackgroundColor(): string[] {
     const documentStyle = getComputedStyle(document.documentElement);
     return [
-      documentStyle.getPropertyValue("--blue-400"),
-      documentStyle.getPropertyValue("--orange-400"),
-      documentStyle.getPropertyValue("--green-400"),
-      documentStyle.getPropertyValue("--red-400"),
-      documentStyle.getPropertyValue("--gray-400"),
-      documentStyle.getPropertyValue("--cyan-400"),
-      documentStyle.getPropertyValue("--pink-400"),
-      documentStyle.getPropertyValue("--indigo-400"),
-      documentStyle.getPropertyValue("--teal-400"),
-      documentStyle.getPropertyValue("--purple-400"),
+      documentStyle.getPropertyValue("--p-blue-400"),
+      documentStyle.getPropertyValue("--p-orange-400"),
+      documentStyle.getPropertyValue("--p-green-400"),
+      documentStyle.getPropertyValue("--p-red-400"),
+      documentStyle.getPropertyValue("--p-gray-400"),
+      documentStyle.getPropertyValue("--p-cyan-400"),
+      documentStyle.getPropertyValue("--p-pink-400"),
+      documentStyle.getPropertyValue("--p-indigo-400"),
+      documentStyle.getPropertyValue("--p-teal-400"),
+      documentStyle.getPropertyValue("--p-purple-400"),
     ];
   }
   randomHoverBackgroundColor(): string[] {
     const documentStyle = getComputedStyle(document.documentElement);
     return [
-      documentStyle.getPropertyValue("--blue-200"),
-      documentStyle.getPropertyValue("--orange-200"),
-      documentStyle.getPropertyValue("--green-200"),
-      documentStyle.getPropertyValue("--red-200"),
-      documentStyle.getPropertyValue("--gray-200"),
-      documentStyle.getPropertyValue("--cyan-200"),
-      documentStyle.getPropertyValue("--pink-200"),
-      documentStyle.getPropertyValue("--indigo-200"),
-      documentStyle.getPropertyValue("--teal-200"),
-      documentStyle.getPropertyValue("--purple-200"),
+      documentStyle.getPropertyValue("--p-blue-200"),
+      documentStyle.getPropertyValue("--p-orange-200"),
+      documentStyle.getPropertyValue("--p-green-200"),
+      documentStyle.getPropertyValue("--p-red-200"),
+      documentStyle.getPropertyValue("--p-gray-200"),
+      documentStyle.getPropertyValue("--p-cyan-200"),
+      documentStyle.getPropertyValue("--p-pink-200"),
+      documentStyle.getPropertyValue("--p-indigo-200"),
+      documentStyle.getPropertyValue("--p-teal-200"),
+      documentStyle.getPropertyValue("--p-purple-200"),
     ];
   }
   randomBorderColor(): string[] {
     const documentStyle = getComputedStyle(document.documentElement);
     return [
-      documentStyle.getPropertyValue("--blue-700"),
-      documentStyle.getPropertyValue("--orange-700"),
-      documentStyle.getPropertyValue("--green-700"),
-      documentStyle.getPropertyValue("--red-700"),
-      documentStyle.getPropertyValue("--gray-700"),
-      documentStyle.getPropertyValue("--cyan-700"),
-      documentStyle.getPropertyValue("--pink-700"),
-      documentStyle.getPropertyValue("--indigo-700"),
-      documentStyle.getPropertyValue("--teal-700"),
-      documentStyle.getPropertyValue("--purple-700"),
+      documentStyle.getPropertyValue("--p-blue-700"),
+      documentStyle.getPropertyValue("--p-orange-700"),
+      documentStyle.getPropertyValue("--p-green-700"),
+      documentStyle.getPropertyValue("--p-red-700"),
+      documentStyle.getPropertyValue("--p-gray-700"),
+      documentStyle.getPropertyValue("--p-cyan-700"),
+      documentStyle.getPropertyValue("--p-pink-700"),
+      documentStyle.getPropertyValue("--p-indigo-700"),
+      documentStyle.getPropertyValue("--p-teal-700"),
+      documentStyle.getPropertyValue("--p-purple-700"),
     ];
   }
 }

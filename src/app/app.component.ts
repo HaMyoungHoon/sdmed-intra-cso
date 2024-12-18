@@ -18,6 +18,6 @@ export class AppComponent {
   constructor(private cd: ChangeDetectorRef, private router: Router,
               public languageService: LanguageService, private appConfigService: AppConfigService) {
     languageService.onInit().then();
-    appConfigService.onInit();
+    appConfigService.appState
   }
 }

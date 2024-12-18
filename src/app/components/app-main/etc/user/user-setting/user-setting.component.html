@@ -2,19 +2,21 @@
   <p-table #listTable [value]="userDataModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['id', 'name', 'status', 'role']" (sortFunction)="customSort($event, isSorted, listTable, initValue, userDataModel)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
-    <ng-template pTemplate="caption">
-      <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" [disabled]="!haveRole" />
-      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" />
-      <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
-      <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
-      <p-iconField iconPosition="left" class="ml-auto">
-        <p-inputIcon>
-          <i class="pi pi-search"></i>
-        </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-      </p-iconField>
+    <ng-template #caption>
+      <div class="flex">
+        <p-button class="m-1" (onClick)="refreshUserDataModel()" icon="pi pi-refresh" [disabled]="!haveRole" />
+        <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" />
+        <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
+        <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
+        <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconfield>
+      </div>
     </ng-template>
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="id">{{"user-setting.id" | translate}} <p-sortIcon field="id" /></th>
         <th pSortableColumn="name">{{"user-setting.name" | translate}} <p-sortIcon field="name" /></th>
@@ -25,7 +27,7 @@
         <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-userData>
+    <ng-template #body let-userData>
       <tr>
         <td>{{userData.id}}</td>
         <td>{{userData.name}}</td>

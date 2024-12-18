@@ -1,7 +1,6 @@
 import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
 import {ToolbarModule} from "primeng/toolbar";
-import {Button} from "primeng/button";
-import {SidebarModule} from "primeng/sidebar";
+import {ButtonModule} from "primeng/button";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -15,44 +14,44 @@ import * as FConstants from "../../../guards/f-constants";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {dateToMonthFullString, restTry} from "../../../guards/f-extensions";
 import {MenuModule} from "primeng/menu";
-import {Ripple} from "primeng/ripple";
+import {RippleModule} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
 import {CheckboxModule} from "primeng/checkbox";
 import {FormsModule} from "@angular/forms";
 import {CommonService} from "../../../services/rest/common.service";
+import {Tooltip} from "primeng/tooltip";
+import {Drawer} from "primeng/drawer";
 
 
 @Component({
   selector: "app-menu-config",
-  imports: [ToolbarModule, Button, SidebarModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, Ripple, BadgeModule, CheckboxModule, FormsModule],
+  imports: [ToolbarModule, ButtonModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, RippleModule, BadgeModule, CheckboxModule, FormsModule, Tooltip, Drawer],
   templateUrl: "./menu-config.component.html",
   styleUrl: "./menu-config.component.scss",
   standalone: true,
 })
 export class MenuConfigComponent {
   menuButtonVisible: boolean = false;
-  menuVisible: boolean = false;
   menuItems: MenuItem[] = [];
-  isNewTab: boolean = false;
-  scale: number = 14;
   scales: number[] = [10,12,14,16,18];
   constructor(private cd: ChangeDetectorRef, private langService: LanguageService, private configService: AppConfigService, private commonService: CommonService, private fDialogService: FDialogService) {
-    this.isNewTab = this.configService.isNewTab();
-    this.scale = this.configService.getScale();
     afterNextRender(() => {
       this.cd.markForCheck();
     });
   }
   menuInit(visible: boolean): void {
     this.menuButtonVisible = visible;
-    this.menuVisible = false;
     this.menuItems = visible ? MainMenuItem() : [];
   }
   menuClose(): void {
-    this.menuVisible = false;
+    this.configService.hideMenu();
   }
   toggleMenu(): void {
-    this.menuVisible = !this.menuVisible;
+    if (this.menuVisible) {
+      this.configService.hideMenu();
+    } else {
+      this.configService.showMenu();
+    }
   }
   async tokenRefresh(): Promise<void> {
     const ret = await restTry(async() => await this.commonService.tokenRefresh(),
@@ -61,6 +60,9 @@ export class MenuConfigComponent {
       setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
       return;
     }
+  }
+  get menuVisible(): boolean {
+    return this.configService.isMenuActive();
   }
   get expiredDate(): string {
     return dateToMonthFullString(getTokenExpiredDate(getLocalStorage(FConstants.AUTH_TOKEN)));
@@ -81,28 +83,32 @@ export class MenuConfigComponent {
 
     return now.getTime() > tokenDate.getTime();
   }
-  langToEn(): void {
-    this.langService.change(LangType.en);
+  async langToEn(): Promise<void> {
+    await this.langService.change(LangType.en);
   }
-  langToKo(): void {
-    this.langService.change(LangType.ko);
+  async langToKo(): Promise<void> {
+    await this.langService.change(LangType.ko);
   }
   decrementScale(): void {
-    this.scale = this.scale - 2;
-    this.applyScale();
+    this.applyScale(this.scale - 2);
   }
   incrementScale(): void {
-    this.scale = this.scale + 2;
-    this.applyScale();
+    this.applyScale(this.scale + 2);
   }
-  applyScale(): void {
-    this.configService.changeScale(this.scale);
+  applyScale(scale: number): void {
+    this.configService.changeScale(scale);
   }
   changeTheme(toDark: boolean): void {
-    this.configService.changeTheme(toDark);
+    this.configService.toggleDarkMode(toDark);
   }
   changeNewTab(_: any): void {
-    this.configService.changeNewTab(this.isNewTab);
+    this.configService.changeNewTab(!this.isNewTab);
+  }
+  get isNewTab(): boolean {
+    return this.configService.isNewTab();
+  }
+  get scale(): number {
+    return this.configService.getScale();
   }
 
   get isKoLang(): boolean {

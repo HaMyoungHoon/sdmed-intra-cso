@@ -45,48 +45,62 @@
   </p-card>
   <p-card class="flex grid m-1" *ngIf="pharmaModel">
     <div class="field col grid">
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.business-type" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.business-type" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessType" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.business-item" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.business-item" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessItem" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.bill-type" | translate}}</label>
-      <p-dropdown class="col-4" [options]="billTypeList" [(ngModel)]="selectBillType" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.contract-type" | translate}}</label>
-      <p-dropdown class="col-4" [options]="contractTypeList" [(ngModel)]="selectContractType" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.pharma-type" | translate}}</label>
-      <p-dropdown class="col-4" [options]="pharmaTypeList" [(ngModel)]="selectPharmaType" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.pharma-group" | translate}}</label>
-      <p-dropdown class="col-4" [options]="pharmaGroupList" [(ngModel)]="selectPharmaGroup" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.delivery-div" | translate}}</label>
-      <p-dropdown class="col-4" [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.mail" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.bill-type" | translate}}</label>
+      <div class="col-3">
+        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.contract-type" | translate}}</label>
+      <div class="col-3">
+        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.pharma-type" | translate}}</label>
+      <div class="col-3">
+        <p-select [options]="pharmaTypeList" [(ngModel)]="selectPharmaType" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.pharma-group" | translate}}</label>
+      <div class="col-3">
+        <p-select [options]="pharmaGroupList" [(ngModel)]="selectPharmaGroup" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.delivery-div" | translate}}</label>
+      <div class="col-3">
+        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.mail" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mail" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.mobile-phone" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.mobile-phone" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mobilePhone" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.open-date" | translate}}</label>
-      <p-calendar class="col-4" [(ngModel)]="pharmaModel.openDate" dateFormat="yy-mm-dd" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.close-date" | translate}}</label>
-      <p-calendar class="col-4" [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" />
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.etc1" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.open-date" | translate}}</label>
+      <div class="col-3">
+        <p-date-picker [(ngModel)]="pharmaModel.openDate" dateFormat="yy-mm-dd" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.close-date" | translate}}</label>
+      <div class="col-3">
+        <p-date-picker [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.etc1" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc1" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.etc2" | translate}}</label>
-      <div class="col-4">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.etc2" | translate}}</label>
+      <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc2" />
       </div>
     </div>
-    <div class="field grid">
-      <label class="col-2 align-self-center">{{"pharma-add-dialog.taxpayer-number" | translate}}</label>
-      <div class="col-4 align-self-center">
+    <div class="field col grid">
+      <label class="col-1 align-self-center">{{"pharma-add-dialog.taxpayer-number" | translate}}</label>
+      <div class="col-3 align-self-center">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.taxpayerNumber" />
       </div>
     </div>

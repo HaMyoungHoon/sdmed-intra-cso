@@ -7,7 +7,7 @@ import {MedicineModel} from "../../../../../models/rest/medicine/medicine-model"
 import {UserRole} from "../../../../../models/rest/user/user-role";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/user/hos-pharma-medicine-pair-model";
-import {applyClass, restTry} from "../../../../../guards/f-extensions";
+import {applyClass, ellipsis, restTry} from "../../../../../guards/f-extensions";
 import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
 
 @Component({
@@ -177,6 +177,11 @@ export class UserMappingComponent extends FComponentBase {
   get sourceHosList(): HospitalModel[] {
     return this.hosPickListUser?.hosList ?? [];
   }
+  set sourceHosList(data: HospitalModel[]) {
+    if (this.hosPickListUser) {
+      this.hosPickListUser.hosList = data;
+    }
+  }
   get hosSearchStyle(): string {
     if (this.hosSearchLoading) return "pi pi-spinner pi-spin";
     else return "pi pi-search";
@@ -215,6 +220,10 @@ export class UserMappingComponent extends FComponentBase {
   }
   get hosPickListDisable(): boolean {
     return this.hosPickListUser == null;
+  }
+  async hosPickListTargetSelect2(event: any): Promise<void> {
+    this.selectHos = event;
+    await this.pharmaSearch();
   }
   async hosPickListTargetSelect(event: any): Promise<void> {
     if (event.items.length > 1) {
@@ -310,12 +319,5 @@ export class UserMappingComponent extends FComponentBase {
     this.fDialogService.warn("medicineSearch", ret.msg);
   }
 
-
-  ellipsis(data: string): string {
-    if (data.length > 20) {
-      return data.substring(0, 20) + "...";
-    }
-
-    return data;
-  }
+  protected readonly ellipsis = ellipsis;
 }

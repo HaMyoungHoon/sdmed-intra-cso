@@ -2,20 +2,22 @@
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
-    <ng-template pTemplate="caption">
-      <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
-      <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
-      <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
-      <p-iconField iconPosition="left" class="ml-auto">
-        <p-inputIcon>
-          <i class="pi pi-search"></i>
-        </p-inputIcon>
-        <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-      </p-iconField>
+    <ng-template #caption>
+      <div class="flex">
+        <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
+        <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
+        <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
+        <p-iconfield iconPosition="left" class="ml-auto">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconfield>
+      </div>
     </ng-template>
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="code">{{"hospital-list.code" | translate}} <p-sortIcon field="code" /></th>
         <th pSortableColumn="orgName">{{"hospital-list.inner-name" | translate}} <p-sortIcon field="orgName" /></th>
@@ -26,7 +28,7 @@
         <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-hospital>
+    <ng-template #body let-hospital>
       <tr>
         <td>{{hospital.code}}</td>
         <td>{{hospital.orgName}}</td>
