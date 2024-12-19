@@ -132,6 +132,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.hospitalModel.imageUrl)
     });
   }

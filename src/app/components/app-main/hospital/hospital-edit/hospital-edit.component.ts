@@ -118,6 +118,7 @@ export class HospitalEditComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.hospitalModel.imageUrl)
     });
   }

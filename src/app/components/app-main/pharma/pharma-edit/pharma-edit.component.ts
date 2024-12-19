@@ -158,6 +158,7 @@ export class PharmaEditComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.pharmaModel.imageUrl)
     });
   }
@@ -170,6 +171,7 @@ export class PharmaEditComponent extends FComponentBase {
       e => this.fDialogService.error("medicineSearch", e));
     if (ret.result) {
       this.medicineList = ret.data ?? [];
+      this.medicineList = this.medicineList.filter(x => !this.pharmaModel.medicineList.some(y => y.thisPK == x.thisPK))
       return;
     }
     this.fDialogService.warn("medicineSearch", ret.msg);
@@ -179,8 +181,8 @@ export class PharmaEditComponent extends FComponentBase {
     else return "pi pi-search"
   }
   get medicineSearchPlaceHolder(): string {
-    if (this.isMedicineSearchTypeCode) return "pharma-edit-dialog.medicine-pick-list.search-code";
-    else return "pharma-edit-dialog.medicine-pick-list.search-name";
+    if (this.isMedicineSearchTypeCode) return "pharma-edit.medicine-pick-list.search-code";
+    else return "pharma-edit.medicine-pick-list.search-name";
   }
   async medicineSearchChange(data: any): Promise<void> {
     if (this.isMobile) {

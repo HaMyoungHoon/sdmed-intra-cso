@@ -269,7 +269,7 @@
     "etc1": "비고1",
     "etc2": "비고2"
   },
-  "pharma-edit-dialog": {
+  "pharma-edit": {
     "medicine-pick-list": {
       "header": "소유 약품",
       "source-header": "검색 약품",

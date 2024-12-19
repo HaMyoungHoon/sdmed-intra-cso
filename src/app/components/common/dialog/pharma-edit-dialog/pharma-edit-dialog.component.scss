@@ -2,6 +2,10 @@ input {
   width: 20rem;
 }
 
-p-pickList {
-  min-height: 30rem;
+div {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }

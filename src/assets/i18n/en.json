@@ -269,7 +269,7 @@
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
-  "pharma-edit-dialog": {
+  "pharma-edit": {
     "medicine-pick-list": {
       "header": "own medicine",
       "source-header": "search",

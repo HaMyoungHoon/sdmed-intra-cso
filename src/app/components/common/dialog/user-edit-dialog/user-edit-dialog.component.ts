@@ -1,20 +1,9 @@
 import {Component, ElementRef, input, ViewChild} from "@angular/core";
 import {UserDataModel} from "../../../../models/rest/user/user-data-model";
 import {dateToYearFullString, getFileExt, isImage, restTry, stringToDate, tryCatchAsync} from "../../../../guards/f-extensions";
-import {
-  allUserRoleDescArray,
-  flagToRoleDesc,
-  stringArrayToUserRole,
-  UserRole,
-  userRoleToFlag
-} from "../../../../models/rest/user/user-role";
+import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole, userRoleToFlag} from "../../../../models/rest/user/user-role";
 import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus,} from "../../../../models/rest/user/user-status";
-import {
-  allUserDeptDescArray,
-  flagToDeptDesc,
-  stringArrayToUserDept,
-  userDeptToFlag
-} from "../../../../models/rest/user/user-dept";
+import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept, userDeptToFlag} from "../../../../models/rest/user/user-dept";
 import {AccordionModule} from "primeng/accordion";
 import {NgIf} from "@angular/common";
 import {TagModule} from "primeng/tag";
@@ -33,10 +22,11 @@ import {UserInfoService} from "../../../../services/rest/user-info.service";
 import {Tooltip} from "primeng/tooltip";
 import {transformToBoolean} from "primeng/utils";
 import {Select} from "primeng/select";
+import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.component";
 
 @Component({
   selector: "app-user-edit-dialog",
-  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select],
+  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent],
   templateUrl: "./user-edit-dialog.component.html",
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,
@@ -44,6 +34,7 @@ import {Select} from "primeng/select";
 export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
+  childAble: UserDataModel[] = [];
   userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
   userDeptList: string[] = allUserDeptDescArray();
@@ -60,6 +51,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   override async ngInit(): Promise<void> {
     if (this.haveRole) {
       await this.getUserData();
+      await this.getChildAble();
     }
   }
 
@@ -75,6 +67,15 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
     this.fDialogService.warn("getUserData", ret.msg);
   }
+  async getChildAble(): Promise<void> {
+    const ret = await restTry(async() => await this.thisService.getListChildAble(this.userDataModel.thisPK),
+      e => this.fDialogService.error("getChildAble", e));
+    if (ret.result) {
+      this.childAble = ret.data ?? [];
+      return;
+    }
+    this.fDialogService.warn("getChildAble", ret.msg);
+  }
   async saveUserData(): Promise<void> {
     this.userDataModel.role = userRoleToFlag(stringArrayToUserRole(this.selectedUserRoles));
     this.userDataModel.dept = userDeptToFlag(stringArrayToUserDept(this.selectedUserDepts));
@@ -82,6 +83,16 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.setLoading();
     const ret = await restTry(async() => await this.thisService.putUser(this.userDataModel),
       e => this.fDialogService.error("saveUserData", e));
+    this.setLoading(false);
+    if (ret.result) {
+      await this.saveUserChildData();
+      return;
+    }
+    this.fDialogService.warn("saveUserData", ret.msg);
+  }
+  async saveUserChildData(): Promise<void> {
+    const ret = await restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
+      e => this.fDialogService.error("saveUserChildData", e));
     this.setLoading(false);
     if (ret.result) {
       this.ref.close(ret.data);
@@ -111,6 +122,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.userDataModel.taxpayerImageUrl)
     });
   }
@@ -165,6 +177,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.userDataModel.bankAccountImageUrl)
     });
   }

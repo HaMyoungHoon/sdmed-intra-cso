@@ -60,8 +60,8 @@ export class PharmaListComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      width: "50%",
-      height: "80%",
+      maximizable: true,
+      width: "60%",
     }).subscribe((x): void => {
       if (x == null) {
         return;
@@ -133,8 +133,8 @@ export class PharmaListComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
-      width: "50%",
-      height: "80%",
+      maximizable: true,
+      width: "60%",
       data: data
     }).subscribe((x): void => {
       if (x == null) {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, model, ModelSignal, ViewChild} from "@angular/core";
+import {Component, ElementRef, input, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
 import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole, userRoleToFlag} from "../../../../../models/rest/user/user-role";
@@ -103,6 +103,7 @@ export class UserEditComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.userDataModel.taxpayerImageUrl)
     });
   }
@@ -157,6 +158,7 @@ export class UserEditComponent extends FComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.userDataModel.bankAccountImageUrl)
     });
   }

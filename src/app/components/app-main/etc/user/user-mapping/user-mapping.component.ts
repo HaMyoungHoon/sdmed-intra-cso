@@ -222,7 +222,7 @@ export class UserMappingComponent extends FComponentBase {
     return this.hosPickListUser == null;
   }
   async hosPickListTargetSelect2(event: any): Promise<void> {
-    this.selectHos = event;
+//    this.selectHos = event;
     await this.pharmaSearch();
   }
   async hosPickListTargetSelect(event: any): Promise<void> {
@@ -279,6 +279,10 @@ export class UserMappingComponent extends FComponentBase {
   }
   get pharmaPickListDisable(): boolean {
     return this.selectHos == null;
+  }
+  async pharmaPickListTargetSelect2(data: any): Promise<void> {
+//    this.selectPharma = data;
+    await this.medicineSearch();
   }
   async pharmaPickListTargetSelect(event: any): Promise<void> {
     if (event.items.length > 1) {

@@ -26,10 +26,11 @@ import {debounceTime, Subject, Subscription} from "rxjs";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import {Select} from "primeng/select";
 import {DatePicker} from "primeng/datepicker";
+import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.component";
 
 @Component({
   selector: "app-pharma-edit-dialog",
-  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, PickListModule, CheckboxModule, IconField, InputIcon, Select, DatePicker],
+  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, PickListModule, CheckboxModule, IconField, InputIcon, Select, DatePicker, CustomPickListComponent],
   templateUrl: "./pharma-edit-dialog.component.html",
   styleUrl: "./pharma-edit-dialog.component.scss",
   standalone: true,
@@ -177,6 +178,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       closeOnEscape: true,
       draggable: true,
       resizable: true,
+      maximizable: true,
       data: Array<string>(this.pharmaModel.imageUrl)
     });
   }
@@ -189,6 +191,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       e => this.fDialogService.error("medicineSearch", e));
     if (ret.result) {
       this.medicineList = ret.data ?? [];
+      this.medicineList = this.medicineList.filter(x => !this.pharmaModel.medicineList.some(y => y.thisPK == x.thisPK))
       return;
     }
     this.fDialogService.warn("medicineSearch", ret.msg);
@@ -198,8 +201,8 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     else return "pi pi-search"
   }
   get medicineSearchPlaceHolder(): string {
-    if (this.isMedicineSearchTypeCode) return "pharma-edit-dialog.medicine-pick-list.search-code";
-    else return "pharma-edit-dialog.medicine-pick-list.search-name";
+    if (this.isMedicineSearchTypeCode) return "pharma-edit.medicine-pick-list.search-code";
+    else return "pharma-edit.medicine-pick-list.search-name";
   }
   async medicineSearchChange(data: any): Promise<void> {
     if (this.isMobile) {

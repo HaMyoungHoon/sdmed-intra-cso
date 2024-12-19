@@ -10,24 +10,6 @@ app-menu-config .p-menu {
 app-menu-config .p-menu a {
   text-decoration-line: none;
 }
-app-user-edit .p-picklist-source-wrapper,
-app-user-edit-dialog .p-picklist-source-wrapper,
-app-user-mapping .p-picklist-source-wrapper,
-app-pharma-edit-dialog .p-picklist-source-wrapper {
-  margin-right: 0.25rem !important;
-}
-/*
-app-user-edit .p-picklist-transfer-controls,
-app-user-edit-dialog .p-picklist-transfer-controls,
-app-user-mapping .p-picklist-transfer-controls,
-app-pharma-edit-dialog .p-picklist-transfer-controls,
-app-pharma-edit .p-picklist-transfer-controls {
-  display: none !important;
-}
-*/
-.p-picklist-list-container {
-  min-width: 25rem !important;
-}
 app-user-mapping .p-listbox-list-container {
   min-height: 30rem;
 }
@@ -53,4 +35,16 @@ app-hospital-edit .p-inputwrapper  {
 
 .collapse {
   display: none;
+}
+
+.p-resizable-handle {
+  right: 0 !important;
+  top: 0 !important;
+  background-color: var(--p-primary-300) !important;
+}
+.p-dialog-maximized .p-resizable-handle {
+  display: none !important;
+}
+.p-dialog-header {
+  padding: 1rem !important;
 }

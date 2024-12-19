@@ -35,11 +35,10 @@ export class UserMappingService {
   }
   getPharmaData(pharmaPK: string, pharmaOwnMedicineView: boolean = false): Promise<RestResult<PharmaModel>> {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
-    return this.httpResponse.get(`${this.baseUrl}/data/pharma${pharmaPK}`);
+    return this.httpResponse.get(`${this.baseUrl}/data/pharma/${pharmaPK}`);
   }
 
   putUserRelationModifyByPK(userPK: string, hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[]): Promise<RestResult<UserDataModel>> {
-    this.httpResponse.addParam("userPK", userPK);
-    return this.httpResponse.put(`${this.baseUrl}/data/user/pk`, hosPharmaMedicinePairModel);
+    return this.httpResponse.put(`${this.baseUrl}/data/user/${userPK}`, hosPharmaMedicinePairModel);
   }
 }

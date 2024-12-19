@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, TemplateRef, ContentChild, AfterContentInit, inject} from "@angular/core";
+import {Component, Input, Output, EventEmitter, TemplateRef, ContentChild, AfterContentInit, inject, OnChanges, SimpleChanges} from "@angular/core";
 import {ellipsis, findIndexInList} from "../../../guards/f-extensions";
 import {CdkDrag, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
@@ -15,7 +15,7 @@ import {InputIcon} from "primeng/inputicon";
   styleUrl: "./custom-pick-list.component.scss",
   standalone: true,
 })
-export class CustomPickListComponent implements AfterContentInit {
+export class CustomPickListComponent implements AfterContentInit, OnChanges {
   @Input() disable: boolean = false;
   @Input() useFilter: boolean = true;
   @Input() ignoreCase: boolean = true;
@@ -52,6 +52,16 @@ export class CustomPickListComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["sourceList"]) {
+      this.filter(<any[]>this.sourceList, true);
+      this.selectedSource = undefined;
+    }
+    if (changes["targetList"]) {
+      this.filter(<any[]>this.targetList, false);
+      this.selectedTarget = undefined;
+    }
   }
 
   onSourceFilterChange(data: any): void {
@@ -156,13 +166,13 @@ export class CustomPickListComponent implements AfterContentInit {
     }
 
     if (source === this.selectedSource) {
-      this.sourceSelectChange.emit(undefined);
       this.selectedSource = undefined;
       this.selectedSourceChange.emit(undefined);
+      this.sourceSelectChange.emit(undefined);
     } else {
-      this.sourceSelectChange.emit(source);
       this.selectedSource = source;
       this.selectedSourceChange.emit(source);
+      this.sourceSelectChange.emit(source);
     }
   }
   targetSelect(target: any): void {
@@ -171,13 +181,13 @@ export class CustomPickListComponent implements AfterContentInit {
     }
 
     if (target === this.selectedTarget) {
-      this.targetSelectChange.emit(undefined);
       this.selectedTarget = undefined;
       this.selectedTargetChange.emit(undefined);
+      this.targetSelectChange.emit(undefined);
     } else {
-      this.targetSelectChange.emit(target);
       this.selectedTarget = target;
       this.selectedTargetChange.emit(target);
+      this.targetSelectChange.emit(target);
     }
   }
   haveSelected(div?: HTMLDivElement | { data: any, div: HTMLDivElement }): boolean {

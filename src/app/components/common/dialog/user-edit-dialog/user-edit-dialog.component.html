@@ -4,7 +4,7 @@
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
     <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
   </div>
-  <p-accordion [multiple]="multipleEnable" [value]="['0']">
+  <p-accordion [multiple]="multipleEnable" [value]="['0', '1', '2']">
     <p-accordion-panel *ngIf="userDataModel" value="0">
       <p-accordion-header>{{"user-edit.accordion-header.detail" | translate}}</p-accordion-header>
       <p-accordion-content>
@@ -70,7 +70,24 @@
         </div>
       </p-accordion-content>
     </p-accordion-panel>
-    <p-accordion-panel *ngIf="userDataModel.hosList.length > 0" value="1">
+    <p-accordion-panel value="1">
+      <p-accordion-header>{{"user-edit.accordion-header.child" | translate}}</p-accordion-header>
+      <p-accordion-content>
+        <app-custom-pick-list class="flex col-12" [sourceList]="childAble" [targetList]="userDataModel.children" [disable]="userDataModel.motherPK.length > 0"
+                              [filterFields]="['id', 'name']" sourceFilterPlaceHolder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}"
+                              targetFilterPlaceHolder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}">
+          <ng-template #sourceItem let-source>
+            <div>{{source.id}}</div>
+            <div>{{source.name}}</div>
+          </ng-template>
+          <ng-template #targetItem let-target>
+            <div>{{target.id}}</div>
+            <div>{{target.name}}</div>
+          </ng-template>
+        </app-custom-pick-list>
+      </p-accordion-content>
+    </p-accordion-panel>
+    <p-accordion-panel *ngIf="userDataModel.hosList.length > 0" value="2">
       <p-accordion-header>{{"user-edit.accordion-header.in-charge" | translate}}</p-accordion-header>
       <p-accordion-content>
         <div class="formgrid grid">
