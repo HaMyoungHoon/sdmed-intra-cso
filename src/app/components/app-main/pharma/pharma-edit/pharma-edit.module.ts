@@ -10,7 +10,6 @@ import {IconField} from "primeng/iconfield";
 import {ImageModule} from "primeng/image";
 import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
-import {PickListModule} from "primeng/picklist";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Select} from "primeng/select";
@@ -22,7 +21,7 @@ import {CustomPickListComponent} from "../../../common/custom-pick-list/custom-p
 @NgModule({
   declarations: [PharmaEditComponent],
   imports: [
-    CommonModule, PharmaEditRoutingModule, ButtonModule, CardModule, CheckboxModule, FormsModule, IconField, ImageModule, InputIcon, InputTextModule, PickListModule, ProgressSpinComponent, TranslatePipe, Select, DatePicker, CustomPickListComponent
+    CommonModule, PharmaEditRoutingModule, ButtonModule, CardModule, CheckboxModule, FormsModule, IconField, ImageModule, InputIcon, InputTextModule, ProgressSpinComponent, TranslatePipe, Select, DatePicker, CustomPickListComponent
   ]
 })
 export class PharmaEditModule { }

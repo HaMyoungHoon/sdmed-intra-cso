@@ -12,7 +12,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
 import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
-import {PickListModule} from "primeng/picklist";
 import {Select} from "primeng/select";
 import {CustomPickListComponent} from "../../../../common/custom-pick-list/custom-pick-list.component";
 
@@ -21,7 +20,7 @@ import {CustomPickListComponent} from "../../../../common/custom-pick-list/custo
 @NgModule({
   declarations: [UserEditComponent],
   imports: [
-    CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, PickListModule, Select, CustomPickListComponent
+    CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent
   ]
 })
 export class UserEditModule { }

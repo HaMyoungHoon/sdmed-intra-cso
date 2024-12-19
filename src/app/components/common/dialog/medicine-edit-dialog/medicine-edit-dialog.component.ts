@@ -7,7 +7,6 @@ import {CheckboxModule} from "primeng/checkbox";
 import {ImageModule} from "primeng/image";
 import {InputTextModule} from "primeng/inputtext";
 import {NgIf} from "@angular/common";
-import {PickListModule} from "primeng/picklist";
 import {ProgressSpinComponent} from "../../progress-spin/progress-spin.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -28,7 +27,7 @@ import {Select} from "primeng/select";
 
 @Component({
   selector: "app-medicine-edit-dialog",
-  imports: [ButtonModule, CardModule, CheckboxModule, ImageModule, InputTextModule, NgIf, PickListModule, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, AutoCompleteModule, Select],
+  imports: [ButtonModule, CardModule, CheckboxModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, AutoCompleteModule, Select],
   templateUrl: "./medicine-edit-dialog.component.html",
   styleUrl: "./medicine-edit-dialog.component.scss",
   standalone: true

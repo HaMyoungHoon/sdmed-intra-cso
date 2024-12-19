@@ -18,7 +18,6 @@ import {ProgressSpinComponent} from "../../progress-spin/progress-spin.component
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
-import {PickListModule} from "primeng/picklist";
 import {CheckboxModule} from "primeng/checkbox";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
@@ -30,7 +29,7 @@ import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.c
 
 @Component({
   selector: "app-pharma-edit-dialog",
-  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, PickListModule, CheckboxModule, IconField, InputIcon, Select, DatePicker, CustomPickListComponent],
+  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, CheckboxModule, IconField, InputIcon, Select, DatePicker, CustomPickListComponent],
   templateUrl: "./pharma-edit-dialog.component.html",
   styleUrl: "./pharma-edit-dialog.component.scss",
   standalone: true,

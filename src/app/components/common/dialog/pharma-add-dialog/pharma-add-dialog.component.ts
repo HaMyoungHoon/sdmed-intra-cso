@@ -6,7 +6,6 @@ import {FormsModule} from "@angular/forms";
 import {ImageModule} from "primeng/image";
 import {InputTextModule} from "primeng/inputtext";
 import {NgIf} from "@angular/common";
-import {PickListModule} from "primeng/picklist";
 import {ProgressSpinComponent} from "../../progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
@@ -24,7 +23,7 @@ import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: "app-pharma-add-dialog",
-  imports: [ButtonModule, CardModule, CheckboxModule, FormsModule, ImageModule, InputTextModule, NgIf, PickListModule, ProgressSpinComponent, TranslatePipe, Select, DatePicker],
+  imports: [ButtonModule, CardModule, CheckboxModule, FormsModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, TranslatePipe, Select, DatePicker],
   templateUrl: "./pharma-add-dialog.component.html",
   styleUrl: "./pharma-add-dialog.component.scss",
   standalone: true,

@@ -4,7 +4,6 @@ import {UserMappingComponent} from "./user-mapping.component";
 import {UserMappingRoutingModule} from "./user-mapping-routing.module";
 import {ListboxModule} from "primeng/listbox";
 import {FormsModule} from "@angular/forms";
-import {PickListModule} from "primeng/picklist";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ButtonModule} from "primeng/button";
 import {IconField} from "primeng/iconfield";
@@ -21,7 +20,7 @@ import {CustomPickListComponent} from "../../../../common/custom-pick-list/custo
 @NgModule({
   declarations: [UserMappingComponent],
 	imports: [
-		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, PickListModule, TranslatePipe, ButtonModule, IconField, InputIcon, Chip, CheckboxModule, ProgressSpinComponent, InputTextModule, CdkDropListGroup, CdkDrag, CdkDropList, CustomPickListComponent
+		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, TranslatePipe, ButtonModule, IconField, InputIcon, Chip, CheckboxModule, ProgressSpinComponent, InputTextModule, CdkDropListGroup, CdkDrag, CdkDropList, CustomPickListComponent
 	]
 })
 export class UserMappingModule { }
