@@ -19,7 +19,7 @@ export class UserInfoService {
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
-  getList(): Promise<RestResult<void>> {
+  getList(): Promise<RestResult<UserDataModel[]>> {
     return this.httpResponse.get(`${this.baseUrl}/list`);
   }
   getData(thisPK: string, childView: boolean = false, relationView: boolean = false, pharmaOwnMedicineView: boolean = false): Promise<RestResult<UserDataModel>> {

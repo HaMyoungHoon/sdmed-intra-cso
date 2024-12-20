@@ -1,15 +1,16 @@
 import {Component, ElementRef, input, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
-import {allUserRoleDescArray, flagToRoleDesc, stringArrayToUserRole, UserRole, userRoleToFlag} from "../../../../../models/rest/user/user-role";
-import {allUserDeptDescArray, flagToDeptDesc, stringArrayToUserDept, userDeptToFlag} from "../../../../../models/rest/user/user-dept";
-import {allUserStatusDescArray, StatusDescToUserStatus, statusToUserStatusDesc, UserStatus} from "../../../../../models/rest/user/user-status";
+import {allUserRoleDescArray, flagToRoleDesc, UserRole} from "../../../../../models/rest/user/user-role";
+import {allUserDeptDescArray, flagToDeptDesc} from "../../../../../models/rest/user/user-dept";
+import {allUserStatusDescArray, statusToUserStatusDesc, UserStatus} from "../../../../../models/rest/user/user-status";
 import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
-import {getFileExt, isImage, restTry, tryCatchAsync, stringToDate, dateToYearFullString} from "../../../../../guards/f-extensions";
+import {restTry, stringToDate, dateToYearFullString} from "../../../../../guards/f-extensions";
 import * as FConstants from "../../../../../guards/f-constants";
 import {ActivatedRoute} from "@angular/router";
 import {transformToBoolean} from "primeng/utils";
+import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
 
 @Component({
   selector: "app-user-edit",
@@ -62,17 +63,14 @@ export class UserEditComponent extends FComponentBase {
     this.fDialogService.warn("getChildAble", ret.msg);
   }
   async saveUserData(): Promise<void> {
-    this.userDataModel.role = userRoleToFlag(stringArrayToUserRole(this.selectedUserRoles));
-    this.userDataModel.dept = userDeptToFlag(stringArrayToUserDept(this.selectedUserDepts));
-    this.userDataModel.status = StatusDescToUserStatus[this.selectedUserStatus];
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.putUser(this.userDataModel),
+    const ret = await restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
+    this.setLoading(false);
     if (ret.result) {
-      await this.saveUserChildData();
+      this.userDataModel = ret.data ?? new UserDataModel();
       return;
     }
-    this.setLoading(false);
     this.fDialogService.warn("saveUserData", ret.msg);
   }
   async saveUserChildData(): Promise<void> {
@@ -93,52 +91,19 @@ export class UserEditComponent extends FComponentBase {
     return FConstants.ASSETS_NO_IMAGE;
   }
   taxpayerImageView(): void {
-    if (this.userDataModel.taxpayerImageUrl.length <= 0) {
-      this.taxpayerImageInput.nativeElement.click();
-      return;
-    }
-
-    this.fDialogService.openImageView({
-      closable: false,
-      closeOnEscape: true,
-      draggable: true,
-      resizable: true,
-      maximizable: true,
-      data: Array<string>(this.userDataModel.taxpayerImageUrl)
-    });
+    FUserInfoMethod.userImageView(this.userDataModel.taxpayerImageUrl, this.taxpayerImageInput, this.fDialogService);
   }
   async taxpayerImageSelected(event: any): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.setLoading();
-      const file = input.files[0];
-      const ext = await getFileExt(file);
-      if (!isImage(ext)) {
-        this.setLoading(false);
-        this.fDialogService.warn("taxpayerImageView", "only image file");
-        return;
-      }
-      const blobModel = this.thisService.getBlobModel(this.userDataModel.id, file, ext);
-      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
-        e => this.fDialogService.error("taxpayerImageView", e));
-      if (sasKey.result != true) {
-        this.fDialogService.warn("taxpayerImageView", sasKey.msg);
-        this.setLoading(false);
-        return;
-      }
-
-      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
-        e => this.fDialogService.error("taxpayerImageView", e));
-      const ret = await restTry(async() => await this.thisService.putUserTaxImageUrl(this.userDataModel.thisPK, blobModel),
-        e => this.fDialogService.error("taxpayerImageView", e));
-      this.taxpayerImageInput.nativeElement.value = "";
-      this.setLoading(false);
-      if (ret.result) {
-        this.userDataModel.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
-        return;
-      }
-      this.fDialogService.warn("taxpayerImageView", ret.msg);
+    this.setLoading();
+    const ret = await restTry(async() => await FUserInfoMethod.taxpayerImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
+      e => this.fDialogService.error("taxpayerImageSelected", e));
+    this.setLoading(false);
+    this.taxpayerImageInput.nativeElement.value = "";
+    if (ret.result) {
+      this.userDataModel.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
+      return;
     }
+    this.fDialogService.warn("taxpayerImageSelected", ret.msg);
   }
   get bankAccountImageUrl(): string {
     if (this.userDataModel.bankAccountImageUrl.length > 0) {
@@ -148,51 +113,19 @@ export class UserEditComponent extends FComponentBase {
     return FConstants.ASSETS_NO_IMAGE;
   }
   bankAccountImageView(): void {
-    if (this.userDataModel.bankAccountImageUrl.length <= 0) {
-      this.bankAccountImageInput.nativeElement.click();
-      return;
-    }
-
-    this.fDialogService.openImageView({
-      closable: false,
-      closeOnEscape: true,
-      draggable: true,
-      resizable: true,
-      maximizable: true,
-      data: Array<string>(this.userDataModel.bankAccountImageUrl)
-    });
+    FUserInfoMethod.userImageView(this.userDataModel.bankAccountImageUrl, this.bankAccountImageInput, this.fDialogService);
   }
   async bankAccountImageSelected(event: any): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.setLoading();
-      const file = input.files[0];
-      const ext = await getFileExt(file);
-      if (!isImage(ext)) {
-        this.setLoading(false);
-        this.fDialogService.warn("bankAccountImageView", "only image file");
-        return;
-      }
-      const blobModel = this.thisService.getBlobModel(this.userDataModel.id, file, ext);
-      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
-        e => this.fDialogService.error("bankAccountImageView", e));
-      if (sasKey.result != true) {
-        this.fDialogService.warn("bankAccountImageView", sasKey.msg);
-        this.setLoading(false);
-        return;
-      }
-      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
-        e => this.fDialogService.error("bankAccountImageView", e));
-      const ret = await restTry(async() => await this.thisService.putUserBankImageUrl(this.userDataModel.thisPK, blobModel),
-        e => this.fDialogService.error("bankAccountImageView", e));
-      this.bankAccountImageInput.nativeElement.value = "";
-      this.setLoading(false);
-      if (ret.result) {
-        this.userDataModel.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
-        return;
-      }
-      this.fDialogService.warn("bankAccountImageView", ret.msg);
+    this.setLoading();
+    const ret = await restTry(async() => await FUserInfoMethod.bankAccountImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
+      e => this.fDialogService.error("bankAccountImageSelected", e));
+    this.setLoading(false);
+    this.bankAccountImageInput.nativeElement.value = "";
+    if (ret.result) {
+      this.userDataModel.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
+      return;
     }
+    this.fDialogService.warn("bankAccountImageView", ret.msg);
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
