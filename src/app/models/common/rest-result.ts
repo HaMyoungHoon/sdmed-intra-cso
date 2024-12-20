@@ -4,7 +4,17 @@ export class RestResult<T> {
   msg?: string;
   data?: T;
 
+  constructor(data: T | undefined = undefined) {
+    this.data = data;
+  }
+
   get default(): RestResult<T> {
-    return this
+    return this;
+  }
+
+  setFail(msg?: string): RestResult<T> {
+    this.msg = msg;
+    this.result = false;
+    return this;
   }
 }
