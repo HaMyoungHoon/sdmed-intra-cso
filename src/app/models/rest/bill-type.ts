@@ -1,13 +1,13 @@
 export enum BillType {
-  None = 0,
-  Unpublished = 1,
-  Unit = 2,
-  Monthly = 3,
+  None = "None",
+  Unpublished = "Unpublished",
+  Unit = "Unit",
+  Monthly = "Monthly",
 }
 
 export function allBillTypeDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(BillType).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(BillType).forEach(x => {
     ret.push(StringToBillTypeDesc[x]);
   });
   return ret;
@@ -19,10 +19,7 @@ export function stringToBillType(data?: string): BillType {
 
   return StringToBillType[data];
 }
-export function billTypeToBillTypeDesc(billType?: BillType | string): string {
-  if (typeof(billType) == "string") {
-    return StringToBillTypeDesc[billType];
-  }
+export function billTypeToBillTypeDesc(billType?: BillType): string {
   return BillTypeDesc[billType ?? BillType.None];
 }
 export const BillTypeDesc: { [key in BillType]: string } = {

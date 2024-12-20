@@ -1,14 +1,14 @@
 export enum MedicineGroup {
-  Additional = 0,
-  Consumable = 1,
-  Reagents = 2,
-  Medicine = 3,
-  NonMedicine = 4,
+  Additional = "Additional",
+  Consumable = "Consumable",
+  Reagents = "Reagents",
+  Medicine = "Medicine",
+  NonMedicine = "NonMedicine",
 }
 
 export function allMedicineGroupDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineGroup).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineGroup).forEach(x => {
     ret.push(StringToMedicineGroupDesc[x]);
   });
   return ret;
@@ -20,10 +20,7 @@ export function stringToMedicineGroup(data?: string): MedicineGroup {
 
   return StringToMedicineGroup[data];
 }
-export function medicineGroupToMedicineGroupDesc(medicineGroup?: MedicineGroup | string): string {
-  if (typeof(medicineGroup) == "string") {
-    return StringToMedicineGroupDesc[medicineGroup];
-  }
+export function medicineGroupToMedicineGroupDesc(medicineGroup?: MedicineGroup): string {
   return MedicineGroupDesc[medicineGroup ?? MedicineGroup.Additional];
 }
 export const MedicineGroupDesc: { [key in MedicineGroup]: string } = {

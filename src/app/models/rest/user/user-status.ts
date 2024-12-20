@@ -1,13 +1,13 @@
 export enum UserStatus {
-  None = 0,
-  Live = 1,
-  Stop = 2,
-  Delete = 3,
-  Expired = 4,
+  None = "None",
+  Live = "Live",
+  Stop = "Stop",
+  Delete = "Delete",
+  Expired = "Expired",
 }
 export function allUserStatusDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(UserStatus).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(UserStatus).forEach(x => {
     ret.push(StringToUserStatusDesc[x]);
   });
   return ret;
@@ -19,10 +19,7 @@ export function stringToUserStatus(data?: string): UserStatus {
 
   return StringToUserStatus[data];
 }
-export function statusToUserStatusDesc(status?: UserStatus | string): string {
-  if (typeof(status) == "string") {
-    return StringToUserStatusDesc[status];
-  }
+export function statusToUserStatusDesc(status?: UserStatus): string {
   return UserStatusDesc[status ?? UserStatus.None];
 }
 export const UserStatusDesc: { [key in UserStatus]: string } = {

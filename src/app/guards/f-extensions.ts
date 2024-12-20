@@ -1,9 +1,9 @@
-import {stringToUserStatus, UserStatus} from "../models/rest/user/user-status";
+import {UserStatus} from "../models/rest/user/user-status";
 import {Table} from "primeng/table";
 import {SortEvent} from "primeng/api";
 import {RestResult} from "../models/common/rest-result";
 import * as FContentsType from "./f-contents-type";
-import {ResponseType, stringToResponseType} from "../models/rest/requst/response-type";
+import {ResponseType} from "../models/rest/requst/response-type";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -73,9 +73,6 @@ export function plusDays(targetDate: Date, days: number): Date {
 }
 
 export function getResponseTypeSeverity(data?: ResponseType): any {
-  if (typeof(data) == "string") {
-    data = stringToResponseType(data);
-  }
   switch (data) {
     case ResponseType.None: return "warning";
     case ResponseType.Recep: return "info";
@@ -86,9 +83,6 @@ export function getResponseTypeSeverity(data?: ResponseType): any {
   }
 }
 export function getUserStatusSeverity(data?: UserStatus): any {
-  if (typeof(data) == "string") {
-    data = stringToUserStatus(data);
-  }
   switch (data) {
     case UserStatus.None: return "info";
     case UserStatus.Live: return "success";

@@ -1,20 +1,20 @@
 export enum MedicineRank {
-  None = 0,
-  Option1 = 1,
-  Option2 = 2,
-  Option3 = 3,
-  Option4 = 4,
-  Option5 = 5,
-  Option6 = 6,
-  Option7 = 7,
-  Option8 = 8,
-  Option9 = 9,
-  Option10 = 10,
+  None = "None",
+  Option1 = "Option1",
+  Option2 = "Option2",
+  Option3 = "Option3",
+  Option4 = "Option4",
+  Option5 = "Option5",
+  Option6 = "Option6",
+  Option7 = "Option7",
+  Option8 = "Option8",
+  Option9 = "Option9",
+  Option10 = "Option10",
 }
 
 export function allMedicineRankDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineRank).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineRank).forEach(x => {
     ret.push(StringToMedicineRankDesc[x]);
   });
   return ret;
@@ -26,10 +26,7 @@ export function stringToMedicineRank(data?: string): MedicineRank {
 
   return StringToMedicineRank[data];
 }
-export function medicineRankToMedicineRankDesc(medicineRank?: MedicineRank | string): string {
-  if (typeof(medicineRank) == "string") {
-    return StringToMedicineRankDesc[medicineRank];
-  }
+export function medicineRankToMedicineRankDesc(medicineRank?: MedicineRank): string {
   return MedicineRankDesc[medicineRank ?? MedicineRank.None];
 }
 export const MedicineRankDesc: { [key in MedicineRank]: string } = {

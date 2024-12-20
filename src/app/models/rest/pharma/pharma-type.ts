@@ -1,14 +1,14 @@
 export enum PharmaType {
-  None = 0,
-  ETC = 1,
-  Wholesale = 2,
-  GeneralHospital = 3,
-  Pharmaceutical = 4,
+  None = "None",
+  ETC = "ETC",
+  Wholesale = "Wholesale",
+  GeneralHospital = "GeneralHospital",
+  Pharmaceutical = "Pharmaceutical",
 }
 
 export function allPharmaTypeDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(PharmaType).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(PharmaType).forEach(x => {
     ret.push(StringToPharmaTypeDesc[x]);
   });
   return ret;
@@ -20,10 +20,7 @@ export function stringToPharmaType(data?: string): PharmaType {
 
   return StringToPharmaType[data];
 }
-export function pharmaTypeToPharmaTypeDesc(pharmaType?: PharmaType | string): string {
-  if (typeof(pharmaType) == "string") {
-    return StringToPharmaTypeDesc[pharmaType];
-  }
+export function pharmaTypeToPharmaTypeDesc(pharmaType?: PharmaType): string {
   return PharmaTypeDesc[pharmaType ?? PharmaType.None];
 }
 export const PharmaTypeDesc: { [key in PharmaType]: string } = {

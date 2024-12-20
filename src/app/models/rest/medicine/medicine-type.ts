@@ -1,11 +1,11 @@
 export enum MedicineType {
-  General = 0,
-  Expert = 1,
+  General = "General",
+  Expert = "Expert",
 }
 
 export function allMedicineTypeDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineType).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineType).forEach(x => {
     ret.push(StringToMedicineTypeDesc[x]);
   });
   return ret;
@@ -17,10 +17,7 @@ export function stringToMedicineType(data?: string): MedicineType {
 
   return StringToMedicineType[data];
 }
-export function medicineTypeToMedicineTypeDesc(medicineType?: MedicineType | string): string {
-  if (typeof(medicineType) == "string") {
-    return StringToMedicineTypeDesc[medicineType];
-  }
+export function medicineTypeToMedicineTypeDesc(medicineType?: MedicineType): string {
   return MedicineTypeDesc[medicineType ?? MedicineType.General];
 }
 export const MedicineTypeDesc: { [key in MedicineType]: string } = {

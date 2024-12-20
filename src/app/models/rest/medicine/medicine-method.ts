@@ -1,14 +1,14 @@
 export enum MedicineMethod {
-  ETC = 0,
-  Oral = 1,
-  External = 2,
-  Inject = 3,
-  Dental = 4,
+  ETC = "ETC",
+  Oral = "Oral",
+  External = "External",
+  Inject = "Inject",
+  Dental = "Dental",
 }
 
 export function allMedicineMethodDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineMethod).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineMethod).forEach(x => {
     ret.push(StringToMedicineMethodDesc[x]);
   });
   return ret;
@@ -20,10 +20,7 @@ export function stringToMedicineMethod(data?: string): MedicineMethod {
 
   return StringToMedicineMethod[data];
 }
-export function medicineMethodToMedicineMethodDesc(medicineMethod?: MedicineMethod | string): string {
-  if (typeof(medicineMethod) == "string") {
-    return StringToMedicineMethodDesc[medicineMethod];
-  }
+export function medicineMethodToMedicineMethodDesc(medicineMethod?: MedicineMethod): string {
   return MedicineMethodDesc[medicineMethod ?? MedicineMethod.ETC];
 }
 export const MedicineMethodDesc: { [key in MedicineMethod]: string } = {

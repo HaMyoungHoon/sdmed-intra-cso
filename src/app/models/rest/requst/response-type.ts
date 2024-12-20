@@ -1,15 +1,15 @@
 export enum ResponseType {
-  None = 0,
-  Recep = 1,
-  OK = 2,
-  Pending = 3,
-  Ignore = 4,
-  Reject = 5
+  None = "None",
+  Recep = "Recep",
+  OK = "OK",
+  Pending = "Pending",
+  Ignore = "Ignore",
+  Reject = "Reject",
 }
 
 export function allResponseTypeDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(ResponseType).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(ResponseType).forEach(x => {
     ret.push(StringToResponseTypeDesc[x]);
   })
   return ret;
@@ -21,10 +21,7 @@ export function stringToResponseType(data?: string): ResponseType {
 
   return StringToResponseType[data];
 }
-export function responseTypeToResponseTypeDesc(responseType?: ResponseType | string): string {
-  if (typeof(responseType) == "string") {
-    return StringToResponseTypeDesc[responseType];
-  }
+export function responseTypeToResponseTypeDesc(responseType?: ResponseType): string {
   return ResponseTypeDesc[responseType ?? ResponseType.None];
 }
 export const ResponseTypeDesc: { [key in ResponseType]: string } = {
@@ -34,6 +31,14 @@ export const ResponseTypeDesc: { [key in ResponseType]: string } = {
   [ResponseType.Pending]: "팬딩",
   [ResponseType.Ignore]: "무시",
   [ResponseType.Reject]: "거부",
+}
+export const ResponseTypeToString: { [key in ResponseType]: string } = {
+  [ResponseType.None]: "None",
+  [ResponseType.Recep]: "Recep",
+  [ResponseType.OK]: "OK",
+  [ResponseType.Pending]: "Pending",
+  [ResponseType.Ignore]: "Ignore",
+  [ResponseType.Reject]: "Reject",
 }
 export const ResponseTypeToPropertyBackgroundName: { [key in ResponseType]: string } = {
   [ResponseType.None]: "--p-yellow-500",

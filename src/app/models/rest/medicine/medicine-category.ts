@@ -1,12 +1,12 @@
 export enum MedicineCategory {
-  ETC = 0,
-  HighRisk = 1,
-  Psychotropic = 2
+  ETC = "ETC",
+  HighRisk = "HighRisk",
+  Psychotropic = "Psychotropic"
 }
 
 export function allMedicineCategoryDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineCategory).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineCategory).forEach(x => {
     ret.push(StringToMedicineCategoryDesc[x]);
   });
   return ret;
@@ -18,10 +18,7 @@ export function stringToMedicineCategory(data?: string): MedicineCategory {
 
   return StringToMedicineCategory[data];
 }
-export function medicineCategoryToMedicineCategoryDesc(medicineCategory?: MedicineCategory | string): string {
-  if (typeof(medicineCategory) == "string") {
-    return StringToMedicineCategoryDesc[medicineCategory];
-  }
+export function medicineCategoryToMedicineCategoryDesc(medicineCategory?: MedicineCategory): string {
   return MedicineCategoryDesc[medicineCategory ?? MedicineCategory.ETC];
 }
 export const MedicineCategoryDesc: { [key in MedicineCategory]: string } = {

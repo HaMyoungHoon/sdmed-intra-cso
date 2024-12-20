@@ -1,11 +1,11 @@
 export enum MedicineStorageBox {
-  Confidential = 0,
-  Sealed = 1,
+  Confidential = "Confidential",
+  Sealed = "Sealed",
 }
 
 export function allMedicineStorageBoxDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineStorageBox).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineStorageBox).forEach(x => {
     ret.push(StringToMedicineStorageBoxDesc[x]);
   });
   return ret;
@@ -17,10 +17,7 @@ export function stringToMedicineStorageBox(data?: string): MedicineStorageBox {
 
   return StringToMedicineStorageBox[data];
 }
-export function medicineStorageBoxToMedicineStorageBoxDesc(medicineStorageBox?: MedicineStorageBox | string): string {
-  if (typeof(medicineStorageBox) == "string") {
-    return StringToMedicineStorageBoxDesc[medicineStorageBox];
-  }
+export function medicineStorageBoxToMedicineStorageBoxDesc(medicineStorageBox?: MedicineStorageBox): string {
   return MedicineStorageBoxDesc[medicineStorageBox ?? MedicineStorageBox.Confidential];
 }
 export const MedicineStorageBoxDesc: { [key in MedicineStorageBox]: string } = {

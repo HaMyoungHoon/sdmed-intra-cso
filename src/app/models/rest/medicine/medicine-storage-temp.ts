@@ -1,11 +1,11 @@
 export enum MedicineStorageTemp {
-  RoomTemp = 0,
-  Cold = 1,
+  RoomTemp = "RoomTemp",
+  Cold = "Cold",
 }
 
 export function allMedicineStorageTempDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineStorageTemp).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineStorageTemp).forEach(x => {
     ret.push(StringToMedicineStorageTempDesc[x]);
   });
   return ret;
@@ -17,10 +17,7 @@ export function stringToMedicineStorageTemp(data?: string): MedicineStorageTemp 
 
   return StringToMedicineStorageTemp[data];
 }
-export function medicineStorageTempToMedicineStorageTempDesc(medicineStorageTemp?: MedicineStorageTemp | string): string {
-  if (typeof(medicineStorageTemp) == "string") {
-    return StringToMedicineStorageTempDesc[medicineStorageTemp];
-  }
+export function medicineStorageTempToMedicineStorageTempDesc(medicineStorageTemp?: MedicineStorageTemp): string {
   return MedicineStorageTempDesc[medicineStorageTemp ?? MedicineStorageTemp.RoomTemp];
 }
 export const MedicineStorageTempDesc: { [key in MedicineStorageTemp]: string } = {

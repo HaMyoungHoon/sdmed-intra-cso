@@ -1,14 +1,14 @@
 export enum DeliveryDiv {
-  None = 0,
-  Direct1 = 1,
-  Direct2 = 2,
-  Direct3 = 3,
-  Parcel = 4
+  None = "None",
+  Direct1 = "Direct1",
+  Direct2 = "Direct2",
+  Direct3 = "Direct3",
+  Parcel = "Parcel"
 }
 
 export function allDeliveryDivDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(DeliveryDiv).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(DeliveryDiv).forEach(x => {
     ret.push(StringToDeliveryDivDesc[x]);
   });
   return ret;
@@ -20,10 +20,7 @@ export function stringToDeliveryDiv(data?: string): DeliveryDiv {
 
   return StringToDeliveryDiv[data];
 }
-export function deliveryDivToDeliveryDivDesc(deliveryDiv?: DeliveryDiv | string): string {
-  if (typeof(deliveryDiv) == "string") {
-    return StringToDeliveryDivDesc[deliveryDiv];
-  }
+export function deliveryDivToDeliveryDivDesc(deliveryDiv?: DeliveryDiv): string {
   return DeliveryDivDesc[deliveryDiv ?? DeliveryDiv.None];
 }
 export const DeliveryDivDesc: { [key in DeliveryDiv]: string } = {

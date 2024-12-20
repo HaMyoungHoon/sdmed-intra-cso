@@ -1,11 +1,11 @@
 export enum MedicineDiv {
-  Open = 0,
-  Close = 1,
+  Open = "Open",
+  Close = "Close",
 }
 
 export function allMedicineDivDescArray(): string[] {
   const ret: string[] = [];
-  Object.keys(MedicineDiv).filter(x => isNaN(Number(x))).forEach(x => {
+  Object.keys(MedicineDiv).forEach(x => {
     ret.push(StringToMedicineDivDesc[x]);
   });
   return ret;
@@ -17,10 +17,7 @@ export function stringToMedicineDiv(data?: string): MedicineDiv {
 
   return StringToMedicineDiv[data];
 }
-export function medicineDivToMedicineDivDesc(medicineDiv?: MedicineDiv | string): string {
-  if (typeof(medicineDiv) == "string") {
-    return StringToMedicineDivDesc[medicineDiv];
-  }
+export function medicineDivToMedicineDivDesc(medicineDiv?: MedicineDiv): string {
   return MedicineDivDesc[medicineDiv ?? MedicineDiv.Open];
 }
 export const MedicineDivDesc: { [key in MedicineDiv]: string } = {
