@@ -49,4 +49,37 @@
       </tr>
     </ng-template>
   </p-table>
+  <p-drawer [visible]="requestDrawerVisible" (onHide)="requestDrawerOnHide(openedRequest)" (onShow)="requestDrawerOnShow($event)" *ngIf="openedRequest" position="bottom">
+    <div class="request-item-container">
+      <p-card class="request-item-header-container">
+        <table>
+          <tr>
+            <th>{{"dash-board.request.request-date" | translate}}</th>
+            <th>{{"dash-board.request.request-type" | translate}}</th>
+            <th>{{"dash-board.request.response-date" | translate}}</th>
+            <th>{{"dash-board.request.response-type" | translate}}</th>
+            <th>{{"dash-board.request.request-user-id" | translate}}</th>
+            <th>{{"dash-board.request.response-type" | translate}}</th>
+          </tr>
+          <tr>
+            <td><label>{{dateToMonthYYYYMMdd(openedRequest.requestDate)}}</label></td>
+            <td><label>{{requestTypeToRequestTypeDesc(openedRequest.requestType)}}</label></td>
+            <td><label>{{dateToMonthYYYYMMdd(openedRequest.requestDate)}}</label></td>
+            <td><label>{{responseTypeToResponseTypeDesc(openedRequest.responseType)}}</label></td>
+            <td><label>{{openedRequest.requestUserID}}</label></td>
+            <td>
+              <div>
+                <p-select class="" [options]="responseTypeList" [(ngModel)]="selectedResponseType" (ngModelChange)="openedRequestItemResponseTypeChange()" />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </p-card>
+      <p-card class="request-sub-container" [ngSwitch]="openedRequest.requestType">
+        <app-request-sub-sign-up *ngSwitchCase="RequestType.SignUp" [requestModel]="openedRequest" (closeEvent)="methodComponentCloseEvent($event)" />
+        <app-request-sub-edi-upload *ngSwitchCase="RequestType.EDIUpload" [requestModel]="openedRequest" (closeEvent)="methodComponentCloseEvent($event)" />
+        <app-request-sub-qna *ngSwitchCase="RequestType.QnA" [requestModel]="openedRequest" (closeEvent)="methodComponentCloseEvent($event)" />
+      </p-card>
+    </div>
+  </p-drawer>
 </div>

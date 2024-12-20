@@ -1,0 +1,13 @@
+.request-item-header-container {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.request-item-header-container table {
+  border-collapse: collapse;
+}
+.request-item-header-container table th, td {
+  border: 1px dashed var(--p-primary-400);
+}

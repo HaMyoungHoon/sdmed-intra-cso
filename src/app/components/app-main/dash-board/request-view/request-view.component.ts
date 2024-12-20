@@ -1,7 +1,17 @@
 import {Component, ViewChild} from "@angular/core";
 import {calcDateDiffDay, customSort, dateToMonthYYYYMMdd, filterTable, getResponseTypeSeverity, plusDays, restTry} from "../../../../guards/f-extensions";
-import {responseTypeToResponseTypeDesc} from "../../../../models/rest/requst/response-type";
-import {RequestType, requestTypeToRequestTypeDesc} from "../../../../models/rest/requst/request-type";
+import {
+  allResponseTypeDescArray,
+  ResponseType,
+  ResponseTypeDescToResponseType,
+  responseTypeToResponseTypeDesc,
+  stringToResponseType
+} from "../../../../models/rest/requst/response-type";
+import {
+  RequestType,
+  requestTypeToRequestTypeDesc,
+  stringToRequestType
+} from "../../../../models/rest/requst/request-type";
 import {Calendar} from "primeng/calendar";
 import {RequestModel} from "../../../../models/rest/requst/request-model";
 import {SelectButtonModel} from "../../../../models/common/select-button-model";
@@ -20,9 +30,13 @@ import {FComponentBase} from "../../../../guards/f-component-base";
 export class RequestViewComponent extends FComponentBase {
   @ViewChild("startCalendar") startCalendar !: Calendar;
   @ViewChild("endCalendar") endCalendar !: Calendar;
+  requestDrawerVisible: boolean = false;
+  responseTypeList: string[] = allResponseTypeDescArray();
+  selectedResponseType: string = responseTypeToResponseTypeDesc();
   isSorted: boolean | null = null;
   initValue: RequestModel[] = [];
   viewList: RequestModel[] = [];
+  openedRequest?: RequestModel;
   startDate: Date = plusDays(new Date(), -7);
   endDate: Date = new Date();
   viewTypeList: SelectButtonModel[] = [];
@@ -121,6 +135,31 @@ export class RequestViewComponent extends FComponentBase {
     }
     this.fDialogService.warn("getListBetween")
   }
+  async putRequestRecep(data: RequestModel): Promise<RequestModel | undefined> {
+    if (data.responseType != ResponseType.None) {
+      return data;
+    }
+
+    const ret = await restTry(async() => await this.thisService.putRequestRecep(data),
+      e => this.fDialogService.error("putRequestRecep", e));
+    if (ret.result) {
+      return ret.data ?? data;
+    }
+    this.fDialogService.warn("putRequestRecep", ret.msg);
+    return undefined;
+  }
+  async putRequestModelResponseData(data?: RequestModel): Promise<RequestModel | undefined> {
+    if (data == null) {
+      return data;
+    }
+    const ret = await restTry(async() => await this.thisService.putRequestModelResponseData(data),
+      e => this.fDialogService.error("putRequestModelResponseData", e));
+    if (ret.result) {
+      return ret.data ?? data;
+    }
+    this.fDialogService.warn("putRequestModelResponseData", ret.msg);
+    return undefined;
+  }
   async refreshData(): Promise<void> {
     switch (this.selectedViewType.index) {
       case 0: await this.getListMyChild();  break;
@@ -133,14 +172,61 @@ export class RequestViewComponent extends FComponentBase {
     switch (data.requestType) {
       case RequestType.SignUp: await this.signUpMethod(data); break;
       case RequestType.EDIUpload: await this.ediUploadMethod(data); break;
+      case RequestType.QnA: await this.qnAMethod(data); break;
     }
   }
 
+  async requestDrawerReady(data: RequestModel): Promise<boolean> {
+    const buff = await this.putRequestRecep(data);
+    if (buff == undefined) {
+      return false;
+    }
+    this.openedRequest = buff;
+    this.selectedResponseType = responseTypeToResponseTypeDesc(this.openedRequest?.responseType);
+    this.requestDrawerVisible = true;
+    return true;
+  }
   async signUpMethod(data: RequestModel): Promise<void> {
-
+    const ready = await this.requestDrawerReady(data);
   }
   async ediUploadMethod(data: RequestModel): Promise<void> {
+    const ready = await this.requestDrawerReady(data);
+  }
+  async qnAMethod(data: RequestModel): Promise<void> {
+    const ready = await this.requestDrawerReady(data);
+  }
+  async openedRequestItemResponseTypeChange(): Promise<void> {
+    const responseType = ResponseTypeDescToResponseType[this.selectedResponseType];
+    if (this.openedRequest == null) {
+      return;
+    }
+    if (this.openedRequest.responseType == responseType) {
+      return;
+    }
+    this.openedRequest.responseType = responseType;
+    const buff = await this.putRequestModelResponseData(this.openedRequest);
+    if (buff == undefined) {
+      return;
+    }
+    this.openedRequest = buff;
+  }
+  async methodComponentCloseEvent(data: RequestModel): Promise<void> {
+    const initIndex = this.initValue.findIndex(x => x.thisPK == data.thisPK) ?? -1
+    if (initIndex >= 0) {
+      new RequestModel().copyLhsFromRhs(this.initValue[initIndex], data);
+    }
+    const viewIndex = this.viewList.findIndex(x => x.thisPK == data.thisPK) ?? -1;
+    if (viewIndex >= 0) {
+      new RequestModel().copyLhsFromRhs(this.viewList[viewIndex], data);
+    }
+    this.openedRequest = undefined;
+    this.requestDrawerVisible = false;
+  }
 
+  async requestDrawerOnHide(data: RequestModel): Promise<void> {
+    await this.methodComponentCloseEvent(data);
+  }
+  async requestDrawerOnShow(data: any): Promise<void> {
   }
 
   protected readonly customSort = customSort;
@@ -149,4 +235,5 @@ export class RequestViewComponent extends FComponentBase {
   protected readonly responseTypeToResponseTypeDesc = responseTypeToResponseTypeDesc;
   protected readonly requestTypeToRequestTypeDesc = requestTypeToRequestTypeDesc;
   protected readonly getResponseTypeSeverity = getResponseTypeSeverity;
+  protected readonly RequestType = RequestType;
 }

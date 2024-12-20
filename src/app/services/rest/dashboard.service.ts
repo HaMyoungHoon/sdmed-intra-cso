@@ -5,6 +5,7 @@ import {RequestModel} from "../../models/rest/requst/request-model";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {ResponseCountModel} from "../../models/rest/requst/response-count-model";
 import {RequestUserCountModel} from "../../models/rest/requst/request-user-count-model";
+import {ResponseTypeToString} from "../../models/rest/requst/response-type";
 
 @Injectable({
   providedIn: "root"
@@ -38,5 +39,12 @@ export class DashboardService {
     this.httpResponse.addParam("startDate", startDate);
     this.httpResponse.addParam("endDate", endDate);
     return this.httpResponse.get(`${this.baseUrl}/list/requestUser/date`);
+  }
+  putRequestRecep(data: RequestModel): Promise<RestResult<RequestModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data/${data.thisPK}/recep`);
+  }
+  putRequestModelResponseData(data: RequestModel): Promise<RestResult<RequestModel>> {
+    this.httpResponse.addParam("responseType", data.responseType);
+    return this.httpResponse.put(`${this.baseUrl}/data/${data.thisPK}`);
   }
 }
