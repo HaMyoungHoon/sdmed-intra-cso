@@ -10,6 +10,10 @@ export const API_CSO = "/apiCSO";
 
 export const DASH_BOARD_URL = "dashBoard";
 
+export const EDI_LIST = "ediList";
+export const EDI_DUE_DATE = "ediDueDate";
+export const EDI_APPLY_DATE = "ediApplyDate";
+
 export const HOSPITAL_LIST_URL = "hospital-list";
 export const HOSPITAL_NEW_URL = "hospital-list/new";
 export const HOSPITAL_EDIT_URL = "hospital-list/:thisPK";
