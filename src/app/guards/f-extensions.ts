@@ -146,9 +146,10 @@ export async function restTry<T>(fn: () => Promise<RestResult<T>>, onError?: (e:
   }
 }
 
-export function applyClass<T>(obj: T, fn: (obj: T) => void): T {
-  fn(obj);
-  return obj;
+export function applyClass<T>(classObj: { new (): T }, fn: (obj: T) => void): T {
+  const ret = new classObj();
+  fn(ret);
+  return ret;
 }
 export function filterTable(table: Table, data: any, options: string): void {
   table.filterGlobal(data.target.value, options);

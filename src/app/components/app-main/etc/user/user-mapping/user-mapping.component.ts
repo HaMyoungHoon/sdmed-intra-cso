@@ -103,7 +103,7 @@ export class UserMappingComponent extends FComponentBase {
       x.pharmaList.forEach(y => {
         let pushedPharma = false;
         y.relationMedicineList.forEach(z => {
-          ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+          ret.push(FExtensions.applyClass(HosPharmaMedicinePairModel, (obj) => {
             obj.hosPK = x.thisPK;
             obj.pharmaPK = y.thisPK;
             obj.medicinePK = z.thisPK;
@@ -112,7 +112,7 @@ export class UserMappingComponent extends FComponentBase {
           pushedHos = true;
         });
         if (!pushedPharma) {
-          ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+          ret.push(FExtensions.applyClass(HosPharmaMedicinePairModel, (obj) => {
             obj.hosPK = x.thisPK;
             obj.pharmaPK = y.thisPK;
           }));
@@ -120,7 +120,7 @@ export class UserMappingComponent extends FComponentBase {
         }
       });
       if (!pushedHos) {
-        ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+        ret.push(FExtensions.applyClass(HosPharmaMedicinePairModel, (obj) => {
           obj.hosPK = x.thisPK;
         }));
       }
