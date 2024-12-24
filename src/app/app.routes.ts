@@ -7,6 +7,10 @@ export const routes: Routes = [
     children: [
       { path: FConstants.DASH_BOARD_URL, loadChildren: () => import("./components/app-main/dash-board/dash-board.module").then(m => m.DashBoardModule) },
 
+      { path: FConstants.EDI_LIST, loadChildren: () => import("./components/app-main/edi/edi-list/edi-list.module").then(m => m.EdiListModule) },
+      { path: FConstants.EDI_DUE_DATE, loadChildren: () => import("./components/app-main/edi/edi-due-date/edi-due-date.module").then(m => m.EdiDueDateModule) },
+      { path: FConstants.EDI_APPLY_DATE, loadChildren: () => import("./components/app-main/edi/edi-apply-date/edi-apply-date.module").then(m => m.EdiApplyDateModule) },
+
       { path: FConstants.MEDICINE_PRICE_LIST_URL, loadChildren: () => import("./components/app-main/medicine/medicine-price-list/medicine-price-list.module").then(m => m.MedicinePriceListModule) },
 
       { path: FConstants.HOSPITAL_LIST_URL, loadChildren: () => import("./components/app-main/hospital/hospital-list/hospital-list.module").then(m => m.HospitalListModule) },
