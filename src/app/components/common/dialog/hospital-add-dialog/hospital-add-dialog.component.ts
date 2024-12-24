@@ -13,7 +13,7 @@ import {HospitalModel} from "../../../../models/rest/hospital/hospital-model";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import {Select} from "primeng/select";
 import {DatePicker} from "primeng/datepicker";
@@ -63,7 +63,7 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
     this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
     this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.postData(this.hospitalModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

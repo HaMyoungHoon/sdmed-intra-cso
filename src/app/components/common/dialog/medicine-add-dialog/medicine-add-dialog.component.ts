@@ -18,7 +18,7 @@ import {allMedicineDivDescArray, MedicineDiv, MedicineDivDescToMedicineDiv, medi
 import {allMedicineRankDescArray, MedicineRank, MedicineRankDescToMedicineRank, medicineRankToMedicineRankDesc} from "../../../../models/rest/medicine/medicine-rank";
 import {allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp, medicineStorageTempToMedicineStorageTempDesc} from "../../../../models/rest/medicine/medicine-storage-temp";
 import {allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox, medicineStorageBoxToMedicineStorageBoxDesc} from "../../../../models/rest/medicine/medicine-storage-box";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
 import {MedicineIngredientModel} from "../../../../models/rest/medicine/medicine-ingredient-model";
 import {FormsModule} from "@angular/forms";
@@ -63,7 +63,7 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
   }
   async getMainIngredientList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getMainIngredientList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getMainIngredientList(),
       e => this.fDialogService.error("getMainIngredientList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -97,7 +97,7 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
     this.medicineModel.medicineSubModel.medicineStorageBox = MedicineStorageBoxDescToMedicineStorageBox[this.selectMedicineStorageBox];
     this.medicineModel.mainIngredientCode = this.selectedMainIngredient.mainIngredientCode;
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.postData(this.medicineModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.medicineModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

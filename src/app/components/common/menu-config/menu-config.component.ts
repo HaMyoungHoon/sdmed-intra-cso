@@ -9,10 +9,10 @@ import {MenuItem} from "primeng/api";
 import {AppConfigService} from "../../../services/common/app-config.service";
 import {MainMenuItem} from "../../../models/common/main-menu-item";
 import {LangType} from "../../../models/common/lang-type";
-import {getLocalStorage, getTokenExpiredDate, setLocalStorage} from "../../../guards/f-amhohwa";
+import * as FAmhohwa from "../../../guards/f-amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import {FDialogService} from "../../../services/common/f-dialog.service";
-import {dateToMonthFullString, restTry} from "../../../guards/f-extensions";
+import * as FExtensions from "../../../guards/f-extensions";
 import {MenuModule} from "primeng/menu";
 import {RippleModule} from "primeng/ripple";
 import {BadgeModule} from "primeng/badge";
@@ -54,10 +54,10 @@ export class MenuConfigComponent {
     }
   }
   async tokenRefresh(): Promise<void> {
-    const ret = await restTry(async() => await this.commonService.tokenRefresh(),
+    const ret = await FExtensions.restTry(async() => await this.commonService.tokenRefresh(),
       e => this.fDialogService.error("refresh", e));
     if (ret.result) {
-      setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
+      FAmhohwa.setLocalStorage(FConstants.AUTH_TOKEN, ret.data ?? "");
       return;
     }
   }
@@ -65,19 +65,19 @@ export class MenuConfigComponent {
     return this.configService.isMenuActive();
   }
   get expiredDate(): string {
-    return dateToMonthFullString(getTokenExpiredDate(getLocalStorage(FConstants.AUTH_TOKEN)));
+    return FExtensions.dateToMonthFullString(FAmhohwa.getTokenExpiredDate(FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN)));
   }
   get expiredButtonVisible(): boolean {
     if (!this.menuButtonVisible) {
       return false;
     }
 
-    let authToken = getLocalStorage(FConstants.AUTH_TOKEN);
+    let authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
     if (authToken.length <= 0) {
       return false;
     }
 
-    let tokenDate = getTokenExpiredDate(authToken);
+    let tokenDate = FAmhohwa.getTokenExpiredDate(authToken);
     let now = new Date();
     tokenDate.setDate(tokenDate.getDate() - 2);
 

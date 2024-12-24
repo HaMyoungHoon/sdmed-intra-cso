@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, inject} from "@angular/core";
-import {getLocalStorage, isExpired, removeLocalStorage, setLocalStorage} from "./f-amhohwa";
+import * as FAmhohwa from "./f-amhohwa";
 import * as FConstants from "./f-constants";
-import {restTry} from "./f-extensions";
+import * as FExtensions from "./f-extensions";
 import {haveRole, UserRole} from "../models/rest/user/user-role";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -39,8 +39,8 @@ export abstract class FComponentBase implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     this.isMobile = !navigator.userAgent.includes("Window");
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (isExpired(authToken)) {
+    const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
+    if (FAmhohwa.isExpired(authToken)) {
       return;
     }
     await this.getMyState();
@@ -49,7 +49,7 @@ export abstract class FComponentBase implements AfterViewInit {
   }
   async getMyRole(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.commonService.getMyRole(),
+    const ret = await FExtensions.restTry(async() => await this.commonService.getMyRole(),
       e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {
@@ -63,13 +63,13 @@ export abstract class FComponentBase implements AfterViewInit {
   }
   async getMyState(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => this.commonService.getMyState(),
+    const ret = await FExtensions.restTry(async() => this.commonService.getMyState(),
       e => this.fDialogService.error("getMyState", e));
     this.setLoading(false);
     if (ret.result) {
       this.myState = ret.data ?? UserStatus.None;
       if (this.myState != UserStatus.Live) {
-        removeLocalStorage(FConstants.AUTH_TOKEN);
+        FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
         this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
       }
       return;

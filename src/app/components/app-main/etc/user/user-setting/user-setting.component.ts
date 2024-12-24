@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
 import {statusToUserStatusDesc} from "../../../../../models/rest/user/user-status";
-import {customSort, filterTable, getUserStatusSeverity, restTry} from "../../../../../guards/f-extensions";
+import * as FExtensions from "../../../../../guards/f-extensions";
 import {flagToRoleDesc, UserRole} from "../../../../../models/rest/user/user-role";
 import {Table} from "primeng/table";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
@@ -32,7 +32,7 @@ export class UserSettingComponent extends FComponentBase {
   }
   async getUserDataModel(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getUserAll", e));
     this.setLoading(false);
     if (ret.result) {
@@ -54,7 +54,7 @@ export class UserSettingComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postExcel(file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.inputUploadExcel.nativeElement.value = "";
       this.setLoading(false);
@@ -105,8 +105,8 @@ export class UserSettingComponent extends FComponentBase {
   }
 
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
-  protected readonly getSeverity = getUserStatusSeverity;
+  protected readonly getSeverity = FExtensions.getUserStatusSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
-  protected readonly customSort = customSort
-  protected readonly filterTable = filterTable
+  protected readonly customSort = FExtensions.customSort
+  protected readonly filterTable = FExtensions.filterTable
 }

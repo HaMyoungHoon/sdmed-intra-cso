@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {UserRole} from "../../../../models/rest/user/user-role";
-import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {Table} from "primeng/table";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {saveAs} from "file-saver";
@@ -32,7 +32,7 @@ export class PharmaListComponent extends FComponentBase {
   }
   async getPharmaAll(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getPharmaAll", e));
     this.setLoading(false);
     if (ret.result) {
@@ -83,7 +83,7 @@ export class PharmaListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postExcel(file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";
@@ -110,7 +110,7 @@ export class PharmaListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postPharmaMedicineExcel(file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postPharmaMedicineExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       this.inputPharmaMedicineUploadExcel.nativeElement.value = "";
@@ -151,7 +151,7 @@ export class PharmaListComponent extends FComponentBase {
     });
   }
 
-  protected readonly customSort = customSort;
-  protected readonly filterTable = filterTable;
-  protected readonly ellipsis = ellipsis;
+  protected readonly customSort = FExtensions.customSort;
+  protected readonly filterTable = FExtensions.filterTable;
+  protected readonly ellipsis = FExtensions.ellipsis;
 }

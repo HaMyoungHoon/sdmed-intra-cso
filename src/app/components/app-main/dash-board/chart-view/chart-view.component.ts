@@ -2,7 +2,7 @@ import {Component, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {DashboardService} from "../../../../services/rest/dashboard.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
-import {calcDateDiffDay, dateToMonthYYYYMMdd, plusDays, restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {ChartData, ChartDataset} from "chart.js";
 import {responseTypeToResponseTypeDesc, stringToPropertyBackgroundName, stringToPropertyHoverBackgroundName} from "../../../../models/rest/requst/response-type";
 import {DatePicker} from "primeng/datepicker";
@@ -30,7 +30,7 @@ export class ChartViewComponent extends FComponentBase {
     xLabels: string[] = [];
     yLabels: string[] = [];
   };
-  startDate: Date = plusDays(new Date(), -31);
+  startDate: Date = FExtensions.plusDays(new Date(), -31);
   endDate: Date = new Date();
   constructor(private thisService: DashboardService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
@@ -94,9 +94,9 @@ export class ChartViewComponent extends FComponentBase {
   async getChartData1(): Promise<void> {
     this.setLoading();
     const documentStyle = getComputedStyle(document.documentElement);
-    const startDate = dateToMonthYYYYMMdd(this.startDate);
-    const endDate = dateToMonthYYYYMMdd(this.endDate);
-    const ret = await restTry(async() => await this.thisService.getCountOfResponseType(startDate, endDate),
+    const startDate = FExtensions.dateToMonthYYYYMMdd(this.startDate);
+    const endDate = FExtensions.dateToMonthYYYYMMdd(this.endDate);
+    const ret = await FExtensions.restTry(async() => await this.thisService.getCountOfResponseType(startDate, endDate),
       e => this.fDialogService.error("getChartData1", e));
     this.setLoading(false);
     if (ret.result) {
@@ -117,9 +117,9 @@ export class ChartViewComponent extends FComponentBase {
   }
   async getChartData2(): Promise<void> {
     this.setLoading();
-    const startDate = dateToMonthYYYYMMdd(this.startDate);
-    const endDate = dateToMonthYYYYMMdd(this.endDate);
-    const ret = await restTry(async() => await this.thisService.getTop10RequestUser(startDate, endDate),
+    const startDate = FExtensions.dateToMonthYYYYMMdd(this.startDate);
+    const endDate = FExtensions.dateToMonthYYYYMMdd(this.endDate);
+    const ret = await FExtensions.restTry(async() => await this.thisService.getTop10RequestUser(startDate, endDate),
       e => this.fDialogService.error("getChartData2", e));
     this.setLoading(false);
     if (ret.result) {
@@ -155,7 +155,7 @@ export class ChartViewComponent extends FComponentBase {
       this.endDate = new Date(buff);
     }
 
-    const diffDay = calcDateDiffDay(this.startDate, this.endDate);
+    const diffDay = FExtensions.calcDateDiffDay(this.startDate, this.endDate);
     if (diffDay > 366) {
       this.endDate.setTime(this.startDate.getTime() + 365 * 1000 * 24 * 60 * 60);
       this.endDatePicker.updateInputfield();
@@ -168,7 +168,7 @@ export class ChartViewComponent extends FComponentBase {
       this.endDate = new Date(buff);
     }
 
-    const diffDay = calcDateDiffDay(this.startDate, this.endDate);
+    const diffDay = FExtensions.calcDateDiffDay(this.startDate, this.endDate);
     if (diffDay > 366) {
       this.startDate.setTime(this.endDate.getTime() - 365 * 1000 * 24 * 60 * 60);
       this.startDatePicker.updateInputfield();

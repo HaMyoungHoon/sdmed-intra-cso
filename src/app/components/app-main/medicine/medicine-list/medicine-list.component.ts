@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {customSort, ellipsis, filterTable, restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {Table} from "primeng/table";
 import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
 import {UserRole} from "../../../../models/rest/user/user-role";
@@ -32,7 +32,7 @@ export class MedicineListComponent extends FComponentBase {
 
   async getMedicineAll(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("getMedicineAll", e));
     this.setLoading(false);
     if (ret.result) {
@@ -84,7 +84,7 @@ export class MedicineListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.setLoading();
-      const ret = await restTry(async() => await this.thisService.postExcel(file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
         e => this.fDialogService.error("excelSelected", e));
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";
@@ -125,7 +125,7 @@ export class MedicineListComponent extends FComponentBase {
     });
   }
 
-  protected readonly customSort = customSort;
-  protected readonly filterTable = filterTable;
-  protected readonly ellipsis = ellipsis;
+  protected readonly customSort = FExtensions.customSort;
+  protected readonly filterTable = FExtensions.filterTable;
+  protected readonly ellipsis = FExtensions.ellipsis;
 }

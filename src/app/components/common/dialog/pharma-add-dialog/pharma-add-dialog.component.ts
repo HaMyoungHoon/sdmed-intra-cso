@@ -17,7 +17,7 @@ import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, co
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {FDialogComponentBase} from "../../../../guards/f-dialog-component-base";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {Select} from "primeng/select";
 import {DatePicker} from "primeng/datepicker";
 
@@ -74,7 +74,7 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
     this.pharmaModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
 
-    const ret = await restTry(async() => await this.thisService.postData(this.pharmaModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.pharmaModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

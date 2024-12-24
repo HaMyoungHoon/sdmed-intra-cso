@@ -7,7 +7,7 @@ import {ButtonModule} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {CardModule} from "primeng/card";
 import {NgIf} from "@angular/common";
-import {getFileExt, isImage, restTry, tryCatchAsync} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {InputTextModule} from "primeng/inputtext";
 import {FormsModule} from "@angular/forms";
 import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
@@ -49,7 +49,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
 
   async getHospitalData(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(this.hospitalModel.thisPK),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.hospitalModel.thisPK),
       e => this.fDialogService.error("getHospitalData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -67,7 +67,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
     this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.putData(this.hospitalModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -85,24 +85,24 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
     if (input.files && input.files.length > 0) {
       this.setLoading();
       const file = input.files[0];
-      const ext = await getFileExt(file);
-      if (!isImage(ext)) {
+      const ext = await FExtensions.getFileExt(file);
+      if (!FExtensions.isImage(ext)) {
         this.setLoading(false);
         this.fDialogService.warn("imageView", "only image file");
         return;
       }
 
       const blobModel = this.thisService.getBlobModel(file, ext);
-      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
+      const sasKey = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
         e => this.fDialogService.error("imageView", e));
       if (sasKey.result != true) {
         this.fDialogService.warn("imageView", sasKey.msg);
         this.setLoading(false);
         return;
       }
-      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
+      await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
-      const ret = await restTry(async() => await this.thisService.putImage(this.hospitalModel.thisPK, blobModel),
+      const ret = await FExtensions.restTry(async() => await this.thisService.putImage(this.hospitalModel.thisPK, blobModel),
         e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);

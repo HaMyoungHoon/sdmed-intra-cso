@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, inject} from "@angular/core";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../models/rest/user/user-role";
-import {restTry} from "./f-extensions";
+import * as FExtensions from "./f-extensions";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
@@ -42,7 +42,7 @@ export abstract class FDialogComponentBase implements AfterViewInit {
   }
   async getMyRole(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.commonService.getMyRole(),
+    const ret = await FExtensions.restTry(async() => await this.commonService.getMyRole(),
       e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {

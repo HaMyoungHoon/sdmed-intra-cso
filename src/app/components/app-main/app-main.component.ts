@@ -3,7 +3,7 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {MenuConfigComponent} from "../common/menu-config/menu-config.component";
-import {getLocalStorage, isExpired, removeLocalStorage} from "../../guards/f-amhohwa";
+import * as FAmhohwa from "../../guards/f-amhohwa";
 import * as FConstants from "../../guards/f-constants";
 import {FDialogService} from "../../services/common/f-dialog.service";
 import {NgIf} from "@angular/common";
@@ -24,9 +24,9 @@ export class AppMainComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (isExpired(authToken)) {
-      removeLocalStorage(FConstants.AUTH_TOKEN);
+    const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
+    if (FAmhohwa.isExpired(authToken)) {
+      FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
       this.initChildComponents(false);
       this.openSignIn();
       return;
@@ -41,8 +41,8 @@ export class AppMainComponent implements AfterViewInit {
     });
   }
   closeSignIn(): void {
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (isExpired(authToken)) {
+    const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
+    if (FAmhohwa.isExpired(authToken)) {
       this.initChildComponents(false);
       return;
     }
@@ -55,8 +55,8 @@ export class AppMainComponent implements AfterViewInit {
   initChildComponents(data: boolean): void {
     this.viewPage = data;
     this.menuConfig.menuInit(data);
-    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-    if (this.router.url == "/" && !isExpired(authToken)) {
+    const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
+    if (this.router.url == "/" && !FAmhohwa.isExpired(authToken)) {
       this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
     }
   }
@@ -66,9 +66,9 @@ export class AppMainComponent implements AfterViewInit {
   bindRouteEvents(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
-        if (isExpired(authToken)) {
-          removeLocalStorage(FConstants.AUTH_TOKEN);
+        const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
+        if (FAmhohwa.isExpired(authToken)) {
+          FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
           this.initChildComponents(false);
           this.openSignIn();
         }

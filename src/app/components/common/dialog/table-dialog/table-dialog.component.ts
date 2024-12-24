@@ -5,7 +5,7 @@ import {TableModule} from "primeng/table";
 import {ButtonModule} from "primeng/button";
 import {NgForOf, NgIf} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
-import {ellipsis} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-table-dialog",
@@ -46,5 +46,5 @@ export class TableDialogComponent {
     return false;
   }
 
-  protected readonly ellipsis = ellipsis;
+  protected readonly ellipsis = FExtensions.ellipsis;
 }

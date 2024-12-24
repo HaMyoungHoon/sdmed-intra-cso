@@ -3,7 +3,7 @@ import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
 import {Table} from "primeng/table";
 import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {customSort, dateToMonthYYYYMMdd, dateToYearFullString, filterTable, restTry, stringToDate} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {MedicinePriceListService} from "../../../../services/rest/medicine-price-list.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
 
@@ -34,7 +34,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
   async getMedicinePriceList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(),
       e => this.fDialogService.error("get medicine", e));
     this.setLoading(false);
     if (ret.result) {
@@ -47,11 +47,11 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
   async getLastApplyDate(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getMedicinePriceApplyDate(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getMedicinePriceApplyDate(),
       e => this.fDialogService.error("getLastApplyDate", e));
     this.setLoading(false);
     if (ret.result) {
-      this.lastApplyDate = stringToDate(ret.data);
+      this.lastApplyDate = FExtensions.stringToDate(ret.data);
       return;
     }
     this.fDialogService.warn("getLastApplyDate", ret.data);
@@ -63,7 +63,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     col.push(new TableDialogColumn().build("ancestorCode", "medicine-price-list.ancestor-code"))
     col.push(new TableDialogColumn().build("applyDate", "medicine-price-list.apply-date"))
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getHistoryList(data.kdCode),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getHistoryList(data.kdCode),
     e => this.fDialogService.error("priceList", e));
     this.setLoading(false);
     if (!ret.result) {
@@ -87,7 +87,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       return "None";
     }
 
-    return dateToMonthYYYYMMdd(data.medicinePriceModel[0].applyDate);
+    return FExtensions.dateToMonthYYYYMMdd(data.medicinePriceModel[0].applyDate);
   }
   disablePriceHistory(data: MedicineModel): boolean {
     return data.medicinePriceModel.length <= 0;
@@ -107,7 +107,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       this.setLoading();
       const file = input.files[0];
-      const ret = await restTry(async() => await this.thisService.postMedicinePriceUpload(dateToYearFullString(this.applyDate), file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postMedicinePriceUpload(FExtensions.dateToYearFullString(this.applyDate), file),
         e => this.fDialogService.error("uploadPriceExcel", e));
       if (ret.result) {
         await this.refresh();
@@ -122,7 +122,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     if (input.files && input.files.length > 0) {
       this.setLoading();
       const file = input.files[0];
-      const ret = await restTry(async() => await this.thisService.postMedicineIngredientUpload(file),
+      const ret = await FExtensions.restTry(async() => await this.thisService.postMedicineIngredientUpload(file),
         e => this.fDialogService.error("uploadPriceExcel", e));
       if (ret.result) {
         await this.refresh();
@@ -137,7 +137,7 @@ export class MedicinePriceListComponent extends FComponentBase {
     return ((this.myRole & UserRole.Admin.valueOf()) != 0) || ((this.myRole & UserRole.CsoAdmin.valueOf()) != 0)
   }
 
-  protected readonly customSort = customSort
-  protected readonly filterTable = filterTable;
-  protected readonly dateToMonthYYYYMMdd = dateToMonthYYYYMMdd;
+  protected readonly customSort = FExtensions.customSort
+  protected readonly filterTable = FExtensions.filterTable;
+  protected readonly dateToMonthYYYYMMdd = FExtensions.dateToMonthYYYYMMdd;
 }

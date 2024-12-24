@@ -3,8 +3,8 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
-import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
-import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
+import * as FExtensions from "../../guards/f-extensions";
+import * as FAmhohwa from "../../guards/f-amhohwa";
 
 @Injectable({
   providedIn: "root"
@@ -53,9 +53,9 @@ export class UserInfoService {
   }
 
   getBlobModel(userId: string, file: File, ext: string): BlobUploadModel {
-    const thisPK = getThisPK();
-    const blobName = `${userId}/${currentDateYYYYMMdd()}/${getRandomUUID()}.${ext}`;
+    const thisPK = FAmhohwa.getThisPK();
+    const blobName = `${userId}/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
     const blobUrl = `${this.blobUrl}/${this.containerName}/${blobName}`;
-    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, getMimeTypeExt(ext));
+    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, FExtensions.getMimeTypeExt(ext));
   }
 }

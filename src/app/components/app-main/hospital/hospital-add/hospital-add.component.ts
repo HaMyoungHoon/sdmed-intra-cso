@@ -6,7 +6,7 @@ import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTy
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-hospital-add",
@@ -52,7 +52,7 @@ export class HospitalAddComponent extends FComponentBase {
     this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
     this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.postData(this.hospitalModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

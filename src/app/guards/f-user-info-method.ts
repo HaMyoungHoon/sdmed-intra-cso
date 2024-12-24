@@ -1,6 +1,6 @@
 import {RestResult} from "../models/common/rest-result";
 import {UserDataModel} from "../models/rest/user/user-data-model";
-import {getFileExt, isImage, restTry} from "./f-extensions";
+import * as FExtensions from "./f-extensions";
 import {UserInfoService} from "../services/rest/user-info.service";
 import {CommonService} from "../services/rest/common.service";
 import {AzureBlobService} from "../services/rest/azure-blob.service";
@@ -14,8 +14,8 @@ export async function bankAccountImageSelected(event: any, data: UserDataModel, 
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     const file = input.files[0];
-    const ext = await getFileExt(file);
-    if (!isImage(ext)) {
+    const ext = await FExtensions.getFileExt(file);
+    if (!FExtensions.isImage(ext)) {
       return new RestResult<UserDataModel>().setFail("only image file");
     }
     const blobModel = service.getBlobModel(data.id, file, ext);
@@ -38,8 +38,8 @@ export async function taxpayerImageSelected(event: any, data: UserDataModel, ser
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     const file = input.files[0];
-    const ext = await getFileExt(file);
-    if (!isImage(ext)) {
+    const ext = await FExtensions.getFileExt(file);
+    if (!FExtensions.isImage(ext)) {
       return new RestResult<UserDataModel>().setFail("only image file");
     }
     const blobModel = service.getBlobModel(data.id, file, ext);

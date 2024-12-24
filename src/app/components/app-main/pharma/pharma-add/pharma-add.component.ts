@@ -8,7 +8,7 @@ import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, phar
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-pharma-add",
@@ -62,7 +62,7 @@ export class PharmaAddComponent extends FComponentBase {
     this.pharmaModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
 
-    const ret = await restTry(async() => await this.thisService.postData(this.pharmaModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.pharmaModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {

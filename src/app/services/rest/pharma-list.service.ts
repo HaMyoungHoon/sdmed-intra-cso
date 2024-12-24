@@ -4,8 +4,8 @@ import {PharmaModel} from "../../models/rest/pharma/pharma-model";
 import {RestResult} from "../../models/common/rest-result";
 import {MedicineModel} from "../../models/rest/medicine/medicine-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
-import {getRandomUUID, getThisPK} from "../../guards/f-amhohwa";
-import {currentDateYYYYMMdd, getMimeTypeExt} from "../../guards/f-extensions";
+import * as FAmhohwa from "../../guards/f-amhohwa";
+import * as FExtensions from "../../guards/f-extensions";
 
 @Injectable({
   providedIn: "root"
@@ -69,9 +69,9 @@ export class PharmaListService {
   }
 
   getBlobModel(file: File, ext: string): BlobUploadModel {
-    const thisPK = getThisPK();
-    const blobName = `pharma/${currentDateYYYYMMdd()}/${getRandomUUID()}.${ext}`;
+    const thisPK = FAmhohwa.getThisPK();
+    const blobName = `pharma/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
     const blobUrl = `${this.blobUrl}/${this.containerName}/${blobName}`;
-    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, getMimeTypeExt(ext));
+    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, FExtensions.getMimeTypeExt(ext));
   }
 }

@@ -7,7 +7,7 @@ import {MedicineModel} from "../../../../../models/rest/medicine/medicine-model"
 import {UserRole} from "../../../../../models/rest/user/user-role";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/user/hos-pharma-medicine-pair-model";
-import {applyClass, ellipsis, restTry} from "../../../../../guards/f-extensions";
+import * as FExtensions from "../../../../../guards/f-extensions";
 import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
 
 @Component({
@@ -82,7 +82,7 @@ export class UserMappingComponent extends FComponentBase {
       this.setLoading(false);
       return;
     }
-    const ret = await restTry(async() => await this.thisService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
         e => this.fDialogService.error("save", e));
     this.setLoading(false);
     if (ret.result) {
@@ -103,7 +103,7 @@ export class UserMappingComponent extends FComponentBase {
       x.pharmaList.forEach(y => {
         let pushedPharma = false;
         y.relationMedicineList.forEach(z => {
-          ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+          ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
             obj.hosPK = x.thisPK;
             obj.pharmaPK = y.thisPK;
             obj.medicinePK = z.thisPK;
@@ -112,7 +112,7 @@ export class UserMappingComponent extends FComponentBase {
           pushedHos = true;
         });
         if (!pushedPharma) {
-          ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+          ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
             obj.hosPK = x.thisPK;
             obj.pharmaPK = y.thisPK;
           }));
@@ -120,7 +120,7 @@ export class UserMappingComponent extends FComponentBase {
         }
       });
       if (!pushedHos) {
-        ret.push(applyClass(new HosPharmaMedicinePairModel(), (obj) => {
+        ret.push(FExtensions.applyClass(new HosPharmaMedicinePairModel(), (obj) => {
           obj.hosPK = x.thisPK;
         }));
       }
@@ -130,7 +130,7 @@ export class UserMappingComponent extends FComponentBase {
 
   async getAllList(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getList(),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(),
         e => this.fDialogService.error("getAllList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -161,7 +161,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(buff.thisPK, true, true, true),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getData(buff.thisPK, true, true, true),
       e => this.fDialogService.error("userSelect", e));
     this.setLoading(false);
     if (ret.result) {
@@ -208,7 +208,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getHospitalAllSearch(this.hosSearchValue, this.isHosSearchTypeCode),
       e => this.fDialogService.error("hosSearch", e));
     this.setLoading(false);
     if (ret.result) {
@@ -267,7 +267,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaAllSearch(this.pharmaSearchValue, this.isPharmaSearchTypeCode),
       e => this.fDialogService.error("pharmaSearch", e));
     this.setLoading(false);
     if (ret.result) {
@@ -310,7 +310,7 @@ export class UserMappingComponent extends FComponentBase {
       return;
     }
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getPharmaData(pharma.thisPK, true),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaData(pharma.thisPK, true),
       e => this.fDialogService.error("medicineSearch", e));
     this.setLoading(false);
     if (ret.result) {
@@ -323,5 +323,5 @@ export class UserMappingComponent extends FComponentBase {
     this.fDialogService.warn("medicineSearch", ret.msg);
   }
 
-  protected readonly ellipsis = ellipsis;
+  protected readonly ellipsis = FExtensions.ellipsis;
 }

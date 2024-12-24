@@ -7,7 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {TranslatePipe} from "@ngx-translate/core";
-import {restTry} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-password-change-dialog",
@@ -38,7 +38,7 @@ export class PasswordChangeDialogComponent extends FDialogComponentBase {
       });
       return;
     }
-    const ret = await restTry(async() => await this.thisService.putPasswordChange(this.currentPW, this.afterPW, this.confirmPW),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putPasswordChange(this.currentPW, this.afterPW, this.confirmPW),
       e => this.fDialogService.error("passwordChange", e));
     if (ret.result) {
       this.ref.close();

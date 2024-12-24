@@ -5,7 +5,7 @@ import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTy
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
-import {ellipsis, getFileExt, isImage, restTry, tryCatchAsync} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../../models/rest/pharma/pharma-type";
 import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../../models/rest/pharma/pharma-group";
 import * as FConstants from "../../../../guards/f-constants";
@@ -76,7 +76,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   }
   async getPharmaData(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await this.thisService.getData(this.pharmaModel.thisPK, true),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.pharmaModel.thisPK, true),
       e => this.fDialogService.error("getPharmaData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -102,7 +102,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
       return;
     }
 
-    const ret = await restTry(async() => await this.thisService.putData(this.pharmaModel),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putData(this.pharmaModel),
       e => this.fDialogService.error("saveData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -113,7 +113,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
   }
   async medicineListModify(): Promise<boolean> {
     const medicineList = this.pharmaModel.medicineList.map(x => x.thisPK);
-    const ret = await restTry(async() => await this.thisService.putMedicine(this.pharmaModel.thisPK, medicineList),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putMedicine(this.pharmaModel.thisPK, medicineList),
       e => this.fDialogService.error("medicineListModify", e));
     if (ret.result) {
       return true;
@@ -130,24 +130,24 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     if (input.files && input.files.length > 0) {
       this.setLoading();
       const file = input.files[0];
-      const ext = await getFileExt(file);
-      if (!isImage(ext)) {
+      const ext = await FExtensions.getFileExt(file);
+      if (!FExtensions.isImage(ext)) {
         this.setLoading(false);
         this.fDialogService.warn("imageView", "only image file");
         return;
       }
 
       const blobModel = this.thisService.getBlobModel(file, ext);
-      const sasKey = await restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
+      const sasKey = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
         e => this.fDialogService.error("imageView", e));
       if (sasKey.result != true) {
         this.fDialogService.warn("imageView", sasKey.msg);
         this.setLoading(false);
         return;
       }
-      await tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
+      await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
-      const ret = await restTry(async() => await this.thisService.putImage(this.pharmaModel.thisPK, blobModel),
+      const ret = await FExtensions.restTry(async() => await this.thisService.putImage(this.pharmaModel.thisPK, blobModel),
         e => this.fDialogService.error("imageView", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
@@ -186,7 +186,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     if (this.medicineSearchValue.length <= 0) {
       return;
     }
-    const ret = await restTry(async() => await this.thisService.getMedicine(this.medicineSearchValue, this.isMedicineSearchTypeCode),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getMedicine(this.medicineSearchValue, this.isMedicineSearchTypeCode),
       e => this.fDialogService.error("medicineSearch", e));
     if (ret.result) {
       this.medicineList = ret.data ?? [];
@@ -216,5 +216,5 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     }
   }
 
-  protected readonly ellipsis = ellipsis;
+  protected readonly ellipsis = FExtensions.ellipsis;
 }

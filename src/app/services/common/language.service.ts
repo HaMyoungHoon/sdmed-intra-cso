@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../rest/common.service";
-import {getLocalStorage, setLocalStorage} from "../../guards/f-amhohwa";
+import * as FAmhohwa from "../../guards/f-amhohwa";
 import {getKeyName, LangType} from "../../models/common/lang-type";
 import * as FConstants from "../../guards/f-constants";
-import {restTry} from "../../guards/f-extensions";
+import * as FExtensions from "../../guards/f-extensions";
 import {PrimeNG} from "primeng/config";
 
 @Injectable({
@@ -21,7 +21,7 @@ export class LanguageService {
       this.translateService.addLangs([lang])
     }
 
-    const localLang: string = getLocalStorage(FConstants.STORAGE_KEY_LANG);
+    const localLang: string = FAmhohwa.getLocalStorage(FConstants.STORAGE_KEY_LANG);
     let browserLang: string | undefined = "";
     let existLang: string | undefined = "";
     let matchingLang: string | undefined = "";
@@ -49,11 +49,11 @@ export class LanguageService {
     this.translateService.get("primeng").subscribe(x => {
       this.primeNGConfig.setTranslation(x);
     })
-    await restTry(async() => await this.commonService.setLanguage(lang));
-    setLocalStorage(FConstants.STORAGE_KEY_LANG, lang);
+    await FExtensions.restTry(async() => await this.commonService.setLanguage(lang));
+    FAmhohwa.setLocalStorage(FConstants.STORAGE_KEY_LANG, lang);
   }
 
   isKoLang(): boolean {
-    return getLocalStorage(FConstants.STORAGE_KEY_LANG) == "ko";
+    return FAmhohwa.getLocalStorage(FConstants.STORAGE_KEY_LANG) == "ko";
   }
 }

@@ -1,6 +1,6 @@
 import {Component, ElementRef, input, ViewChild} from "@angular/core";
 import {UserDataModel} from "../../../../models/rest/user/user-data-model";
-import {dateToYearFullString, restTry, stringToDate} from "../../../../guards/f-extensions";
+import * as FExtensions from "../../../../guards/f-extensions";
 import {allUserRoleDescArray, flagToRoleDesc, UserRole} from "../../../../models/rest/user/user-role";
 import {allUserStatusDescArray, statusToUserStatusDesc, UserStatus,} from "../../../../models/rest/user/user-status";
 import {allUserDeptDescArray, flagToDeptDesc} from "../../../../models/rest/user/user-dept";
@@ -57,7 +57,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
 
   async getUserData(): Promise<void> {
-    const ret = await restTry(async() => await this.thisService.getData(this.userDataModel.thisPK, true, true),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.userDataModel.thisPK, true, true),
       e => this.fDialogService.error("getUserData", e));
     if (ret.result) {
       this.userDataModel = ret.data ?? new UserDataModel();
@@ -69,7 +69,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("getUserData", ret.msg);
   }
   async getChildAble(): Promise<void> {
-    const ret = await restTry(async() => await this.thisService.getListChildAble(this.userDataModel.thisPK),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getListChildAble(this.userDataModel.thisPK),
       e => this.fDialogService.error("getChildAble", e));
     if (ret.result) {
       this.childAble = ret.data ?? [];
@@ -79,7 +79,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
   async saveUserData(): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -89,7 +89,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("saveUserData", ret.msg);
   }
   async saveUserChildData(): Promise<void> {
-    const ret = await restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
       e => this.fDialogService.error("saveUserChildData", e));
     this.setLoading(false);
     if (ret.result) {
@@ -114,7 +114,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
   async taxpayerImageSelected(event: any): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await FUserInfoMethod.taxpayerImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.taxpayerImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
       e => this.fDialogService.error("taxpayerImageSelected", e));
     this.setLoading(false);
     this.taxpayerImageInput.nativeElement.value = "";
@@ -136,7 +136,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
   async bankAccountImageSelected(event: any): Promise<void> {
     this.setLoading();
-    const ret = await restTry(async() => await FUserInfoMethod.bankAccountImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.bankAccountImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
       e => this.fDialogService.error("bankAccountImageSelected", e));
     this.setLoading(false);
     this.bankAccountImageInput.nativeElement.value = "";
@@ -149,6 +149,6 @@ export class UserEditDialogComponent extends FDialogComponentBase {
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
 
-  protected readonly stringToDate = stringToDate;
-  protected readonly dateToYearFullString = dateToYearFullString;
+  protected readonly stringToDate = FExtensions.stringToDate;
+  protected readonly dateToYearFullString = FExtensions.dateToYearFullString;
 }

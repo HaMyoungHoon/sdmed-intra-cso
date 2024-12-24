@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, TemplateRef, ContentChild, AfterContentInit, inject, OnChanges, SimpleChanges} from "@angular/core";
-import {ellipsis, findIndexInList} from "../../../guards/f-extensions";
+import * as FExtensions from "../../../guards/f-extensions";
 import {CdkDrag, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {FilterService} from "primeng/api";
@@ -102,10 +102,10 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
     let previousIndex: number;
     let currentIndex: number;
     if (isSource) {
-      previousIndex = isTransfer ? (this.filterValueTarget ? findIndexInList(data, this.targetList) : fromIndex) : this.filterValueSource ? findIndexInList(data, this.sourceList) : fromIndex;
+      previousIndex = isTransfer ? (this.filterValueTarget ? FExtensions.findIndexInList(data, this.targetList) : fromIndex) : this.filterValueSource ? FExtensions.findIndexInList(data, this.sourceList) : fromIndex;
       currentIndex = this.filterValueSource ? this.findFilteredCurrentIndex(<any[]>this.filteredSourceList, toIndex, this.sourceList) : toIndex;
     } else {
-      previousIndex = isTransfer ? (this.filterValueSource ? findIndexInList(data, this.sourceList) : fromIndex) : this.filterValueTarget ? findIndexInList(data, this.targetList) : fromIndex;
+      previousIndex = isTransfer ? (this.filterValueSource ? FExtensions.findIndexInList(data, this.sourceList) : fromIndex) : this.filterValueTarget ? FExtensions.findIndexInList(data, this.targetList) : fromIndex;
       currentIndex = this.filterValueTarget ? this.findFilteredCurrentIndex(<any[]>this.filteredTargetList, toIndex, this.targetList) : toIndex;
     }
 
@@ -113,9 +113,9 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   }
   findFilteredCurrentIndex(filteredList: any[], index: number, list: any): number {
     if (filteredList.length == index) {
-      return findIndexInList(filteredList[index - 1], list);
+      return FExtensions.findIndexInList(filteredList[index - 1], list);
     } else {
-      return findIndexInList(filteredList[index], list);
+      return FExtensions.findIndexInList(filteredList[index], list);
     }
   }
   toTargetDrop(data: any): void {
@@ -266,5 +266,5 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
     return { $implicit: data };
   }
 
-	protected readonly ellipsis = ellipsis;
+	protected readonly ellipsis = FExtensions.ellipsis;
 }
