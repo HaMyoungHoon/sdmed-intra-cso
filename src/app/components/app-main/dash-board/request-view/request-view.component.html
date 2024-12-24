@@ -49,7 +49,7 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-drawer [visible]="requestDrawerVisible" (onHide)="requestDrawerOnHide(openedRequest)" (onShow)="requestDrawerOnShow($event)" *ngIf="openedRequest" position="bottom">
+  <p-drawer class="bottom" [visible]="requestDrawerVisible" (onHide)="requestDrawerOnHide(openedRequest)" (onShow)="requestDrawerOnShow($event)" *ngIf="openedRequest" position="bottom">
     <div class="request-item-container">
       <p-card class="request-item-header-container">
         <table>
