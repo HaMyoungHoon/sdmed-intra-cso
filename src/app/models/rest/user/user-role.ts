@@ -8,6 +8,7 @@ export enum UserRole {
   HospitalChanger = Admin.valueOf() << 5,
   PharmaChanger = Admin.valueOf() << 6,
   MedicineChanger = Admin.valueOf() << 7,
+  EdiChanger = Admin.valueOf() << 8,
 }
 
 export function allUserRoleDescArray(): string[] {
@@ -80,7 +81,8 @@ export const StringToUserRoleDesc: { [key in string]: string } = {
   "UserChanger" : "UserChanger",
   "HospitalChanger" : "HospitalChanger",
   "PharmaChanger" : "PharmaChanger",
-  "MedicineChanger" : "MedicineChanger"
+  "MedicineChanger" : "MedicineChanger",
+  "EdiChanger": "EdiChanger",
 }
 export const UserRoleDescToUserRole: { [key in string]: UserRole } = {
   "미지정": UserRole.None,
@@ -91,5 +93,6 @@ export const UserRoleDescToUserRole: { [key in string]: UserRole } = {
   "UserChanger": UserRole.UserChanger,
   "HospitalChanger": UserRole.HospitalChanger,
   "PharmaChanger": UserRole.PharmaChanger,
-  "MedicineChanger": UserRole.MedicineChanger
+  "MedicineChanger": UserRole.MedicineChanger,
+  "EdiChanger": UserRole.EdiChanger
 }
