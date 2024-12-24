@@ -4,6 +4,7 @@ import {SortEvent} from "primeng/api";
 import {RestResult} from "../models/common/rest-result";
 import * as FContentsType from "./f-contents-type";
 import {ResponseType} from "../models/rest/requst/response-type";
+import {EDIState} from "../models/rest/edi/edi-state";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -43,7 +44,7 @@ export function dateToMonthFullString(date?: Date): string {
   }
   return `${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-export function dateToMonthYYYYMMdd(date?: Date): string {
+export function dateToMonthYYYYMMdd(date?: Date | null): string {
   if (date == null) {
     return "????-??-??"
   }
@@ -67,8 +68,13 @@ export function stringToDate(dateString?: string): Date {
   return new Date(dateString);
 }
 export function plusDays(targetDate: Date, days: number): Date {
-  const ret = new Date();
-  ret.setDate(targetDate.getDate() + days);
+  const ret = new Date(targetDate);
+  ret.setDate(ret.getDate() + days);
+  return ret;
+}
+export function plusMonths(targetDate: Date, months: number): Date {
+  const ret = new Date(targetDate);
+  ret.setMonth(ret.getMonth() + months);
   return ret;
 }
 
@@ -92,6 +98,15 @@ export function getUserStatusSeverity(data?: UserStatus): any {
   }
 
   return undefined;
+}
+export function getEDIStateSeverity(data?: EDIState): any {
+  switch (data) {
+    case EDIState.None: return "info";
+    case EDIState.OK: return "success";
+    case EDIState.Reject: return "danger";
+    case EDIState.Pending: return "warning";
+    case EDIState.Partial: return "info";
+  }
 }
 
 export function tryCatch<T>(fn: () => T, onError?: (e: any) => void): T | null {
