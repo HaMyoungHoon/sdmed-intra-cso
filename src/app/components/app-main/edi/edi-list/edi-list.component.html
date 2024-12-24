@@ -1,0 +1,45 @@
+<div class="edi-list-container">
+  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="['ediState']" (sortFunction)="customSort($event, isSorted, listTable, initList, viewList)" [customSort]="true"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+    <ng-template #caption>
+      <div class="flex">
+        <p-date-picker #startDatePicker [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'edi-list.header.start-date' | translate}}" />
+        <p-date-picker #endDatePicker [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'edi-list-header.end-date' | translate}}" />
+        <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" />
+        <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>{{"edi-list.table.year" | translate}}</th>
+        <th>{{"edi-list.table.month" | translate}}</th>
+        <th>{{"edi-list.table.user-name" | translate}}</th>
+        <th>{{"edi-list.table.org-name" | translate}}</th>
+        <th pSortableColumn="ediState">{{"edi-list.table.edi-state" | translate}} <p-sortIcon field="ediState" /></th>
+        <th>{{"edi-list.table.reg-date" | translate}}</th>
+        <th>{{"common-desc.open" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-data>
+      <tr>
+        <td>{{data.year}}</td>
+        <td>{{data.month}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.orgName}}</td>
+        <td>
+          <p-tag [value]="ediStateToEDIStateDesc(data.ediState)" [severity]="getEDIStateSeverity(data.ediState)"/>
+        </td>
+        <td>{{dateToMonthYYYYMMdd(data.regDate)}}</td>
+        <td>
+          <p-button>{{"common-desc.open" | translate}}</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

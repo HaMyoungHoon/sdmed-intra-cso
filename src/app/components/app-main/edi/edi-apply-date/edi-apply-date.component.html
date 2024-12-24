@@ -1,0 +1,28 @@
+<div class="edi-apply-date-container">
+  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+    <ng-template #caption>
+      <div class="flex">
+        <p-date-picker [(ngModel)]="selectMonth" view="month" dateFormat="yy-mm" readonlyInput="true" />
+        <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole" pTooltip="{{'common-desc.add' | translate}}"/>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>{{"edi-apply-date.year" | translate}}</th>
+        <th>{{"edi-apply-date.month" | translate}}</th>
+        <th>{{"edi-apply-date.apply-date-state" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-data>
+      <tr>
+        <td>{{data.year}}</td>
+        <td>{{data.month}}</td>
+        <td>
+          <p-select [options]="allEDIApplyDateStateDescArray()" [ngModel]="applyDateToDesc(data.applyDateState)" (onChange)="applyDateSelect(data, $event)" [disabled]="!haveRole" appendTo="body" />
+        </td>
+        <td>{{data.regDate}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
