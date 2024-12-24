@@ -23,6 +23,14 @@
       "sub-4": "주성분코드 부여방법"
     }
   },
+  "menu-4": {
+    "title": "EDI",
+    "sub-menu": {
+      "sub-1": "목록",
+      "sub-2": "마감일",
+      "sub-3": "적용일자"
+    }
+  },
   "menu-config": {
     "label": {
       "expired": "로그인 만료일"
@@ -49,6 +57,25 @@
       "request-user-id": "요청자",
       "response-date": "응답일"
     }
+  },
+  "edi-list": {
+    "header": {
+      "start-date": "시작일",
+      "end-date": "종료일"
+    },
+    "table": {
+      "year": "적용연도",
+      "month": "적용월",
+      "user-name": "이름",
+      "org-name": "병원명",
+      "edi-state": "상태",
+      "reg-date": "등록일"
+    }
+  },
+  "edi-apply-date": {
+    "year": "연",
+    "month": "월",
+    "apply-date-state": "상태"
   },
   "medicine-price-list": {
     "price-excel": "약가 업로드",

@@ -23,6 +23,14 @@
       "sub-4": "main ingredient method"
     }
   },
+  "menu-4": {
+    "title": "EDI",
+    "sub-menu": {
+      "sub-1": "list",
+      "sub-2": "due date",
+      "sub-3": "apply date"
+    }
+  },
   "menu-config": {
     "label": {
       "expired": "login expired"
@@ -49,6 +57,25 @@
       "request-user-id": "req user",
       "response-date": "res date"
     }
+  },
+  "edi-list": {
+    "header": {
+      "start-date": "start date",
+      "end-date": "end date"
+    },
+    "table": {
+      "year": "apply year",
+      "month": "apply month",
+      "user-name": "name",
+      "org-name": "hospital",
+      "edi-state": "state",
+      "reg-date": "reg date"
+    }
+  },
+  "edi-apply-date": {
+    "year": "year",
+    "month": "month",
+    "apply-date-state": "state"
   },
   "medicine-price-list": {
     "price-excel": "medicine price upload",
