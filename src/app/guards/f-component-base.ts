@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, inject} from "@angular/core";
-import {getLocalStorage, isExpired} from "./f-amhohwa";
+import {getLocalStorage, isExpired, removeLocalStorage, setLocalStorage} from "./f-amhohwa";
 import * as FConstants from "./f-constants";
 import {restTry} from "./f-extensions";
 import {haveRole, UserRole} from "../models/rest/user/user-role";
@@ -8,6 +8,8 @@ import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
 import {AppConfigService} from "../services/common/app-config.service";
 import {AzureBlobService} from "../services/rest/azure-blob.service";
+import {UserStatus} from "../models/rest/user/user-status";
+import {Router} from "@angular/router";
 
 @Component({
   selector: "f-component-base",
@@ -16,6 +18,7 @@ import {AzureBlobService} from "../services/rest/azure-blob.service";
 })
 export abstract class FComponentBase implements AfterViewInit {
   myRole: number = 0;
+  myState: UserStatus = UserStatus.None;
   haveRole: boolean = false;
   isLoading: boolean = false;
   isMobile: boolean = false;
@@ -24,12 +27,14 @@ export abstract class FComponentBase implements AfterViewInit {
   protected translateService: TranslateService;
   protected configService: AppConfigService;
   protected azureBlobService: AzureBlobService;
+  protected router: Router
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.commonService = inject(CommonService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
     this.configService = inject(AppConfigService);
     this.azureBlobService = inject(AzureBlobService);
+    this.router = inject(Router);
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -38,6 +43,7 @@ export abstract class FComponentBase implements AfterViewInit {
     if (isExpired(authToken)) {
       return;
     }
+    await this.getMyState();
     await this.getMyRole();
     await this.ngInit();
   }
@@ -54,6 +60,21 @@ export abstract class FComponentBase implements AfterViewInit {
 
     this.fDialogService.warn("getMyRole", ret.msg);
     return;
+  }
+  async getMyState(): Promise<void> {
+    this.setLoading();
+    const ret = await restTry(async() => this.commonService.getMyState(),
+      e => this.fDialogService.error("getMyState", e));
+    this.setLoading(false);
+    if (ret.result) {
+      this.myState = ret.data ?? UserStatus.None;
+      if (this.myState != UserStatus.Live) {
+        removeLocalStorage(FConstants.AUTH_TOKEN);
+        this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
+      }
+      return;
+    }
+    this.fDialogService.warn("getMyState", ret.msg);
   }
 
   async ngInit(): Promise<void> {

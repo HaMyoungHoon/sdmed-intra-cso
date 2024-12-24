@@ -19,7 +19,7 @@ import {transformToBoolean} from "primeng/utils";
 })
 export class MyInfoComponent extends FComponentBase {
   userDataModel?: UserDataModel = undefined;
-  constructor(private thisService: MyInfoService, private router: Router) {
+  constructor(private thisService: MyInfoService) {
     super();
   }
 

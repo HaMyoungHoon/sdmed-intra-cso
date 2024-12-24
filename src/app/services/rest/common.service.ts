@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import {RestResult} from "../../models/common/rest-result";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
+import {UserStatus} from "../../models/rest/user/user-status";
 
 @Injectable({
   providedIn: "root"
@@ -29,6 +30,9 @@ export class CommonService {
   }
   getMyRole(): Promise<RestResult<number>> {
     return this.httpResponse.get(`${this.baseUrl}/myRole`);
+  }
+  getMyState(): Promise<RestResult<UserStatus>> {
+    return this.httpResponse.get(`${this.baseUrl}/myState`);
   }
   getGenerateSas(blobUrl: string, containerName: string = ""): Promise<RestResult<string>> {
     if (containerName.length > 0) {
