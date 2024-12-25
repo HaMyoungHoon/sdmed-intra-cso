@@ -28,9 +28,7 @@ export class EdiListComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getList();
-    }
+    await this.getList();
   }
 
   async getList(): Promise<void> {

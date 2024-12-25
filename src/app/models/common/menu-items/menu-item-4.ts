@@ -29,5 +29,5 @@ export function MenuItem4(): MenuItem {
         routerLink: `/${FConstants.EDI_APPLY_DATE}`,
       }
     ]
-  }
+  };
 }

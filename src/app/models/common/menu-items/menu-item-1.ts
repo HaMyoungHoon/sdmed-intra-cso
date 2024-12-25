@@ -15,5 +15,5 @@ export function MenuItem1(): MenuItem {
         routerLink: `/${FConstants.DASH_BOARD_URL}`,
       }
     ]
-  }
+  };
 }

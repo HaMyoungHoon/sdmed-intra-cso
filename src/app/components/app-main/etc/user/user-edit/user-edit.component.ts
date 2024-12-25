@@ -35,10 +35,8 @@ export class UserEditComponent extends FComponentBase {
     this.userDataModel.thisPK = this.route.snapshot.params["thisPK"];
   }
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getUserData();
-      await this.getChildAble();
-    }
+    await this.getUserData();
+    await this.getChildAble();
   }
 
   async getUserData(): Promise<void> {

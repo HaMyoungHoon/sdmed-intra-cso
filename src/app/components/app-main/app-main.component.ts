@@ -18,9 +18,8 @@ import {ButtonModule} from "primeng/button";
 })
 export class AppMainComponent implements AfterViewInit {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;
-  viewPage: boolean;
+  viewPage: boolean = false;
   constructor(private cd: ChangeDetectorRef, private router: Router, private fDialogService: FDialogService) {
-    this.viewPage = false;
   }
 
   ngAfterViewInit(): void {

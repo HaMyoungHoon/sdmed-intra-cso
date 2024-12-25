@@ -42,9 +42,7 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getHospitalData();
-    }
+    await this.getHospitalData();
   }
 
   async getHospitalData(): Promise<void> {

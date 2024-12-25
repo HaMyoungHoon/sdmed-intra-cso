@@ -5,6 +5,7 @@
       <div class="flex">
         <p-date-picker [(ngModel)]="selectMonth" view="month" dateFormat="yy-mm" readonlyInput="true" />
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole" pTooltip="{{'common-desc.add' | translate}}"/>
+        <p-button class="m-1" (click)="refreshData()" icon="pi pi-refresh" pTooltip="{{'common-desc.refresh' | translate}}" />
       </div>
     </ng-template>
     <ng-template #header>

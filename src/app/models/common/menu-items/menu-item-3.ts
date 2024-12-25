@@ -33,5 +33,5 @@ export function MenuItem3(): MenuItem {
         routerLink: `/${FConstants.MAIN_INGREDIENT_METHOD_URL}`
       },
     ]
-  }
+  };
 }

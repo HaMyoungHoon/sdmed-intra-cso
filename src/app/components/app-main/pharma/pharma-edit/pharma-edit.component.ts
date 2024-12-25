@@ -48,9 +48,7 @@ export class PharmaEditComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getPharmaData();
-    }
+    await this.getPharmaData();
   }
   initLayoutData(): void {
     this.medicineSearchObserver = this.medicineSearchSubject.pipe(debounceTime(this.medicineSearchDebounceTime))

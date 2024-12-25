@@ -18,8 +18,5 @@ export class RequestSubQnaComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-
-    }
   }
 }

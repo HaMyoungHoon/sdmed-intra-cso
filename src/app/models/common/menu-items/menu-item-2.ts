@@ -41,5 +41,5 @@ export function MenuItem2(): MenuItem {
         routerLink: `/${FConstants.MEDICINE_LIST_URL}`
       }
     ]
-  }
+  };
 }

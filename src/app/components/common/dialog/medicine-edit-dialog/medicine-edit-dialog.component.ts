@@ -61,10 +61,8 @@ export class MedicineEditDialogComponent extends FDialogComponentBase{
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getMedicineData();
-      await this.getMainIngredientList();
-    }
+    await this.getMedicineData();
+    await this.getMainIngredientList();
   }
 
   async getMedicineData(): Promise<void> {

@@ -50,10 +50,8 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.userDataModel = dlg.data;
   }
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getUserData();
-      await this.getChildAble();
-    }
+    await this.getUserData();
+    await this.getChildAble();
   }
 
   async getUserData(): Promise<void> {

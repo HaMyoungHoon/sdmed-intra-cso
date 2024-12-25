@@ -13,9 +13,7 @@ export class AppConfigService {
   });
   document = inject(DOCUMENT);
   platformId = inject(PLATFORM_ID);
-  theme = computed(() => (this.appState()?.darkTheme ? "dark" : "light"));
   transitionComplete = signal<boolean>(false);
-  private initialized = false;
   constructor() {
     this.appState.set({ ...this.loadAppState() });
 

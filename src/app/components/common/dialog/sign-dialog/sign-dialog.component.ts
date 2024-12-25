@@ -18,13 +18,11 @@ import {CommonService} from "../../../../services/rest/common.service";
   standalone: true,
 })
 export class SignDialogComponent extends FDialogComponentBase {
-  id: string;
-  pw: string;
+  id: string = "";
+  pw: string = "";
   constructor(private thisService: CommonService) {
     super();
     this.roleCheck = false;
-    this.id = "";
-    this.pw = "";
   }
 
   async signIn(): Promise<void> {

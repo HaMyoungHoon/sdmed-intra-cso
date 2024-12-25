@@ -25,9 +25,7 @@ export class HospitalListComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getHospitalAll();
-    }
+    await this.getHospitalAll();
   }
   async getHospitalAll(): Promise<void> {
     this.setLoading();

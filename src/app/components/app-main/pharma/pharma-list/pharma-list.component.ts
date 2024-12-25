@@ -26,9 +26,7 @@ export class PharmaListComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getPharmaAll();
-    }
+    await this.getPharmaAll();
   }
   async getPharmaAll(): Promise<void> {
     this.setLoading();

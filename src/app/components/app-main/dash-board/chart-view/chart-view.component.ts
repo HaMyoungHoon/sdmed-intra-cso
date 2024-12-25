@@ -37,10 +37,8 @@ export class ChartViewComponent extends FComponentBase {
     this.layoutInit();
   }
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getChartData1();
-      await this.getChartData2();
-    }
+    await this.getChartData1();
+    await this.getChartData2();
   }
   layoutInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);

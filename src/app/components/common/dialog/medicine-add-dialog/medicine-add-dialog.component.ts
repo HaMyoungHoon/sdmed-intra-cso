@@ -57,9 +57,7 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.MedicineChanger));
   }
   override async ngInit(): Promise<void> {
-    if(this.haveRole) {
-      await this.getMainIngredientList();
-    }
+    await this.getMainIngredientList();
   }
   async getMainIngredientList(): Promise<void> {
     this.setLoading();

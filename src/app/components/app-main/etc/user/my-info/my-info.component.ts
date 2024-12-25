@@ -23,9 +23,7 @@ export class MyInfoComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getData();
-    }
+    await this.getData();
   }
   async getData(): Promise<void> {
     this.setLoading();

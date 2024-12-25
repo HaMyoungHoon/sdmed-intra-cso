@@ -37,9 +37,7 @@ export class RequestViewComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.refreshData();
-    }
+    await this.refreshData();
   }
 
   layoutInit(): void {

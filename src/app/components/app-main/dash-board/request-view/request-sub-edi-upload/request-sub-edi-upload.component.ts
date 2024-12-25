@@ -18,8 +18,5 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-
-    }
   }
 }

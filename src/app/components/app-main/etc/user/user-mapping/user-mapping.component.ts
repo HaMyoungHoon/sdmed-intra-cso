@@ -46,11 +46,8 @@ export class UserMappingComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getAllList();
-      this.initSearch();
-      return;
-    }
+    await this.getAllList();
+    this.initSearch();
   }
   async save(): Promise<void> {
     const thisPK = this.hosPickListUser?.thisPK;

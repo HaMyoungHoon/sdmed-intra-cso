@@ -20,11 +20,6 @@ export class EdiApplyDateComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getList();
-    } else {
-      await this.getUseList();
-    }
   }
 
   async getList(): Promise<void> {
@@ -78,6 +73,13 @@ export class EdiApplyDateComponent extends FComponentBase {
   }
   async applyDateSelect(data: EDIApplyDateModel, event: any): Promise<void> {
     await this.putData(data.thisPK, EDIApplyDateStateDescToEDIApplyDateState[event.value]);
+  }
+  async refreshData(): Promise<void> {
+    if (this.haveRole) {
+      await this.getList();
+    } else {
+      await this.getUseList();
+    }
   }
 
   protected readonly allEDIApplyDateStateDescArray = allEDIApplyDateStateDescArray;

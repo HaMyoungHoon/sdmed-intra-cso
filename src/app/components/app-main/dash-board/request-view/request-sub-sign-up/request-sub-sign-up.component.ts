@@ -49,10 +49,8 @@ export class RequestSubSignUpComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.haveRole) {
-      await this.getThisData();
-      await this.getChildAble();
-    }
+    await this.getThisData();
+    await this.getChildAble();
   }
 
   async getThisData(): Promise<void> {
