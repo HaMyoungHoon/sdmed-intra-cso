@@ -5,6 +5,10 @@ import {RestResult} from "../models/common/rest-result";
 import * as FContentsType from "./f-contents-type";
 import {ResponseType} from "../models/rest/requst/response-type";
 import {EDIState} from "../models/rest/edi/edi-state";
+import {BlobUploadModel} from "../models/rest/blob-upload-model";
+import * as FAmhohwa from "./f-amhohwa";
+import * as FConstants from "./f-constants";
+import {QnAReplyFileModel} from "../models/rest/qna/qna-reply-file-model";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -209,6 +213,41 @@ export function ellipsis(data?: string, length: number = 20): string {
   }
 
   return data;
+}
+
+function getBlobModel(blobName: string, thisPK: string, file: File, ext: string): BlobUploadModel {
+  const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
+  return applyClass(BlobUploadModel, (obj) => {
+    obj.blobUrl = blobUrl;
+    obj.blobName = blobName;
+    obj.uploaderPK = thisPK;
+    obj.originalFilename = file.name;
+    obj.mimeType = getMimeTypeExt(ext);
+  });
+}
+export function getUserBlobModel(userId: string, file: File, ext: string): BlobUploadModel {
+  const blobName = `user/${userId}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+  return getBlobModel(blobName, FAmhohwa.getThisPK(), file, ext);
+}
+export function getPharmaBlobModel(file: File, ext: string): BlobUploadModel {
+  const blobName = `pharma/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+  return getBlobModel(blobName, FAmhohwa.getThisPK(), file, ext);
+}
+export function getHospitalBlobModel(file: File, ext: string): BlobUploadModel {
+  const blobName = `hospital/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+  return getBlobModel(blobName, FAmhohwa.getThisPK(), file, ext);
+}
+export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string): QnAReplyFileModel {
+  const userName = FAmhohwa.getUserID();
+  const blobName = `qna/${userName}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+  const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
+  return applyClass(QnAReplyFileModel, (obj) => {
+    obj.replyPK = thisPK;
+    obj.blobUrl = blobUrl;
+    obj.blobName = blobName;
+    obj.originalFilename = file.name;
+    obj.mimeType = getMimeTypeExt(ext);
+  });
 }
 
 export function getFilenameExt(filename: string): string {

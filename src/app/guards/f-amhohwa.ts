@@ -124,12 +124,39 @@ export function getThisPK(): string {
   const token = getLocalStorage(AUTH_TOKEN);
   return getTokenThisPK(token);
 }
+export function getUserID(): string {
+  return getTokenID(getLocalStorage(AUTH_TOKEN));
+}
+export function getUserName(): string {
+  return getTokenName(getLocalStorage(AUTH_TOKEN));
+}
 export function getTokenThisPK(token: string): string {
   if (token.length <= 0) {
     return "";
   }
   try {
     return (JSON.parse(atob(token.split(".")[1]))).index;
+  } catch {
+    return "";
+  }
+}
+export function getTokenID(token: string): string {
+  if (token.length <= 0) {
+    return "";
+  }
+  try {
+    return (JSON.parse(atob(token.split(".")[1]))).sub;
+  } catch {
+    return "";
+  }
+}
+
+export function getTokenName(token: string): string {
+  if (token.length <= 0) {
+    return "";
+  }
+  try {
+    return (JSON.parse(atob(token.split(".")[1]))).name;
   } catch {
     return "";
   }
