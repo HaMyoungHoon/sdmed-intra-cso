@@ -1,27 +1,31 @@
-<div class="request-view-container">
-  <div class="flex">
-    <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
-    <p-selectButton class="m-1" [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
-      <ng-template #item let-item>
-        <label>{{item.label | translate}}</label>
-      </ng-template>
-    </p-selectButton>
-    <div class="m-1" *ngIf="selectedViewType.index == 2">
-      <p-date-picker #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
-      <p-date-picker #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
+<div class="request-view-container grid">
+  <div class="col-12 formgroup-inline">
+    <div class="field flex flex-row">
+      <p-button class="col-2" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
+      <p-selectButton class="col-10" [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
+        <ng-template #item let-item>
+          <label>{{item.label | translate}}</label>
+        </ng-template>
+      </p-selectButton>
     </div>
   </div>
-  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+  <p-table class="col-12" #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['requestDate', 'responseType']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template #caption>
       <div class="flex">
-        <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
-          <p-inputicon>
-            <i class="pi pi-search"></i>
-          </p-inputicon>
-          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-        </p-iconfield>
+        <div class="flex ml-auto justify-content-start" *ngIf="selectedViewType.index == 2">
+          <p-date-picker class="flex mr-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
+          <p-date-picker class="flex mr-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
+        </div>
+        <div class="flex ml-auto justify-content-end">
+          <p-iconfield class="flex" iconPosition="left">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+          </p-iconfield>
+        </div>
       </div>
     </ng-template>
     <ng-template #header>

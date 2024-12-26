@@ -64,6 +64,9 @@ export class MenuConfigComponent {
   get menuVisible(): boolean {
     return this.configService.isMenuActive();
   }
+  get expiredDateVisible(): boolean {
+    return FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN).length > 0;
+  }
   get expiredDate(): string {
     return FExtensions.dateToMonthFullString(FAmhohwa.getTokenExpiredDate(FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN)));
   }
