@@ -3,9 +3,6 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
-import * as FExtensions from "../../guards/f-extensions";
-import * as FAmhohwa from "../../guards/f-amhohwa";
-import * as FConstants from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -49,18 +46,5 @@ export class UserInfoService {
   }
   putUserBankImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/bankImage`, blobModel);
-  }
-
-  getBlobModel(userId: string, file: File, ext: string): BlobUploadModel {
-    const thisPK = FAmhohwa.getThisPK();
-    const blobName = `user/${userId}/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
-    const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
-    return FExtensions.applyClass(BlobUploadModel, (obj) => {
-      obj.blobUrl = blobUrl;
-      obj.blobName = blobName;
-      obj.uploaderPK = thisPK;
-      obj.originalFilename = file.name;
-      obj.mimeType = FExtensions.getMimeTypeExt(ext);
-    });
   }
 }

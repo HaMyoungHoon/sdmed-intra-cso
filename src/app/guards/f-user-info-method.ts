@@ -9,6 +9,7 @@ import {FDialogService} from "../services/common/f-dialog.service";
 import {stringArrayToUserRole, userRoleToFlag} from "../models/rest/user/user-role";
 import {stringArrayToUserDept, userDeptToFlag} from "../models/rest/user/user-dept";
 import {StatusDescToUserStatus} from "../models/rest/user/user-status";
+import {getUserBlobModel} from "./f-extensions";
 
 export async function bankAccountImageSelected(event: any, data: UserDataModel, service: UserInfoService, commonService: CommonService, azureBlobService: AzureBlobService): Promise<RestResult<UserDataModel>> {
   const input = event.target as HTMLInputElement;
@@ -18,7 +19,7 @@ export async function bankAccountImageSelected(event: any, data: UserDataModel, 
     if (!FExtensions.isImage(ext)) {
       return new RestResult<UserDataModel>().setFail("only image file");
     }
-    const blobModel = service.getBlobModel(data.id, file, ext);
+    const blobModel = FExtensions.getUserBlobModel(data.id, file, ext);
     const sasKey = await commonService.getGenerateSas(blobModel.blobName);
     if (sasKey.result != true) {
       return new RestResult<UserDataModel>().setFail(sasKey.msg);
@@ -42,7 +43,7 @@ export async function taxpayerImageSelected(event: any, data: UserDataModel, ser
     if (!FExtensions.isImage(ext)) {
       return new RestResult<UserDataModel>().setFail("only image file");
     }
-    const blobModel = service.getBlobModel(data.id, file, ext);
+    const blobModel = FExtensions.getUserBlobModel(data.id, file, ext);
     const sasKey = await commonService.getGenerateSas(blobModel.blobName);
     if (sasKey.result != true) {
       return new RestResult<UserDataModel>().setFail(sasKey.msg);

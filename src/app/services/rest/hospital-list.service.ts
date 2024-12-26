@@ -3,9 +3,6 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {HospitalModel} from "../../models/rest/hospital/hospital-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
-import * as FAmhohwa from "../../guards/f-amhohwa";
-import * as FExtensions from "../../guards/f-extensions";
-import * as FConstants from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -46,17 +43,5 @@ export class HospitalListService {
   }
   putImage(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<HospitalModel>> {
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/image`, blobModel);
-  }
-  getBlobModel(file: File, ext: string): BlobUploadModel {
-    const thisPK = FAmhohwa.getThisPK();
-    const blobName = `pharma/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
-    const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
-    return FExtensions.applyClass(BlobUploadModel, (obj) => {
-      obj.blobUrl = blobUrl;
-      obj.blobName = blobName;
-      obj.uploaderPK = thisPK;
-      obj.originalFilename = file.name;
-      obj.mimeType = FExtensions.getMimeTypeExt(ext);
-    });
   }
 }

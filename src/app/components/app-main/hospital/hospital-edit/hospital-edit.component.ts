@@ -76,7 +76,7 @@ export class HospitalEditComponent extends FComponentBase {
         return;
       }
 
-      const blobModel = this.thisService.getBlobModel(file, ext);
+      const blobModel = FExtensions.getHospitalBlobModel(file, ext);
       const sasKey = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobModel.blobName),
         e => this.fDialogService.error("imageView", e));
       if (sasKey.result != true) {
