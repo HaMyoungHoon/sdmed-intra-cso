@@ -53,8 +53,14 @@ export class UserInfoService {
 
   getBlobModel(userId: string, file: File, ext: string): BlobUploadModel {
     const thisPK = FAmhohwa.getThisPK();
-    const blobName = `${userId}/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+    const blobName = `user/${userId}/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
     const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
-    return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, FExtensions.getMimeTypeExt(ext));
+    return FExtensions.applyClass(BlobUploadModel, (obj) => {
+      obj.blobUrl = blobUrl;
+      obj.blobName = blobName;
+      obj.uploaderPK = thisPK;
+      obj.originalFilename = file.name;
+      obj.mimeType = FExtensions.getMimeTypeExt(ext);
+    });
   }
 }
