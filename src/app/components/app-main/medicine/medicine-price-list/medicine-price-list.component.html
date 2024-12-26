@@ -11,7 +11,7 @@
         <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">
         <input #inputMainIngredientUploadExcel class="collapse" type="file" accept=".xlsx" (change)="mainIngredientExcelSelected($event)">
         <div class="flex ml-auto justify-content-end">
-          <label class="m-1 align-self-center">{{dateToMonthYYYYMMdd(lastApplyDate)}}</label>
+          <label class="m-1 align-self-center">{{dateToYYYYMMdd(lastApplyDate)}}</label>
           <p-iconfield iconPosition="left" class="m-1">
             <p-inputicon>
               <i class="pi pi-search"></i>

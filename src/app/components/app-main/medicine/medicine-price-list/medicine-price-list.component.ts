@@ -84,7 +84,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       return "None";
     }
 
-    return FExtensions.dateToMonthYYYYMMdd(data.medicinePriceModel[0].applyDate);
+    return FExtensions.dateToYYYYMMdd(data.medicinePriceModel[0].applyDate);
   }
   disablePriceHistory(data: MedicineModel): boolean {
     return data.medicinePriceModel.length <= 0;
@@ -136,5 +136,5 @@ export class MedicinePriceListComponent extends FComponentBase {
 
   protected readonly customSort = FExtensions.customSort
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly dateToMonthYYYYMMdd = FExtensions.dateToMonthYYYYMMdd;
+  protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
 }

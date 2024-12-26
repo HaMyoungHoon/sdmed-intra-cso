@@ -33,7 +33,7 @@ export class EdiListComponent extends FComponentBase {
 
   async getList(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToMonthYYYYMMdd(this.startDate), FExtensions.dateToMonthYYYYMMdd(this.endDate)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.startDate), FExtensions.dateToYYYYMMdd(this.endDate)),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -79,5 +79,5 @@ export class EdiListComponent extends FComponentBase {
   protected readonly customSort = FExtensions.customSort;
   protected readonly ediStateToEDIStateDesc = ediStateToEDIStateDesc;
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
-  protected readonly dateToMonthYYYYMMdd = FExtensions.dateToMonthYYYYMMdd;
+  protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
 }

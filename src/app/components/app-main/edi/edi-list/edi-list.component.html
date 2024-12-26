@@ -35,7 +35,7 @@
         <td>
           <p-tag [value]="ediStateToEDIStateDesc(data.ediState)" [severity]="getEDIStateSeverity(data.ediState)"/>
         </td>
-        <td>{{dateToMonthYYYYMMdd(data.regDate)}}</td>
+        <td>{{dateToYYYYMMdd(data.regDate)}}</td>
         <td>
           <p-button>{{"common-desc.open" | translate}}</p-button>
         </td>

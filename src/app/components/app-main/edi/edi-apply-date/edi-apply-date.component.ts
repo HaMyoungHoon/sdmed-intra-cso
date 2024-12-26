@@ -46,7 +46,7 @@ export class EdiApplyDateComponent extends FComponentBase {
   }
   async insertData(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.postData(FExtensions.dateToMonthYYYYMMdd(this.selectMonth)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(FExtensions.dateToYYYYMMdd(this.selectMonth)),
       e => this.fDialogService.error("insertData", e));
     this.setLoading(false);
     if (ret.result) {

@@ -44,7 +44,7 @@ export function dateToMonthFullString(date?: Date): string {
   }
   return `${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-export function dateToMonthYYYYMMdd(date?: Date | null): string {
+export function dateToYYYYMMdd(date?: Date | null): string {
   if (date == null) {
     return "????-??-??"
   }
@@ -53,6 +53,16 @@ export function dateToMonthYYYYMMdd(date?: Date | null): string {
   }
 
   return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)}`;
+}
+export function dateToMMdd(date?: Date | null): string {
+  if (date == null) {
+    return "??-??"
+  }
+  if (typeof(date) == "string") {
+    date = stringToDate(date);
+  }
+
+  return `${dToMon(date)}-${dToD(date)}`;
 }
 export function calcDateDiffDay(startDate: Date, endDate: Date): number {
   const diffMs = endDate.getTime() - startDate.getTime();

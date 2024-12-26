@@ -62,7 +62,7 @@ export class EdiDueDateComponent extends FComponentBase {
 
   async getList(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToMonthYYYYMMdd(this.calendar.getApi().getDate())),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.calendar.getApi().getDate())),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -77,7 +77,7 @@ export class EdiDueDateComponent extends FComponentBase {
   }
   async getListRange(startDate: Date, endDate: Date): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getListRange(FExtensions.dateToMonthYYYYMMdd(startDate), FExtensions.dateToMonthYYYYMMdd(endDate)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getListRange(FExtensions.dateToYYYYMMdd(startDate), FExtensions.dateToYYYYMMdd(endDate)),
       e => this.fDialogService.error("getListRange", e));
     this.setLoading(false);
     if (ret.result) {
@@ -93,7 +93,7 @@ export class EdiDueDateComponent extends FComponentBase {
   async getAblePharma(date: Date): Promise<boolean> {
     this.setLoading();
     this.selectedDate = date;
-    const ret = await FExtensions.restTry(async() => await this.thisService.getListPharmaAble(FExtensions.dateToMonthYYYYMMdd(date)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getListPharmaAble(FExtensions.dateToYYYYMMdd(date)),
       e => this.fDialogService.error("getAblePharma", e));
     this.setLoading(false);
     if (ret.result) {
@@ -105,7 +105,7 @@ export class EdiDueDateComponent extends FComponentBase {
   }
   async dateAdd(pharmaPK: string, date: Date): Promise<EDIPharmaDueDateModel | undefined> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.postData(pharmaPK, FExtensions.dateToMonthYYYYMMdd(date)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postData(pharmaPK, FExtensions.dateToYYYYMMdd(date)),
       e => this.fDialogService.error("dateAdd", e));
     this.setLoading(false);
     if (ret.result) {
@@ -119,7 +119,7 @@ export class EdiDueDateComponent extends FComponentBase {
       return [];
     }
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.postList(pharmaPK, FExtensions.dateToMonthYYYYMMdd(date)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.postList(pharmaPK, FExtensions.dateToYYYYMMdd(date)),
       e => this.fDialogService.error("dateListAdd", e));
     this.setLoading(false);
     if (ret.result) {
@@ -133,7 +133,7 @@ export class EdiDueDateComponent extends FComponentBase {
       return false;
     }
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.putData(thisPK, FExtensions.dateToMonthYYYYMMdd(date)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.putData(thisPK, FExtensions.dateToYYYYMMdd(date)),
       e => this.fDialogService.error("dateModify", e));
     this.setLoading(false);
     if (ret.result) {
@@ -147,7 +147,7 @@ export class EdiDueDateComponent extends FComponentBase {
       return false;
     }
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.deleteData(pharmaPK, FExtensions.dateToMonthYYYYMMdd(date)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.deleteData(pharmaPK, FExtensions.dateToYYYYMMdd(date)),
       e => this.fDialogService.error("dateDelete", e));
     this.setLoading(false);
     if (ret.result) {
