@@ -4,9 +4,10 @@ import {ResponseType, stringToResponseType} from "./response-type";
 export class RequestModel {
   thisPK: string = "";
   requestUserPK: string = "";
+  requestUserID: string = "";
   requestItemPK: string = "";
   responseUserPK: string = "";
-  requestUserID: string = "";
+  responseUserName: string = "";
   requestType: RequestType = RequestType.SignUp;
   responseType: ResponseType = ResponseType.None;
   requestDate: Date = new Date;
@@ -20,9 +21,10 @@ export class RequestModel {
   copyLhsFromRhs(lhs: RequestModel, rhs: RequestModel): void {
     lhs.thisPK = rhs.thisPK
     lhs.requestUserPK = rhs.requestUserPK
+    lhs.requestUserID = rhs.requestUserID
     lhs.requestItemPK = rhs.requestItemPK
     lhs.responseUserPK = rhs.responseUserPK
-    lhs.requestUserID = rhs.requestUserID
+    lhs.responseUserName = rhs.responseUserName
     lhs.requestType = rhs.requestType
     lhs.responseType = rhs.responseType
     lhs.requestDate = rhs.requestDate
@@ -31,9 +33,10 @@ export class RequestModel {
   copyRhs(rhs: RequestModel): void {
     this.thisPK = rhs.thisPK
     this.requestUserPK = rhs.requestUserPK
+    this.requestUserID = rhs.requestUserID
     this.requestItemPK = rhs.requestItemPK
     this.responseUserPK = rhs.responseUserPK
-    this.requestUserID = rhs.requestUserID
+    this.responseUserName = rhs.responseUserName
     this.requestType = rhs.requestType
     this.responseType = rhs.responseType
     this.requestDate = rhs.requestDate
