@@ -6,14 +6,13 @@ import {MedicineModel} from "../../models/rest/medicine/medicine-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import * as FAmhohwa from "../../guards/f-amhohwa";
 import * as FExtensions from "../../guards/f-extensions";
+import * as FConstants from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
 })
 export class PharmaListService {
   private baseUrl = "/apiCSO/intra/pharmaList";
-  private blobUrl = "https://mhhablob1.blob.core.windows.net";
-  private containerName = "mhhablob1";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
@@ -71,7 +70,7 @@ export class PharmaListService {
   getBlobModel(file: File, ext: string): BlobUploadModel {
     const thisPK = FAmhohwa.getThisPK();
     const blobName = `pharma/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
-    const blobUrl = `${this.blobUrl}/${this.containerName}/${blobName}`;
+    const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
     return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, FExtensions.getMimeTypeExt(ext));
   }
 }

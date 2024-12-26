@@ -5,14 +5,13 @@ import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import * as FExtensions from "../../guards/f-extensions";
 import * as FAmhohwa from "../../guards/f-amhohwa";
+import * as FConstants from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
 })
 export class UserInfoService {
   private baseUrl = "/apiCSO/intra/userInfo";
-  private blobUrl = "https://mhhablob1.blob.core.windows.net";
-  private containerName = "mhhablob1";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
@@ -55,7 +54,7 @@ export class UserInfoService {
   getBlobModel(userId: string, file: File, ext: string): BlobUploadModel {
     const thisPK = FAmhohwa.getThisPK();
     const blobName = `${userId}/${FExtensions.currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
-    const blobUrl = `${this.blobUrl}/${this.containerName}/${blobName}`;
+    const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
     return new BlobUploadModel().builder(blobUrl, blobName, thisPK, file.name, FExtensions.getMimeTypeExt(ext));
   }
 }

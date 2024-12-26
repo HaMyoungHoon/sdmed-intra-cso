@@ -35,3 +35,6 @@ export const USER_MAPPING_URL = "etc/userMapping";
 export const MAIN_INGREDIENT_METHOD_URL = "etc/manual/main_ingredient_method";
 
 export const ASSETS_NO_IMAGE = "assets/image/no-image-1920.png";
+
+export const BLOB_URL = "https://mhhablob1.blob.core.windows.net";
+export const BLOB_CONTAINER_NAME = "mhhablob1";
