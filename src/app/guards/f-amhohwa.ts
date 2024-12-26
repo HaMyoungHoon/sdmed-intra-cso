@@ -129,7 +129,7 @@ export function getTokenThisPK(token: string): string {
     return "";
   }
   try {
-    return (JSON.parse(token.split(".")[1]));
+    return (JSON.parse(atob(token.split(".")[1]))).index;
   } catch {
     return "";
   }
