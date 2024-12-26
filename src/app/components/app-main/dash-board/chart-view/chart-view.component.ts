@@ -92,8 +92,8 @@ export class ChartViewComponent extends FComponentBase {
   async getChartData1(): Promise<void> {
     this.setLoading();
     const documentStyle = getComputedStyle(document.documentElement);
-    const startDate = FExtensions.dateToMonthYYYYMMdd(this.startDate);
-    const endDate = FExtensions.dateToMonthYYYYMMdd(this.endDate);
+    const startDate = FExtensions.dateToYYYYMMdd(this.startDate);
+    const endDate = FExtensions.dateToYYYYMMdd(this.endDate);
     const ret = await FExtensions.restTry(async() => await this.thisService.getCountOfResponseType(startDate, endDate),
       e => this.fDialogService.error("getChartData1", e));
     this.setLoading(false);
@@ -115,8 +115,8 @@ export class ChartViewComponent extends FComponentBase {
   }
   async getChartData2(): Promise<void> {
     this.setLoading();
-    const startDate = FExtensions.dateToMonthYYYYMMdd(this.startDate);
-    const endDate = FExtensions.dateToMonthYYYYMMdd(this.endDate);
+    const startDate = FExtensions.dateToYYYYMMdd(this.startDate);
+    const endDate = FExtensions.dateToYYYYMMdd(this.endDate);
     const ret = await FExtensions.restTry(async() => await this.thisService.getTop10RequestUser(startDate, endDate),
       e => this.fDialogService.error("getChartData2", e));
     this.setLoading(false);

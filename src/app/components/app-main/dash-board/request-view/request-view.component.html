@@ -1,6 +1,6 @@
 <div class="request-view-container grid">
-  <div class="col-12 formgroup-inline">
-    <div class="field flex flex-row">
+  <div class="col-12 formgroup-inline p-0 justify-content-center">
+    <div class="field flex flex-row mb-0">
       <p-button class="col-2" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
       <p-selectButton class="col-10" [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
         <ng-template #item let-item>
@@ -8,47 +8,45 @@
         </ng-template>
       </p-selectButton>
     </div>
+    <div class="field flex mt-1 mb-0" *ngIf="selectedViewType.index == 2">
+      <p-date-picker class="flex m-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
+      <p-date-picker class="flex m-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
+    </div>
   </div>
   <p-table class="col-12" #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['requestDate', 'responseType']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+           [tableStyle]="{'min-width': '20rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
     <ng-template #caption>
-      <div class="flex">
-        <div class="flex ml-auto justify-content-start" *ngIf="selectedViewType.index == 2">
-          <p-date-picker class="flex mr-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
-          <p-date-picker class="flex mr-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
-        </div>
-        <div class="flex ml-auto justify-content-end">
-          <p-iconfield class="flex" iconPosition="left">
-            <p-inputicon>
-              <i class="pi pi-search"></i>
-            </p-inputicon>
-            <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
-          </p-iconfield>
-        </div>
+      <div class="flex p-0">
+        <p-iconfield class="flex ml-auto justify-content-end" iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+        </p-iconfield>
       </div>
     </ng-template>
     <ng-template #header>
       <tr>
-        <th pSortableColumn="requestDate">{{"dash-board.request.request-date" | translate}} <p-sortIcon field="requestDate" /></th>
-        <th pSortableColumn="responseType">{{"dash-board.request.response-type" | translate}} <p-sortIcon field="responseType"/></th>
-        <th>{{"dash-board.request.request-type" | translate}}</th>
-        <th>{{"dash-board.request.request-user-id" | translate}}</th>
-        <th>{{"dash-board.request.response-date" | translate}}</th>
-        <th>{{"common-desc.open" | translate}}</th>
+        <th class="pr-0 pl-0" pSortableColumn="requestDate">{{"dash-board.request.request-date" | translate}} <p-sortIcon field="requestDate" /></th>
+        <th class="pr-0 pl-0" pSortableColumn="responseType">{{"dash-board.request.response-type" | translate}} <p-sortIcon field="responseType"/></th>
+        <th class="pr-0 pl-0">{{"dash-board.request.request-type" | translate}}</th>
+        <th class="pr-0 pl-0">{{"dash-board.request.request-user-id" | translate}}</th>
+        <th class="pr-0 pl-0">{{"dash-board.request.response-date" | translate}}</th>
+        <th class="pr-0 pl-0">{{"common-desc.open" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template #body let-req>
       <tr>
-        <td>{{dateToMonthYYYYMMdd(req.requestDate)}}</td>
-        <td>
+        <td class="pr-0 pl-0">{{dateToMMdd(req.requestDate)}}</td>
+        <td class="pr-0 pl-0">
           <p-tag [value]="responseTypeToResponseTypeDesc(req.responseType)" [severity]="getResponseTypeSeverity(req.responseType)"/>
         </td>
-        <td>{{requestTypeToRequestTypeDesc(req.requestType)}}</td>
-        <td>{{req.requestUserID}}</td>
-        <td>{{dateToMonthYYYYMMdd(req.responseDate)}}</td>
-        <td>
-          <p-button class="p-button-sm" (onClick)="move(req)" [disabled]="!haveRole">{{"common-desc.open" | translate}}</p-button>
+        <td class="pr-0 pl-0">{{requestTypeToRequestTypeDesc(req.requestType)}}</td>
+        <td class="pr-0 pl-0">{{req.requestUserID}}</td>
+        <td class="pr-0 pl-0">{{dateToMMdd(req.responseDate)}}</td>
+        <td class="pr-0 pl-0">
+          <p-button class="p-button-sm p-0" (onClick)="move(req)" [disabled]="!haveRole">{{"common-desc.open" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>
@@ -66,9 +64,9 @@
             <th>{{"dash-board.request.response-type" | translate}}</th>
           </tr>
           <tr>
-            <td><label>{{dateToMonthYYYYMMdd(openedRequest.requestDate)}}</label></td>
+            <td><label>{{dateToYYYYMMdd(openedRequest.requestDate)}}</label></td>
             <td><label>{{requestTypeToRequestTypeDesc(openedRequest.requestType)}}</label></td>
-            <td><label>{{dateToMonthYYYYMMdd(openedRequest.requestDate)}}</label></td>
+            <td><label>{{dateToYYYYMMdd(openedRequest.requestDate)}}</label></td>
             <td><label>{{responseTypeToResponseTypeDesc(openedRequest.responseType)}}</label></td>
             <td><label>{{openedRequest.requestUserID}}</label></td>
             <td>

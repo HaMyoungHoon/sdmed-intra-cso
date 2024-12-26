@@ -10,6 +10,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import * as FAmhohwa from "../../../../guards/f-amhohwa";
 import * as FConstants from "../../../../guards/f-constants";
 import {FComponentBase} from "../../../../guards/f-component-base";
+import {dateToMMdd} from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-request-view",
@@ -111,8 +112,8 @@ export class RequestViewComponent extends FComponentBase {
   }
   async getListBetween(): Promise<void> {
     this.setLoading();
-    const startDate = FExtensions.dateToMonthYYYYMMdd(this.startDate);
-    const endDate = FExtensions.dateToMonthYYYYMMdd(this.endDate);
+    const startDate = FExtensions.dateToYYYYMMdd(this.startDate);
+    const endDate = FExtensions.dateToYYYYMMdd(this.endDate);
     const ret = await FExtensions.restTry(async() => await this.thisService.getListByDate(startDate, endDate),
       e => this.fDialogService.error("getListBetween", e));
     this.setLoading(false);
@@ -219,7 +220,8 @@ export class RequestViewComponent extends FComponentBase {
 
   protected readonly customSort = FExtensions.customSort;
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly dateToMonthYYYYMMdd = FExtensions.dateToMonthYYYYMMdd;
+  protected readonly dateToMMdd = FExtensions.dateToMMdd;
+  protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
   protected readonly responseTypeToResponseTypeDesc = responseTypeToResponseTypeDesc;
   protected readonly requestTypeToRequestTypeDesc = requestTypeToRequestTypeDesc;
   protected readonly getResponseTypeSeverity = FExtensions.getResponseTypeSeverity;
