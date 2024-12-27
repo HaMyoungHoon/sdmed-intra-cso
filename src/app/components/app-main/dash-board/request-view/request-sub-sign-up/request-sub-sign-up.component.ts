@@ -58,7 +58,7 @@ export class RequestSubSignUpComponent extends FComponentBase {
     if (buff == undefined) {
       return;
     }
-    const ret = await FExtensions.restTry(async() => await this.thisService.getData(buff.requestItemPK),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getData(buff.requestItemPK, true),
       e => this.fDialogService.error("getThisData", e));
     if (ret.result) {
       this.thisData = ret.data ?? new UserDataModel();

@@ -79,7 +79,9 @@ export async function saveUserData(data: UserDataModel, selectedUserRoles: strin
   data.status = StatusDescToUserStatus[selectedUserStatus];
   const ret = await service.putUser(data);
   if (ret.result) {
+    const children = [...data.children];
     data = ret.data ?? new UserDataModel();
+    data.children = children;
     return saveUserChildData(data, service);
   }
 
@@ -87,6 +89,7 @@ export async function saveUserData(data: UserDataModel, selectedUserRoles: strin
 }
 
 export async function saveUserChildData(data: UserDataModel, service: UserInfoService): Promise<RestResult<UserDataModel>> {
+  console.log(data.children.map(x => x.thisPK));
   const ret = await service.postChildModify(data.thisPK, data.children.map(x => x.thisPK));
   if (ret.result) {
     return new RestResult<UserDataModel>(data);
