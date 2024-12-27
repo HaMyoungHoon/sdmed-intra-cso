@@ -46,7 +46,7 @@
         <td class="pr-0 pl-0">{{req.requestUserID}}</td>
         <td class="pr-0 pl-0">{{dateToMMdd(req.responseDate)}}</td>
         <td class="pr-0 pl-0">
-          <p-button class="p-button-sm p-0" (onClick)="move(req)" [disabled]="!haveRole">{{"common-desc.open" | translate}}</p-button>
+          <p-button class="p-0" size="small" (onClick)="move(req)" [disabled]="!haveRole">{{"common-desc.open" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>

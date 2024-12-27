@@ -3,8 +3,8 @@
   <div class="flex flex-column m-1">
     <div class="flex mb-1">
       <label class="align-self-center mr-1">{{"user-mapping.user-list.title" | translate}}</label>
-      <p-button class="p-button-sm mr-1" (click)="save()">{{"common-desc.save" | translate}}</p-button>
-      <p-button class="p-button-sm" icon="pi pi-refresh" (click)="refresh()"></p-button>
+      <p-button class="mr-1" size="small" (click)="save()">{{"common-desc.save" | translate}}</p-button>
+      <p-button size="small" icon="pi pi-refresh" (click)="refresh()"></p-button>
     </div>
     <p-listbox class="flex h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" optionLabel="name" (onChange)="userListOnSelect($event)">
       <ng-template #item let-user>

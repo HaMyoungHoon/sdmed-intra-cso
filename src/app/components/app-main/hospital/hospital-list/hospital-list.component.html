@@ -37,7 +37,7 @@
         <td>{{ellipsis(hospital.etc1)}}</td>
         <td>{{ellipsis(hospital.etc2)}}</td>
         <td>
-          <p-button class="p-button-sm" (onClick)="hospitalEdit(hospital)" [disabled]="!haveRole">{{"common-desc.edit" | translate}}</p-button>
+          <p-button size="small" (onClick)="hospitalEdit(hospital)" [disabled]="!haveRole">{{"common-desc.edit" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>
