@@ -1,7 +1,7 @@
 <div class="medicine-price-list-container">
   <p-table #listTable [value]="medicineModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm">
+           [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
@@ -23,14 +23,14 @@
     </ng-template>
     <ng-template #header>
       <tr>
-        <th pSortableColumn="name" style="min-width: 50rem">{{"medicine-price-list.name" | translate}} <p-sortIcon field="name" /></th>
+        <th pSortableColumn="name" style="min-width: 30rem">{{"medicine-price-list.name" | translate}} <p-sortIcon field="name" /></th>
         <th>{{"medicine-price-list.kd-code" | translate}}</th>
-        <th pSortableColumn="pharma" style="width: 20rem">{{"medicine-price-list.pharma-name" | translate}} <p-sortIcon field="pharma" /></th>
+        <th pSortableColumn="pharma" style="min-width: 5rem">{{"medicine-price-list.pharma-name" | translate}} <p-sortIcon field="pharma" /></th>
         <th style="width: 20rem">{{"medicine-price-list.main-ingredient-code" | translate}}</th>
-        <th pSortableColumn="maxPrice">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
-        <th>{{"medicine-price-list.custom-price" | translate}}</th>
-        <th>{{"medicine-price-list.apply-date" | translate}}</th>
-        <th>{{"medicine-price-list.price-history" | translate}}</th>
+        <th pSortableColumn="maxPrice" style="min-width: 5rem">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
+        <th style="min-width: 5rem">{{"medicine-price-list.custom-price" | translate}}</th>
+        <th style="min-width: 5rem">{{"medicine-price-list.apply-date" | translate}}</th>
+        <th style="min-width: 5rem">{{"medicine-price-list.price-history" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template #body let-item>

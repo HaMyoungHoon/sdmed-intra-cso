@@ -92,7 +92,7 @@
       <p-accordion-content>
         <div class="formgrid grid">
           <p-table class="field col" [value]="userDataModel.hosList" [scrollable]="true" selectionMode="single" [(selection)]="selectedHosData"
-                   styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+                   size="small" stripedRows="true" [paginator]="true" [rows]="10">
             <ng-template #header>
               <tr>
                 <th class="w-2">{{"user-edit.hos-data.code" | translate}}</th>
@@ -107,7 +107,7 @@
             </ng-template>
           </p-table>
           <p-table class="field col" [value]="selectedHosData.pharmaList" [scrollable]="true"
-                   styleClass="p-datatable-sm p-datatable-striped" [paginator]="true" [rows]="10">
+                   size="small" stripedRows="true" [paginator]="true" [rows]="10">
             <ng-template #header>
               <tr>
                 <th class="w-2">{{"user-edit.pharma-data.code" | translate}}</th>

@@ -53,7 +53,7 @@
       <p-accordion-header>{{"my-info.accordion-header.child" | translate}}</p-accordion-header>
       <p-accordion-content>
         <p-table [value]="userDataModel?.children ?? []" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]"
-                 [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+                 [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
           <ng-template #header>
             <tr>
               <th>{{"my-info.child.id" | translate}}</th>

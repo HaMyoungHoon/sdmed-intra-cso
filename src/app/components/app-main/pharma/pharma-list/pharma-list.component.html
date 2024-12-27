@@ -1,7 +1,7 @@
 <div class="pharma-list-container">
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+           [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>

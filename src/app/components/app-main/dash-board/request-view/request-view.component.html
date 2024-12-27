@@ -15,7 +15,8 @@
   </div>
   <p-table class="col-12" #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="['requestDate', 'responseType']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
-           [tableStyle]="{'min-width': '20rem'}" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+           size="small" stripedRows="true"
+           [tableStyle]="{'min-width': '20rem'}">
     <ng-template #caption>
       <div class="flex p-0">
         <p-iconfield class="flex ml-auto justify-content-end" iconPosition="left">
