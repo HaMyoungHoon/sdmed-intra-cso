@@ -102,6 +102,7 @@ export function getResponseTypeSeverity(data?: ResponseType): any {
     case ResponseType.Ignore: return "danger";
     case ResponseType.Reject: return "danger";
   }
+  return "danger";
 }
 export function getUserStatusSeverity(data?: UserStatus): any {
   switch (data) {
@@ -112,7 +113,7 @@ export function getUserStatusSeverity(data?: UserStatus): any {
     case UserStatus.Expired: return "danger";
   }
 
-  return undefined;
+  return "danger";
 }
 export function getEDIStateSeverity(data?: EDIState): any {
   switch (data) {
@@ -122,6 +123,8 @@ export function getEDIStateSeverity(data?: EDIState): any {
     case EDIState.Pending: return "warning";
     case EDIState.Partial: return "info";
   }
+
+  return "danger";
 }
 
 export function tryCatch<T>(fn: () => T, onError?: (e: any) => void): T | null {
