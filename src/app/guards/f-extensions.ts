@@ -270,7 +270,7 @@ export function getHospitalBlobModel(file: File, ext: string): BlobUploadModel {
   const blobName = `hospital/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
   return getBlobModel(blobName, FAmhohwa.getThisPK(), file, ext);
 }
-export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string): QnAReplyFileModel {
+export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string, mimeType: string): QnAReplyFileModel {
   const userName = FAmhohwa.getUserID();
   const blobName = `qna/${userName}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
   const blobUrl = `${FConstants.BLOB_URL}/${FConstants.BLOB_CONTAINER_NAME}/${blobName}`;
@@ -279,7 +279,7 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string
     obj.blobUrl = blobUrl;
     obj.blobName = blobName;
     obj.originalFilename = file.name;
-    obj.mimeType = getMimeTypeExt(ext);
+    obj.mimeType = mimeType;
   });
 }
 
@@ -296,6 +296,7 @@ export async function gatheringAbleFile(fileList: FileList, notAble: (file: File
       obj.filename = buff.name;
       obj.mimeType = getMimeTypeExt(ext);
       obj.blobUrl = parseFileBlobUrl(buff, ext);
+      obj.ext = ext;
     }));
   }
   return ret;
