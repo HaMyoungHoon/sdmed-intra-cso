@@ -10,6 +10,7 @@ import * as FAmhohwa from "./f-amhohwa";
 import * as FConstants from "./f-constants";
 import {QnAReplyFileModel} from "../models/rest/qna/qna-reply-file-model";
 import {UploadFileBuffModel} from "../models/common/upload-file-buff-model";
+import {QnAState} from "../models/rest/qna/qna-state";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -125,6 +126,16 @@ export function getEDIStateSeverity(data?: EDIState): any {
   }
 
   return "danger";
+}
+export function getQnAStateSeverity(data?: QnAState): any {
+  switch (data) {
+    case QnAState.None: return "warning";
+    case QnAState.OK: return "success";
+    case QnAState.Recep: return "warning";
+    case QnAState.Reply: return "info";
+  }
+
+  return "warning";
 }
 
 export function tryCatch<T>(fn: () => T, onError?: (e: any) => void): T | null {
@@ -327,6 +338,19 @@ export function parseFileBlobUrl(file: File, ext?: string): string {
 
   return FConstants.ASSETS_NO_IMAGE;
 }
+export function extToBlobUrl(ext: string): string {
+  if (ext == "zip") {
+    return FConstants.ASSETS_ZIP_IMAGE;
+  } else if (ext == "pdf") {
+    return FConstants.ASSETS_PDF_IMAGE;
+  } else if (ext == "xlsx" || ext == "xls") {
+    return FConstants.ASSETS_XLSX_IMAGE;
+  } else if (ext == "docx" || ext == "doc" ) {
+    return FConstants.ASSETS_DOCX_IMAGE;
+  }
+
+  return FConstants.ASSETS_NO_IMAGE;
+}
 export async function getFileExt(file: File, byteCount: number = 8): Promise<string> {
   const magicNumber = await getMagicNumber(file, byteCount);
   if (magicNumber.startsWith("50 4B 03 04")) return getFilenameExt(file.name);
@@ -338,6 +362,7 @@ export async function getFileExt(file: File, byteCount: number = 8): Promise<str
   if (magicNumber.startsWith("52 49 46 46") && (await getMagicNumber(file, 12)).includes("57 45 42 50")) return "webp";
   if (magicNumber.startsWith("00 00 00 18 66 74 79 70")) return "heic";
   if (magicNumber.startsWith("66 74 79 70 68 65 69 63")) return "heic";
+  if (magicNumber.startsWith("47 49 46")) return "gif";
 
   return "unknown";
 }
@@ -366,8 +391,78 @@ export function isImage(ext: string): boolean {
   if (ext == "bmp") return true;
   if (ext == "webp") return true;
   if (ext == "heic") return true;
+  if (ext == "gif") return true;
 
   return false;
+}
+export function getExtMimeType(mimeType: string): string {
+  switch (mimeType) {
+    case FContentsType.type_aac: return "aac";
+    case FContentsType.type_abw: return "abw";
+    case FContentsType.type_arc: return "arc";
+    case FContentsType.type_avi: return "avi";
+    case FContentsType.type_azw: return "azw";
+    case FContentsType.type_bin: return "bin";
+    case FContentsType.type_bz: return "bz";
+    case FContentsType.type_bz2: return "bz2";
+    case FContentsType.type_csh: return "csh";
+    case FContentsType.type_css: return "css";
+    case FContentsType.type_csv: return "csv";
+    case FContentsType.type_doc: return "doc";
+    case FContentsType.type_epub: return "epub";
+    case FContentsType.type_gif: return "gif";
+    case FContentsType.type_htm: return "htm";
+    case FContentsType.type_html: return "html";
+    case FContentsType.type_heic: return "heic";
+    case FContentsType.type_heif: return "heif";
+    case FContentsType.type_ico: return "ico";
+    case FContentsType.type_ics: return "ics";
+    case FContentsType.type_jar: return "jar";
+    case FContentsType.type_jpeg: return "jpeg";
+    case FContentsType.type_jpg: return "jpg";
+    case FContentsType.type_js: return "js";
+    case FContentsType.type_json: return "json";
+    case FContentsType.type_mid: return "mid";
+    case FContentsType.type_midi: return "midi";
+    case FContentsType.type_mpeg: return "mpeg";
+    case FContentsType.type_mpkg: return "mpkg";
+    case FContentsType.type_odp: return "odp";
+    case FContentsType.type_ods: return "ods";
+    case FContentsType.type_odt: return "odt";
+    case FContentsType.type_oga: return "oga";
+    case FContentsType.type_ogv: return "ogv";
+    case FContentsType.type_ogx: return "ogx";
+    case FContentsType.type_png: return "png";
+    case FContentsType.type_pdf: return "pdf";
+    case FContentsType.type_ppt: return "ppt";
+    case FContentsType.type_rar: return "rar";
+    case FContentsType.type_rtf: return "rtf";
+    case FContentsType.type_sh: return "sh";
+    case FContentsType.type_svg: return "svg";
+    case FContentsType.type_swf: return "swf";
+    case FContentsType.type_tar: return "tar";
+    case FContentsType.type_tif: return "tif";
+    case FContentsType.type_tiff: return "tiff";
+    case FContentsType.type_ttf: return "ttf";
+    case FContentsType.type_txt: return "txt";
+    case FContentsType.type_vsd: return "vsd";
+    case FContentsType.type_wav: return "wav";
+    case FContentsType.type_weba: return "weba";
+    case FContentsType.type_webm: return "webm";
+    case FContentsType.type_webp: return "webp";
+    case FContentsType.type_woff: return "woff";
+    case FContentsType.type_xhtml: return "xhtml";
+    case FContentsType.type_xls: return "xls";
+    case FContentsType.type_xlsx: return "xlsx";
+    case FContentsType.type_xlsm: return "xlsm";
+    case FContentsType.type_xml: return "xml";
+    case FContentsType.type_xul: return "xul";
+    case FContentsType.type_zip: return "zip";
+    case FContentsType.type_3gp: return "3gp";
+    case FContentsType.type_3g2: return "3g2";
+    case FContentsType.type_7z: return "7z";
+    default: return "unknown";
+  }
 }
 export function getMimeTypeExt(ext: string): string {
   switch (ext) {
