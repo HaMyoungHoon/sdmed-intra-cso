@@ -41,6 +41,7 @@ export class RequestSubQnaComponent extends FComponentBase {
   qnaHeaderModel: QnAHeaderModel = new QnAHeaderModel();
   qnaContentModel: QnAContentModel = new QnAContentModel();
   qnaReplyModel: QnAReplyModel = new QnAReplyModel();
+  accordionValue = ["0"];
   content: string = "";
   htmlValue: string = "";
   saveAble: boolean = false;
@@ -79,6 +80,7 @@ export class RequestSubQnaComponent extends FComponentBase {
       e => this.fDialogService.error("getContent", e));
     if (ret.result) {
       this.qnaContentModel = ret.data ?? new QnAContentModel();
+      this.accordionValue = [`${this.qnaContentModel.replyList.length - 1}`];
       return;
     }
     this.fDialogService.warn("getContent", ret.msg);
@@ -229,7 +231,9 @@ export class RequestSubQnaComponent extends FComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
-  accordionValue = ["0"];
+  accordionIndex(item: QnAReplyModel): string {
+    return `${this.qnaContentModel.replyList.findIndex(x => x.thisPK == item.thisPK)}`;
+  }
 
   get downloadFileTooltip(): string {
     return "common-desc.save";
