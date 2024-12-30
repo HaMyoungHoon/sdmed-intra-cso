@@ -23,6 +23,7 @@
         <th pSortableColumn="name">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
         <th>{{"medicine-list.main-ingredient-name" | translate}}</th>
         <th>{{"medicine-list.custom-price" | translate}}</th>
+        <th>{{"medicine-list.charge" | translate}}</th>
         <th>{{"medicine-list.max-price" | translate}}</th>
         <th>{{"medicine-list.etc1" | translate}}</th>
         <th>{{"medicine-list.etc2" | translate}}</th>
@@ -35,6 +36,7 @@
         <td>{{medicine.name}}</td>
         <td>{{medicine.medicineIngredientModel.mainIngredientName}}</td>
         <td>{{medicine.customPrice}}</td>
+        <td>{{medicine.charge}}</td>
         <td>{{medicine.maxPrice}}</td>
         <td>{{ellipsis(medicine.medicineSubModel.etc1)}}</td>
         <td>{{ellipsis(medicine.medicineSubModel.etc2)}}</td>

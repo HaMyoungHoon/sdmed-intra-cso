@@ -29,6 +29,7 @@
         <th style="width: 20rem">{{"medicine-price-list.main-ingredient-code" | translate}}</th>
         <th pSortableColumn="maxPrice" style="min-width: 5rem">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
         <th style="min-width: 5rem">{{"medicine-price-list.custom-price" | translate}}</th>
+        <th style="min-width: 5rem">{{"medicine-price-list.charge" | translate}}</th>
         <th style="min-width: 5rem">{{"medicine-price-list.apply-date" | translate}}</th>
         <th style="min-width: 5rem">{{"medicine-price-list.price-history" | translate}}</th>
       </tr>
@@ -41,6 +42,7 @@
         <td>{{item.medicineIngredientModel.mainIngredientName}}</td>
         <td>{{item.maxPrice}}</td>
         <td>{{item.customPrice}}</td>
+        <td>{{item.charge}}</td>
         <td>{{getApplyDate(item)}}</td>
         <td>
           <p-button (onClick)="priceHistoryDialogOpen(item)" [disabled]="disablePriceHistory(item)">{{"medicine-price-list.price-history" | translate}}</p-button>

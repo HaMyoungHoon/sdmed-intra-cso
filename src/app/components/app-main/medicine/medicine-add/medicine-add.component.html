@@ -38,6 +38,10 @@
       <div class="col-4">
         <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.customPrice" />
       </div>
+      <label class="col-2 align-self-center">{{"medicine-add.charge" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="number" maxlength="3" [(ngModel)]="medicineModel.charge" />
+      </div>
     </div>
   </p-card>
   <p-card class="flex grid m-1" *ngIf="medicineModel">

@@ -36,6 +36,10 @@
       <div class="col-4">
         <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.customPrice" />
       </div>
+      <label class="col-2 align-self-center">{{"medicine-edit.charge" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="number" maxlength="3" [(ngModel)]="medicineModel.charge" />
+      </div>
       <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
       <div class="col-4">
         <p-select [options]="[true, false]" [(ngModel)]="medicineModel.inVisible" />
