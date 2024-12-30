@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject} from "@angular/core";
+import {AfterContentInit, Component, inject, OnDestroy} from "@angular/core";
 import {FDialogService} from "../services/common/f-dialog.service";
 import {haveRole, UserRole} from "../models/rest/user/user-role";
 import * as FExtensions from "./f-extensions";
@@ -6,17 +6,19 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
 import {AzureBlobService} from "../services/rest/azure-blob.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: "f-dialog-component-base",
   template: "",
   standalone: false
 })
-export abstract class FDialogComponentBase implements AfterViewInit {
+export abstract class FDialogComponentBase implements AfterContentInit, OnDestroy {
   myRole?: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
   isMobile: boolean = false;
+  protected sub: Subject<any>[] = [];
   protected roleCheck: boolean = true;
   protected ref: DynamicDialogRef;
   protected dialogService: DialogService;
@@ -33,12 +35,15 @@ export abstract class FDialogComponentBase implements AfterViewInit {
     this.azureBlobService = inject(AzureBlobService);
   }
 
-  async ngAfterViewInit(): Promise<void> {
+  async ngAfterContentInit(): Promise<void> {
     this.isMobile = !navigator.userAgent.includes("Window");
     if (this.roleCheck) {
       await this.getMyRole();
     }
     await this.ngInit();
+  }
+  async ngOnDestroy(): Promise<void> {
+    await this.ngDestroy();
   }
   async getMyRole(): Promise<void> {
     this.setLoading();
@@ -57,6 +62,11 @@ export abstract class FDialogComponentBase implements AfterViewInit {
 
   async ngInit(): Promise<void> {
 
+  }
+  async ngDestroy(): Promise<void> {
+    for (const buff of this.sub) {
+      buff.complete();
+    }
   }
 
   setLoading(data: boolean = true): void {

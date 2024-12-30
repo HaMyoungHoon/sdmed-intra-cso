@@ -10,6 +10,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {FullCalendarComponent} from "@fullcalendar/angular";
 import {LangChangeEvent} from "@ngx-translate/core";
+import {Subject, takeUntil} from "rxjs";
 
 
 @Component({
@@ -48,7 +49,9 @@ export class EdiDueDateComponent extends FComponentBase {
   ablePharmaList: PharmaModel[] = [];
   constructor(private thisService: EdiDueDateService, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger, UserRole.Employee, UserRole.EdiChanger));
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.translateService.onLangChange.pipe(takeUntil(sub)).subscribe((event: LangChangeEvent) => {
       this.calendarOptions.update((options) => ({
         ...options,
         locale: event.lang

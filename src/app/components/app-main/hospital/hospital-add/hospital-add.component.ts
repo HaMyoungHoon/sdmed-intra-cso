@@ -22,6 +22,7 @@ export class HospitalAddComponent extends FComponentBase {
   selectBillType: string = billTypeToBillTypeDesc(BillType.None);
   selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
   selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
+  hospitalModelCodeError: string = "";
   constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }

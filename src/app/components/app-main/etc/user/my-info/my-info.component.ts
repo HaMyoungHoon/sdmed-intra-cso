@@ -9,6 +9,7 @@ import {MyInfoService} from "../../../../../services/rest/my-info.service";
 import * as FAmhohwa from "../../../../../guards/f-amhohwa";
 import * as FConstants from "../../../../../guards/f-constants";
 import {transformToBoolean} from "primeng/utils";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-my-info",
@@ -38,13 +39,15 @@ export class MyInfoComponent extends FComponentBase {
     this.fDialogService.warn("getUserData", ret.msg);
   }
   passwordChange(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openPasswordChangeDialog({
       modal: true,
       closable: true,
       closeOnEscape: true,
       draggable: false,
       resizable: false,
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
     });
   }
   logout(): void {

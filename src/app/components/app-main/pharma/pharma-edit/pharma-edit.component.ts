@@ -8,7 +8,7 @@ import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, phar
 import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
-import {debounceTime, Subject, Subscription} from "rxjs";
+import {debounceTime, Subject, Subscription, takeUntil} from "rxjs";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import * as FExtensions from "../../../../guards/f-extensions";
 import * as FConstants from "../../../../guards/f-constants";
@@ -51,8 +51,10 @@ export class PharmaEditComponent extends FComponentBase {
     await this.getPharmaData();
   }
   initLayoutData(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.medicineSearchObserver = this.medicineSearchSubject.pipe(debounceTime(this.medicineSearchDebounceTime))
-      .subscribe(async() => {
+      .pipe(takeUntil(sub)).subscribe(async() => {
         this.medicineSearchLoading = false;
         await this.medicineSearch();
       });

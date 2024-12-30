@@ -7,7 +7,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {saveAs} from "file-saver";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import * as FConstants from "../../../../guards/f-constants";
-import {filterTableOption} from "../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-hospital-list",
@@ -52,6 +52,8 @@ export class HospitalListComponent extends FComponentBase {
       window.open(FConstants.HOSPITAL_NEW_URL);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openHospitalAddDialog({
       modal: true,
       closable: false,
@@ -60,7 +62,7 @@ export class HospitalListComponent extends FComponentBase {
       resizable: true,
       maximizable: true,
       width: "60%",
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }
@@ -98,6 +100,8 @@ export class HospitalListComponent extends FComponentBase {
       window.open(`${FConstants.HOSPITAL_LIST_URL}/${data.thisPK}`);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openHospitalEditDialog({
       modal: true,
       closable: false,
@@ -107,7 +111,7 @@ export class HospitalListComponent extends FComponentBase {
       maximizable: true,
       width: "60%",
       data: data
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }

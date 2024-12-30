@@ -8,6 +8,7 @@ import {Table} from "primeng/table";
 import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {saveAs} from "file-saver";
 import * as FConstants from "../../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-user-setting",
@@ -78,6 +79,8 @@ export class UserSettingComponent extends FComponentBase {
       window.open(`${FConstants.USER_INFO_URL}/${data.thisPK}`);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openUserEditDialog({
       modal: true,
       closable: false,
@@ -87,7 +90,7 @@ export class UserSettingComponent extends FComponentBase {
       maximizable: true,
       width: "60%",
       data: data
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }

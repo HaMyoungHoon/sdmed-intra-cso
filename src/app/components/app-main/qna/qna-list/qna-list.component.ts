@@ -9,6 +9,7 @@ import {QnAStateToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
 import {Calendar} from "primeng/calendar";
 import {SelectButtonModel} from "../../../../models/common/select-button-model";
 import * as FAmhohwa from "../../../../guards/f-amhohwa";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-qna-list",
@@ -127,7 +128,8 @@ export class QnaListComponent extends FComponentBase {
       window.open(`${FConstants.QNA_LIST}/${data.thisPK}`);
       return;
     }
-
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openQnAViewDialog({
       modal: true,
       closable: false,
@@ -136,7 +138,7 @@ export class QnaListComponent extends FComponentBase {
       resizable: true,
       maximizable: true,
       data: data.thisPK
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }

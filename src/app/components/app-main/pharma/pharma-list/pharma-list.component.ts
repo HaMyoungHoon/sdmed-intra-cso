@@ -7,6 +7,7 @@ import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {saveAs} from "file-saver";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import * as FConstants from "../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-pharma-list",
@@ -52,6 +53,8 @@ export class PharmaListComponent extends FComponentBase {
       window.open(FConstants.PHARMA_NEW_URL);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openPharmaAddDialog({
       modal: true,
       closable: false,
@@ -60,7 +63,7 @@ export class PharmaListComponent extends FComponentBase {
       resizable: true,
       maximizable: true,
       width: "60%",
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }
@@ -125,6 +128,8 @@ export class PharmaListComponent extends FComponentBase {
       window.open(`${FConstants.PHARMA_LIST_URL}/${data.thisPK}`);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openPharmaEditDialog({
       modal: true,
       closable: false,
@@ -134,7 +139,7 @@ export class PharmaListComponent extends FComponentBase {
       maximizable: true,
       width: "60%",
       data: data
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }

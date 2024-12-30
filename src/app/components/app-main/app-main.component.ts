@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ViewChild} from "@angular/core";
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild} from "@angular/core";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
@@ -8,6 +8,7 @@ import * as FConstants from "../../guards/f-constants";
 import {FDialogService} from "../../services/common/f-dialog.service";
 import {NgIf} from "@angular/common";
 import {ButtonModule} from "primeng/button";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-app-main",
@@ -16,9 +17,10 @@ import {ButtonModule} from "primeng/button";
   styleUrl: "./app-main.component.scss",
   standalone: true
 })
-export class AppMainComponent implements AfterViewInit {
+export class AppMainComponent implements AfterViewInit, OnDestroy {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;
   viewPage: boolean = false;
+  sub: Subject<any>[] = [];
   constructor(private cd: ChangeDetectorRef, private router: Router, private fDialogService: FDialogService) {
   }
 
@@ -34,8 +36,16 @@ export class AppMainComponent implements AfterViewInit {
     this.initChildComponents(true);
     this.bindRouteEvents();
   }
+  ngOnDestroy(): void {
+    for (const buff of this.sub) {
+      buff.complete();
+    }
+  }
+
   openSignIn(): void {
-    this.fDialogService.openSignIn().subscribe(() => {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openSignIn().pipe(takeUntil(sub)).subscribe(() => {
       this.closeSignIn();
     });
   }

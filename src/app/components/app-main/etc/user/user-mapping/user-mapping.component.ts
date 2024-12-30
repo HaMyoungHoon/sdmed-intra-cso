@@ -5,7 +5,7 @@ import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model"
 import {PharmaModel} from "../../../../../models/rest/pharma/pharma-model";
 import {MedicineModel} from "../../../../../models/rest/medicine/medicine-model";
 import {UserRole} from "../../../../../models/rest/user/user-role";
-import {debounceTime, Subject, Subscription} from "rxjs";
+import {debounceTime, Subject, Subscription, takeUntil} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/user/hos-pharma-medicine-pair-model";
 import * as FExtensions from "../../../../../guards/f-extensions";
 import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
@@ -137,13 +137,17 @@ export class UserMappingComponent extends FComponentBase {
     this.fDialogService.warn("getAllList", ret.msg);
   }
   initSearch(): void {
+    const sub1 = new Subject<any>();
+    this.sub.push(sub1);
     this.hosSearchObserver = this.hosSearchSubject.pipe(debounceTime(this.hosSearchDebounceTime))
-      .subscribe(async() => {
+      .pipe(takeUntil(sub1)).subscribe(async() => {
         this.hosSearchLoading = false;
         await this.hosSearch();
     });
+    const sub2 = new Subject<any>();
+    this.sub.push(sub2);
     this.pharmaSearchObserver = this.pharmaSearchSubject.pipe(debounceTime(this.pharmaSearchDebounceTime))
-      .subscribe(async() => {
+      .pipe(takeUntil(sub2)).subscribe(async() => {
         this.pharmaSearchLoading = false;
         await this.pharmaSearch();
       });

@@ -7,6 +7,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {MedicineListService} from "../../../../services/rest/medicine-list.service";
 import {saveAs} from "file-saver";
 import * as FConstants from "../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-medicine-list",
@@ -53,6 +54,8 @@ export class MedicineListComponent extends FComponentBase {
       window.open(FConstants.MEDICINE_NEW_URL);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openMedicineAddDialog({
       modal: true,
       closable: false,
@@ -61,7 +64,7 @@ export class MedicineListComponent extends FComponentBase {
       resizable: true,
       maximizable: true,
       width: "60%",
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }
@@ -99,6 +102,8 @@ export class MedicineListComponent extends FComponentBase {
       window.open(`${FConstants.MEDICINE_LIST_URL}/${data.thisPK}`);
       return;
     }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
     this.fDialogService.openMedicineEditDialog({
       modal: true,
       closable: false,
@@ -108,7 +113,7 @@ export class MedicineListComponent extends FComponentBase {
       maximizable: true,
       width: "60%",
       data: data
-    }).subscribe((x): void => {
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;
       }
