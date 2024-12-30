@@ -176,6 +176,11 @@ export class RequestViewComponent extends FComponentBase {
     return true;
   }
   async signUpMethod(data: RequestModel): Promise<void> {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.USER_INFO_URL}/${data.requestItemPK}`);
+      return;
+    }
     const ready = await this.requestDrawerReady(data);
   }
   async ediUploadMethod(data: RequestModel): Promise<void> {
