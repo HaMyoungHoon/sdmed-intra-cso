@@ -189,6 +189,13 @@
     }
   },
   "user-edit": {
+    "request": {
+      "request-date": "req date",
+      "response-type": "res type",
+      "request-type": "req type",
+      "request-user-id": "req user",
+      "response-date": "res date"
+    },
     "accordion-header": {
       "detail": "user info edit",
       "child": "child",

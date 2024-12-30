@@ -189,6 +189,13 @@
     }
   },
   "user-edit": {
+    "request": {
+      "request-date": "요청일",
+      "response-type": "응답타입",
+      "request-type": "요청타입",
+      "request-user-id": "요청자",
+      "response-date": "응답일"
+    },
     "accordion-header": {
       "detail": "유저 정보 편집",
       "child": "하위 유저",
