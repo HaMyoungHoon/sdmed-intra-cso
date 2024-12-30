@@ -59,3 +59,10 @@ app-hospital-edit .p-inputwrapper  {
 .p-drawer .p-listbox, .p-listbox-list-container {
   min-height: 50rem;
 }
+
+.p-galleria-nav-button {
+  background-color: rgba(220, 220, 220, 150) !important;
+}
+.p-galleria-next-icon, .p-galleria-prev-icon {
+  color: black;
+}
