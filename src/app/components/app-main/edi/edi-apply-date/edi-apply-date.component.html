@@ -1,11 +1,11 @@
 <div class="edi-apply-date-container">
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
+           [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-date-picker [(ngModel)]="selectMonth" view="month" dateFormat="yy-mm" readonlyInput="true" />
-        <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole" pTooltip="{{'common-desc.add' | translate}}"/>
-        <p-button class="m-1" (click)="refreshData()" icon="pi pi-refresh" pTooltip="{{'common-desc.refresh' | translate}}" />
+        <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole" pTooltip="{{insertDataTooltip | translate}}"/>
+        <p-button class="m-1" (click)="refreshData()" icon="pi pi-refresh" pTooltip="{{refreshTooltip | translate}}" />
       </div>
     </ng-template>
     <ng-template #header>

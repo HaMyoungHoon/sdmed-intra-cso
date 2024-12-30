@@ -11,10 +11,7 @@ import * as FConstants from "../../../../../guards/f-constants";
 import {ActivatedRoute} from "@angular/router";
 import {transformToBoolean} from "primeng/utils";
 import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
-import {
-  allResponseTypeDescArray, ResponseTypeDescToResponseType,
-  responseTypeToResponseTypeDesc
-} from "../../../../../models/rest/requst/response-type";
+import {allResponseTypeDescArray, ResponseTypeDescToResponseType, responseTypeToResponseTypeDesc} from "../../../../../models/rest/requst/response-type";
 import {requestTypeToRequestTypeDesc} from "../../../../../models/rest/requst/request-type";
 import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {DashboardService} from "../../../../../services/rest/dashboard.service";
@@ -139,6 +136,9 @@ export class UserEditComponent extends FComponentBase {
 
     return FConstants.ASSETS_NO_IMAGE;
   }
+  get taxpayerTooltip(): string {
+    return "user-edit.detail.taxpayer-image";
+  }
   taxpayerImageView(): void {
     FUserInfoMethod.userImageView(this.userDataModel.taxpayerImageUrl, this.taxpayerImageInput, this.fDialogService);
   }
@@ -161,6 +161,9 @@ export class UserEditComponent extends FComponentBase {
 
     return FConstants.ASSETS_NO_IMAGE;
   }
+  get bankAccountTooltip(): string {
+    return "user-edit.detail.bank-account-image";
+  }
   bankAccountImageView(): void {
     FUserInfoMethod.userImageView(this.userDataModel.bankAccountImageUrl, this.bankAccountImageInput, this.fDialogService);
   }
@@ -178,6 +181,13 @@ export class UserEditComponent extends FComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
+  accordionValue: string | number | string[] | number[] = ["0", "1", "2"];
+  get filterFields(): string[] {
+    return ["id", "name"];
+  }
+  get filterPlaceHolder(): string {
+    return "user-edit.user-pick-list.filter-place-holder";
+  }
 
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;

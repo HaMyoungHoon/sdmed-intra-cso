@@ -1,19 +1,19 @@
 <div class="hospital-list-container">
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['code', 'orgName', 'innerName']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
+           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
+           [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
-        <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{'common-desc.sample-download' | translate}}" />
+        <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{sampleDownloadTooltip | translate}}" />
         <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
         <p-iconfield iconPosition="left" class="ml-auto">
           <p-inputicon>
             <i class="pi pi-search"></i>
           </p-inputicon>
-          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+          <input pInputText type="text" (input)="filterTable(listTable, $event, filterTableOption)" placeholder="Search keyword" />
         </p-iconfield>
       </div>
     </ng-template>

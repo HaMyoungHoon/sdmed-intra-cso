@@ -9,21 +9,21 @@
       </p-selectButton>
     </div>
     <div class="field flex mt-1 mb-0" *ngIf="selectedViewType.index == 2">
-      <p-date-picker class="flex m-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.start-date' | translate}}" />
-      <p-date-picker class="flex m-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{'dash-board.header.end-date' | translate}}" />
+      <p-date-picker class="flex m-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{startDateTooltip | translate}}" />
+      <p-date-picker class="flex m-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{endDateTooltip | translate}}" />
     </div>
   </div>
   <p-table class="col-12" #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['requestDate', 'responseType']" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
+           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            size="small" stripedRows="true"
-           [tableStyle]="{'min-width': '20rem'}">
+           [tableStyle]="tableStyle">
     <ng-template #caption>
       <div class="flex p-0">
         <p-iconfield class="flex ml-auto justify-content-end" iconPosition="left">
           <p-inputicon>
             <i class="pi pi-search"></i>
           </p-inputicon>
-          <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+          <input pInputText type="text" (input)="filterTable(listTable, $event, filterTableOption)" placeholder="Search keyword" />
         </p-iconfield>
       </div>
     </ng-template>

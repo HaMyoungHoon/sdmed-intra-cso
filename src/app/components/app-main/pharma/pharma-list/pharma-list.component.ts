@@ -149,7 +149,25 @@ export class PharmaListComponent extends FComponentBase {
     });
   }
 
+  get filterFields(): string[] {
+    return ["code", "orgName", "innerName"];
+  }
+  get uploadExcelTooltip(): string {
+    return "pharma-list.post-pharma-data";
+  }
+  get sampleDownloadTooltip(): string {
+    return "common-desc.sample-download";
+  }
+  get uploadMedicineTooltip(): string {
+    return "pharma-list.post-pharma-medicine";
+  }
+  get pharmaMedicineSampleDownloadTooltip(): string {
+    return "pharma-list.sample-pharma-medicine";
+  }
+
   protected readonly customSort = FExtensions.customSort;
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly ellipsis = FExtensions.ellipsis;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

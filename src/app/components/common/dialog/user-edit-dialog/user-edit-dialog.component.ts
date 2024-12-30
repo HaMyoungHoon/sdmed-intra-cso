@@ -107,6 +107,9 @@ export class UserEditDialogComponent extends FDialogComponentBase {
 
     return FConstants.ASSETS_NO_IMAGE;
   }
+  get taxpayerTooltip(): string {
+    return "user-edit.detail.taxpayer-image";
+  }
   taxpayerImageView(): void {
     FUserInfoMethod.userImageView(this.userDataModel.taxpayerImageUrl, this.taxpayerImageInput, this.fDialogService);
   }
@@ -129,6 +132,9 @@ export class UserEditDialogComponent extends FDialogComponentBase {
 
     return FConstants.ASSETS_NO_IMAGE;
   }
+  get bankAccountTooltip(): string {
+    return "user-edit.detail.bank-account-image";
+  }
   bankAccountImageView(): void {
     FUserInfoMethod.userImageView(this.userDataModel.bankAccountImageUrl, this.bankAccountImageInput, this.fDialogService);
   }
@@ -146,6 +152,13 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
+  accordionValue = ["0", "1", "2"];
+  get filterFields(): string[] {
+    return ["id", "name"];
+  }
+  get filterPlaceHolder(): string {
+    return "user-edit.user-pick-list.filter-place-holder";
+  }
 
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;

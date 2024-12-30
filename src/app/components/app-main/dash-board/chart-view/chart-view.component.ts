@@ -218,4 +218,11 @@ export class ChartViewComponent extends FComponentBase {
       documentStyle.getPropertyValue("--p-purple-700"),
     ];
   }
+
+  get startDateTooltip(): string {
+    return "dash-board.header.start-date";
+  }
+  get endDateTooltip(): string {
+    return "dash-board.header.end-date";
+  }
 }

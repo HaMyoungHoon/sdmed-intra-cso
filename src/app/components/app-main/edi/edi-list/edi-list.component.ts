@@ -7,6 +7,7 @@ import {EDIUploadModel} from "../../../../models/rest/edi/edi-upload-model";
 import {Table} from "primeng/table";
 import {DatePicker} from "primeng/datepicker";
 import {ediStateToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
+import * as FConstants from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-edi-list",
@@ -75,9 +76,21 @@ export class EdiListComponent extends FComponentBase {
     }
   }
 
+  get filterFields(): string[] {
+    return ["ediState"];
+  }
+  get startDatePlaceHolder(): string {
+    return "edi-list.header.start-date";
+  }
+  get endDatePlaceHolder(): string {
+    return "edi-list-header.end-date";
+  }
+
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly customSort = FExtensions.customSort;
   protected readonly ediStateToEDIStateDesc = ediStateToEDIStateDesc;
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

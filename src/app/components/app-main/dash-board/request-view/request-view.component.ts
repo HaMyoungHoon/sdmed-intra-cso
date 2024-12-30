@@ -10,7 +10,6 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import * as FAmhohwa from "../../../../guards/f-amhohwa";
 import * as FConstants from "../../../../guards/f-constants";
 import {FComponentBase} from "../../../../guards/f-component-base";
-import {dateToMMdd} from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-request-view",
@@ -223,6 +222,16 @@ export class RequestViewComponent extends FComponentBase {
   async requestDrawerOnShow(data: any): Promise<void> {
   }
 
+  get startDateTooltip(): string {
+    return "dash-board.header.start-date";
+  }
+  get endDateTooltip(): string {
+    return "dash-board.header.end-date";
+  }
+  get filterFields(): string[] {
+    return ["requestDate", "responseType"];
+  }
+
   protected readonly customSort = FExtensions.customSort;
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly dateToMMdd = FExtensions.dateToMMdd;
@@ -231,4 +240,6 @@ export class RequestViewComponent extends FComponentBase {
   protected readonly requestTypeToRequestTypeDesc = requestTypeToRequestTypeDesc;
   protected readonly getResponseTypeSeverity = FExtensions.getResponseTypeSeverity;
   protected readonly RequestType = RequestType;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

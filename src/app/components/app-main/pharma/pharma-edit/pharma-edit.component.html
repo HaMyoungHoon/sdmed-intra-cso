@@ -112,7 +112,7 @@
       <input #imageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="imageSelected($event)">
     </div>
   </p-card>
-  <p-card class="flex grid m-1" header="{{'pharma-edit.medicine-pick-list.header' | translate}}" *ngIf="pharmaModel">
+  <p-card class="flex grid m-1" header="{{cardHeader | translate}}" *ngIf="pharmaModel">
     <div class="flex align-self-center">
       <p-checkbox class="flex h-fit align-self-center mr-1" [(ngModel)]="isMedicineSearchTypeCode" [binary]="true" />
       <p-iconfield class="flex h-fit" iconPosition="left">
@@ -121,9 +121,9 @@
       </p-iconfield>
     </div>
     <app-custom-pick-list class="flex col-12" [sourceList]="medicineList" [targetList]="pharmaModel.medicineList"
-                          [filterFields]="['kdCode', 'name']"
-                          sourceFilterPlaceHolder="{{'pharma-edit.medicine-pick-list.filter-place-holder' | translate}}"
-                          targetFilterPlaceHolder="{{'pharma-edit.medicine-pick-list.filter-place-holder' | translate}}">
+                          [filterFields]="filterFields"
+                          sourceFilterPlaceHolder="{{filterPlaceHolder | translate}}"
+                          targetFilterPlaceHolder="{{filterPlaceHolder | translate}}">
       <ng-template #sourceItem let-medicine>
         <div>{{medicine.kdCode}}</div>
         <div>{{ellipsis(medicine.name)}}</div>

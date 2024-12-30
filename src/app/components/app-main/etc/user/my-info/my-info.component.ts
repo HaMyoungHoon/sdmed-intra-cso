@@ -53,6 +53,7 @@ export class MyInfoComponent extends FComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
+  accordionValue = ["0"];
 
   protected readonly getSeverity = FExtensions.getUserStatusSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
@@ -60,4 +61,5 @@ export class MyInfoComponent extends FComponentBase {
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
+  protected readonly tableStyle = FConstants.tableStyle;
 }

@@ -19,20 +19,20 @@
       </div>
       <ng-template #footer>
         <p-galleria class="flex m-1 justify-content-center" [value]="qnaContentModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
-                    [containerStyle]="{'width': '300px', 'height': '360px'}" [numVisible]="0">
+                    [containerStyle]="galleriaContainerStyle" [numVisible]="0">
           <ng-template pTemplate="item" let-item>
             <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image"/>
           </ng-template>
           <ng-template pTemplate="caption" let-item>
             <div class="flex">
-              <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{'common-desc.save' | translate}}" (click)="downloadFile(item)" />
+              <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadFile(item)" />
               <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
             </div>
           </ng-template>
         </p-galleria>
       </ng-template>
     </p-card>
-    <p-accordion class="flex flex-wrap flex-column w-full justify-content-center shadow-4 border-round-sm" [value]="['0']"
+    <p-accordion class="flex flex-wrap flex-column w-full justify-content-center shadow-4 border-round-sm" [value]="accordionValue"
                  [multiple]="multipleEnable" *ngIf="qnaContentModel.replyList.length > 0">
       <p-accordion-panel *ngFor="let replyModel of qnaContentModel.replyList">
         <p-accordion-header>
@@ -48,7 +48,7 @@
             </div>
             <ng-template #footer>
               <p-galleria [value]="replyModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
-                          [containerStyle]="{'width': '300px', 'height': '360px'}" [numVisible]="0">
+                          [containerStyle]="galleriaContainerStyle" [numVisible]="0">
                 <ng-template pTemplate="item" let-item>
                   <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image"/>
                 </ng-template>
@@ -65,13 +65,13 @@
         <p-button class="field align-content-center" size="small" (click)="fileUpload()">{{"common-desc.add" | translate}}</p-button>
         <p-card class="w-fit field" *ngIf="uploadFileBuffModel.length > 0">
           <p-galleria [value]="uploadFileBuffModel" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
-                      [containerStyle]="{'width': '300px', 'height': '360px'}" [numVisible]="0" [(activeIndex)]="activeIndex">
+                      [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex">
             <ng-template pTemplate="item" let-item>
               <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image"/>
             </ng-template>
             <ng-template pTemplate="caption" let-item>
               <div class="flex">
-                <p-button class="align-content-center" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{'common-desc.remove' | translate}}" (click)="deleteUploadFile(item)" />
+                <p-button class="align-content-center" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="deleteUploadFile(item)" />
                 <label class="m-1">{{ellipsis(item.file.name)}}</label>
               </div>
             </ng-template>

@@ -6,6 +6,7 @@ import {FComponentBase} from "../../../../guards/f-component-base";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {MedicinePriceListService} from "../../../../services/rest/medicine-price-list.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
+import * as FConstants from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-medicine-price-list",
@@ -134,7 +135,23 @@ export class MedicinePriceListComponent extends FComponentBase {
     return ((this.myRole & UserRole.Admin.valueOf()) != 0) || ((this.myRole & UserRole.CsoAdmin.valueOf()) != 0)
   }
 
+  get filterFields(): string[] {
+    return ["name", "kdCode", "pharma", "maxPrice"];
+  }
+  get uploadPriceTooltip(): string {
+    return "medicine-price-list.price-excel";
+  }
+  get uploadMainIngredient(): string {
+    return "medicine-price-list.main-ingredient-excel";
+  }
+
+  tableNgClass(item: MedicineModel): {"zero-price": boolean} {
+    return {"zero-price": item.maxPrice === 0};
+  }
+
   protected readonly customSort = FExtensions.customSort
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

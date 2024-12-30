@@ -123,7 +123,16 @@ export class MedicineListComponent extends FComponentBase {
     });
   }
 
+  get filterFields(): string[] {
+    return ["code", "name", "medicineIngredientModel.mainIngredientName"];
+  }
+  get sampleDownloadTooltip(): string {
+    return "common-desc.sample-download";
+  }
+
   protected readonly customSort = FExtensions.customSort;
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly ellipsis = FExtensions.ellipsis;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

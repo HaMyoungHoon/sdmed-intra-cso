@@ -24,25 +24,11 @@ import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from "prim
 import {FormsModule} from "@angular/forms";
 import {Tooltip} from "primeng/tooltip";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
+import * as FConstants from "../../../../../guards/f-constants";
 
 @Component({
   selector: "app-request-sub-qna",
-  imports: [
-    Card,
-    Tag,
-    GalleriaModule,
-    SafeHtmlPipe,
-    Button,
-    TranslatePipe,
-    Accordion,
-    AccordionPanel,
-    AccordionHeader,
-    AccordionContent,
-    Editor,
-    FormsModule,
-    Tooltip,
-    ProgressSpinComponent
-  ],
+  imports: [Card, Tag, GalleriaModule, SafeHtmlPipe, Button, TranslatePipe, Accordion, AccordionPanel, AccordionHeader, AccordionContent, Editor, FormsModule, Tooltip, ProgressSpinComponent],
   templateUrl: "./request-sub-qna.component.html",
   styleUrl: "./request-sub-qna.component.scss",
   standalone: true,
@@ -243,8 +229,18 @@ export class RequestSubQnaComponent extends FComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
+  accordionValue = ["0"];
+
+  get downloadFileTooltip(): string {
+    return "common-desc.save";
+  }
+  get removeFileTooltip(): string {
+    return "common-desc.remove";
+  }
+
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
   protected readonly QnAStateToQnAStateDesc = QnAStateToQnAStateDesc;
   protected readonly getQnAStateSeverity = FExtensions.getQnAStateSeverity;
   protected readonly ellipsis = FExtensions.ellipsis;
+  protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
 }

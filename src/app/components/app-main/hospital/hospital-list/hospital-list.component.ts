@@ -7,6 +7,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {saveAs} from "file-saver";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import * as FConstants from "../../../../guards/f-constants";
+import {filterTableOption} from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-hospital-list",
@@ -121,7 +122,16 @@ export class HospitalListComponent extends FComponentBase {
     });
   }
 
+  get filterFields(): string[] {
+    return ["code", "orgName", "innerName"];
+  }
+  get sampleDownloadTooltip(): string {
+    return "common-desc.sample-download";
+  }
+
   protected readonly customSort = FExtensions.customSort;
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly ellipsis = FExtensions.ellipsis;
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

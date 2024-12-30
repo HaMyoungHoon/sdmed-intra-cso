@@ -131,4 +131,23 @@ export class MenuConfigComponent {
       return "#4b5563"
     }
   }
+
+  get newTabTooltip(): string {
+    return "menu-config.is-new-tab";
+  }
+  scaleNgClass(s: number): {"scale-active": boolean} {
+    return {"scale-active": s === this.scale};
+  }
+  svgHeight(item: MenuItem): string {
+    return item["height"];
+  }
+  svgWidth(item: MenuItem): string {
+    return item["width"];
+  }
+  svgViewBox(item: MenuItem): string {
+    return item["viewBox"];
+  }
+  svgPath(item: MenuItem): string {
+    return item["path"];
+  }
 }

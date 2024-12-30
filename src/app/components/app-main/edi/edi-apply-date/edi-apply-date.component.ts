@@ -5,6 +5,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {EDIApplyDateModel} from "../../../../models/rest/edi/edi-apply-date-model";
 import {allEDIApplyDateStateDescArray, EDIApplyDateState, EDIApplyDateStateDescToEDIApplyDateState, StringToEDIApplyDateStateDesc} from "../../../../models/rest/edi/edi-apply-date-state";
 import * as FExtensions from "../../../../guards/f-extensions";
+import * as FConstants from "../../../../guards/f-constants";
 
 @Component({
   selector: "app-edi-apply-date",
@@ -82,5 +83,13 @@ export class EdiApplyDateComponent extends FComponentBase {
     }
   }
 
+  get insertDataTooltip(): string {
+    return "common-desc.add";
+  }
+  get refreshTooltip(): string {
+    return "common-desc.refresh";
+  }
+
   protected readonly allEDIApplyDateStateDescArray = allEDIApplyDateStateDescArray;
+  protected readonly tableStyle = FConstants.tableStyle;
 }

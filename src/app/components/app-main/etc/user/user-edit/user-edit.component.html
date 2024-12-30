@@ -27,7 +27,7 @@
   <div class="m-1">
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
   </div>
-  <p-accordion [multiple]="multipleEnable" [value]="['0', '1', '2']">
+  <p-accordion [multiple]="multipleEnable" [value]="accordionValue">
     <p-accordion-panel *ngIf="userDataModel" value="0">
       <p-accordion-header>{{"user-edit.accordion-header.detail" | translate}}</p-accordion-header>
       <p-accordion-content>
@@ -82,11 +82,11 @@
         <div class="field grid">
           <label class="col-fixed m-1">{{userDataModel.companyNumber}}</label>
           <div class="col m-1">
-            <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel.companyNumber" (click)="taxpayerImageView()" pTooltip="{{'user-edit.detail.taxpayer-image' | translate}}"/>
+            <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="userDataModel.companyNumber" (click)="taxpayerImageView()" pTooltip="{{taxpayerTooltip | translate}}"/>
           </div>
           <label class="col-fixed m-1">{{userDataModel.bankAccount}}</label>
           <div class="col m-1">
-            <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel.bankAccount" (click)="bankAccountImageView()" pTooltip="{{'user-edit.detail.bank-account-image' | translate}}"/>
+            <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="userDataModel.bankAccount" (click)="bankAccountImageView()" pTooltip="{{bankAccountTooltip | translate}}"/>
           </div>
           <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="taxpayerImageSelected($event)">
           <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="bankAccountImageSelected($event)">
@@ -97,8 +97,8 @@
       <p-accordion-header>{{"user-edit.accordion-header.child" | translate}}</p-accordion-header>
       <p-accordion-content>
         <app-custom-pick-list class="flex col-12" [sourceList]="childAble" [targetList]="userDataModel.children" [disable]="userDataModel.motherPK.length > 0"
-                              [filterFields]="['id', 'name']" sourceFilterPlaceHolder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}"
-                              targetFilterPlaceHolder="{{'user-edit.user-pick-list.filter-place-holder' | translate}}">
+                              [filterFields]="filterFields" sourceFilterPlaceHolder="{{filterPlaceHolder | translate}}"
+                              targetFilterPlaceHolder="{{filterPlaceHolder | translate}}">
           <ng-template #sourceItem let-source>
             <div>{{source.id}}</div>
             <div>{{source.name}}</div>

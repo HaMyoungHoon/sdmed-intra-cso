@@ -320,5 +320,24 @@ export class UserMappingComponent extends FComponentBase {
     this.fDialogService.warn("medicineSearch", ret.msg);
   }
 
+  get hosFilterFields(): string[] {
+    return ["code", "innerName"];
+  }
+  get hosFilterPlaceHolder(): string {
+    return "user-mapping.hos-pick-list.filter-place-holder";
+  }
+  get pharmaFilterFields(): string[] {
+    return ["code", "innerName"];
+  }
+  get pharmaFilterPlaceHolder(): string {
+    return "user-mapping.pharma-pick-list.filter-place-holder";
+  }
+  get medicineFilterFields(): string[] {
+    return ["kdCode", "name"];
+  }
+  get medicineFilterPlaceHolder(): string {
+    return "user-mapping.medicine-pick-list.filter-place-holder";
+  }
+
   protected readonly ellipsis = FExtensions.ellipsis;
 }

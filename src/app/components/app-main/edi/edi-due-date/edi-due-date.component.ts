@@ -228,4 +228,8 @@ export class EdiDueDateComponent extends FComponentBase {
       }
     });
   }
+
+  get filterFields(): string[] {
+    return ["code", "innerName"];
+  }
 }

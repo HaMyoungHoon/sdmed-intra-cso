@@ -1,13 +1,13 @@
 <div class="medicine-price-list-container">
   <p-table #listTable [value]="medicineModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="['name', 'kdCode', 'pharma', 'maxPrice']" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
-           [tableStyle]="{'min-width': '25rem'}" size="small" stripedRows="true">
+           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
+           [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
         <p-date-picker class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!isAdmin" />
-        <p-button class="m-1" (onClick)="uploadPriceExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.price-excel' | translate}}" />
-        <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{'medicine-price-list.main-ingredient-excel' | translate}}" />
+        <p-button class="m-1" (onClick)="uploadPriceExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{uploadPriceTooltip | translate}}" />
+        <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{uploadMainIngredient | translate}}" />
         <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">
         <input #inputMainIngredientUploadExcel class="collapse" type="file" accept=".xlsx" (change)="mainIngredientExcelSelected($event)">
         <div class="flex ml-auto justify-content-end">
@@ -16,7 +16,7 @@
             <p-inputicon>
               <i class="pi pi-search"></i>
             </p-inputicon>
-            <input pInputText type="text" (input)="filterTable(listTable, $event, 'contains')" placeholder="Search keyword" />
+            <input pInputText type="text" (input)="filterTable(listTable, $event, filterTableOption)" placeholder="Search keyword" />
           </p-iconfield>
         </div>
       </div>
@@ -35,7 +35,7 @@
       </tr>
     </ng-template>
     <ng-template #body let-item>
-      <tr [ngClass]="{'zero-price': item.maxPrice === 0}">
+      <tr [ngClass]="tableNgClass(item)">
         <td>{{item.name}}</td>
         <td>{{item.kdCode}}</td>
         <td>{{item.pharma}}</td>

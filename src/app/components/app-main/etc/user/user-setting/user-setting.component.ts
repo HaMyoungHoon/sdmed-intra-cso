@@ -102,9 +102,19 @@ export class UserSettingComponent extends FComponentBase {
     });
   }
 
+  get filterFields(): string[] {
+    return ["id", "name", "status", "role"];
+  }
+  get sampleDownloadTooltip(): string {
+    return "common-desc.sample-download";
+  }
+
+
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
   protected readonly getSeverity = FExtensions.getUserStatusSeverity;
   protected readonly flagToRoleDesc = flagToRoleDesc;
   protected readonly customSort = FExtensions.customSort
   protected readonly filterTable = FExtensions.filterTable
+  protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly filterTableOption = FConstants.filterTableOption;
 }

@@ -24,9 +24,9 @@
       </p-iconfield>
     </div>
     <app-custom-pick-list class="flex col-12" [disable]="hosPickListDisable" [sourceList]="hosList" [targetList]="sourceHosList"
-                          [(selectedTarget)]="selectHos" [filterFields]="['code', 'innerName']" (targetSelectChange)="hosPickListTargetSelect2($event)"
-                          sourceFilterPlaceHolder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}"
-                          targetFilterPlaceHolder="{{'user-mapping.hos-pick-list.filter-place-holder' | translate}}">
+                          [(selectedTarget)]="selectHos" [filterFields]="hosFilterFields" (targetSelectChange)="hosPickListTargetSelect2($event)"
+                          sourceFilterPlaceHolder="{{hosFilterPlaceHolder | translate}}"
+                          targetFilterPlaceHolder="{{hosFilterPlaceHolder | translate}}">
       <ng-template #sourceItem let-source>
         <div>{{source.code}}</div>
         <div>{{source.innerName}}</div>
@@ -46,9 +46,9 @@
       </p-iconfield>
     </div>
     <app-custom-pick-list class="flex col-12" [disable]="pharmaPickListDisable" [sourceList]="pharmaList" [targetList]="sourcePharmaList"
-                          [(selectedTarget)]="selectPharma" [filterFields]="['code', 'innerName']" (targetSelectChange)="pharmaPickListTargetSelect2($event)"
-                          sourceFilterPlaceHolder="{{'user-mapping.pharma-pick-list.filter-place-holder' | translate}}"
-                          targetFilterPlaceHolder="{{'user-mapping.pharma-pick-list.filter-place-holder' | translate}}">
+                          [(selectedTarget)]="selectPharma" [filterFields]="pharmaFilterFields" (targetSelectChange)="pharmaPickListTargetSelect2($event)"
+                          sourceFilterPlaceHolder="{{pharmaFilterPlaceHolder | translate}}"
+                          targetFilterPlaceHolder="{{pharmaFilterPlaceHolder | translate}}">
       <ng-template #sourceItem let-source>
         <div>{{source.code}}</div>
         <div>{{ellipsis(source.innerName)}}</div>
@@ -61,9 +61,9 @@
   </div>
   <div class="flex flex-column m-1">
     <app-custom-pick-list class="flex col-12" [disable]="medicinePickListDisable" [sourceList]="medicineList" [targetList]="sourceMedicineList"
-                          [filterFields]="['kdCode', 'name']"
-                          sourceFilterPlaceHolder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}"
-                          targetFilterPlaceHolder="{{'user-mapping.medicine-pick-list.filter-place-holder' | translate}}">
+                          [filterFields]="medicineFilterFields"
+                          sourceFilterPlaceHolder="{{medicineFilterPlaceHolder | translate}}"
+                          targetFilterPlaceHolder="{{medicineFilterPlaceHolder | translate}}">
       <ng-template #sourceItem let-source>
         <div>{{source.kdCode}}</div>
         <div>{{ellipsis(source.name)}}</div>

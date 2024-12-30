@@ -195,5 +195,15 @@ export class PharmaEditComponent extends FComponentBase {
     }
   }
 
+  get cardHeader(): string {
+    return "pharma-edit.medicine-pick-list.header";
+  }
+  get filterFields(): string[] {
+    return ["kdCode", "name"];
+  }
+  get filterPlaceHolder(): string {
+    return "pharma-edit.medicine-pick-list.filter-place-holder";
+  }
+
   protected readonly ellipsis = FExtensions.ellipsis;
 }

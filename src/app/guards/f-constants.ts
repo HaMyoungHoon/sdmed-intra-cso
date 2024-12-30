@@ -45,3 +45,8 @@ export const ASSETS_DOCX_IMAGE = "assets/image/word-image.png";
 
 export const BLOB_URL = "https://mhhablob1.blob.core.windows.net";
 export const BLOB_CONTAINER_NAME = "mhhablob1";
+
+
+export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
+export const filterTableOption: string = "contains";
+export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "300px", "height": "360px"};
