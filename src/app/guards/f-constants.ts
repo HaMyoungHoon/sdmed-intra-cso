@@ -2,6 +2,7 @@ export const AUTH_TOKEN = "token";
 
 export const STORAGE_KEY_LANG = "lang";
 export const STORAGE_DASHBOARD_VIEW_TYPE = "dashboardViewType";
+export const STORAGE_QNA_VIEW_TYPE = "qnaViewType";
 
 export const THEME_LINK = "app-theme";
 

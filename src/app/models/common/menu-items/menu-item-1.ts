@@ -13,7 +13,14 @@ export function MenuItem1(): MenuItem {
         icon: "pi pi-fw pi-home",
         styleClass: "top-menu",
         routerLink: `/${FConstants.DASH_BOARD_URL}`,
-      }
+      },
+      {
+        label: "menu-1.sub-menu.sub-2",
+        visible: true,
+        icon: "pi pi-fw pi-question",
+        styleClass: "top-menu",
+        routerLink: `/${FConstants.QNA_LIST}`,
+      },
     ]
   };
 }

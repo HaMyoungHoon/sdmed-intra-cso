@@ -1,1 +1,47 @@
-<p>qna-list works!</p>
+<div class="qna-list-container">
+  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
+           size="small" stripedRows="true" [tableStyle]="tableStyle">
+    <ng-template #caption>
+      <div class="flex p-0">
+        <div class="field flex flex-row mb-0">
+          <p-button (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
+          <p-selectButton [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
+            <ng-template #item let-item>
+              <label>{{item.label | translate}}</label>
+            </ng-template>
+          </p-selectButton>
+        </div>
+        <div class="field flex mt-1 mb-0" *ngIf="selectedViewType.index == 2">
+          <p-date-picker class="flex m-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{startDateTooltip | translate}}" />
+          <p-date-picker class="flex m-1 w-8rem" #endCalendar [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{endDateTooltip | translate}}" />
+        </div>
+        <p-iconfield class="flex ml-auto justify-content-end" iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input pInputText type="text" (input)="filterTable(listTable, $event, filterTableOption)" placeholder="Search keyword" />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="title">{{"qna-list.table.title" | translate}} <p-sortIcon field="title"/></th>
+        <th pSortableColumn="id">{{"qna-list.table.id" | translate}} <p-sortIcon field="id"/></th>
+        <th pSortableColumn="state">{{"qna-list.table.state" | translate}} <p-sortIcon field="state"/></th>
+        <th pSortableColumn="regDate">{{"qna-list.table.reg-date" | translate}} <p-sortIcon field="regDate"/></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-data>
+      <tr class="qna-tr" (click)="open(data)">
+        <td>{{data.title}}</td>
+        <td>{{data.id}}</td>
+        <td>
+          <p-tag [value]="QnAStateToQnAStateDesc(data.qnaState)" [severity]="getQnAStateSeverity(data.qnaState)"/>
+        </td>
+        <td>{{dateToYYYYMMdd(data.regDate)}}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

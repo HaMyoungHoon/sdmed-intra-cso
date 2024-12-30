@@ -2,7 +2,8 @@
   "menu-1": {
     "title": "메뉴 1",
     "sub-menu": {
-      "sub-1": "대시보드"
+      "sub-1": "대시보드",
+      "sub-2": "qna"
     }
   },
   "menu-2": {
@@ -56,6 +57,21 @@
       "request-type": "요청타입",
       "request-user-id": "요청자",
       "response-date": "응답일"
+    }
+  },
+  "qna-list": {
+    "header": {
+      "view-type-my-child": "담당만",
+      "view-type-all": "전부",
+      "view-type-date": "날짜 기준",
+      "start-date": "시작일",
+      "end-date": "종료일"
+    },
+    "table": {
+      "title": "제목",
+      "id": "아이디",
+      "state": "상태",
+      "reg-date": "등록일"
     }
   },
   "edi-list": {
