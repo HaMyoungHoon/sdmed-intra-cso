@@ -135,6 +135,7 @@ export class QnaListComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
+      data: data.thisPK
     }).subscribe((x): void => {
       if (x == null) {
         return;
@@ -151,7 +152,7 @@ export class QnaListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["title", "id"];
+    return ["title", "id", "qnaState"];
   }
   get startDateTooltip(): string {
     return "qna-list.header.start-date";

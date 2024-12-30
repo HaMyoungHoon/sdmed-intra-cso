@@ -70,7 +70,7 @@
     "table": {
       "title": "title",
       "id": "id",
-      "state": "state",
+      "qna-state": "state",
       "reg-date": "reg date"
     }
   },

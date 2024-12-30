@@ -28,7 +28,7 @@
       <tr>
         <th pSortableColumn="title">{{"qna-list.table.title" | translate}} <p-sortIcon field="title"/></th>
         <th pSortableColumn="id">{{"qna-list.table.id" | translate}} <p-sortIcon field="id"/></th>
-        <th pSortableColumn="state">{{"qna-list.table.state" | translate}} <p-sortIcon field="state"/></th>
+        <th pSortableColumn="qnaState">{{"qna-list.table.qna-state" | translate}} <p-sortIcon field="qnaState"/></th>
         <th pSortableColumn="regDate">{{"qna-list.table.reg-date" | translate}} <p-sortIcon field="regDate"/></th>
       </tr>
     </ng-template>
@@ -37,7 +37,7 @@
         <td>{{data.title}}</td>
         <td>{{data.id}}</td>
         <td>
-          <p-tag [value]="QnAStateToQnAStateDesc(data.qnaState)" [severity]="getQnAStateSeverity(data.qnaState)"/>
+          <p-tag [value]="data.qnaState" [severity]="getQnAStateSeverity(data.qnaState)"/>
         </td>
         <td>{{dateToYYYYMMdd(data.regDate)}}</td>
       </tr>

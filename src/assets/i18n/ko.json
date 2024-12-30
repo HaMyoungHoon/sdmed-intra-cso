@@ -70,7 +70,7 @@
     "table": {
       "title": "제목",
       "id": "아이디",
-      "state": "상태",
+      "qna-state": "상태",
       "reg-date": "등록일"
     }
   },
