@@ -14,6 +14,9 @@ export const EDI_LIST = "ediList";
 export const EDI_DUE_DATE = "ediDueDate";
 export const EDI_APPLY_DATE = "ediApplyDate";
 
+export const QNA_LIST = "qnaList";
+export const QNA_VIEW = "qnaList/:thisPK";
+
 export const HOSPITAL_LIST_URL = "hospital-list";
 export const HOSPITAL_NEW_URL = "hospital-list/new";
 export const HOSPITAL_EDIT_URL = "hospital-list/:thisPK";
