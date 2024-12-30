@@ -11,6 +11,13 @@ import * as FConstants from "../../../../../guards/f-constants";
 import {ActivatedRoute} from "@angular/router";
 import {transformToBoolean} from "primeng/utils";
 import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
+import {
+  allResponseTypeDescArray, ResponseTypeDescToResponseType,
+  responseTypeToResponseTypeDesc
+} from "../../../../../models/rest/requst/response-type";
+import {requestTypeToRequestTypeDesc} from "../../../../../models/rest/requst/request-type";
+import {RequestModel} from "../../../../../models/rest/requst/request-model";
+import {DashboardService} from "../../../../../services/rest/dashboard.service";
 
 @Component({
   selector: "app-user-edit",
@@ -21,6 +28,9 @@ import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
 export class UserEditComponent extends FComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
+  requestModel?: RequestModel;
+  responseTypeList: string[] = allResponseTypeDescArray();
+  selectedResponseType: string = responseTypeToResponseTypeDesc();
   childAble: UserDataModel[] = [];
   userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
@@ -30,15 +40,40 @@ export class UserEditComponent extends FComponentBase {
   selectedUserDepts: string[] = [];
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData: HospitalModel = new HospitalModel();
-  constructor(private thisService: UserInfoService, private route: ActivatedRoute) {
+  constructor(private thisService: UserInfoService, private dashboardService: DashboardService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
     this.userDataModel.thisPK = this.route.snapshot.params["thisPK"];
   }
   override async ngInit(): Promise<void> {
+    this.setLoading();
+    await this.getRequestModel();
     await this.getUserData();
     await this.getChildAble();
+    this.setLoading(false);
   }
 
+  async getRequestModel(): Promise<void> {
+    const ret = await FExtensions.restTry(async() => await this.dashboardService.getRequestData(this.userDataModel.thisPK),
+      e => this.fDialogService.error("getRequestModel", e));
+    if (ret.result) {
+      this.requestModel = ret.data;
+      this.selectedResponseType = responseTypeToResponseTypeDesc(this.requestModel?.responseType);
+      return;
+    }
+    this.fDialogService.warn("getRequestModel", ret.msg);
+  }
+  async putRequestModelResponseData(data?: RequestModel): Promise<RequestModel | undefined> {
+    if (data == null) {
+      return data;
+    }
+    const ret = await FExtensions.restTry(async() => await this.dashboardService.putRequestModelResponseData(data),
+      e => this.fDialogService.error("putRequestModelResponseData", e));
+    if (ret.result) {
+      return ret.data ?? data;
+    }
+    this.fDialogService.warn("putRequestModelResponseData", ret.msg);
+    return undefined;
+  }
   async getUserData(): Promise<void> {
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.userDataModel.thisPK, true, true),
       e => this.fDialogService.error("getUserData", e));
@@ -59,6 +94,22 @@ export class UserEditComponent extends FComponentBase {
       return;
     }
     this.fDialogService.warn("getChildAble", ret.msg);
+  }
+
+  async requestItemResponseTypeChange(): Promise<void> {
+    const responseType = ResponseTypeDescToResponseType[this.selectedResponseType];
+    if (this.requestModel == null) {
+      return;
+    }
+    if (this.requestModel.responseType == responseType) {
+      return;
+    }
+    this.requestModel.responseType = responseType;
+    const buff = await this.putRequestModelResponseData(this.requestModel);
+    if (buff == undefined) {
+      return;
+    }
+    this.requestModel = buff;
   }
   async saveUserData(): Promise<void> {
     this.setLoading();
@@ -130,4 +181,7 @@ export class UserEditComponent extends FComponentBase {
 
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;
+	protected readonly responseTypeToResponseTypeDesc = responseTypeToResponseTypeDesc;
+	protected readonly requestTypeToRequestTypeDesc = requestTypeToRequestTypeDesc;
+  protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
 }

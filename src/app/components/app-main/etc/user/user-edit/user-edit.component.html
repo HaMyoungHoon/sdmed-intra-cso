@@ -1,5 +1,29 @@
 <div class="user-edit-dialog-container">
   <app-progress-spin [isLoading]="isLoading" />
+  <p-card class="request-item-header-container" *ngIf="requestModel">
+    <table>
+      <tr>
+        <th>{{"dash-board.request.request-date" | translate}}</th>
+        <th>{{"dash-board.request.request-type" | translate}}</th>
+        <th>{{"dash-board.request.response-date" | translate}}</th>
+        <th>{{"dash-board.request.response-type" | translate}}</th>
+        <th>{{"dash-board.request.request-user-id" | translate}}</th>
+        <th>{{"dash-board.request.response-type" | translate}}</th>
+      </tr>
+      <tr>
+        <td><label>{{dateToYYYYMMdd(requestModel.requestDate)}}</label></td>
+        <td><label>{{requestTypeToRequestTypeDesc(requestModel.requestType)}}</label></td>
+        <td><label>{{dateToYYYYMMdd(requestModel.requestDate)}}</label></td>
+        <td><label>{{responseTypeToResponseTypeDesc(requestModel.responseType)}}</label></td>
+        <td><label>{{requestModel.requestUserID}}</label></td>
+        <td>
+          <div>
+            <p-select class="" [options]="responseTypeList" [(ngModel)]="selectedResponseType" (ngModelChange)="requestItemResponseTypeChange()" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  </p-card>
   <div class="m-1">
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
   </div>

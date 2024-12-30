@@ -14,13 +14,14 @@ import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Select} from "primeng/select";
 import {CustomPickListComponent} from "../../../../common/custom-pick-list/custom-pick-list.component";
+import {Card} from "primeng/card";
 
 
 
 @NgModule({
   declarations: [UserEditComponent],
-  imports: [
-    CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent
-  ]
+	imports: [
+		CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent, Card
+	]
 })
 export class UserEditModule { }
