@@ -3,12 +3,13 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {QnAHeaderModel} from "../../models/rest/qna/qna-header-model";
 import {QnAReplyModel} from "../../models/rest/qna/qna-reply-model";
+import {QnAContentModel} from "../../models/rest/qna/qna-content-model";
 
 @Injectable({
   providedIn: "root"
 })
 export class QnaListService {
-  private baseUrl = "/apiCSO/intra/pharmaList";
+  private baseUrl = "/apiCSO/intra/qnaList";
 
   constructor(private httpResponse: HttpResponseInterceptorService) { }
 
@@ -22,6 +23,12 @@ export class QnaListService {
     this.httpResponse.addParam("startDate", startDate);
     this.httpResponse.addParam("endDate", endDate);
     return this.httpResponse.get(`${this.baseUrl}/list/date`);
+  }
+  getHeaderData(thisPK: string): Promise<RestResult<QnAHeaderModel>> {
+    return this.httpResponse.get(`${this.baseUrl}/data/header/${thisPK}`);
+  }
+  getContentData(thisPK: string): Promise<RestResult<QnAContentModel>> {
+    return this.httpResponse.get(`${this.baseUrl}/data/content/${thisPK}`);
   }
 
   postReply(thisPK: string, qnaReplyModel: QnAReplyModel): Promise<RestResult<QnAReplyModel>> {
