@@ -26,6 +26,9 @@ export class DashboardService {
     this.httpResponse.addParam("endDate", endDate);
     return this.httpResponse.get(`${this.baseUrl}/list/date`);
   }
+  getRequestData(requestItemPK: string): Promise<RestResult<RequestModel>> {
+    return this.httpResponse.get(`${this.baseUrl}/data/requestData/${requestItemPK}`);
+  }
   getUserData(thisPK: string): Promise<RestResult<UserDataModel>> {
     return this.httpResponse.get(`${this.baseUrl}/data/${thisPK}`);
   }
