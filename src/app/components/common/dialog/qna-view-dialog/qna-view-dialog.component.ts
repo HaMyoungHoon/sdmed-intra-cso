@@ -26,16 +26,20 @@ import {Tag} from "primeng/tag";
 import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {FormsModule} from "@angular/forms";
+import {FullscreenFileViewComponent} from "../../fullscreen-file-view/fullscreen-file-view.component";
+import {QnAReplyFileModel} from "../../../../models/rest/qna/qna-reply-file-model";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-qna-view-dialog",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, Card, Editor, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, SafeHtmlPipe, Tag, Tooltip, TranslatePipe, FormsModule],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, Card, Editor, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, SafeHtmlPipe, Tag, Tooltip, TranslatePipe, FormsModule, FullscreenFileViewComponent],
   templateUrl: "./qna-view-dialog.component.html",
   styleUrl: "./qna-view-dialog.component.scss",
   standalone: true
 })
 export class QnaViewDialogComponent extends FDialogComponentBase {
   @ViewChild("inputFiles") inputFiles!: ElementRef<HTMLInputElement>;
+  @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   thisPK: string;
   requestModel?: RequestModel;
   qnaHeaderModel: QnAHeaderModel = new QnAHeaderModel();
@@ -100,8 +104,19 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("getContent", ret.msg);
   }
 
-  async downloadFile(item: QnAContentModel): Promise<void> {
-
+  async downloadFile(item: QnAFileModel): Promise<void> {
+    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+      e => this.fDialogService.error("downloadFile", e));
+    if (ret && ret.body) {
+      saveAs(ret.body, item.originalFilename);
+    }
+  }
+  async downloadReplyFile(item: QnAReplyFileModel): Promise<void> {
+    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+      e => this.fDialogService.error("downloadFile", e));
+    if (ret && ret.body) {
+      saveAs(ret.body, item.originalFilename);
+    }
   }
 
   getBlobUrl(item: QnAFileModel): string {
@@ -110,6 +125,12 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
       return item.blobUrl;
     }
     return FExtensions.extToBlobUrl(ext);
+  }
+  async viewItem(data: QnAFileModel[], item: QnAFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
+  }
+  async viewReplyItem(data: QnAReplyFileModel[], item: QnAReplyFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaReplyFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
 
   get canReply(): boolean {
