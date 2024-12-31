@@ -51,7 +51,6 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
     const dlg = this.dialogService.getInstance(this.ref);
     this.thisPK = dlg.data;
-    console.log(this.thisPK);
   }
 
   override async ngInit(): Promise<void> {
@@ -96,7 +95,6 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
     if (ret.result) {
       this.qnaContentModel = ret.data ?? new QnAContentModel();
       this.accordionValue = [`${this.qnaContentModel.replyList.length - 1}`];
-      console.log(this.qnaContentModel.replyList);
       return;
     }
     this.fDialogService.warn("getContent", ret.msg);
