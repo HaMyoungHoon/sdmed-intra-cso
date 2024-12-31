@@ -11,6 +11,8 @@ import * as FConstants from "./f-constants";
 import {QnAReplyFileModel} from "../models/rest/qna/qna-reply-file-model";
 import {UploadFileBuffModel} from "../models/common/upload-file-buff-model";
 import {QnAState} from "../models/rest/qna/qna-state";
+import {QnAFileModel} from "../models/rest/qna/qna-file-model";
+import {FileViewModel} from "../models/rest/file-view-model";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -294,6 +296,23 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string
   });
 }
 
+export function qnaFileListToViewModel(qnaFileList: QnAFileModel[]): FileViewModel[] {
+  return qnaFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = x.originalFilename;
+    obj.ext = getExtMimeType(x.mimeType);
+  }));
+}
+export function qnaReplyFileListToViewModel(qnaReplyFileList: QnAReplyFileModel[]): FileViewModel[] {
+  return qnaReplyFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = x.originalFilename;
+    obj.ext = getExtMimeType(x.mimeType);
+  }));
+}
+
 export async function gatheringAbleFile(fileList: FileList, notAble: (file: File) => void): Promise<UploadFileBuffModel[]> {
   const ret: UploadFileBuffModel[] = [];
   for (let buff of fileList) {
@@ -395,7 +414,7 @@ export function isImage(ext: string): boolean {
 
   return false;
 }
-export function getExtMimeType(mimeType: string): string {
+export function getExtMimeType(mimeType?: string): string {
   switch (mimeType) {
     case FContentsType.type_aac: return "aac";
     case FContentsType.type_abw: return "abw";
@@ -464,7 +483,7 @@ export function getExtMimeType(mimeType: string): string {
     default: return "unknown";
   }
 }
-export function getMimeTypeExt(ext: string): string {
+export function getMimeTypeExt(ext?: string): string {
   switch (ext) {
     case "aac": return FContentsType.type_aac;
     case "abw": return FContentsType.type_abw;
