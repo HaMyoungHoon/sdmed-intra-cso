@@ -125,7 +125,7 @@ export class QnaListComponent extends FComponentBase {
   open(data: QnAHeaderModel): void {
     const isNewTab = this.configService.isNewTab();
     if (isNewTab) {
-      window.open(`${FConstants.QNA_LIST}/${data.thisPK}`);
+      window.open(`${FConstants.QNA_LIST_URL}/${data.thisPK}`);
       return;
     }
     const sub = new Subject<any>();
