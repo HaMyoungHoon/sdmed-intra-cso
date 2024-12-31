@@ -109,6 +109,14 @@ export class RequestSubQnaComponent extends FComponentBase {
       saveAs(ret.body, item.originalFilename);
     }
   }
+  async downloadReplyFile(item: QnAReplyFileModel): Promise<void> {
+    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+      e => this.fDialogService.error("downloadFile", e));
+    if (ret && ret.body) {
+      saveAs(ret.body, item.originalFilename);
+    }
+  }
+
   get canReply(): boolean {
     return this.qnaHeaderModel.qnaState != QnAState.OK;
   }

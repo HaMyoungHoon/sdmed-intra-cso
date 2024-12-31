@@ -52,7 +52,7 @@
               </ng-template>
               <ng-template pTemplate="caption" let-item>
                 <div class="flex">
-                  <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadFile(item)" />
+                  <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadReplyFile(item)" />
                   <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
                 </div>
               </ng-template>

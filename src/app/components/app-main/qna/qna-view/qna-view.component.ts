@@ -17,6 +17,7 @@ import {EditorTextChangeEvent} from "primeng/editor";
 import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-model";
 import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {QnAReplyFileModel} from "../../../../models/rest/qna/qna-reply-file-model";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-qna-view",
@@ -90,8 +91,19 @@ export class QnaViewComponent extends FComponentBase {
     this.fDialogService.warn("getContent", ret.msg);
   }
 
-  async downloadFile(item: QnAContentModel): Promise<void> {
-
+  async downloadFile(item: QnAFileModel): Promise<void> {
+    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+      e => this.fDialogService.error("downloadFile", e));
+    if (ret && ret.body) {
+      saveAs(ret.body, item.originalFilename);
+    }
+  }
+  async downloadReplyFile(item: QnAReplyFileModel): Promise<void> {
+    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+      e => this.fDialogService.error("downloadFile", e));
+    if (ret && ret.body) {
+      saveAs(ret.body, item.originalFilename);
+    }
   }
 
   getBlobUrl(item: QnAFileModel): string {
