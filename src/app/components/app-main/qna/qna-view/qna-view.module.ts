@@ -14,13 +14,14 @@ import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {QnaViewRoutingModule} from "./qna-view-routing.module";
 import {FormsModule} from "@angular/forms";
+import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
 
 
 
 @NgModule({
   declarations: [QnaViewComponent],
   imports: [
-    CommonModule, QnaViewRoutingModule, Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, Card, Editor, GalleriaModule, PrimeTemplate, ProgressSpinComponent, SafeHtmlPipe, Tag, Tooltip, TranslatePipe, FormsModule
+    CommonModule, QnaViewRoutingModule, Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, Card, Editor, GalleriaModule, PrimeTemplate, ProgressSpinComponent, SafeHtmlPipe, Tag, Tooltip, TranslatePipe, FormsModule, FullscreenFileViewComponent
   ]
 })
 export class QnaViewModule { }

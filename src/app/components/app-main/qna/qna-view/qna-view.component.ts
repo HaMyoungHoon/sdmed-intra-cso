@@ -15,6 +15,8 @@ import {transformToBoolean} from "primeng/utils";
 import {QnAReplyModel} from "../../../../models/rest/qna/qna-reply-model";
 import {EditorTextChangeEvent} from "primeng/editor";
 import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-model";
+import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
+import {QnAReplyFileModel} from "../../../../models/rest/qna/qna-reply-file-model";
 
 @Component({
   selector: "app-qna-view",
@@ -24,6 +26,7 @@ import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-mo
 })
 export class QnaViewComponent extends FComponentBase {
   @ViewChild("inputFiles") inputFiles!: ElementRef<HTMLInputElement>;
+  @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   thisPK: string;
   requestModel?: RequestModel;
   qnaHeaderModel: QnAHeaderModel = new QnAHeaderModel();
@@ -82,7 +85,6 @@ export class QnaViewComponent extends FComponentBase {
     if (ret.result) {
       this.qnaContentModel = ret.data ?? new QnAContentModel();
       this.accordionValue = [`${this.qnaContentModel.replyList.length - 1}`];
-      console.log(this.qnaContentModel.replyList);
       return;
     }
     this.fDialogService.warn("getContent", ret.msg);
@@ -98,6 +100,12 @@ export class QnaViewComponent extends FComponentBase {
       return item.blobUrl;
     }
     return FExtensions.extToBlobUrl(ext);
+  }
+  async viewItem(data: QnAFileModel[], item: QnAFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
+  }
+  async viewReplyItem(data: QnAReplyFileModel[], item: QnAReplyFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaReplyFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
 
   get canReply(): boolean {

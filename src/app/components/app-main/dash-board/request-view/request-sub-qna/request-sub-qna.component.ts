@@ -25,10 +25,12 @@ import {FormsModule} from "@angular/forms";
 import {Tooltip} from "primeng/tooltip";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 import * as FConstants from "../../../../../guards/f-constants";
+import {FullscreenFileViewComponent} from "../../../../common/fullscreen-file-view/fullscreen-file-view.component";
+import {QnAReplyFileModel} from "../../../../../models/rest/qna/qna-reply-file-model";
 
 @Component({
   selector: "app-request-sub-qna",
-  imports: [Card, Tag, GalleriaModule, SafeHtmlPipe, Button, TranslatePipe, Accordion, AccordionPanel, AccordionHeader, AccordionContent, Editor, FormsModule, Tooltip, ProgressSpinComponent],
+  imports: [Card, Tag, GalleriaModule, SafeHtmlPipe, Button, TranslatePipe, Accordion, AccordionPanel, AccordionHeader, AccordionContent, Editor, FormsModule, Tooltip, ProgressSpinComponent, FullscreenFileViewComponent],
   templateUrl: "./request-sub-qna.component.html",
   styleUrl: "./request-sub-qna.component.scss",
   standalone: true,
@@ -38,6 +40,7 @@ export class RequestSubQnaComponent extends FComponentBase {
   @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter<RequestModel>();
   @ViewChild("quillEditor") quillEditor!: Editor;
   @ViewChild("inputFiles") inputFiles!: ElementRef<HTMLInputElement>;
+  @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   qnaHeaderModel: QnAHeaderModel = new QnAHeaderModel();
   qnaContentModel: QnAContentModel = new QnAContentModel();
   qnaReplyModel: QnAReplyModel = new QnAReplyModel();
@@ -92,6 +95,12 @@ export class RequestSubQnaComponent extends FComponentBase {
       return item.blobUrl;
     }
     return FExtensions.extToBlobUrl(ext);
+  }
+  async viewItem(data: QnAFileModel[], item: QnAFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
+  }
+  async viewReplyItem(data: QnAReplyFileModel[], item: QnAReplyFileModel): Promise<void> {
+    await this.fullscreenFileView.show(FExtensions.qnaReplyFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
   async downloadFile(item: QnAFileModel): Promise<void> {
     const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),

@@ -1,5 +1,6 @@
 <div class="qna-view-container">
   <app-progress-spin [isLoading]="isLoading"/>
+  <drawer-fullscreen-file-view #fullscreenFileView />
   <p-card class="flex flex-wrap flex-column w-full justify-content-center shadow-2">
     <div class="flex grid w-full justify-content-center">
       <div class="m-1 select-none">
@@ -20,7 +21,7 @@
       <p-galleria class="flex m-1" [value]="qnaContentModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
                   [containerStyle]="galleriaContainerStyle" [numVisible]="0">
         <ng-template pTemplate="item" let-item>
-          <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image"/>
+          <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image cursor-pointer" (click)="viewItem(qnaContentModel.fileList, item)"/>
         </ng-template>
         <ng-template pTemplate="caption" let-item>
           <div class="flex">
@@ -30,7 +31,6 @@
         </ng-template>
       </p-galleria>
     </p-card>
-
     <p-accordion class="flex flex-wrap flex-column w-full justify-content-center shadow-4 border-round-sm" [value]="accordionValue"
                  [multiple]="multipleEnable" *ngIf="qnaContentModel.replyList.length > 0">
       <p-accordion-panel *ngFor="let replyModel of qnaContentModel.replyList" value="{{accordionIndex(replyModel)}}">
@@ -48,7 +48,13 @@
             <p-galleria [value]="replyModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
                         [containerStyle]="galleriaContainerStyle" [numVisible]="0">
               <ng-template pTemplate="item" let-item>
-                <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image"/>
+                <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="qna-image cursor-pointer" (click)="viewReplyItem(replyModel.fileList, item)"/>
+              </ng-template>
+              <ng-template pTemplate="caption" let-item>
+                <div class="flex">
+                  <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadFile(item)" />
+                  <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
+                </div>
               </ng-template>
             </p-galleria>
           </p-card>
