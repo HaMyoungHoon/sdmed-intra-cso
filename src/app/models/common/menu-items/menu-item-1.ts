@@ -19,7 +19,7 @@ export function MenuItem1(): MenuItem {
         visible: true,
         icon: "pi pi-fw pi-question",
         styleClass: "top-menu",
-        routerLink: `/${FConstants.QNA_LIST}`,
+        routerLink: `/${FConstants.QNA_LIST_URL}`,
       },
     ]
   };

@@ -1,51 +1,52 @@
-export const AUTH_TOKEN = "token";
+export const AUTH_TOKEN: string = "token";
 
-export const STORAGE_KEY_LANG = "lang";
-export const STORAGE_DASHBOARD_VIEW_TYPE = "dashboardViewType";
-export const STORAGE_QNA_VIEW_TYPE = "qnaViewType";
+export const STORAGE_KEY_LANG: string = "lang";
+export const STORAGE_DASHBOARD_VIEW_TYPE: string = "dashboardViewType";
+export const STORAGE_QNA_VIEW_TYPE: string = "qnaViewType";
 
-export const THEME_LINK = "app-theme";
+export const THEME_LINK: string = "app-theme";
 
-export const NOTFOUND_URL = "/notfound";
-export const API_CSO = "/apiCSO";
+export const NOTFOUND_URL: string = "/notfound";
+export const API_CSO: string = "/apiCSO";
 
-export const DASH_BOARD_URL = "dashBoard";
+export const DASH_BOARD_URL: string = "dashBoard";
 
-export const EDI_LIST = "ediList";
-export const EDI_DUE_DATE = "ediDueDate";
-export const EDI_APPLY_DATE = "ediApplyDate";
+export const EDI_LIST_URL: string = "ediList";
+export const EDI_DUE_DATE_URL: string = "ediDueDate";
+export const EDI_APPLY_DATE_URL: string = "ediApplyDate";
+export const EDI_VIEW_URL: string = "ediList/:thisPK";
 
-export const QNA_LIST = "qnaList";
-export const QNA_VIEW = "qnaList/:thisPK";
+export const QNA_LIST_URL: string = "qnaList";
+export const QNA_VIEW_URL: string = "qnaList/:thisPK";
 
-export const HOSPITAL_LIST_URL = "hospital-list";
-export const HOSPITAL_NEW_URL = "hospital-list/new";
-export const HOSPITAL_EDIT_URL = "hospital-list/:thisPK";
+export const HOSPITAL_LIST_URL: string = "hospital-list";
+export const HOSPITAL_NEW_URL: string = "hospital-list/new";
+export const HOSPITAL_EDIT_URL: string = "hospital-list/:thisPK";
 
-export const PHARMA_LIST_URL = "pharma-list";
-export const PHARMA_NEW_URL = "pharma-list/new";
-export const PHARMA_EDIT_URL = "pharma-list/:thisPK";
+export const PHARMA_LIST_URL: string = "pharma-list";
+export const PHARMA_NEW_URL: string= "pharma-list/new";
+export const PHARMA_EDIT_URL: string = "pharma-list/:thisPK";
 
-export const MEDICINE_PRICE_LIST_URL = "medicine-price-list"
-export const MEDICINE_LIST_URL = "medicine-list";
-export const MEDICINE_NEW_URL = "medicine-list/new";
-export const MEDICINE_EDIT_URL = "medicine-list/:thisPK";
+export const MEDICINE_PRICE_LIST_URL: string = "medicine-price-list"
+export const MEDICINE_LIST_URL: string = "medicine-list";
+export const MEDICINE_NEW_URL: string = "medicine-list/new";
+export const MEDICINE_EDIT_URL: string = "medicine-list/:thisPK";
 
-export const MY_INFO_URL = "etc/myInfo";
-export const USER_INFO_URL = "etc/userInfo";
-export const USER_EDIT_URL = "etc/userInfo/:thisPK";
+export const MY_INFO_URL: string = "etc/myInfo";
+export const USER_INFO_URL: string = "etc/userInfo";
+export const USER_EDIT_URL: string = "etc/userInfo/:thisPK";
 
-export const USER_MAPPING_URL = "etc/userMapping";
-export const MAIN_INGREDIENT_METHOD_URL = "etc/manual/main_ingredient_method";
+export const USER_MAPPING_URL: string = "etc/userMapping";
+export const MAIN_INGREDIENT_METHOD_URL: string = "etc/manual/main_ingredient_method";
 
-export const ASSETS_NO_IMAGE = "assets/image/no-image-1920.png";
-export const ASSETS_ZIP_IMAGE = "assets/image/zip-image.png";
-export const ASSETS_PDF_IMAGE = "assets/image/pdf-image.png";
-export const ASSETS_XLSX_IMAGE = "assets/image/excel-image.png";
-export const ASSETS_DOCX_IMAGE = "assets/image/word-image.png";
+export const ASSETS_NO_IMAGE: string = "assets/image/no-image-1920.png";
+export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";
+export const ASSETS_PDF_IMAGE: string = "assets/image/pdf-image.png";
+export const ASSETS_XLSX_IMAGE: string = "assets/image/excel-image.png";
+export const ASSETS_DOCX_IMAGE: string = "assets/image/word-image.png";
 
-export const BLOB_URL = "https://mhhablob1.blob.core.windows.net";
-export const BLOB_CONTAINER_NAME = "mhhablob1";
+export const BLOB_URL: string = "https://mhhablob1.blob.core.windows.net";
+export const BLOB_CONTAINER_NAME: string = "mhhablob1";
 
 
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};

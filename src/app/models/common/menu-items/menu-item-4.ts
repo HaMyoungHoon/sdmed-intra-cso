@@ -12,21 +12,21 @@ export function MenuItem4(): MenuItem {
         visible: true,
         icon: "pi pi-fw pi-list",
         styleClass: "top-menu",
-        routerLink: `/${FConstants.EDI_LIST}`,
+        routerLink: `/${FConstants.EDI_LIST_URL}`,
       },
       {
         label: "menu-4.sub-menu.sub-2",
         visible: true,
         icon: "pi pi-fw pi-history",
         styleClass: "top-menu",
-        routerLink: `/${FConstants.EDI_DUE_DATE}`,
+        routerLink: `/${FConstants.EDI_DUE_DATE_URL}`,
       },
       {
         label: "menu-4.sub-menu.sub-3",
         visible: true,
         icon: "pi pi-fw pi-file-check",
         styleClass: "top-menu",
-        routerLink: `/${FConstants.EDI_APPLY_DATE}`,
+        routerLink: `/${FConstants.EDI_APPLY_DATE_URL}`,
       }
     ]
   };
