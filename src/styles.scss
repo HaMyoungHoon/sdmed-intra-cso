@@ -2,6 +2,8 @@
 
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
+@import "handsontable/styles/handsontable.min.css";
+@import "handsontable/styles/ht-theme-main.min.css";
 
 app-menu-config .p-menu {
   width: 100% !important;
@@ -62,6 +64,9 @@ app-hospital-edit .p-inputwrapper  {
 
 .p-galleria-nav-button {
   background-color: rgba(220, 220, 220, 150) !important;
+}
+.p-galleria-nav-button.p-disabled {
+  display: none !important;
 }
 .p-galleria-next-icon, .p-galleria-prev-icon {
   color: black;
