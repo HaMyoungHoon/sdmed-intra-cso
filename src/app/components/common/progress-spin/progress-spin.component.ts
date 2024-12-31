@@ -13,7 +13,7 @@ import {NgIf} from "@angular/common";
   standalone: true
 })
 export class ProgressSpinComponent {
-  @Input() isLoading: boolean = false;
+  @Input() isLoading?: boolean;
   constructor() {
   }
 }
