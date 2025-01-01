@@ -7,7 +7,7 @@
         <th>{{"user-edit.request.request-type" | translate}}</th>
         <th>{{"user-edit.request.response-date" | translate}}</th>
         <th>{{"user-edit.request.response-type" | translate}}</th>
-        <th>{{"user-edit.request.request-user-id" | translate}}</th>
+        <th>{{"user-edit.request.request-user-name" | translate}}</th>
         <th>{{"user-edit.request.response-type" | translate}}</th>
       </tr>
       <tr>
@@ -15,7 +15,7 @@
         <td><label>{{requestTypeToRequestTypeDesc(requestModel.requestType)}}</label></td>
         <td><label>{{dateToYYYYMMdd(requestModel.requestDate)}}</label></td>
         <td><label>{{responseTypeToResponseTypeDesc(requestModel.responseType)}}</label></td>
-        <td><label>{{requestModel.requestUserID}}</label></td>
+        <td><label>{{requestModel.requestUserName}}</label></td>
         <td>
           <div>
             <p-select class="" [options]="responseTypeList" [(ngModel)]="selectedResponseType" (ngModelChange)="requestItemResponseTypeChange()" />
