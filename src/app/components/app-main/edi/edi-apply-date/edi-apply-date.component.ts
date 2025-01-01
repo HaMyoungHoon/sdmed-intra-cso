@@ -21,6 +21,7 @@ export class EdiApplyDateComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
+    await this.getList();
   }
 
   async getList(): Promise<void> {

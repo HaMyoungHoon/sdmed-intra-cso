@@ -23,11 +23,10 @@
         <th>{{"edi-list.table.org-name" | translate}}</th>
         <th pSortableColumn="ediState">{{"edi-list.table.edi-state" | translate}} <p-sortIcon field="ediState" /></th>
         <th>{{"edi-list.table.reg-date" | translate}}</th>
-        <th>{{"common-desc.open" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template #body let-data>
-      <tr>
+      <tr class="click-tr" (click)="openData(data)">
         <td>{{data.year}}</td>
         <td>{{data.month}}</td>
         <td>{{data.name}}</td>
@@ -36,9 +35,6 @@
           <p-tag [value]="ediStateToEDIStateDesc(data.ediState)" [severity]="getEDIStateSeverity(data.ediState)"/>
         </td>
         <td>{{dateToYYYYMMdd(data.regDate)}}</td>
-        <td>
-          <p-button>{{"common-desc.open" | translate}}</p-button>
-        </td>
       </tr>
     </ng-template>
   </p-table>

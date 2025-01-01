@@ -8,6 +8,7 @@ import {Table} from "primeng/table";
 import {DatePicker} from "primeng/datepicker";
 import {ediStateToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 import * as FConstants from "../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-edi-list",
@@ -74,6 +75,36 @@ export class EdiListComponent extends FComponentBase {
     if (this.haveRole) {
       await this.getList();
     }
+  }
+  async openData(data: EDIUploadModel): Promise<void> {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.EDI_LIST_URL}/${data.thisPK}`);
+      return;
+    }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openEDIViewDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      maximizable: true,
+      width: "60%",
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
+      const initTarget = this.initList?.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (initTarget >= 0) {
+        new EDIUploadModel().copyLhsFromRhs(this.initList[initTarget], x);
+      }
+      const target = this.viewList.findIndex(y => y.thisPK == x.thisPK) ?? -1
+      if (target >= 0) {
+        new EDIUploadModel().copyLhsFromRhs(this.viewList[target], x);
+      }
+    });
   }
 
   get filterFields(): string[] {
