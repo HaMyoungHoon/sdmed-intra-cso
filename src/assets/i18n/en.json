@@ -55,7 +55,7 @@
       "request-date": "req date",
       "response-type": "res type",
       "request-type": "req type",
-      "request-user-id": "req user",
+      "request-user-name": "req user",
       "response-date": "res date"
     }
   },
@@ -69,7 +69,7 @@
     },
     "table": {
       "title": "title",
-      "id": "id",
+      "name": "name",
       "qna-state": "state",
       "reg-date": "reg date"
     }
@@ -210,7 +210,7 @@
       "request-date": "req date",
       "response-type": "res type",
       "request-type": "req type",
-      "request-user-id": "req user",
+      "request-user-name": "req user",
       "response-date": "res date"
     },
     "accordion-header": {

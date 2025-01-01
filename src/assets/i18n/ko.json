@@ -55,7 +55,7 @@
       "request-date": "요청일",
       "response-type": "응답타입",
       "request-type": "요청타입",
-      "request-user-id": "요청자",
+      "request-user-name": "요청자",
       "response-date": "응답일"
     }
   },
@@ -69,7 +69,7 @@
     },
     "table": {
       "title": "제목",
-      "id": "아이디",
+      "name": "이름",
       "qna-state": "상태",
       "reg-date": "등록일"
     }
@@ -210,7 +210,7 @@
       "request-date": "요청일",
       "response-type": "응답타입",
       "request-type": "요청타입",
-      "request-user-id": "요청자",
+      "request-user-name": "요청자",
       "response-date": "응답일"
     },
     "accordion-header": {

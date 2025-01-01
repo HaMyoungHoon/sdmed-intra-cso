@@ -123,7 +123,7 @@ export class ChartViewComponent extends FComponentBase {
     if (ret.result) {
       const buff = ret.data ?? [];
       this.chartData2 = {
-        labels: buff.map(x => x.requestUserID),
+        labels: buff.map(x => x.requestUserName),
         datasets: [
           {
             data: buff.map(x => x.count),

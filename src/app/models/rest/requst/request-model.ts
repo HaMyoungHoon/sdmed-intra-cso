@@ -4,7 +4,7 @@ import {ResponseType, stringToResponseType} from "./response-type";
 export class RequestModel {
   thisPK: string = "";
   requestUserPK: string = "";
-  requestUserID: string = "";
+  requestUserName: string = "";
   requestItemPK: string = "";
   responseUserPK: string = "";
   responseUserName: string = "";
@@ -21,7 +21,7 @@ export class RequestModel {
   copyLhsFromRhs(lhs: RequestModel, rhs: RequestModel): void {
     lhs.thisPK = rhs.thisPK
     lhs.requestUserPK = rhs.requestUserPK
-    lhs.requestUserID = rhs.requestUserID
+    lhs.requestUserName = rhs.requestUserName
     lhs.requestItemPK = rhs.requestItemPK
     lhs.responseUserPK = rhs.responseUserPK
     lhs.responseUserName = rhs.responseUserName
@@ -33,7 +33,7 @@ export class RequestModel {
   copyRhs(rhs: RequestModel): void {
     this.thisPK = rhs.thisPK
     this.requestUserPK = rhs.requestUserPK
-    this.requestUserID = rhs.requestUserID
+    this.requestUserName = rhs.requestUserName
     this.requestItemPK = rhs.requestItemPK
     this.responseUserPK = rhs.responseUserPK
     this.responseUserName = rhs.responseUserName

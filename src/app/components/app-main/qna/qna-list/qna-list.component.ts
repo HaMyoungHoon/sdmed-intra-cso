@@ -154,7 +154,7 @@ export class QnaListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["title", "id", "qnaState"];
+    return ["title", "name", "qnaState"];
   }
   get startDateTooltip(): string {
     return "qna-list.header.start-date";
@@ -168,5 +168,4 @@ export class QnaListComponent extends FComponentBase {
   protected readonly getQnAStateSeverity = FExtensions.getQnAStateSeverity;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
-  protected readonly QnAStateToQnAStateDesc = QnAStateToQnAStateDesc;
 }
