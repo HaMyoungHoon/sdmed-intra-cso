@@ -71,3 +71,8 @@ app-hospital-edit .p-inputwrapper  {
 .p-galleria-next-icon, .p-galleria-prev-icon {
   color: black;
 }
+.click-tr:hover {
+  cursor: pointer;
+  background-color: var(--p-primary-700) !important;
+  color: var(--p-primary-100) !important;
+}
