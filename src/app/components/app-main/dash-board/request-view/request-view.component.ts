@@ -183,6 +183,11 @@ export class RequestViewComponent extends FComponentBase {
     const ready = await this.requestDrawerReady(data);
   }
   async ediUploadMethod(data: RequestModel): Promise<void> {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.EDI_LIST_URL}/${data.requestItemPK}`);
+      return;
+    }
     const ready = await this.requestDrawerReady(data);
   }
   async qnAMethod(data: RequestModel): Promise<void> {
