@@ -9,13 +9,14 @@ import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ButtonModule} from "primeng/button";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
+import {Image} from "primeng/image";
 
 
 
 @NgModule({
   declarations: [MyInfoComponent],
 	imports: [
-		CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, ButtonModule, ProgressSpinComponent
+		CommonModule, MyInfoRoutingModule, AccordionModule, TranslatePipe, CardModule, TableModule, TagModule, ButtonModule, ProgressSpinComponent, Image
 	]
 })
 export class MyInfoModule { }

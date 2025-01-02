@@ -9,7 +9,6 @@ import {FDialogService} from "../services/common/f-dialog.service";
 import {stringArrayToUserRole, userRoleToFlag} from "../models/rest/user/user-role";
 import {stringArrayToUserDept, userDeptToFlag} from "../models/rest/user/user-dept";
 import {StatusDescToUserStatus} from "../models/rest/user/user-status";
-import {getUserBlobModel} from "./f-extensions";
 
 export async function bankAccountImageSelected(event: any, data: UserDataModel, service: UserInfoService, commonService: CommonService, azureBlobService: AzureBlobService): Promise<RestResult<UserDataModel>> {
   const input = event.target as HTMLInputElement;
@@ -50,7 +49,7 @@ export async function taxpayerImageSelected(event: any, data: UserDataModel, ser
     }
 
     await azureBlobService.putUpload(file, blobModel.blobName, sasKey.data ?? "", blobModel.mimeType);
-    const ret = await service.putUserTaxImageUrl(data.thisPK, blobModel)
+    const ret = await service.putUserTaxImageUrl(data.thisPK, blobModel);
     if (ret.result) {
       return ret;
     }

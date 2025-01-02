@@ -55,6 +55,19 @@ export class MyInfoComponent extends FComponentBase {
     this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
   }
 
+  childTaxpayerImage(child: UserDataModel): string {
+    if (child.taxpayerImageUrl.length <= 0) {
+      return FConstants.ASSETS_NO_IMAGE;
+    }
+    return child.taxpayerImageUrl;
+  }
+  childBankAccountImage(child: UserDataModel): string {
+    if (child.bankAccountImageUrl.length <= 0) {
+      return FConstants.ASSETS_NO_IMAGE;
+    }
+    return child.bankAccountImageUrl;
+  }
+
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
   accordionValue = ["0"];
 

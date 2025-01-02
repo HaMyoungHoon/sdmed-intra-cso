@@ -67,18 +67,18 @@
           </ng-template>
           <ng-template #body let-child>
             <tr>
-              <td>{{child?.id}}</td>
-              <td>{{child?.name}}</td>
-              <td>{{child?.phoneNumber}}</td>
+              <td>{{child.id}}</td>
+              <td>{{child.name}}</td>
+              <td>{{child.phoneNumber}}</td>
               <td>
-                <p-tag [value]="statusToUserStatusDesc(child?.status)" [severity]="getSeverity(child?.status)"/>
+                <p-tag [value]="statusToUserStatusDesc(child.status)" [severity]="getSeverity(child.status)"/>
               </td>
               <td>{{child?.companyName}}</td>
               <td>
-                <p-button [disabled]="(child?.taxpayerImageUrl?.length ?? 0) <= 0">{{"common-desc.open" | translate}}</p-button>
+                <p-image [src]="childTaxpayerImage(child)" width="100" height="100" [preview]="true"/>
               </td>
               <td>
-                <p-button [disabled]="(child?.bankAccountImageUrl?.length ?? 0) <= 0">{{"common-desc.open" | translate}}</p-button>
+                <p-image [src]="childBankAccountImage(child)" width="100" height="100" [preview]="true"/>
               </td>
             </tr>
           </ng-template>
