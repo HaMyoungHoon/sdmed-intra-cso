@@ -77,7 +77,8 @@
   "edi-list": {
     "header": {
       "start-date": "start date",
-      "end-date": "end date"
+      "end-date": "end date",
+      "my-child": "child only"
     },
     "table": {
       "year": "apply year",

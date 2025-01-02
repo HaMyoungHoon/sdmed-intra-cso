@@ -25,6 +25,7 @@ export class EdiListComponent extends FComponentBase {
   viewList: EDIUploadModel[] = [];
   initList: EDIUploadModel[] = [];
   isSorted: boolean | null = null;
+  myChild: boolean = true;
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee, UserRole.EdiChanger));
   }
@@ -35,7 +36,7 @@ export class EdiListComponent extends FComponentBase {
 
   async getList(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.startDate), FExtensions.dateToYYYYMMdd(this.endDate)),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.startDate), FExtensions.dateToYYYYMMdd(this.endDate), this.myChild),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result) {
@@ -114,7 +115,10 @@ export class EdiListComponent extends FComponentBase {
     return "edi-list.header.start-date";
   }
   get endDatePlaceHolder(): string {
-    return "edi-list-header.end-date";
+    return "edi-list.header.end-date";
+  }
+  get myChildTooltip(): string {
+    return "edi-list.header.my-child";
   }
 
   protected readonly filterTable = FExtensions.filterTable;

@@ -12,13 +12,14 @@ import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
+import {Checkbox} from "primeng/checkbox";
 
 
 
 @NgModule({
   declarations: [EdiListComponent],
-  imports: [
-    CommonModule, EdiListRoutingModule, TableModule, Button, IconField, InputIcon, InputText, Tag, Tooltip, TranslatePipe, DatePicker, FormsModule
-  ]
+	imports: [
+		CommonModule, EdiListRoutingModule, TableModule, Button, IconField, InputIcon, InputText, Tag, Tooltip, TranslatePipe, DatePicker, FormsModule, Checkbox
+	]
 })
 export class EdiListModule { }

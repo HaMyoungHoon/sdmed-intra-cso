@@ -77,7 +77,8 @@
   "edi-list": {
     "header": {
       "start-date": "시작일",
-      "end-date": "종료일"
+      "end-date": "종료일",
+      "my-child": "담당만"
     },
     "table": {
       "year": "적용연도",
