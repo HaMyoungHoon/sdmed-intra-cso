@@ -6,6 +6,13 @@ export enum EDIState {
   Partial = "Partial"
 }
 
+export function allEDIStateArray(): string[] {
+  const ret: string[] = [];
+  Object.keys(EDIState).forEach(x => {
+    ret.push(x);
+  })
+  return ret;
+}
 export function allEDIStateDescArray(): string[] {
   const ret: string[] = [];
   Object.keys(EDIState).forEach(x => {

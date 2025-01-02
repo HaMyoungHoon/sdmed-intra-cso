@@ -88,6 +88,21 @@
       "reg-date": "등록일"
     }
   },
+  "edi-view": {
+    "apply-date": "반영요청일",
+    "reg-date": "등록일",
+    "hospital-name": "병원명",
+    "user-name": "이름",
+    "edi-state": "상태",
+    "pharma-name": "제약사명",
+    "carried-over": "(이월됨)",
+    "approx-apply-date": "예정반영일",
+    "medicine-name": "약품명",
+    "medicine-count": "개수",
+    "medicine-charge": "수수료율",
+    "medicine-price": "가격",
+    "medicine-date": "가격반영일"
+  },
   "edi-apply-date": {
     "year": "연",
     "month": "월",
@@ -449,9 +464,11 @@
     "view": "보기",
     "save": "저장",
     "edit": "편집",
+    "modify": "수정",
     "add": "추가",
     "move": "이동",
     "refresh": "새로고침",
+    "remove": "제거",
     "close": "닫기",
     "change": "변경",
     "sample-download": "샘플 다운로드",

@@ -91,7 +91,7 @@ export class EdiListComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
-      width: "60%",
+      data: data.thisPK
     }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
         return;

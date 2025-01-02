@@ -13,6 +13,7 @@ import {UploadFileBuffModel} from "../models/common/upload-file-buff-model";
 import {QnAState} from "../models/rest/qna/qna-state";
 import {QnAFileModel} from "../models/rest/qna/qna-file-model";
 import {FileViewModel} from "../models/rest/file-view-model";
+import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
 
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
@@ -295,7 +296,14 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string
     obj.mimeType = mimeType;
   });
 }
-
+export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileViewModel[] {
+  return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = x.originalFilename;
+    obj.ext = getExtMimeType(x.mimeType);
+  }));
+}
 export function qnaFileListToViewModel(qnaFileList: QnAFileModel[]): FileViewModel[] {
   return qnaFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
