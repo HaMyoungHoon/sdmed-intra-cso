@@ -187,7 +187,7 @@ export class FullscreenFileViewComponent {
       this.excelTable = new Handsontable(container, {
         rowHeaders: true,
         colHeaders: this.colHeader,
-        height: "100%",
+        height: "95%",
         width: "100%",
         autoWrapRow: true,
         autoWrapCol: false,

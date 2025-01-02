@@ -1,8 +1,9 @@
-<p-drawer [fullScreen]="true" [(visible)]="isVisible" (onHide)="onHide()">
+<p-drawer [fullScreen]="true" [(visible)]="isVisible" (onHide)="onHide()" [closeOnEscape]="true" [closable]="false">
   <app-progress-spin [isLoading]="isLoading" />
   <div class="m-1" *ngIf="!isLoading">
     <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
     <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
+    <label>esc on close</label>
   </div>
   <div *ngIf="isImage">
     <p-image [src]="getImageSrc" [alt]="getFilename" [preview]="true" />
