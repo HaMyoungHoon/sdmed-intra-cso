@@ -43,7 +43,6 @@ export class FullscreenFileViewComponent {
   }
   async onHide(): Promise<void> {
     await this.init();
-    console.log("onHide");
   }
   async init(): Promise<void> {
     this.fileViewModel = [];
