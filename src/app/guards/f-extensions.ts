@@ -15,6 +15,9 @@ import {QnAFileModel} from "../models/rest/qna/qna-file-model";
 import {FileViewModel} from "../models/rest/file-view-model";
 import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
 
+export function numberWithCommas(data: string): string {
+  return data.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 export function dToMon(date: Date): string {
   let ret = date.getMonth() + 1;
   return ret >= 10 ? `${ret}` : `0${ret}`;
