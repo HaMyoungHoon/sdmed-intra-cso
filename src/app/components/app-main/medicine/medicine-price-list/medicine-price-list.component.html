@@ -5,7 +5,7 @@
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
-        <p-date-picker class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!isAdmin" />
+        <p-date-picker class="m-1" [(ngModel)]="applyDate" dateFormat="yy-mm-dd" [disabled]="!isAdmin" view="month" />
         <p-button class="m-1" (onClick)="uploadPriceExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{uploadPriceTooltip | translate}}" />
         <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{uploadMainIngredient | translate}}" />
         <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">

@@ -404,6 +404,9 @@
     "etc2": "비고2"
   },
   "medicine-edit": {
+    "warn": {
+      "maker": "제조사를 입력해주세요"
+    },
     "code": "코드",
     "main-ingredient-code": "주성분코드",
     "kd-code": "kd 코드",
@@ -430,7 +433,8 @@
   "medicine-add": {
     "warn": {
       "code": "코드를 입력해주세요.",
-      "name": "이름을 입력해주세요."
+      "name": "이름을 입력해주세요.",
+      "maker": "제조사를 입력해주세요."
     },
     "code": "코드",
     "main-ingredient-code": "주성분코드",

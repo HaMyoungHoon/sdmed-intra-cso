@@ -80,7 +80,7 @@ export class EdiListComponent extends FComponentBase {
   async openData(data: EDIUploadModel): Promise<void> {
     const isNewTab = this.configService.isNewTab();
     if (isNewTab) {
-      window.open(`${FConstants.EDI_LIST_URL}/${data.thisPK}`);
+      window.open(`${FConstants.EDI_LIST_URL}/${data.thisPK}`, "_blank", `width=${screen.width}; height=${screen.height};`);
       return;
     }
     const sub = new Subject<any>();

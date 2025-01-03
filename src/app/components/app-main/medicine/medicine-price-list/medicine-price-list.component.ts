@@ -107,6 +107,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       const file = input.files[0];
       const ret = await FExtensions.restTry(async() => await this.thisService.postMedicinePriceUpload(FExtensions.dateToYearFullString(this.applyDate), file),
         e => this.fDialogService.error("uploadPriceExcel", e));
+      this.inputPriceUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.refresh();
         return;
@@ -122,6 +123,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       const file = input.files[0];
       const ret = await FExtensions.restTry(async() => await this.thisService.postMedicineIngredientUpload(file),
         e => this.fDialogService.error("uploadPriceExcel", e));
+      this.inputMainIngredientUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.refresh();
         return;

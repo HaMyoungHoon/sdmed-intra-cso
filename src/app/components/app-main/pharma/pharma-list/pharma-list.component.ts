@@ -101,7 +101,7 @@ export class PharmaListComponent extends FComponentBase {
   pharmaMedicineSampleDown(): void {
     this.thisService.getPharmaMedicineExcelSample().then(x => {
       const blob = URL.createObjectURL(x.body);
-      saveAs(blob, "pharmaSampleExcel.xlsx");
+      saveAs(blob, "pharmaMedicineSampleExcel.xlsx");
     }).catch(x => {
       this.fDialogService.error("sampleDown", x.message);
     });
