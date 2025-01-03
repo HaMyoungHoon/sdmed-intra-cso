@@ -75,7 +75,7 @@ export class MedicineListComponent extends FComponentBase {
   async sampleDown(): Promise<void> {
     this.thisService.getExcelSample().then(x => {
       const blob = URL.createObjectURL(x.body);
-      saveAs(blob, "pharmaSampleExcel.xlsx");
+      saveAs(blob, "medicineSample.xlsx");
     }).catch(x => {
       this.fDialogService.error("sampleDown", x.message);
     });

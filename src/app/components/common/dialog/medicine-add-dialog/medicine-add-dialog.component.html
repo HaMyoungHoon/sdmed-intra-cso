@@ -29,7 +29,7 @@
       </div>
       <label class="col-2 align-self-center">{{"medicine-add.pharma" | translate}}</label>
       <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.pharma" />
+        <p-select [options]="pharmaList" [(ngModel)]="selectPharma" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-add.name" | translate}}</label>
       <div class="col-4">

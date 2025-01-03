@@ -3,6 +3,7 @@ import {RestResult} from "../../models/common/rest-result";
 import {MedicineModel} from "../../models/rest/medicine/medicine-model";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {MedicineIngredientModel} from "../../models/rest/medicine/medicine-ingredient-model";
+import {PharmaModel} from "../../models/rest/pharma/pharma-model";
 
 @Injectable({
   providedIn: "root"
@@ -20,6 +21,9 @@ export class MedicineListService {
   }
   getMainIngredientList(): Promise<RestResult<MedicineIngredientModel[]>> {
     return this.httpResponse.get(`${this.baseUrl}/list/mainIngredient`);
+  }
+  getPharmaList(): Promise<RestResult<PharmaModel[]>> {
+    return this.httpResponse.get(`${this.baseUrl}/list/pharma`);
   }
   getExcelSample(): Promise<any> {
     return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);

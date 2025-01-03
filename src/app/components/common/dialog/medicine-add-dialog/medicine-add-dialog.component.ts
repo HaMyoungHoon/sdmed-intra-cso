@@ -23,6 +23,7 @@ import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplet
 import {MedicineIngredientModel} from "../../../../models/rest/medicine/medicine-ingredient-model";
 import {FormsModule} from "@angular/forms";
 import {Select} from "primeng/select";
+import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 
 @Component({
   selector: "app-medicine-add-dialog",
@@ -32,6 +33,8 @@ import {Select} from "primeng/select";
   standalone: true,
 })
 export class MedicineAddDialogComponent extends FDialogComponentBase {
+  pharmaList: PharmaModel[] = [];
+  selectPharma?: PharmaModel;
   medicineModel: MedicineModel = new MedicineModel();
   medicineTypeList: string[] = allMedicineTypeDescArray();
   medicineMethodList: string[] = allMedicineMethodDescArray();
@@ -57,23 +60,33 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.MedicineChanger));
   }
   override async ngInit(): Promise<void> {
+    this.setLoading();
     await this.getMainIngredientList();
+    this.setLoading(false);
   }
   async getMainIngredientList(): Promise<void> {
-    this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getMainIngredientList(),
       e => this.fDialogService.error("getMainIngredientList", e));
-    this.setLoading(false);
     if (ret.result) {
       this.mainIngredientList = ret.data ?? [];
       this.filteredMainIngredientList = [...this.mainIngredientList];
+      await this.getPharmaList();
       return;
     }
     this.fDialogService.warn("getMainIngredientList", ret.msg);
   }
+  async getPharmaList(): Promise<void> {
+    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaList(),
+      e => this.fDialogService.error("getPharmaList", e));
+    if (ret.result) {
+      this.pharmaList = ret.data ?? [];
+      return;
+    }
+    this.fDialogService.warn("getPharmaList", ret.msg);
+  }
 
   async saveData(): Promise<void> {
-    if (this.medicineModel.code <= 0) {
+    if (this.medicineModel.code.length <= 0) {
       this.translateService.get("medicine-add.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
@@ -85,6 +98,14 @@ export class MedicineAddDialogComponent extends FDialogComponentBase {
       });
       return;
     }
+    if (this.selectPharma == null) {
+      this.translateService.get("medicine-add.warn.maker").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
+    this.medicineModel.makerName = this.selectPharma?.orgName;
+    this.medicineModel.makerCode = this.selectPharma?.code;
     this.medicineModel.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
     this.medicineModel.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];
     this.medicineModel.medicineSubModel.medicineCategory = MedicineCategoryDescToMedicineCategory[this.selectMedicineCategory];

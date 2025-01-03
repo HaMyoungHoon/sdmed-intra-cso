@@ -15,6 +15,7 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {ActivatedRoute} from "@angular/router";
+import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 
 @Component({
   selector: "app-medicine-edit",
@@ -23,6 +24,8 @@ import {ActivatedRoute} from "@angular/router";
   standalone: false,
 })
 export class MedicineEditComponent extends FComponentBase {
+  pharmaList: PharmaModel[] = [];
+  selectPharma?: PharmaModel;
   medicineModel: MedicineModel = new MedicineModel();
   medicineTypeList: string[] = allMedicineTypeDescArray();
   medicineMethodList: string[] = allMedicineMethodDescArray();
@@ -50,15 +53,14 @@ export class MedicineEditComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
+    this.setLoading();
     await this.getMedicineData();
-    await this.getMainIngredientList();
+    this.setLoading(false);
   }
 
   async getMedicineData(): Promise<void> {
-    this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.medicineModel.thisPK),
       e => this.fDialogService.error("getMedicineData", e));
-    this.setLoading(false);
     if (ret.result) {
       this.medicineModel = ret.data ?? new MedicineModel();
       this.selectMedicineType = medicineTypeToMedicineTypeDesc(ret.data?.medicineSubModel.medicineType);
@@ -70,23 +72,39 @@ export class MedicineEditComponent extends FComponentBase {
       this.selectMedicineStorageTemp = medicineStorageTempToMedicineStorageTempDesc(ret.data?.medicineSubModel.medicineStorageTemp);
       this.selectMedicineStorageBox = medicineStorageBoxToMedicineStorageBoxDesc(ret.data?.medicineSubModel.medicineStorageBox);
       this.selectedMainIngredient = this.medicineModel.medicineIngredientModel;
+      await this.getMainIngredientList();
       return;
     }
     this.fDialogService.warn("getMedicineData", ret.msg);
   }
   async getMainIngredientList(): Promise<void> {
-    this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getMainIngredientList(),
       e => this.fDialogService.error("getMainIngredientList", e));
-    this.setLoading(false);
     if (ret.result) {
       this.mainIngredientList = ret.data ?? [];
       this.filteredMainIngredientList = [...this.mainIngredientList];
+      await this.getPharmaList();
       return;
     }
     this.fDialogService.warn("getMainIngredientList", ret.msg);
   }
+  async getPharmaList(): Promise<void> {
+    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaList(),
+      e => this.fDialogService.error("getPharmaList", e));
+    if (ret.result) {
+      this.pharmaList = ret.data ?? [];
+      this.selectPharma = this.pharmaList.find(x => x.code == this.medicineModel.makerCode);
+      return;
+    }
+    this.fDialogService.warn("getPharmaList", ret.msg);
+  }
   async saveData(): Promise<void> {
+    if (this.selectPharma == null) {
+      this.translateService.get("medicine-edit.warn.maker").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
     this.medicineModel.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
     this.medicineModel.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];
     this.medicineModel.medicineSubModel.medicineCategory = MedicineCategoryDescToMedicineCategory[this.selectMedicineCategory];
