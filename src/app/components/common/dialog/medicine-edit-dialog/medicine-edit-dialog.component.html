@@ -10,7 +10,7 @@
       <label class="col-4">{{medicineModel.code}}</label>
       <label class="col-2 align-self-center">{{"medicine-edit.main-ingredient-code" | translate}}</label>
       <div class="col-4">
-        <p-autoComplete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
+        <p-autoComplete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName" appendTo="body">
           <ng-template #item let-mainIngredient>
             <div>{{mainIngredient.mainIngredientCode}}</div>
             <div>{{mainIngredient.mainIngredientName}}</div>
@@ -43,7 +43,7 @@
       </div>
       <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="[true, false]" [(ngModel)]="medicineModel.inVisible" />
+        <p-select [options]="[true, false]" [(ngModel)]="medicineModel.inVisible" appendTo="body"/>
       </div>
     </div>
   </p-card>
@@ -59,35 +59,35 @@
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineTypeList" [(ngModel)]="selectMedicineType" />
+        <p-select [options]="medicineTypeList" [(ngModel)]="selectMedicineType" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineMethodList" [(ngModel)]="selectMedicineMethod" />
+        <p-select [options]="medicineMethodList" [(ngModel)]="selectMedicineMethod" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineCategoryList" [(ngModel)]="selectMedicineCategory" />
+        <p-select [options]="medicineCategoryList" [(ngModel)]="selectMedicineCategory" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineGroupList" [(ngModel)]="selectMedicineGroup" />
+        <p-select [options]="medicineGroupList" [(ngModel)]="selectMedicineGroup" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" />
+        <p-select [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineRankList" [(ngModel)]="selectMedicineRank" />
+        <p-select [options]="medicineRankList" [(ngModel)]="selectMedicineRank" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineStorageTempList" [(ngModel)]="selectMedicineStorageTemp" />
+        <p-select [options]="medicineStorageTempList" [(ngModel)]="selectMedicineStorageTemp" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.medicine-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="medicineStorageBoxList" [(ngModel)]="selectMedicineStorageBox" />
+        <p-select [options]="medicineStorageBoxList" [(ngModel)]="selectMedicineStorageBox" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.package-unit" | translate}}</label>
       <div class="col-4">

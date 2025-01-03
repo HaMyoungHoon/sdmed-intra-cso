@@ -88,7 +88,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     return `${this.uploadModel.year}-${this.uploadModel.month}-${this.uploadModel.day}`;
   }
   getPharmaApplyDate(pharma: EDIUploadPharmaModel): string {
-    return FExtensions.dateToYYYYMMdd(FExtensions.stringToDate(`${pharma.year}-${pharma.month}-${pharma.day}`));
+    return `${pharma.year}-${pharma.month}`;
   }
   getMedicineApplyDate(medicine: EDIUploadPharmaMedicineModel): string {
     return FExtensions.dateToYYYYMMdd(FExtensions.stringToDate(`${medicine.year}-${medicine.month}-${medicine.day}`));

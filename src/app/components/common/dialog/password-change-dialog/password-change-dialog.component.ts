@@ -2,16 +2,16 @@ import { Component } from "@angular/core";
 import {FDialogComponentBase} from "../../../../guards/f-dialog-component-base";
 import {MyInfoService} from "../../../../services/rest/my-info.service";
 import {ButtonModule} from "primeng/button";
-import {FloatLabel} from "primeng/floatlabel";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {TranslatePipe} from "@ngx-translate/core";
 import * as FExtensions from "../../../../guards/f-extensions";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: "app-password-change-dialog",
-  imports: [ButtonModule, FloatLabel, FormsModule, InputTextModule, PasswordModule, TranslatePipe],
+  imports: [ButtonModule, FormsModule, InputTextModule, PasswordModule, TranslatePipe, FloatLabel],
   templateUrl: "./password-change-dialog.component.html",
   styleUrl: "./password-change-dialog.component.scss",
   standalone: true

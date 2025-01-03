@@ -56,15 +56,15 @@
       </div>
       <label class="col-2 align-self-center">{{"hospital-add.bill-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" />
+        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-add.contract-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" />
+        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-add.delivery-div" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
+        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-add.license-number" | translate}}</label>
       <div class="col-4">

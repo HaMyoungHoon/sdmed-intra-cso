@@ -46,7 +46,7 @@
     <div class="field col grid">
       <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="[true, false]" [(ngModel)]="hospitalModel.inVisible" />
+        <p-select [options]="[true, false]" [(ngModel)]="hospitalModel.inVisible" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-edit.business-type" | translate}}</label>
       <div class="col-4">
@@ -58,15 +58,15 @@
       </div>
       <label class="col-2 align-self-center">{{"hospital-edit.bill-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" />
+        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-edit.contract-type" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" />
+        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-edit.delivery-div" | translate}}</label>
       <div class="col-4">
-        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
+        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" appendTo="body"/>
       </div>
       <label class="col-2 align-self-center">{{"hospital-edit.license-number" | translate}}</label>
       <div class="col-4">
