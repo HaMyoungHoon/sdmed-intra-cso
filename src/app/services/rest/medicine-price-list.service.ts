@@ -14,7 +14,7 @@ export class MedicinePriceListService {
   getList(): Promise<RestResult<MedicineModel[]>> {
     return this.httpResponse.get(`${this.baseUrl}/list`);
   }
-  getHistoryList(kdCode: number): Promise<RestResult<MedicineModel>> {
+  getHistoryList(kdCode: string): Promise<RestResult<MedicineModel>> {
     this.httpResponse.addParam("kdCode", kdCode);
     return this.httpResponse.get(`${this.baseUrl}/list/price`);
   }

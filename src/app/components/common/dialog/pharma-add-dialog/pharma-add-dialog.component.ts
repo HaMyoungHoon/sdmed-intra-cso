@@ -49,7 +49,7 @@ export class PharmaAddDialogComponent extends FDialogComponentBase {
   }
 
   async saveData(): Promise<void> {
-    if (this.pharmaModel.code <= 0) {
+    if (this.pharmaModel.code.length <= 0) {
       this.translateService.get("pharma-add-dialog.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });

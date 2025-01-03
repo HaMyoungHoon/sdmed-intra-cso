@@ -41,7 +41,7 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
   }
 
   async saveData(): Promise<void> {
-    if (this.hospitalModel.code <= 0) {
+    if (this.hospitalModel.code.length <= 0) {
       this.translateService.get("hospital-add.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
