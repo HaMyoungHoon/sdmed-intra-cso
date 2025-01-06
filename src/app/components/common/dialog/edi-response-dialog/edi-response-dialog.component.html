@@ -1,0 +1,20 @@
+<div>
+  <div class="m-1">
+  <span>
+    <label>{{pharma.orgName}}</label>
+  </span>
+    <span>
+    <p-select [options]="ediStateList" [(ngModel)]="selectEDIState" (click)="$event.stopPropagation()" appendTo="body"/>
+  </span>
+  </div>
+  <div class="m-1">
+    <span>
+    <textarea rows="5" cols="30" pTextarea [autoResize]="true" [(ngModel)]="etc"></textarea>
+  </span>
+  </div>
+  <div>
+  <span>
+    <p-button [disabled]="!postAble" (click)="postData()">{{"common-desc.save" | translate}}</p-button>
+  </span>
+  </div>
+</div>
