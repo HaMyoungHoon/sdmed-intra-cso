@@ -102,7 +102,12 @@
     "medicine-count": "개수",
     "medicine-charge": "수수료율 %",
     "medicine-price": "가격",
-    "medicine-date": "가격반영일"
+    "medicine-date": "가격반영일",
+    "reply": {
+      "edi-state": "응답 상태",
+      "reg-date": "응답일",
+      "user-name": "응답 유저"
+    }
   },
   "edi-apply-date": {
     "year": "연",

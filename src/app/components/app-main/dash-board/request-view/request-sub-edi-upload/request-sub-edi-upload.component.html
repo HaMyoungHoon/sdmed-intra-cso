@@ -19,7 +19,7 @@
     </span>
   </div>
   <p-accordion [multiple]="multipleEnable">
-    <p-accordion-panel *ngFor="let pharma of uploadModel.pharmaList" value="{{accordionIndex(pharma)}}">
+    <p-accordion-panel *ngFor="let pharma of uploadModel.pharmaList" value="{{accordionPharmaIndex(pharma)}}">
       <p-accordion-header>
         <div>
           <span>{{pharma.orgName}}</span>
@@ -32,8 +32,8 @@
         <div>
           <span>{{"edi-view.edi-state" | translate}}</span>
           <span>
-            <p-select [options]="ediStateList" [(ngModel)]="pharmaStateList[getPharmaSelectStateIndex(pharma)]" (click)="$event.stopPropagation()" (ngModelChange)="pharmaStateChange(pharma)" appendTo="body"
-                      [disabled]="modifyDisable(pharma)"/>
+            <p-tag [value]="pharma.ediState" [severity]="getEDIStateSeverity(pharma.ediState)" />
+            <p-button (click)="$event.stopPropagation(); responsePharma(pharma)" *ngIf="!modifyDisable(pharma)">{{"common-desc.modify" | translate}}</p-button>
           </span>
         </div>
         <div *ngIf="!modifyDisable(pharma)">
@@ -78,6 +78,30 @@
             </tr>
           </ng-template>
         </p-table>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+  <p-accordion [multiple]="multipleEnable">
+    <p-accordion-panel *ngFor="let response of uploadModel.responseList" value="{{accordionResponseIndex(response)}}">
+      <p-accordion-header>
+        <div>
+          <span>{{response.pharmaName}}</span>
+        </div>
+        <div>
+          <span>{{"edi-view.reply.edi-state" | translate}}</span>
+          <p-tag [value]="response.ediState" [severity]="getEDIStateSeverity(response.ediState)" />
+        </div>
+        <div>
+          <span>{{"edi-view.reply.reg-date" | translate}}</span>
+          <span>{{dateToYYYYMMdd(response.regDate)}}</span>
+        </div>
+        <div>
+          <span>{{"edi-view.reply.user-name" | translate}}</span>
+          <span>{{response.userName}}</span>
+        </div>
+      </p-accordion-header>
+      <p-accordion-content *ngIf="response.etc.length > 0">
+        <textarea rows="5" cols="30" pTextarea [autoResize]="true" [(ngModel)]="response.etc" [readonly]="true"></textarea>
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>

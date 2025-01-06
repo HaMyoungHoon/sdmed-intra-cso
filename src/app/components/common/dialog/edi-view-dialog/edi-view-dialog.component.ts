@@ -10,13 +10,12 @@ import {GalleriaModule} from "primeng/galleria";
 import {NgForOf, NgIf} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../../progress-spin/progress-spin.component";
-import {Select} from "primeng/select";
 import {TableModule} from "primeng/table";
 import {Tag} from "primeng/tag";
 import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {EDIUploadModel} from "../../../../models/rest/edi/edi-upload-model";
-import {allEDIStateArray, EDIState} from "../../../../models/rest/edi/edi-state";
+import {EDIState} from "../../../../models/rest/edi/edi-state";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {EDIUploadPharmaModel} from "../../../../models/rest/edi/edi-upload-pharma-model";
 import {EDIUploadPharmaMedicineModel} from "../../../../models/rest/edi/edi-upload-pharma-medicine-model";
@@ -24,11 +23,14 @@ import {transformToBoolean} from "primeng/utils";
 import {EDIUploadFileModel} from "../../../../models/rest/edi/edi-upload-file-model";
 import {saveAs} from "file-saver";
 import * as FConstants from "../../../../guards/f-constants";
+import {Textarea} from "primeng/textarea";
+import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-edi-view-dialog",
-	imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, Select, TableModule, Tag, Tooltip, TranslatePipe
-	],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, TableModule, Tag, Tooltip, TranslatePipe, Textarea
+  ],
   templateUrl: "./edi-view-dialog.component.html",
   styleUrl: "./edi-view-dialog.component.scss",
   standalone: true,
@@ -37,7 +39,6 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   thisPK: string = "";
   uploadModel: EDIUploadModel = new EDIUploadModel();
-  ediStateList = allEDIStateArray();
   pharmaStateList: string[] = [];
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
@@ -72,25 +73,23 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     return FExtensions.dateToYYYYMMdd(FExtensions.stringToDate(`${medicine.year}-${medicine.month}-${medicine.day}`));
   }
 
-  pharmaSelectState(pharma: EDIUploadPharmaModel): string {
-    const index = this.uploadModel.pharmaList.findIndex(x => x.thisPK == pharma.thisPK);
-    return this.pharmaStateList[index];
-  }
-  getPharmaSelectStateIndex(pharma: EDIUploadPharmaModel): number {
-    return this.uploadModel.pharmaList.findIndex(x => x.thisPK == pharma.thisPK);
-  }
-  async pharmaStateChange(pharma: EDIUploadPharmaModel): Promise<void> {
-    if (this.pharmaSelectState(pharma) == pharma.ediState) {
-      return;
-    }
-    this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.putPharmaDataState(pharma.thisPK, pharma),
-      e => this.fDialogService.error("pharmaStateChange", e));
-    this.setLoading(false);
-    if (ret.result) {
-      return;
-    }
-    this.fDialogService.warn("pharmaStateChange", ret.msg);
+  responsePharma(pharma: EDIUploadPharmaModel): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openEDIResponseDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      maximizable: true,
+      data: pharma
+    }).pipe(takeUntil(sub)).subscribe(async (x): Promise<void> => {
+      if (x == null) {
+        return;
+      }
+      await this.getData();
+    });
   }
   async pharmaModify(pharma: EDIUploadPharmaModel): Promise<void> {
     this.setLoading();
@@ -129,8 +128,11 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
-  accordionIndex(item: EDIUploadPharmaModel): string {
+  accordionPharmaIndex(item: EDIUploadPharmaModel): string {
     return `${this.uploadModel.pharmaList.findIndex(x => x.thisPK == item.thisPK)}`;
+  }
+  accordionResponseIndex(item: EDIUploadResponseModel): string {
+    return `${this.uploadModel.responseList.findIndex(x => x.thisPK == item.thisPK)}`;
   }
 
   getBlobUrl(item: EDIUploadFileModel): string {

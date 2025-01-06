@@ -18,6 +18,9 @@ import {MedicineAddDialogComponent} from "../../components/common/dialog/medicin
 import {PasswordChangeDialogComponent} from "../../components/common/dialog/password-change-dialog/password-change-dialog.component";
 import {QnaViewDialogComponent} from "../../components/common/dialog/qna-view-dialog/qna-view-dialog.component";
 import {EdiViewDialogComponent} from "../../components/common/dialog/edi-view-dialog/edi-view-dialog.component";
+import {
+  EdiResponseDialogComponent
+} from "../../components/common/dialog/edi-response-dialog/edi-response-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -42,6 +45,10 @@ export class FDialogService {
   }
   openEDIViewDialog(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(EdiViewDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openEDIResponseDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(EdiResponseDialogComponent, config);
     return this.ref.onClose;
   }
   openQnAViewDialog(config: DynamicDialogConfig): Observable<any> {

@@ -11,8 +11,10 @@ import {EDIUploadPharmaMedicineModel} from "../../../../models/rest/edi/edi-uplo
 import {EDIUploadFileModel} from "../../../../models/rest/edi/edi-upload-file-model";
 import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {saveAs} from "file-saver";
-import {allEDIStateArray, EDIState} from "../../../../models/rest/edi/edi-state";
+import {EDIState} from "../../../../models/rest/edi/edi-state";
 import {UserRole} from "../../../../models/rest/user/user-role";
+import {Subject, takeUntil} from "rxjs";
+import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
 
 @Component({
   selector: "app-edi-view",
@@ -24,7 +26,6 @@ export class EdiViewComponent extends FComponentBase {
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   thisPK: string = "";
   uploadModel: EDIUploadModel = new EDIUploadModel();
-  ediStateList = allEDIStateArray();
   pharmaStateList: string[] = [];
   constructor(private thisService: EdiListService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
@@ -58,25 +59,23 @@ export class EdiViewComponent extends FComponentBase {
     return FExtensions.dateToYYYYMMdd(FExtensions.stringToDate(`${medicine.year}-${medicine.month}-${medicine.day}`));
   }
 
-  pharmaSelectState(pharma: EDIUploadPharmaModel): string {
-    const index = this.uploadModel.pharmaList.findIndex(x => x.thisPK == pharma.thisPK);
-    return this.pharmaStateList[index];
-  }
-  getPharmaSelectStateIndex(pharma: EDIUploadPharmaModel): number {
-    return this.uploadModel.pharmaList.findIndex(x => x.thisPK == pharma.thisPK);
-  }
-  async pharmaStateChange(pharma: EDIUploadPharmaModel): Promise<void> {
-    if (this.pharmaSelectState(pharma) == pharma.ediState) {
-      return;
-    }
-    this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.putPharmaDataState(pharma.thisPK, pharma),
-      e => this.fDialogService.error("pharmaStateChange", e));
-    this.setLoading(false);
-    if (ret.result) {
-      return;
-    }
-    this.fDialogService.warn("pharmaStateChange", ret.msg);
+  responsePharma(pharma: EDIUploadPharmaModel): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openEDIResponseDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      maximizable: true,
+      data: pharma
+    }).pipe(takeUntil(sub)).subscribe(async (x): Promise<void> => {
+      if (x == null) {
+        return;
+      }
+      await this.getData();
+    });
   }
   async pharmaModify(pharma: EDIUploadPharmaModel): Promise<void> {
     this.setLoading();
@@ -99,7 +98,7 @@ export class EdiViewComponent extends FComponentBase {
     this.fDialogService.warn("medicineModify", ret.msg);
   }
   modifyDisable(pharma: EDIUploadPharmaModel): boolean {
-    return pharma.ediState == EDIState.OK;
+    return pharma.ediState == EDIState.OK || pharma.ediState == EDIState.Reject;
   }
   async removeMedicine(pharma: EDIUploadPharmaModel, medicine: EDIUploadPharmaMedicineModel): Promise<void> {
     this.setLoading();
@@ -115,8 +114,11 @@ export class EdiViewComponent extends FComponentBase {
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
-  accordionIndex(item: EDIUploadPharmaModel): string {
+  accordionPharmaIndex(item: EDIUploadPharmaModel): string {
     return `${this.uploadModel.pharmaList.findIndex(x => x.thisPK == item.thisPK)}`;
+  }
+  accordionResponseIndex(item: EDIUploadResponseModel): string {
+    return `${this.uploadModel.responseList.findIndex(x => x.thisPK == item.thisPK)}`;
   }
 
   getBlobUrl(item: EDIUploadFileModel): string {
