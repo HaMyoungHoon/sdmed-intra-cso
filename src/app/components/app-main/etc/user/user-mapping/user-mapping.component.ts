@@ -337,7 +337,7 @@ export class UserMappingComponent extends FComponentBase {
     return "user-mapping.pharma-pick-list.filter-place-holder";
   }
   get medicineFilterFields(): string[] {
-    return ["kdCode", "name"];
+    return ["code", "kdCode", "name"];
   }
   get medicineFilterPlaceHolder(): string {
     return "user-mapping.medicine-pick-list.filter-place-holder";
