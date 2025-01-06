@@ -138,7 +138,7 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   toSourceDrop(data: any): void {
     const isTransfer = data.previousContainer === data.container;
     const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, false, isTransfer, data.item.data);
-    if (data.previousContainer === data.container) {
+    if (isTransfer) {
       moveItemInArray(data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
       this.filter(<any[]>this.targetList, false);
     } else {

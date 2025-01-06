@@ -1,7 +1,7 @@
 <div #customPickList cdkDropListGroup cdkDropListGroupDisabled="{{disable}}">
   <div class="custom-pick-container">
     <div #customPickSource class="custom-pick-list" cdkDropList [cdkDropListData]="sourceList" (cdkDropListDropped)="toTargetDrop($event)">
-      <div class="custom-filter-container" *ngIf="useFilter">
+      <div class="custom-filter-container" *ngIf="false"> <!--*ngIf="useFilter"> -->
         <p-iconfield iconPosition="right">
           <p-inputicon class="pi pi-search" />
           <input class="custom-filter" pInputText [value]="filterValueSource" [disabled]="disable" (input)="onSourceFilterChange($event)" [placeholder]="sourceFilterPlaceHolder" />
@@ -14,7 +14,7 @@
   </div>
   <div class="custom-pick-container">
     <div #customPickTarget class="custom-pick-list" cdkDropList [cdkDropListData]="targetList" (cdkDropListDropped)="toSourceDrop($event)">
-      <div class="custom-filter-container" *ngIf="useFilter">
+      <div class="custom-filter-container" *ngIf="false"> <!--*ngIf="useFilter"> -->
         <p-iconfield iconPosition="right">
           <p-inputicon class="pi pi-search" />
           <input class="custom-filter" pInputText [value]="filterValueTarget" [disabled]="disable" (input)="onTargetFilterChange($event)" [placeholder]="targetFilterPlaceHolder" />
