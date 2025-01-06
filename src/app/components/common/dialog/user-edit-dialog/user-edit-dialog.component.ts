@@ -82,16 +82,7 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.userDataModel = ret.data ?? new UserDataModel();
-      return;
-    }
-    this.fDialogService.warn("saveUserData", ret.msg);
-  }
-  async saveUserChildData(): Promise<void> {
-    const ret = await FExtensions.restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
-      e => this.fDialogService.error("saveUserChildData", e));
-    this.setLoading(false);
-    if (ret.result) {
-      this.ref.close(ret.data);
+      this.ref.close(this.userDataModel);
       return;
     }
     this.fDialogService.warn("saveUserData", ret.msg);

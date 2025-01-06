@@ -1,15 +1,15 @@
 <div class="sign-container">
   <div class="mb-4">
-    <p-float-label>
+    <p-floatlabel>
       <input type="text" id="id_input" class="w-full" pInputText [(ngModel)]="id" (keydown)="idChange($event)">
       <label for="id_input">id</label>
-    </p-float-label>
+    </p-floatlabel>
   </div>
   <div class="mb-4">
-    <p-float-label>
+    <p-floatlabel>
       <p-password [(ngModel)]="pw" [feedback]="false" [toggleMask]="true" id="pw_input" (keydown)="pwChange($event)" />
       <label for="pw_input">pw</label>
-    </p-float-label>
+    </p-floatlabel>
   </div>
   <p-button class="flex justify-content-end" [disabled]="signInDisable" (onClick)="signIn()" label="login" />
 </div>
