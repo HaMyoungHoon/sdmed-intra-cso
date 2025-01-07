@@ -52,7 +52,7 @@ export class MyInfoComponent extends FComponentBase {
   }
   logout(): void {
     FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
-    this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
+    this.router.navigate([`/`]).then();
   }
 
   childTaxpayerImage(child: UserDataModel): string {

@@ -43,6 +43,7 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
     this.isMobile = !navigator.userAgent.includes("Window");
     const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
     if (FAmhohwa.isExpired(authToken)) {
+      this.router.navigate(["/"]).then();
       return;
     }
     await this.getMyState();
@@ -81,7 +82,7 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
       this.myState = ret.data ?? UserStatus.None;
       if (this.myState != UserStatus.Live) {
         FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
-        this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
+        this.router.navigate([`/`]).then();
       }
       return;
     }
