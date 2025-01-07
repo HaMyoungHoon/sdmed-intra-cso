@@ -15,6 +15,13 @@ import {EDIState} from "../../../../models/rest/edi/edi-state";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {Subject, takeUntil} from "rxjs";
 import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
+import {
+  allTextPositionDesc,
+  DescToTextPosition,
+  TextPosition,
+  TextPositionToTextPositionDesc
+} from "../../../../models/common/text-position";
+import {AddTextOptionModel} from "../../../../models/common/add-text-option-model";
 
 @Component({
   selector: "app-edi-view",
@@ -27,6 +34,9 @@ export class EdiViewComponent extends FComponentBase {
   thisPK: string = "";
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
+  fontSize: number = 12;
+  selectPrintPharma?: EDIUploadPharmaModel;
+  selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   constructor(private thisService: EdiListService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
     this.thisPK = this.route.snapshot.params["thisPK"];
@@ -44,13 +54,16 @@ export class EdiViewComponent extends FComponentBase {
     if (ret.result) {
       this.uploadModel = ret.data ?? new EDIUploadModel();
       this.pharmaStateList = [...this.uploadModel.pharmaList.map(x => x.ediState)];
+      if (this.uploadModel.pharmaList.length >= 1) {
+        this.selectPrintPharma = this.uploadModel.pharmaList[0];
+      }
       return;
     }
     this.fDialogService.warn("getData", ret.msg);
   }
 
   getApplyDate(): string {
-    return `${this.uploadModel.year}-${this.uploadModel.month}-${this.uploadModel.day}`;
+    return `${this.uploadModel.year}-${this.uploadModel.month}`;
   }
   getPharmaApplyDate(pharma: EDIUploadPharmaModel): string {
     return `${pharma.year}-${pharma.month}`;
@@ -132,11 +145,48 @@ export class EdiViewComponent extends FComponentBase {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
   async downloadEDIFile(item: EDIUploadFileModel): Promise<void> {
+    if (this.selectPrintPharma == null) {
+      return;
+    }
+    this.setLoading();
     const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
       e => this.fDialogService.error("downloadFile", e));
-    if (ret && ret.body) {
-      saveAs(ret.body, item.originalFilename);
+    try {
+      if (ret && ret.body) {
+        const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
+          obj.textPosition = DescToTextPosition[this.selectTextPosition];
+          obj.fontSize = this.fontSize;
+        }));
+        saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+      }
+    } catch (e: any) {
+      this.fDialogService.warn("download", e?.message?.toString());
     }
+    this.setLoading(false);
+  }
+  async allDownload(): Promise<void> {
+    if (this.selectPrintPharma == null) {
+      return;
+    }
+    this.setLoading();
+    for (const item of this.uploadModel.fileList) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      try {
+        if (ret && ret.body) {
+          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
+            obj.textPosition = DescToTextPosition[this.selectTextPosition];
+            obj.fontSize = this.fontSize;
+          }));
+          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+        }
+      } catch (e: any) {
+        this.fDialogService.warn("download", e?.message?.toString());
+      }
+    }
+    this.setLoading(false);
   }
 
   get downloadFileTooltip(): string {
@@ -147,4 +197,5 @@ export class EdiViewComponent extends FComponentBase {
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
   protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly allTextPositionDesc = allTextPositionDesc;
 }

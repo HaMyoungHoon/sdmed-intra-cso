@@ -483,7 +483,9 @@
     "change": "change",
     "sample-download": "sample download",
     "in-visible": "invisible",
-    "logout": "logout"
+    "logout": "logout",
+    "all-save": "all save",
+    "font-size": "font size"
   },
   "primeng": {
     "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

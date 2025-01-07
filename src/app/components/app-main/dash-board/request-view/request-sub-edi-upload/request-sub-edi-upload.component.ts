@@ -27,10 +27,15 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {Subject, takeUntil} from "rxjs";
 import {Textarea} from "primeng/textarea";
 import {EDIUploadResponseModel} from "../../../../../models/rest/edi/edi-upload-response-model";
+import {Select} from "primeng/select";
+import {AddTextOptionModel} from "../../../../../models/common/add-text-option-model";
+import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../../../models/common/text-position";
+import {InputText} from "primeng/inputtext";
+import {IftaLabel} from "primeng/iftalabel";
 
 @Component({
   selector: "app-request-sub-edi-upload",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel],
   templateUrl: "./request-sub-edi-upload.component.html",
   styleUrl: "./request-sub-edi-upload.component.scss",
   standalone: true,
@@ -41,6 +46,9 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
+  fontSize: number = 12;
+  selectPrintPharma?: EDIUploadPharmaModel;
+  selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
@@ -61,13 +69,16 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     if (ret.result) {
       this.uploadModel = ret.data ?? new EDIUploadModel();
       this.pharmaStateList = [...this.uploadModel.pharmaList.map(x => x.ediState)];
+      if (this.uploadModel.pharmaList.length >= 1) {
+        this.selectPrintPharma = this.uploadModel.pharmaList[0];
+      }
       return;
     }
     this.fDialogService.warn("getData", ret.msg);
   }
 
   getApplyDate(): string {
-    return `${this.uploadModel.year}-${this.uploadModel.month}-${this.uploadModel.day}`;
+    return `${this.uploadModel.year}-${this.uploadModel.month}`;
   }
   getPharmaApplyDate(pharma: EDIUploadPharmaModel): string {
     return `${pharma.year}-${pharma.month}`;
@@ -115,7 +126,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.fDialogService.warn("medicineModify", ret.msg);
   }
   modifyDisable(pharma: EDIUploadPharmaModel): boolean {
-    return pharma.ediState == EDIState.OK;
+    return pharma.ediState == EDIState.OK || pharma.ediState == EDIState.Reject;
   }
   async removeMedicine(pharma: EDIUploadPharmaModel, medicine: EDIUploadPharmaMedicineModel): Promise<void> {
     this.setLoading();
@@ -149,11 +160,48 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
   async downloadEDIFile(item: EDIUploadFileModel): Promise<void> {
+    if (this.selectPrintPharma == null) {
+      return;
+    }
+    this.setLoading();
     const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
       e => this.fDialogService.error("downloadFile", e));
-    if (ret && ret.body) {
-      saveAs(ret.body, item.originalFilename);
+    try {
+      if (ret && ret.body) {
+        const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
+          obj.textPosition = DescToTextPosition[this.selectTextPosition];
+          obj.fontSize = this.fontSize;
+        }));
+        saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+      }
+    } catch (e: any) {
+      this.fDialogService.warn("download", e?.message?.toString());
     }
+    this.setLoading(false);
+  }
+  async allDownload(): Promise<void> {
+    if (this.selectPrintPharma == null) {
+      return;
+    }
+    this.setLoading();
+    for (const item of this.uploadModel.fileList) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      try {
+        if (ret && ret.body) {
+          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
+            obj.textPosition = DescToTextPosition[this.selectTextPosition];
+            obj.fontSize = this.fontSize;
+          }));
+          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+        }
+      } catch (e: any) {
+        this.fDialogService.warn("download", e?.message?.toString());
+      }
+    }
+    this.setLoading(false);
   }
 
   get downloadFileTooltip(): string {
@@ -164,4 +212,5 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
   protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly allTextPositionDesc = allTextPositionDesc;
 }

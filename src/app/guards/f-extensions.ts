@@ -14,6 +14,10 @@ import {QnAState} from "../models/rest/qna/qna-state";
 import {QnAFileModel} from "../models/rest/qna/qna-file-model";
 import {FileViewModel} from "../models/rest/file-view-model";
 import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
+import {PDFDocument, rgb} from "pdf-lib";
+import fontkit from '@pdf-lib/fontkit';
+import {TextPosition} from "../models/common/text-position";
+import {AddTextOptionModel} from "../models/common/add-text-option-model";
 
 export function numberWithCommas(data: string): string {
   return data.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -271,7 +275,7 @@ function getBlobModel(blobName: string, thisPK: string, file: File, ext: string)
     obj.blobUrl = blobUrl;
     obj.blobName = blobName;
     obj.uploaderPK = thisPK;
-    obj.originalFilename = file.name;
+    obj.originalFilename = ableFilename(file.name);
     obj.mimeType = getMimeTypeExt(ext);
   });
 }
@@ -295,7 +299,7 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string
     obj.replyPK = thisPK;
     obj.blobUrl = blobUrl;
     obj.blobName = blobName;
-    obj.originalFilename = file.name;
+    obj.originalFilename = ableFilename(file.name);
     obj.mimeType = mimeType;
   });
 }
@@ -303,7 +307,7 @@ export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileV
   return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;
-    obj.filename = x.originalFilename;
+    obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
   }));
 }
@@ -311,7 +315,7 @@ export function qnaFileListToViewModel(qnaFileList: QnAFileModel[]): FileViewMod
   return qnaFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;
-    obj.filename = x.originalFilename;
+    obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
   }));
 }
@@ -319,7 +323,7 @@ export function qnaReplyFileListToViewModel(qnaReplyFileList: QnAReplyFileModel[
   return qnaReplyFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;
-    obj.filename = x.originalFilename;
+    obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
   }));
 }
@@ -334,7 +338,7 @@ export async function gatheringAbleFile(fileList: FileList, notAble: (file: File
     }
     ret.push(applyClass(UploadFileBuffModel, (obj) => {
       obj.file = buff;
-      obj.filename = buff.name;
+      obj.filename = ableFilename(buff.name);
       obj.mimeType = getMimeTypeExt(ext);
       obj.blobUrl = parseFileBlobUrl(buff, ext);
       obj.ext = ext;
@@ -424,6 +428,66 @@ export function isImage(ext: string): boolean {
   if (ext == "gif") return true;
 
   return false;
+}
+export async function blobAddText(blob: Blob, text: string, mimeType: string = "image/jpeg", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {
+  const ext = getExtMimeType(mimeType);
+  if (ext == "pdf") {
+    return await pdfBlobAddText(blob, text, mimeType, addTextOptionModel);
+  }
+  if (!isImage(ext)) {
+    return blob;
+  }
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    const image = new Image();
+    image.onload = () => {
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = addTextOptionModel.calcCanvasY(image.height);
+        context.fillStyle = addTextOptionModel.imageBackground;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, addTextOptionModel.calcImageY());
+        context.font = addTextOptionModel.calcImageFont();
+        context.fillStyle = addTextOptionModel.textColor;
+        const textWidth = context.measureText(text).width;
+        context.fillText(text, addTextOptionModel.calcImageTextX(image.width, textWidth), addTextOptionModel.calcImageTextY(image.height));
+        canvas.toBlob((blob) => resolve(blob!), mimeType);
+      } else {
+        reject("이미지 초기화 실패");
+      }
+      URL.revokeObjectURL(image.src);
+    };
+    image.src = URL.createObjectURL(blob);
+  });
+}
+export async function pdfBlobAddText(blob: Blob, text: string, mimeType: string = "application/pdf", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {
+  if (getExtMimeType(mimeType) != "pdf") {
+    return blob;
+  }
+  const arrayBuffer = await blob.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(arrayBuffer);
+  pdfDoc.registerFontkit(fontkit);
+  const pages = pdfDoc.getPages();
+  const fontBytes = await fetch('assets/fonts/NanumGothicLight.ttf').then(res => res.arrayBuffer());
+  const customFont = await pdfDoc.embedFont(fontBytes);
+  const textWidth = customFont.widthOfTextAtSize(text, addTextOptionModel.fontSize);
+  for (let i = 0; i < pages.length; i++) {
+    const pageBuff = pages[i];
+    const { width, height } = pageBuff.getSize();
+    pageBuff.drawText(`${text}_${i + 1}`, {
+      x: addTextOptionModel.calcPdfTextX(width, textWidth),
+      y: addTextOptionModel.calcPdfTextY(height),
+      size: addTextOptionModel.calcPdfFontSize(),
+      font: customFont,
+      color: rgb(0,0,0)
+    });
+  }
+  return new Blob([await pdfDoc.save()], { type: mimeType });
+}
+export function ableFilename(filename: string): string {
+  const invalidChars = /[\\\/:*?"<>|]/g;
+  return filename.replace(invalidChars, "");
 }
 export function getExtMimeType(mimeType?: string): string {
   switch (mimeType) {

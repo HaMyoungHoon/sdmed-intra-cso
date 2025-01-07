@@ -90,7 +90,7 @@
     }
   },
   "edi-view": {
-    "apply-date": "반영요청일",
+    "apply-date": "적용일자",
     "reg-date": "등록일",
     "hospital-name": "병원명",
     "user-name": "이름",
@@ -483,7 +483,9 @@
     "change": "변경",
     "sample-download": "샘플 다운로드",
     "in-visible": "숨김",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "all-save": "전체저장",
+    "font-size": "글자크기"
   },
   "primeng": {
     "dayNames": ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
