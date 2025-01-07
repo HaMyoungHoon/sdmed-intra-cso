@@ -5,6 +5,7 @@ export const STORAGE_DASHBOARD_VIEW_TYPE: string = "dashboardViewType";
 export const STORAGE_QNA_VIEW_TYPE: string = "qnaViewType";
 
 export const THEME_LINK: string = "app-theme";
+export const MQTT_CONNECT_DATA: string = "mqtt-connect";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";

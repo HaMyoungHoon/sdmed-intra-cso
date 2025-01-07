@@ -1,4 +1,12 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild} from "@angular/core";
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ViewChild
+} from "@angular/core";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
@@ -9,6 +17,10 @@ import {FDialogService} from "../../services/common/f-dialog.service";
 import {NgIf} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {Subject, takeUntil} from "rxjs";
+import * as FExtensions from "../../guards/f-extensions";
+import {MqttService} from "../../services/rest/mqtt.service";
+import {MqttConnectModel} from "../../models/rest/mqtt/mqtt-connect-model";
+import {MqttContentModel} from "../../models/rest/mqtt/mqtt-content-model";
 
 @Component({
   selector: "app-app-main",
@@ -21,10 +33,13 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
   @ViewChild("MenuConfigComponent") menuConfig!: MenuConfigComponent;
   viewPage: boolean = false;
   sub: Subject<any>[] = [];
+  mqttConnectModel: MqttConnectModel = new MqttConnectModel();
+  protected mqttService: MqttService;
   constructor(private cd: ChangeDetectorRef, private router: Router, private fDialogService: FDialogService) {
+    this.mqttService = inject(MqttService);
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
     if (FAmhohwa.isExpired(authToken)) {
       FAmhohwa.removeLocalStorage(FConstants.AUTH_TOKEN);
@@ -34,15 +49,17 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
     }
 
     this.initChildComponents(true);
-    this.bindRouteEvents();
+    await this.bindRouteEvents();
   }
   ngOnDestroy(): void {
+    this.mqttService.mqttDisconnect();
     for (const buff of this.sub) {
       buff.complete();
     }
   }
 
   openSignIn(): void {
+    this.unbindRouteEvents();
     const sub = new Subject<any>();
     this.sub.push(sub);
     this.fDialogService.openSignIn().pipe(takeUntil(sub)).subscribe(() => {
@@ -58,7 +75,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
 
     this.initChildComponents(true);
     this.cd.detectChanges();
-    this.bindRouteEvents();
+    this.bindRouteEvents().then();
   }
 
   initChildComponents(data: boolean): void {
@@ -68,12 +85,21 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
     if (this.router.url == "/" && !FAmhohwa.isExpired(authToken)) {
       this.router.navigate([`/${FConstants.DASH_BOARD_URL}`]).then();
     }
+    if (!data) {
+      this.mqttService.mqttDisconnect();
+    }
   }
 
   unbindRouteEvents(): void {
+    for (const buff of this.sub) {
+      buff.complete();
+    }
+    this.mqttService.mqttDisconnect();
   }
-  bindRouteEvents(): void {
-    this.router.events.subscribe((event) => {
+  async bindRouteEvents(): Promise<void> {
+    const sub = new Subject();
+    this.sub.push(sub);
+    this.router.events.pipe(takeUntil(sub)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         const authToken = FAmhohwa.getLocalStorage(FConstants.AUTH_TOKEN);
         if (FAmhohwa.isExpired(authToken)) {
@@ -86,7 +112,27 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
         this.menuConfig.menuClose();
       }
     });
+//    await this.mqttInit();
   }
+
+  async mqttInit(): Promise<void> {
+    const ret = await FExtensions.restTry(async() => await this.mqttService.getSubscribe(),
+      e => this.fDialogService.error("mqttInit", e));
+    if (!ret.result || ret.data == null) {
+      this.fDialogService.warn("mqttInit", ret.msg);
+      return;
+    }
+    this.mqttConnectModel = ret.data;
+    this.mqttService.setMqttMessageObserver(x => {
+      this.mqttMessageParse(x);
+    });
+    FExtensions.tryCatch(() => this.mqttService.mqttConnect(this.mqttConnectModel), e => this.fDialogService.error("mqttInit", e));
+  }
+
+  async mqttMessageParse(mqttContentModel: MqttContentModel): Promise<void> {
+    this.fDialogService.info("info", mqttContentModel.content);
+  }
+
   get testVisible(): boolean {
     return false;
   }

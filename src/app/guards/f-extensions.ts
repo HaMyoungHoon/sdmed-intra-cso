@@ -15,9 +15,11 @@ import {QnAFileModel} from "../models/rest/qna/qna-file-model";
 import {FileViewModel} from "../models/rest/file-view-model";
 import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
 import {PDFDocument, rgb} from "pdf-lib";
-import fontkit from '@pdf-lib/fontkit';
-import {TextPosition} from "../models/common/text-position";
+import fontkit from "@pdf-lib/fontkit";
 import {AddTextOptionModel} from "../models/common/add-text-option-model";
+
+export type voidFunc = () => void;
+export type anyFunc = (x: any) => void;
 
 export function numberWithCommas(data: string): string {
   return data.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -469,7 +471,7 @@ export async function pdfBlobAddText(blob: Blob, text: string, mimeType: string 
   const pdfDoc = await PDFDocument.load(arrayBuffer);
   pdfDoc.registerFontkit(fontkit);
   const pages = pdfDoc.getPages();
-  const fontBytes = await fetch('assets/fonts/NanumGothicLight.ttf').then(res => res.arrayBuffer());
+  const fontBytes = await fetch("assets/fonts/NanumGothicLight.ttf").then(res => res.arrayBuffer());
   const customFont = await pdfDoc.embedFont(fontBytes);
   const textWidth = customFont.widthOfTextAtSize(text, addTextOptionModel.fontSize);
   for (let i = 0; i < pages.length; i++) {
