@@ -47,7 +47,10 @@ export function userImageView(fileModel: UserFileModel | undefined, input: Eleme
     draggable: true,
     resizable: true,
     maximizable: true,
-    data: FExtensions.userFileListToViewModel(Array<UserFileModel>(fileModel!!))
+    data: {
+      file: FExtensions.userFileListToViewModel(Array<UserFileModel>(fileModel!!)),
+      index: 0,
+    }
   });
 }
 export async function saveUserData(data: UserDataModel, selectedUserRoles: string[], selectedUserDepts: string[], selectedUserStatus: string, service: UserInfoService): Promise<RestResult<UserDataModel>> {

@@ -250,11 +250,13 @@
       "dept": "부서",
       "status": "상태",
       "reg-date": "등록일",
+      "bank-account": "은행계좌",
+      "company-name": "사명",
       "last-login-date": "마지막 로그인일",
       "taxpayer-image": "사업자등록증",
       "bank-account-image": "은행계좌",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract": "마케팅계약서"
+      "marketing-contract-image": "마케팅계약서"
     },
     "child": {
       "id": "아이디",

@@ -75,7 +75,10 @@ export class MyInfoComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
-      data: FExtensions.userFileListToViewModel(Array<UserFileModel>(file))
+      data: {
+        file: FExtensions.userFileListToViewModel(Array<UserFileModel>(file)),
+        index: 0,
+      }
     });
   }
 

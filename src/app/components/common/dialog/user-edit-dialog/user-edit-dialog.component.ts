@@ -25,10 +25,11 @@ import {Select} from "primeng/select";
 import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.component";
 import * as FUserInfoMethod from "../../../../guards/f-user-info-method";
 import {UserFileType} from "../../../../models/rest/user/user-file-type";
+import {IftaLabel} from "primeng/iftalabel";
 
 @Component({
   selector: "app-user-edit-dialog",
-  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent],
+  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent, IftaLabel],
   templateUrl: "./user-edit-dialog.component.html",
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,

@@ -24,10 +24,11 @@ import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
 import * as FExtensions from "../../../../../guards/f-extensions";
 import {transformToBoolean} from "primeng/utils";
 import {UserFileType} from "../../../../../models/rest/user/user-file-type";
+import {IftaLabel} from "primeng/iftalabel";
 
 @Component({
   selector: "app-request-sub-sign-up",
-  imports: [NgIf, Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, CustomPickListComponent, FormsModule, Image, InputText, MultiSelect, ProgressSpinComponent, Select, TableModule, Tooltip, TranslatePipe],
+  imports: [NgIf, Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, CustomPickListComponent, FormsModule, Image, InputText, MultiSelect, ProgressSpinComponent, Select, TableModule, Tooltip, TranslatePipe, IftaLabel],
   templateUrl: "./request-sub-sign-up.component.html",
   styleUrl: "./request-sub-sign-up.component.scss",
   standalone: true,

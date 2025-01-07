@@ -250,6 +250,8 @@
       "dept": "dept",
       "status": "status",
       "reg-date": "reg date",
+      "bank-account": "bank account",
+      "company-name": "company name",
       "last-login-date": "login date",
       "taxpayer-image": "tax payer",
       "bank-account-image": "bank account",

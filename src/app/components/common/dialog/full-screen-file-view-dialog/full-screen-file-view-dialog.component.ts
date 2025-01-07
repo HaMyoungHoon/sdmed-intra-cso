@@ -1,7 +1,6 @@
 import {Component, Inject} from "@angular/core";
 import {FDialogComponentBase} from "../../../../guards/f-dialog-component-base";
 import {Button} from "primeng/button";
-import {Drawer} from "primeng/drawer";
 import {Image} from "primeng/image";
 import {DOCUMENT, NgIf} from "@angular/common";
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
@@ -14,7 +13,7 @@ import {read, utils} from "xlsx";
 
 @Component({
   selector: "app-full-screen-file-view-dialog",
-  imports: [Button, Drawer, Image, NgIf, NgxExtendedPdfViewerModule, ProgressSpinComponent],
+  imports: [Button, Image, NgIf, NgxExtendedPdfViewerModule, ProgressSpinComponent],
   templateUrl: "./full-screen-file-view-dialog.component.html",
   styleUrl: "./full-screen-file-view-dialog.component.scss",
   standalone: true,
@@ -27,8 +26,8 @@ export class FullScreenFileViewDialogComponent extends FDialogComponentBase {
   constructor(@Inject(DOCUMENT) private document: Document) {
     super()
     const dlg = this.dialogService.getInstance(this.ref);
-    this.fileViewModel = dlg.data;
-    this.selectedIndex = 0;
+    this.fileViewModel = dlg.data.file;
+    this.selectedIndex = dlg.data.index;
     this.ref.onClose.pipe().subscribe(x => {
       this.init();
     })

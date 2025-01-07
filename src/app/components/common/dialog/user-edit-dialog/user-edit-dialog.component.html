@@ -57,27 +57,29 @@
           <label class="col">{{dateToYearFullString(stringToDate(userDataModel.lastLoginDate))}}</label>
         </div>
         <div class="field grid">
-          <label class="col-fixed m-1">{{userDataModel.companyNumber}}</label>
-          <div class="col m-1">
-            <p-image width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
-          </div>
-          <label class="col-fixed m-1">{{userDataModel.bankAccount}}</label>
-          <div class="col m-1">
-            <p-image width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
-          </div>
-          <label class="col-fixed m-1">{{"user-edit.detail.cso-report" | translate}}</label>
-          <div class="col m-1">
+          <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
+          <p-ifta-label class="col">
+            <input id="taxpayer" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+            <label for="taxpayer">{{"user-edit.detail.company-name" | translate}}</label>
+          </p-ifta-label>
+          <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
+          <p-ifta-label class="col">
+            <input id="bankAccount" [(ngModel)]="userDataModel.bankAccount" type="text" pInputText>
+            <label for="bankAccount">{{"user-edit.detail.bank-account" | translate}}</label>
+          </p-ifta-label>
+        </div>
+        <div class="field grid">
+          <div class="col">
             <p-image width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
           </div>
-          <label class="col-fixed m-1">{{"user-edit.detail.marketing-contract" | translate}}</label>
-          <div class="col m-1">
+          <div class="col">
             <p-image width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
           </div>
-          <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.Taxpayer)">
-          <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.BankAccount)">
-          <input #csoReportImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.CsoReport)">
-          <input #marketingContractImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.MarketingContract)">
         </div>
+        <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.Taxpayer)">
+        <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.BankAccount)">
+        <input #csoReportImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.CsoReport)">
+        <input #marketingContractImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.MarketingContract)">
       </p-accordion-content>
     </p-accordion-panel>
     <p-accordion-panel value="1">
