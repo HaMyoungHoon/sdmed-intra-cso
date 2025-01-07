@@ -52,4 +52,4 @@ export const BLOB_CONTAINER_NAME: string = "mhhablob1";
 
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";
-export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "300px", "height": "360px"};
+export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "600px", "height": "660px"};

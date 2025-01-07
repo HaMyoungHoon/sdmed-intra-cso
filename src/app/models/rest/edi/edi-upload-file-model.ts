@@ -4,4 +4,5 @@ export class EDIUploadFileModel {
   blobUrl: string = "";
   originalFilename: string = "";
   mimeType: string = "";
+  regDate: Date = new Date();
 }

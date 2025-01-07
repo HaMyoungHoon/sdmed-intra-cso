@@ -25,8 +25,11 @@
         </ng-template>
         <ng-template pTemplate="caption" let-item>
           <div class="flex">
-            <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadFile(item)" />
-            <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
+            <p-button class="flex m-1" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadFile(item)" />
+            <div class="flex-row">
+              <label class="flex">{{ellipsis(item.originalFilename, 50)}}</label>
+              <label class="flex">{{dateToYYYYMMdd(item.regDate)}}</label>
+            </div>
           </div>
         </ng-template>
       </p-galleria>
@@ -52,8 +55,11 @@
               </ng-template>
               <ng-template pTemplate="caption" let-item>
                 <div class="flex">
-                  <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadReplyFile(item)" />
-                  <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
+                  <p-button class="flex m-1" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadReplyFile(item)" />
+                  <div class="flex-row">
+                    <label class="flex">{{ellipsis(item.originalFilename, 50)}}</label>
+                    <label class="flex">{{dateToYYYYMMdd(item.regDate)}}</label>
+                  </div>
                 </div>
               </ng-template>
             </p-galleria>

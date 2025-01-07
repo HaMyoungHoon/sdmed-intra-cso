@@ -106,11 +106,9 @@
     </p-accordion-panel>
   </p-accordion>
   <div class="flex">
-    <p-select [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" *ngIf="uploadModel.fileList.length > 0" optionLabel="orgName" />
-    <p-button (click)="allDownload()">{{"common-desc.all-save" | translate}}</p-button>
-  </div>
-  <div class="flex">
-    <p-select class="flex justify-content-center align-items-center align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" *ngIf="uploadModel.fileList.length > 0" />
+    <p-button class="m-1 align-content-center" (click)="allDownload()">{{"common-desc.all-save" | translate}}</p-button>
+    <p-select class="m-1 align-content-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" *ngIf="uploadModel.fileList.length > 0" optionLabel="orgName" />
+    <p-select class="m-1 align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" *ngIf="uploadModel.fileList.length > 0" />
     <p-ifta-label>
       <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText *ngIf="uploadModel.fileList.length > 0" />
       <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
@@ -123,8 +121,11 @@
     </ng-template>
     <ng-template pTemplate="caption" let-item>
       <div class="flex">
-        <p-button class="align-content-center" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadEDIFile(item)" />
-        <label class="m-1">{{ellipsis(item.originalFilename)}}</label>
+        <p-button class="flex m-1" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadEDIFile(item)" />
+        <div class="flex-row">
+          <label class="flex">{{ellipsis(item.originalFilename, 50)}}</label>
+          <label class="flex">{{dateToYYYYMMdd(item.regDate)}}</label>
+        </div>
       </div>
     </ng-template>
   </p-galleria>

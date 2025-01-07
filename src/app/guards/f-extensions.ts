@@ -313,6 +313,7 @@ export function userFileListToViewModel(userFileList: UserFileModel[]): FileView
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
   }));
 }
 export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileViewModel[] {
@@ -321,6 +322,7 @@ export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileV
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
   }));
 }
 export function qnaFileListToViewModel(qnaFileList: QnAFileModel[]): FileViewModel[] {
@@ -329,6 +331,7 @@ export function qnaFileListToViewModel(qnaFileList: QnAFileModel[]): FileViewMod
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
   }));
 }
 export function qnaReplyFileListToViewModel(qnaReplyFileList: QnAReplyFileModel[]): FileViewModel[] {
@@ -337,6 +340,7 @@ export function qnaReplyFileListToViewModel(qnaReplyFileList: QnAReplyFileModel[
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);
     obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
   }));
 }
 

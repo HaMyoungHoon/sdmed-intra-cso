@@ -3,4 +3,5 @@ export class FileViewModel {
   blobUrl: string = "";
   filename: string = "";
   ext: string = "";
+  regDate: Date = new Date();
 }
