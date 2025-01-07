@@ -3,6 +3,8 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {RestResult} from "../../models/common/rest-result";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
+import {UserFileType} from "../../models/rest/user/user-file-type";
+import {UserFileModel} from "../../models/rest/user/user-file-model";
 
 @Injectable({
   providedIn: "root"
@@ -41,10 +43,8 @@ export class UserInfoService {
   putUser(userData: UserDataModel): Promise<RestResult<UserDataModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data`, userData);
   }
-  putUserTaxImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/taxImage`, blobModel);
-  }
-  putUserBankImageUrl(thisPK: string, blobModel: BlobUploadModel): Promise<RestResult<UserDataModel>> {
-    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}/bankImage`, blobModel);
+  putUserFileImageUrl(thisPK: string, blobModel: BlobUploadModel, userFileType: UserFileType): Promise<RestResult<UserFileModel>> {
+    this.httpResponse.addParam("userFileType", userFileType);
+    return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}`, blobModel);
   }
 }

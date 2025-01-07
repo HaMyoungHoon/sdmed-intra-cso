@@ -10,6 +10,8 @@ import * as FAmhohwa from "../../../../../guards/f-amhohwa";
 import * as FConstants from "../../../../../guards/f-constants";
 import {transformToBoolean} from "primeng/utils";
 import {Subject, takeUntil} from "rxjs";
+import {UserFileType} from "../../../../../models/rest/user/user-file-type";
+import {UserFileModel} from "../../../../../models/rest/user/user-file-model";
 
 @Component({
   selector: "app-my-info",
@@ -55,17 +57,26 @@ export class MyInfoComponent extends FComponentBase {
     this.router.navigate([`/`]).then();
   }
 
-  childTaxpayerImage(child: UserDataModel): string {
-    if (child.taxpayerImageUrl.length <= 0) {
-      return FConstants.ASSETS_NO_IMAGE;
+  childImage(child: UserDataModel, userFileType: UserFileType): string {
+    const file = child.fileList.find(x => x.userFileType == userFileType);
+    if (file) {
+      return FExtensions.blobUrlThumbnail(file.blobUrl, file.mimeType);
     }
-    return child.taxpayerImageUrl;
+    return FConstants.ASSETS_NO_IMAGE;
   }
-  childBankAccountImage(child: UserDataModel): string {
-    if (child.bankAccountImageUrl.length <= 0) {
-      return FConstants.ASSETS_NO_IMAGE;
+  childImageView(child: UserDataModel, userFileType: UserFileType): void {
+    const file = child.fileList.find(x => x.userFileType == userFileType);
+    if (file == null) {
+      return;
     }
-    return child.bankAccountImageUrl;
+    this.fDialogService.openFullscreenFileView({
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      maximizable: true,
+      data: FExtensions.userFileListToViewModel(Array<UserFileModel>(file))
+    });
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
@@ -78,4 +89,5 @@ export class MyInfoComponent extends FComponentBase {
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly statusToUserStatusDesc = statusToUserStatusDesc;
   protected readonly tableStyle = FConstants.tableStyle;
+  protected readonly UserFileType = UserFileType;
 }

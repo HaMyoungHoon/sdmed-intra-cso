@@ -61,8 +61,10 @@
               <th>{{"my-info.child.phone-number" | translate}}</th>
               <th>{{"my-info.child.status" | translate}}</th>
               <th>{{"my-info.child.company-name" | translate}}</th>
-              <th>{{"my-info.child.tax-payer-image" | translate}}</th>
+              <th>{{"my-info.child.taxpayer-image" | translate}}</th>
               <th>{{"my-info.child.bank-account-image" | translate}}</th>
+              <th>{{"my-info.child.cso-report-image" | translate}}</th>
+              <th>{{"my-info.child.marketing-contract-image" | translate}}</th>
             </tr>
           </ng-template>
           <ng-template #body let-child>
@@ -75,10 +77,16 @@
               </td>
               <td>{{child?.companyName}}</td>
               <td>
-                <p-image [src]="childTaxpayerImage(child)" width="100" height="100" [preview]="true"/>
+                <p-image [src]="childImage(child, UserFileType.Taxpayer)" width="100" height="100" (click)="childImageView(child, UserFileType.Taxpayer)"/>
               </td>
               <td>
-                <p-image [src]="childBankAccountImage(child)" width="100" height="100" [preview]="true"/>
+                <p-image [src]="childImage(child, UserFileType.BankAccount)" width="100" height="100" (click)="childImageView(child, UserFileType.BankAccount)"/>
+              </td>
+              <td>
+                <p-image [src]="childImage(child, UserFileType.CsoReport)" width="100" height="100" (click)="childImageView(child, UserFileType.CsoReport)"/>
+              </td>
+              <td>
+                <p-image [src]="childImage(child, UserFileType.MarketingContract)" width="100" height="100" (click)="childImageView(child, UserFileType.MarketingContract)"/>
               </td>
             </tr>
           </ng-template>

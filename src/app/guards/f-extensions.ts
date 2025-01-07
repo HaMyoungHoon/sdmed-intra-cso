@@ -17,6 +17,7 @@ import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
 import {PDFDocument, rgb} from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import {AddTextOptionModel} from "../models/common/add-text-option-model";
+import {UserFileModel} from "../models/rest/user/user-file-model";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -305,6 +306,15 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, ext: string
     obj.mimeType = mimeType;
   });
 }
+
+export function userFileListToViewModel(userFileList: UserFileModel[]): FileViewModel[] {
+  return userFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = ableFilename(x.originalFilename);
+    obj.ext = getExtMimeType(x.mimeType);
+  }));
+}
 export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileViewModel[] {
   return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
@@ -355,6 +365,23 @@ export function getFilenameExt(filename: string): string {
     return "";
   }
   return filename.substring(dotIndex).toLowerCase();
+}
+export function blobUrlThumbnail(blobUrl: string, mimeType: string): string {
+  const ext = getExtMimeType(mimeType);
+
+  if (isImage(ext)) {
+    return blobUrl;
+  } else if (ext == "zip") {
+    return FConstants.ASSETS_ZIP_IMAGE;
+  } else if (ext == "pdf") {
+    return FConstants.ASSETS_PDF_IMAGE;
+  } else if (ext == "xlsx" || ext == "xls") {
+    return FConstants.ASSETS_XLSX_IMAGE;
+  } else if (ext == "docx" || ext == "doc" ) {
+    return FConstants.ASSETS_DOCX_IMAGE;
+  }
+
+  return FConstants.ASSETS_NO_IMAGE;
 }
 export function parseFileBlobUrl(file: File, ext?: string): string {
   if (ext == null) {

@@ -23,6 +23,7 @@ import * as FConstants from "../../../../../guards/f-constants";
 import * as FUserInfoMethod from "../../../../../guards/f-user-info-method";
 import * as FExtensions from "../../../../../guards/f-extensions";
 import {transformToBoolean} from "primeng/utils";
+import {UserFileType} from "../../../../../models/rest/user/user-file-type";
 
 @Component({
   selector: "app-request-sub-sign-up",
@@ -36,8 +37,10 @@ export class RequestSubSignUpComponent extends FComponentBase {
   @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter<RequestModel>();
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
+  @ViewChild("csoReportImageInput") csoReportImageInput!: ElementRef<HTMLInputElement>
+  @ViewChild("marketingContractImageInput") marketingContractImageInput!: ElementRef<HTMLInputElement>
   childAble: UserDataModel[] = [];
-  thisData: UserDataModel = new UserDataModel();
+  userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
   userDeptList: string[] = allUserDeptDescArray();
   userStatusList: string[] = allUserStatusDescArray();
@@ -61,7 +64,7 @@ export class RequestSubSignUpComponent extends FComponentBase {
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(buff.requestItemPK, true),
       e => this.fDialogService.error("getThisData", e));
     if (ret.result) {
-      this.thisData = ret.data ?? new UserDataModel();
+      this.userDataModel = ret.data ?? new UserDataModel();
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
@@ -85,11 +88,11 @@ export class RequestSubSignUpComponent extends FComponentBase {
   }
   async saveUserData(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.thisData, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
     this.setLoading(false);
     if (ret.result) {
-      this.thisData = ret.data ?? new UserDataModel();
+      this.userDataModel = ret.data ?? new UserDataModel();
       return;
     }
     this.fDialogService.warn("saveUserData", ret.msg);
@@ -98,55 +101,45 @@ export class RequestSubSignUpComponent extends FComponentBase {
     this.closeEvent.emit(this.requestModel);
   }
 
-  get taxpayerImageUrl(): string {
-    if (this.thisData.taxpayerImageUrl.length > 0) {
-      return this.thisData.taxpayerImageUrl
+  userImageUrl(userFileType: UserFileType): string {
+    const file = this.userDataModel.fileList.find(x => x.userFileType == userFileType);
+    if (file) {
+      return FExtensions.blobUrlThumbnail(file.blobUrl, file.mimeType);
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
-  get taxpayerTooltip(): string {
-    return "user-edit.detail.taxpayer-image";
+  userImageTooltip(userFileType: UserFileType): string {
+    switch (userFileType) {
+      case UserFileType.Taxpayer: return "user-edit.detail.taxpayer-image";
+      case UserFileType.BankAccount: return "user-edit.detail.bank-account-image";
+      case UserFileType.CsoReport: return "user-edit.detail.cso-report-image";
+      case UserFileType.MarketingContract: return "user-edit.detail.marketing-contract-image";
+    }
+    return "";
   }
-  taxpayerImageView(): void {
-    FUserInfoMethod.userImageView(this.thisData.taxpayerImageUrl, this.taxpayerImageInput, this.fDialogService);
+  userImageView(userFileType: UserFileType): void {
+    const file = this.userDataModel.fileList.find(x => x.userFileType == userFileType);
+    FUserInfoMethod.userImageView(file, this.taxpayerImageInput, this.fDialogService);
   }
-  async taxpayerImageSelected(event: any): Promise<void> {
+  async userImageSelected(event: any, userFileType: UserFileType): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.taxpayerImageSelected(event, this.thisData, this.thisService, this.commonService, this.azureBlobService),
-      e => this.fDialogService.error("taxpayerImageSelected", e));
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.imageSelected(event, this.userDataModel, userFileType, this.thisService, this.commonService, this.azureBlobService),
+      e => this.fDialogService.error(`${userFileType}`, e));
     this.setLoading(false);
-    this.taxpayerImageInput.nativeElement.value = "";
+    switch (userFileType) {
+      case UserFileType.Taxpayer: this.taxpayerImageInput.nativeElement.value = ""; break;
+      case UserFileType.BankAccount: this.bankAccountImageInput.nativeElement.value = ""; break;
+      case UserFileType.CsoReport: this.csoReportImageInput.nativeElement.value = ""; break;
+      case UserFileType.MarketingContract: this.marketingContractImageInput.nativeElement.value = ""; break;
+    }
     if (ret.result) {
-      this.thisData.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
+      if (ret.data) {
+        this.userDataModel.fileList.push(ret.data)
+      }
       return;
     }
-    this.fDialogService.warn("taxpayerImageSelected", ret.msg);
-  }
-  get bankAccountImageUrl(): string {
-    if (this.thisData.bankAccountImageUrl.length > 0) {
-      return this.thisData.bankAccountImageUrl
-    }
-
-    return FConstants.ASSETS_NO_IMAGE;
-  }
-  get bankAccountTooltip(): string {
-    return "user-edit.detail.bank-account-image";
-  }
-  bankAccountImageView(): void {
-    FUserInfoMethod.userImageView(this.thisData.bankAccountImageUrl, this.bankAccountImageInput, this.fDialogService);
-  }
-  async bankAccountImageSelected(event: any): Promise<void> {
-    this.setLoading();
-    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.bankAccountImageSelected(event, this.thisData, this.thisService, this.commonService, this.azureBlobService),
-      e => this.fDialogService.error("bankAccountImageSelected", e));
-    this.setLoading(false);
-    this.bankAccountImageInput.nativeElement.value = "";
-    if (ret.result) {
-      this.thisData.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
-      return;
-    }
-    this.fDialogService.warn("bankAccountImageView", ret.msg);
+    this.fDialogService.warn(`${userFileType}`, ret.msg);
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
@@ -161,4 +154,5 @@ export class RequestSubSignUpComponent extends FComponentBase {
 
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;
+  protected readonly UserFileType = UserFileType;
 }

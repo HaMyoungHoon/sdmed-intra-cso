@@ -24,6 +24,7 @@ import {transformToBoolean} from "primeng/utils";
 import {Select} from "primeng/select";
 import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.component";
 import * as FUserInfoMethod from "../../../../guards/f-user-info-method";
+import {UserFileType} from "../../../../models/rest/user/user-file-type";
 
 @Component({
   selector: "app-user-edit-dialog",
@@ -35,6 +36,8 @@ import * as FUserInfoMethod from "../../../../guards/f-user-info-method";
 export class UserEditDialogComponent extends FDialogComponentBase {
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
+  @ViewChild("csoReportImageInput") csoReportImageInput!: ElementRef<HTMLInputElement>
+  @ViewChild("marketingContractImageInput") marketingContractImageInput!: ElementRef<HTMLInputElement>
   childAble: UserDataModel[] = [];
   userDataModel: UserDataModel = new UserDataModel();
   userRoleList: string[] = allUserRoleDescArray();
@@ -91,55 +94,45 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     this.ref.close();
   }
 
-  get taxpayerImageUrl(): string {
-    if (this.userDataModel.taxpayerImageUrl.length > 0) {
-      return this.userDataModel.taxpayerImageUrl
+  userImageUrl(userFileType: UserFileType): string {
+    const file = this.userDataModel.fileList.find(x => x.userFileType == userFileType);
+    if (file) {
+      return FExtensions.blobUrlThumbnail(file.blobUrl, file.mimeType);
     }
 
     return FConstants.ASSETS_NO_IMAGE;
   }
-  get taxpayerTooltip(): string {
-    return "user-edit.detail.taxpayer-image";
+  userImageTooltip(userFileType: UserFileType): string {
+    switch (userFileType) {
+      case UserFileType.Taxpayer: return "user-edit.detail.taxpayer-image";
+      case UserFileType.BankAccount: return "user-edit.detail.bank-account-image";
+      case UserFileType.CsoReport: return "user-edit.detail.cso-report-image";
+      case UserFileType.MarketingContract: return "user-edit.detail.marketing-contract-image";
+    }
+    return "";
   }
-  taxpayerImageView(): void {
-    FUserInfoMethod.userImageView(this.userDataModel.taxpayerImageUrl, this.taxpayerImageInput, this.fDialogService);
+  userImageView(userFileType: UserFileType): void {
+    const file = this.userDataModel.fileList.find(x => x.userFileType == userFileType);
+    FUserInfoMethod.userImageView(file, this.taxpayerImageInput, this.fDialogService);
   }
-  async taxpayerImageSelected(event: any): Promise<void> {
+  async userImageSelected(event: any, userFileType: UserFileType): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.taxpayerImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
-      e => this.fDialogService.error("taxpayerImageSelected", e));
+    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.imageSelected(event, this.userDataModel, userFileType, this.thisService, this.commonService, this.azureBlobService),
+      e => this.fDialogService.error(`${userFileType}`, e));
     this.setLoading(false);
-    this.taxpayerImageInput.nativeElement.value = "";
+    switch (userFileType) {
+      case UserFileType.Taxpayer: this.taxpayerImageInput.nativeElement.value = ""; break;
+      case UserFileType.BankAccount: this.bankAccountImageInput.nativeElement.value = ""; break;
+      case UserFileType.CsoReport: this.csoReportImageInput.nativeElement.value = ""; break;
+      case UserFileType.MarketingContract: this.marketingContractImageInput.nativeElement.value = ""; break;
+    }
     if (ret.result) {
-      this.userDataModel.taxpayerImageUrl = ret.data?.taxpayerImageUrl ?? ""
+      if (ret.data) {
+        this.userDataModel.fileList.push(ret.data)
+      }
       return;
     }
-    this.fDialogService.warn("taxpayerImageSelected", ret.msg);
-  }
-  get bankAccountImageUrl(): string {
-    if (this.userDataModel.bankAccountImageUrl.length > 0) {
-      return this.userDataModel.bankAccountImageUrl
-    }
-
-    return FConstants.ASSETS_NO_IMAGE;
-  }
-  get bankAccountTooltip(): string {
-    return "user-edit.detail.bank-account-image";
-  }
-  bankAccountImageView(): void {
-    FUserInfoMethod.userImageView(this.userDataModel.bankAccountImageUrl, this.bankAccountImageInput, this.fDialogService);
-  }
-  async bankAccountImageSelected(event: any): Promise<void> {
-    this.setLoading();
-    const ret = await FExtensions.restTry(async() => await FUserInfoMethod.bankAccountImageSelected(event, this.userDataModel, this.thisService, this.commonService, this.azureBlobService),
-      e => this.fDialogService.error("bankAccountImageSelected", e));
-    this.setLoading(false);
-    this.bankAccountImageInput.nativeElement.value = "";
-    if (ret.result) {
-      this.userDataModel.bankAccountImageUrl = ret.data?.bankAccountImageUrl ?? ""
-      return;
-    }
-    this.fDialogService.warn("bankAccountImageView", ret.msg);
+    this.fDialogService.warn(`${userFileType}`, ret.msg);
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });
@@ -153,4 +146,5 @@ export class UserEditDialogComponent extends FDialogComponentBase {
 
   protected readonly stringToDate = FExtensions.stringToDate;
   protected readonly dateToYearFullString = FExtensions.dateToYearFullString;
+	protected readonly UserFileType = UserFileType;
 }

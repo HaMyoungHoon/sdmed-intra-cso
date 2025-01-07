@@ -21,6 +21,9 @@ import {EdiViewDialogComponent} from "../../components/common/dialog/edi-view-di
 import {
   EdiResponseDialogComponent
 } from "../../components/common/dialog/edi-response-dialog/edi-response-dialog.component";
+import {
+  FullScreenFileViewDialogComponent
+} from "../../components/common/dialog/full-screen-file-view-dialog/full-screen-file-view-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -93,6 +96,10 @@ export class FDialogService {
   }
   openImageView(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(ImageViewDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openFullscreenFileView(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(FullScreenFileViewDialogComponent, config);
     return this.ref.onClose;
   }
   alertToast(data: ToastItem): void {

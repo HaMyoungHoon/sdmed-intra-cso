@@ -1,5 +1,5 @@
 <div class="request-sub-sign-up-container">
-  <div class="" *ngIf="thisData">
+  <div class="" *ngIf="userDataModel">
     <app-progress-spin [isLoading]="isLoading" />
     <div class="m-1">
       <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
@@ -11,24 +11,24 @@
         <p-accordion-content>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.id" | translate}}</label>
-            <label class="col">{{thisData.id}}</label>
+            <label class="col">{{userDataModel.id}}</label>
           </div>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.name" | translate}}</label>
             <div class="col">
-              <input class="text-base" pInputText type="text" [(ngModel)]="thisData.name" />
+              <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.name" />
             </div>
           </div>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.mail" | translate}}</label>
             <div class="col">
-              <input class="text-base" pInputText type="text" [(ngModel)]="thisData.mail" />
+              <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
             </div>
           </div>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.phone-number" | translate}}</label>
             <div class="col">
-              <input class="text-base" pInputText type="text" [(ngModel)]="thisData.phoneNumber" />
+              <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
             </div>
           </div>
           <div class="field grid">
@@ -51,30 +51,40 @@
           </div>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.reg-date" | translate}}</label>
-            <label class="col">{{dateToYearFullString(stringToDate(thisData.regDate))}}</label>
+            <label class="col">{{dateToYearFullString(stringToDate(userDataModel.regDate))}}</label>
           </div>
           <div class="field grid">
             <label class="col-fixed w-3">{{"user-edit.detail.last-login-date" | translate}}</label>
-            <label class="col">{{dateToYearFullString(stringToDate(thisData.lastLoginDate))}}</label>
+            <label class="col">{{dateToYearFullString(stringToDate(userDataModel.lastLoginDate))}}</label>
           </div>
           <div class="field grid">
-            <label class="col-fixed m-1">{{thisData.companyNumber}}</label>
+            <label class="col-fixed m-1">{{userDataModel.companyNumber}}</label>
             <div class="col m-1">
-              <p-image width="100" height="100" [src]="taxpayerImageUrl" [alt]="thisData.companyNumber" (click)="taxpayerImageView()" pTooltip="{{taxpayerTooltip | translate}}"/>
+              <p-image width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
             </div>
-            <label class="col-fixed m-1">{{thisData.bankAccount}}</label>
+            <label class="col-fixed m-1">{{userDataModel.bankAccount}}</label>
             <div class="col m-1">
-              <p-image width="100" height="100" [src]="bankAccountImageUrl" [alt]="thisData.bankAccount" (click)="bankAccountImageView()" pTooltip="{{bankAccountTooltip | translate}}"/>
+              <p-image width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
             </div>
-            <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="taxpayerImageSelected($event)">
-            <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="bankAccountImageSelected($event)">
+            <label class="col-fixed m-1">{{"user-edit.detail.cso-report" | translate}}</label>
+            <div class="col m-1">
+              <p-image width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
+            </div>
+            <label class="col-fixed m-1">{{"user-edit.detail.marketing-contract" | translate}}</label>
+            <div class="col m-1">
+              <p-image width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
+            </div>
+            <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.Taxpayer)">
+            <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.BankAccount)">
+            <input #csoReportImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.CsoReport)">
+            <input #marketingContractImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.MarketingContract)">
           </div>
         </p-accordion-content>
       </p-accordion-panel>
       <p-accordion-panel value="1">
         <p-accordion-header>{{"user-edit.accordion-header.child" | translate}}</p-accordion-header>
         <p-accordion-content>
-          <app-custom-pick-list class="flex col-12" [sourceList]="childAble" [targetList]="thisData.children" [disable]="thisData.motherPK.length > 0"
+          <app-custom-pick-list class="flex col-12" [sourceList]="childAble" [targetList]="userDataModel.children" [disable]="userDataModel.motherPK.length > 0"
                                 [filterFields]="filterFields" sourceFilterPlaceHolder="{{filterPlaceHolder | translate}}"
                                 targetFilterPlaceHolder="{{filterPlaceHolder | translate}}">
             <ng-template #sourceItem let-source>
