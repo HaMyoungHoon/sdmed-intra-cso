@@ -71,14 +71,15 @@ export class UserMappingComponent extends FComponentBase {
       this.setLoading(false);
       return;
     }
-    if (hosPharmaMedicinePairModel.find(x => x.medicinePK.length <= 0)) {
-      const findPharma = this.hosPickListUser?.hosList.find(x => x.pharmaList.find(y => y.thisPK == hosPharmaMedicinePairModel.find(z => z.medicinePK.length <= 0)?.pharmaPK));
-      this.translateService.get("user-mapping.save.warn-medicine").subscribe(y => {
-        this.fDialogService.warn("save", `${y}\n${findPharma?.innerName}->${findPharma?.pharmaList[0].innerName}`);
-      });
-      this.setLoading(false);
-      return;
-    }
+    // 약품 정보가 없어도 저장 할 수 있었으면 좋겠다고 함
+//    if (hosPharmaMedicinePairModel.find(x => x.medicinePK.length <= 0)) {
+//      const findPharma = this.hosPickListUser?.hosList.find(x => x.pharmaList.find(y => y.thisPK == hosPharmaMedicinePairModel.find(z => z.medicinePK.length <= 0)?.pharmaPK));
+//      this.translateService.get("user-mapping.save.warn-medicine").subscribe(y => {
+//        this.fDialogService.warn("save", `${y}\n${findPharma?.innerName}->${findPharma?.pharmaList[0].innerName}`);
+//      });
+//      this.setLoading(false);
+//      return;
+//    }
     const ret = await FExtensions.restTry(async() => await this.thisService.putUserRelationModifyByPK(thisPK, hosPharmaMedicinePairModel),
         e => this.fDialogService.error("save", e));
     this.setLoading(false);
