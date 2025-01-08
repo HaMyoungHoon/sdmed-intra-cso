@@ -228,6 +228,31 @@
       "warn-medicine": "empty medicine list;"
     }
   },
+  "user-add": {
+    "warn": {
+      "after-pw": "plz input 8-20 characters of letters and numbers.",
+      "confirm-pw": "password un match"
+    },
+    "detail": {
+      "id": "id",
+      "name": "name",
+      "password": "password",
+      "confirm-pw": "confirm pw",
+      "mail": "mail",
+      "phone-number": "phone",
+      "role": "role",
+      "dept": "dept",
+      "status": "status",
+      "reg-date": "reg date",
+      "bank-account": "bank account",
+      "company-name": "company name",
+      "last-login-date": "login date",
+      "taxpayer-image": "tax payer",
+      "bank-account-image": "bank account",
+      "cso-report-image": "cso report",
+      "marketing-contract-image": "marketing contract"
+    }
+  },
   "user-edit": {
     "request": {
       "request-date": "req date",
@@ -287,7 +312,7 @@
   },
   "password-change-dialog": {
     "warn": {
-      "after-pw": "plz input more than 4 character",
+      "after-pw": "plz input 8-20 characters of letters and numbers.",
       "confirm-pw": "password un match"
     },
     "current-pw": "current pw",

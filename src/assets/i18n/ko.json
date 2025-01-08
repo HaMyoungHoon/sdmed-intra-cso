@@ -228,6 +228,31 @@
       "warn-medicine": "약품 정보가 비어있습니다;"
     }
   },
+  "user-add": {
+    "warn": {
+      "after-pw": "문자, 숫자 조합의 8-20자를 입력해주세요.",
+      "confirm-pw": "비밀번호와 확인이 일치하지 않습니다."
+    },
+    "detail": {
+      "id": "아이디",
+      "name": "이름",
+      "password": "비밀번호",
+      "confirm-pw": "비밀번호 확인",
+      "mail": "메일",
+      "phone-number": "번호",
+      "role": "권한",
+      "dept": "부서",
+      "status": "상태",
+      "reg-date": "등록일",
+      "bank-account": "은행계좌",
+      "company-name": "사명",
+      "last-login-date": "마지막 로그인일",
+      "taxpayer-image": "사업자등록증",
+      "bank-account-image": "은행계좌",
+      "cso-report-image": "CSO 신고증",
+      "marketing-contract-image": "마케팅계약서"
+    }
+  },
   "user-edit": {
     "request": {
       "request-date": "요청일",
@@ -287,7 +312,7 @@
   },
   "password-change-dialog": {
     "warn": {
-      "after-pw": "4자 이상 입력해주세요.",
+      "after-pw": "문자, 숫자 조합의 8-20자를 입력해주세요.",
       "confirm-pw": "바꿀 비밀번호와 확인이 일치하지 않습니다."
     },
     "current-pw": "현재 비밀번호",

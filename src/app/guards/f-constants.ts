@@ -35,6 +35,7 @@ export const MEDICINE_EDIT_URL: string = "medicine-list/:thisPK";
 
 export const MY_INFO_URL: string = "etc/myInfo";
 export const USER_INFO_URL: string = "etc/userInfo";
+export const USER_NEW_URL: string = "etc/userInfo/new";
 export const USER_EDIT_URL: string = "etc/userInfo/:thisPK";
 
 export const USER_MAPPING_URL: string = "etc/userMapping";
@@ -53,3 +54,7 @@ export const BLOB_CONTAINER_NAME: string = "mhhablob1";
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";
 export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "600px", "height": "660px"};
+
+export const REGEX_CHECK_PASSWORD_0: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[0-9]).{8,20}$/;
+export const REGEX_CHECK_PASSWORD_1: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+export const REGEX_CHECK_PASSWORD_2: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;

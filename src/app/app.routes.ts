@@ -31,6 +31,7 @@ export const routes: Routes = [
 
       { path: FConstants.MY_INFO_URL, loadChildren: () => import("./components/app-main/etc/user/my-info/my-info.module").then(m => m.MyInfoModule) },
       { path: FConstants.USER_INFO_URL, loadChildren: () => import("./components/app-main/etc/user/user-setting/user-setting.module").then(m => m.UserSettingModule) },
+      { path: FConstants.USER_NEW_URL, loadChildren: () => import("./components/app-main/etc/user/user-add/user-add.module").then(m => m.UserAddModule) },
       { path: FConstants.USER_EDIT_URL, loadChildren: () => import("./components/app-main/etc/user/user-edit/user-edit.module").then(m => m.UserEditModule) },
 
       { path: FConstants.USER_MAPPING_URL, loadChildren: () => import("./components/app-main/etc/user/user-mapping/user-mapping.module").then(m => m.UserMappingModule) },

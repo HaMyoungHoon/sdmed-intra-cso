@@ -45,6 +45,30 @@ export class UserSettingComponent extends FComponentBase {
   async refreshUserDataModel(): Promise<void> {
     await this.getUserDataModel();
   }
+  addUser(): void {
+    const isNewTab = this.configService.isNewTab();
+    if (isNewTab) {
+      window.open(`${FConstants.USER_NEW_URL}`);
+      return;
+    }
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openUserAddDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      resizable: true,
+      maximizable: true,
+      width: "60%",
+    }).pipe(takeUntil(sub)).subscribe((x): void => {
+      if (x == null) {
+        return;
+      }
+      this.initValue.unshift(x);
+      this.userDataModel.unshift(x);
+    })
+  }
   uploadExcel(): void {
     this.inputUploadExcel.nativeElement.click();
   }

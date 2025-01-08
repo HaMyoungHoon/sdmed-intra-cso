@@ -22,6 +22,10 @@ export class CommonService {
     this.httpResponse.addParam("confirmPW", confirmPW);
     return this.httpResponse.post(`${this.baseUrl}/signUp`, data);
   }
+  newUser(confirmPW: string, data: UserDataModel): Promise<RestResult<UserDataModel>> {
+    this.httpResponse.addParam("confirmPW", confirmPW);
+    return this.httpResponse.post(`${this.baseUrl}/newUser`, data);
+  }
   tokenRefresh(): Promise<RestResult<string>> {
     return this.httpResponse.post(`${this.baseUrl}/tokenRefresh`);
   }

@@ -24,6 +24,9 @@ import {
 import {
   FullScreenFileViewDialogComponent
 } from "../../components/common/dialog/full-screen-file-view-dialog/full-screen-file-view-dialog.component";
+import {
+  UserAddDialogComponentComponent
+} from "../../components/common/dialog/user-add-dialog-component/user-add-dialog-component.component";
 
 @Injectable({
   providedIn: "root"
@@ -60,6 +63,10 @@ export class FDialogService {
   }
   openPasswordChangeDialog(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(PasswordChangeDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openUserAddDialog(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(UserAddDialogComponentComponent, config);
     return this.ref.onClose;
   }
   openUserEditDialog(config: DynamicDialogConfig): Observable<any> {
