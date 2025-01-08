@@ -6,6 +6,7 @@ import {EDIUploadPharmaModel} from "../../models/rest/edi/edi-upload-pharma-mode
 import {EDIPharmaDueDateModel} from "../../models/rest/edi/edi-pharma-due-date-model";
 import {EDIUploadPharmaMedicineModel} from "../../models/rest/edi/edi-upload-pharma-medicine-model";
 import {EDIUploadResponseModel} from "../../models/rest/edi/edi-upload-response-model";
+import {EDIUploadFileModel} from "../../models/rest/edi/edi-upload-file-model";
 
 @Injectable({
   providedIn: "root"
@@ -45,5 +46,8 @@ export class EdiListService {
   deletePharmaMedicineList(thisPK: string[]): Promise<RestResult<EDIUploadPharmaMedicineModel>> {
     this.httpResponse.addParam("thisPK", thisPK.join(","));
     return this.httpResponse.delete(`${this.baseUrl}/list/pharma/medicine`);
+  }
+  deleteEDIFile(thisPK: string): Promise<RestResult<EDIUploadFileModel>> {
+    return this.httpResponse.delete(`${this.baseUrl}/data/file/${thisPK}`);
   }
 }

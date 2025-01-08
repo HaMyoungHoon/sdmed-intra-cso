@@ -106,17 +106,17 @@
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>
-  <div class="flex">
+  <div class="flex" *ngIf="uploadModel.fileList.length > 0">
     <p-button class="m-1 align-content-center" (click)="allDownload()">{{"common-desc.all-save" | translate}}</p-button>
-    <p-select class="m-1 align-content-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" *ngIf="uploadModel.fileList.length > 0" optionLabel="orgName" />
-    <p-select class="m-1 align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" *ngIf="uploadModel.fileList.length > 0" />
+    <p-select class="m-1 align-content-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" />
+    <p-select class="m-1 align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" />
     <p-ifta-label>
-      <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText *ngIf="uploadModel.fileList.length > 0" />
+      <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
       <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
     </p-ifta-label>
   </div>
   <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
-              [containerStyle]="galleriaContainerStyle" [numVisible]="0">
+              [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex" *ngIf="uploadModel.fileList.length > 0">
     <ng-template pTemplate="item" let-item>
       <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="edi-image cursor-pointer" (click)="viewEDIItem(uploadModel.fileList, item)" />
     </ng-template>
@@ -124,9 +124,10 @@
       <div class="flex">
         <p-button class="flex m-1" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadEDIFile(item)" />
         <div class="flex-row">
-          <label class="flex">{{ellipsis(item.originalFilename, 50)}}</label>
-          <label class="flex">{{dateToYYYYMMdd(item.regDate)}}</label>
+          <label class="flex">{{ellipsis(item?.originalFilename, 50)}}</label>
+          <label class="flex">{{dateToYYYYMMdd(item?.regDate)}}</label>
         </div>
+        <p-button class="flex m-1 justify-content-end ml-auto" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="removeEDIFile(item)" />
       </div>
     </ng-template>
   </p-galleria>

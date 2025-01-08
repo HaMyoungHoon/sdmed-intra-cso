@@ -46,6 +46,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
   fontSize: number = 12;
+  activeIndex: number = 0;
   selectPrintPharma?: EDIUploadPharmaModel;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   constructor(private thisService: EdiListService) {
@@ -123,7 +124,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     this.fDialogService.warn("medicineModify", ret.msg);
   }
   modifyDisable(pharma: EDIUploadPharmaModel): boolean {
-    return pharma.ediState == EDIState.OK;
+    return pharma.ediState == EDIState.OK || pharma.ediState == EDIState.Reject;
   }
   async removeMedicine(pharma: EDIUploadPharmaModel, medicine: EDIUploadPharmaMedicineModel): Promise<void> {
     this.setLoading();
@@ -177,6 +178,27 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     }
     this.setLoading(false);
   }
+  async removeEDIFile(item: EDIUploadFileModel): Promise<void> {
+    this.setLoading();
+    const ret = await FExtensions.restTry(async() => await this.thisService.deleteEDIFile(item.thisPK),
+      e => this.fDialogService.error("delete", e));
+    this.setLoading(false);
+    if (ret.result) {
+      const index = this.uploadModel.fileList.indexOf(item);
+      if (index == this.uploadModel.fileList.length - 1) {
+        if (this.uploadModel.fileList.length - 1 > 0) {
+          this.activeIndex = this.uploadModel.fileList.length - 2;
+        } else {
+          this.activeIndex = 0;
+        }
+      }
+      if (index >= 0) {
+        this.uploadModel.fileList = [...this.uploadModel.fileList.filter(x => x.thisPK != item.thisPK)];
+      }
+      return;
+    }
+    this.fDialogService.warn("delete", ret.msg);
+  }
   async allDownload(): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
@@ -203,6 +225,9 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
 
   get downloadFileTooltip(): string {
     return "common-desc.save";
+  }
+  get removeFileTooltip(): string {
+    return "common-desc.remove";
   }
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd
   protected readonly ellipsis = FExtensions.ellipsis;
