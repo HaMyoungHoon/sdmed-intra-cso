@@ -179,7 +179,7 @@ export class FullScreenFileViewDialogComponent extends FDialogComponentBase {
       this.excelTable = new Handsontable(container, {
         rowHeaders: true,
         colHeaders: this.colHeader,
-        height: "95%",
+        height: `${screen.height - 100}px`,
         width: "100%",
         autoWrapRow: true,
         autoWrapCol: false,
@@ -190,8 +190,8 @@ export class FullScreenFileViewDialogComponent extends FDialogComponentBase {
           allowSampleDuplicates: true
         },
         modifyColWidth: function(width:number, column: number ): number {
-          if (width > 300) {
-            return 300
+          if (width > 200) {
+            return 200
           }
           return width
         },

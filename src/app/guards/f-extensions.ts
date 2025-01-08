@@ -50,9 +50,12 @@ export function currentDateYYYYMMdd(): string {
 
   return `${date.getFullYear()}${dToMon(date)}${dToD(date)}`;
 }
-export function dateToYearFullString(date?: Date): string {
+export function dateToYearFullString(date?: Date | null | string): string {
   if (date == null) {
     return "????-??-?? ??:??:??";
+  }
+  if (typeof date == "string") {
+    date = stringToDate(date);
   }
 
   return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
@@ -63,7 +66,7 @@ export function dateToMonthFullString(date?: Date): string {
   }
   return `${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-export function dateToYYYYMMdd(date?: Date | null): string {
+export function dateToYYYYMMdd(date?: Date | null | string): string {
   if (date == null) {
     return "????-??-??"
   }
@@ -73,7 +76,7 @@ export function dateToYYYYMMdd(date?: Date | null): string {
 
   return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)}`;
 }
-export function dateToMMdd(date?: Date | null): string {
+export function dateToMMdd(date?: Date | null | string): string {
   if (date == null) {
     return "??-??"
   }
@@ -659,4 +662,11 @@ export function getMimeTypeExt(ext?: string): string {
     case "7z": return FContentsType.type_7z;
     default: return "";
   }
+}
+
+export function regexPasswordCheck(data: string | undefined): boolean {
+  if (data == undefined) {
+    return false;
+  }
+  return FConstants.REGEX_CHECK_PASSWORD_0.test(data);
 }
