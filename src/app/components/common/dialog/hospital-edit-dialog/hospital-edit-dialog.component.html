@@ -110,7 +110,7 @@
       <div class="col-4">
         <p-image width="100" height="100" [src]="imageUrl" [alt]="hospitalModel.taxpayerNumber" (click)="imageView()" />
       </div>
-      <input #imageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="imageSelected($event)">
+      <input #imageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="imageSelected($event)">
     </div>
   </p-card>
 </div>
