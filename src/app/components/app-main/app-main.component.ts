@@ -1,12 +1,4 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  OnDestroy,
-  ViewChild
-} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, ViewChild} from "@angular/core";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {NavigationEnd, NavigationStart, Router, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
@@ -21,6 +13,7 @@ import * as FExtensions from "../../guards/f-extensions";
 import {MqttService} from "../../services/rest/mqtt.service";
 import {MqttConnectModel} from "../../models/rest/mqtt/mqtt-connect-model";
 import {MqttContentModel} from "../../models/rest/mqtt/mqtt-content-model";
+import {MqttContentType} from "../../models/rest/mqtt/mqtt-content-type";
 
 @Component({
   selector: "app-app-main",
@@ -134,9 +127,15 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
   }
 
   get testVisible(): boolean {
-    return false;
+    return true;
   }
-  test(): void {
-
+  async test(): Promise<void> {
+    await this.mqttService.postPublish("notice", FExtensions.applyClass(MqttContentModel, (obj) => {
+      obj.senderPK = "senderPK test";
+      obj.senderName = "senderName test";
+      obj.content = "content test";
+      obj.contentType = MqttContentType.EDI_REJECT;
+      obj.targetItemPK = "targetItemPK test";
+    }));
   }
 }
