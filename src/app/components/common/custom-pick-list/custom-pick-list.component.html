@@ -1,26 +1,26 @@
 <div #customPickList cdkDropListGroup cdkDropListGroupDisabled="{{disable}}">
   <div class="custom-pick-container">
-    <div #customPickSource class="custom-pick-list" cdkDropList [cdkDropListData]="sourceList" (cdkDropListDropped)="toTargetDrop($event)">
-      <div class="custom-filter-container" *ngIf="false"> <!--*ngIf="useFilter"> -->
+    <div #customPickSource class="custom-pick-list" cdkDropList [cdkDropListData]="sourceList" (cdkDropListDropped)="onDrop($event, SOURCE_LIST)">
+      <div class="custom-filter-container" *ngIf="useFilter">
         <p-iconfield iconPosition="right">
           <p-inputicon class="pi pi-search" />
           <input class="custom-filter" pInputText [value]="filterValueSource" [disabled]="disable" (input)="onSourceFilterChange($event)" [placeholder]="sourceFilterPlaceHolder" />
         </p-iconfield>
       </div>
-      <div class="custom-pick-box" [ngClass]="isSelectedSource(source)" cdkDrag [cdkDragDisabled]="disable" #sourceDiv *ngFor="let source of visibleSource" (click)="sourceSelect(source)" (cdkDragEnded)="sourceDrag($event, source)">
+      <div class="custom-pick-box" [ngClass]="isSelectedSource(source)" cdkDrag [cdkDragData]="source" [cdkDragDisabled]="disable" #sourceDiv *ngFor="let source of visibleSource" (click)="sourceSelect(source)" (cdkDragEnded)="sourceDrag($event, source)">
         <ng-container [ngTemplateOutlet]="sourceTemplateOutlet" [ngTemplateOutletContext]="sourceTemplateOutletContext(source)" />
       </div>
     </div>
   </div>
   <div class="custom-pick-container">
-    <div #customPickTarget class="custom-pick-list" cdkDropList [cdkDropListData]="targetList" (cdkDropListDropped)="toSourceDrop($event)">
-      <div class="custom-filter-container" *ngIf="false"> <!--*ngIf="useFilter"> -->
+    <div #customPickTarget class="custom-pick-list" cdkDropList [cdkDropListData]="targetList" (cdkDropListDropped)="onDrop($event, TARGET_LIST)">
+      <div class="custom-filter-container" *ngIf="useFilter">
         <p-iconfield iconPosition="right">
           <p-inputicon class="pi pi-search" />
           <input class="custom-filter" pInputText [value]="filterValueTarget" [disabled]="disable" (input)="onTargetFilterChange($event)" [placeholder]="targetFilterPlaceHolder" />
         </p-iconfield>
       </div>
-      <div class="custom-pick-box" [ngClass]="isSelectedTarget(target)" cdkDrag [cdkDragDisabled]="disable" #targetDiv *ngFor="let target of visibleTarget" (click)="targetSelect(target)" (cdkDragEnded)="targetDrag($event, target)">
+      <div class="custom-pick-box" [ngClass]="isSelectedTarget(target)" cdkDrag [cdkDragData]="target" [cdkDragDisabled]="disable" #targetDiv *ngFor="let target of visibleTarget" (click)="targetSelect(target)" (cdkDragEnded)="targetDrag($event, target)">
         <ng-container [ngTemplateOutlet]="targetTemplateOutlet" [ngTemplateOutletContext]="targetTemplateOutletContext(target)" />
       </div>
     </div>

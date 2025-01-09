@@ -1,6 +1,13 @@
 import {Component, Input, Output, EventEmitter, TemplateRef, ContentChild, AfterContentInit, inject, OnChanges, SimpleChanges} from "@angular/core";
 import * as FExtensions from "../../../guards/f-extensions";
-import {CdkDrag, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem
+} from "@angular/cdk/drag-drop";
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {FilterService} from "primeng/api";
 import {FilterModel} from "../../../models/common/filter-model";
@@ -48,6 +55,8 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   @Output() sourceSelectChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() targetSelectChange: EventEmitter<any> = new EventEmitter<any>();
   filterService = inject(FilterService);
+  SOURCE_LIST: number = -1;
+  TARGET_LIST: number = 1;
   constructor() {
   }
 
@@ -55,11 +64,11 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["sourceList"]) {
-      this.filter(<any[]>this.sourceList, true);
+      this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
       this.selectedSource = undefined;
     }
     if (changes["targetList"]) {
-      this.filter(<any[]>this.targetList, false);
+      this.filter(<any[]>this.targetList, this.TARGET_LIST);
       this.selectedTarget = undefined;
     }
   }
@@ -74,15 +83,15 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   }
   sourceFilter(value: string = ""): void {
     this.filterValueSource = this.ignoreCase ? value.trim().toLocaleLowerCase(this.filterLocale) : value.trim();
-    this.filter(<any[]>this.sourceList, true);
+    this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
   }
   targetFilter(value: string = ""): void {
     this.filterValueTarget = this.ignoreCase ? value.trim().toLocaleLowerCase(this.filterLocale) : value.trim();
-    this.filter(<any[]>this.targetList, false);
+    this.filter(<any[]>this.targetList, this.TARGET_LIST);
   }
-  filter(data: any[], isSource: boolean = true): void {
+  filter(data: any[], listType: number = this.SOURCE_LIST): void {
     const searchFields = this.filterFields.length <= 0 ? [""] : this.filterFields;
-    if (isSource) {
+    if (listType == this.SOURCE_LIST) {
       if (this.filterValueSource) {
         this.filteredSourceList = this.filterService.filter(data, searchFields, this.filterValueSource, this.filterMatchMode, this.filterLocale);
       } else {
@@ -98,10 +107,10 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
       this.onTargetFilter.emit({ query: this.filterValueTarget, value: this.filteredTargetList });
     }
   }
-  getDropIndexes(fromIndex: number, toIndex: number, isSource: boolean, isTransfer: boolean, data: any[] | any): { previousIndex: number, currentIndex: number } {
+  getDropIndexes(fromIndex: number, toIndex: number, listType: number, isTransfer: boolean, data: any[] | any): { previousIndex: number, currentIndex: number } {
     let previousIndex: number;
     let currentIndex: number;
-    if (isSource) {
+    if (listType == this.SOURCE_LIST) {
       previousIndex = isTransfer ? (this.filterValueTarget ? FExtensions.findIndexInList(data, this.targetList) : fromIndex) : this.filterValueSource ? FExtensions.findIndexInList(data, this.sourceList) : fromIndex;
       currentIndex = this.filterValueSource ? this.findFilteredCurrentIndex(<any[]>this.filteredSourceList, toIndex, this.sourceList) : toIndex;
     } else {
@@ -118,36 +127,66 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
       return FExtensions.findIndexInList(filteredList[index], list);
     }
   }
+  onDrop(event: CdkDragDrop<string[]>, listType: number): void {
+    const isTransfer = event.previousContainer !== event.container;
+    console.log(event.item.data);
+    const dropIndexes = this.getDropIndexes(event.previousIndex, event.currentIndex, listType, isTransfer, event.item.data);
+    if (listType == this.SOURCE_LIST) {
+      if (isTransfer) {
+        transferArrayItem(event.previousContainer.data, event.container.data, dropIndexes.previousIndex, dropIndexes.currentIndex);
+        if (this.filteredTargetList) this.filteredTargetList.splice(event.previousIndex, 1);
+        if (this.draggedTarget === this.selectedTarget) {
+          this.targetSelect(undefined);
+        }
+        this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
+      } else {
+        moveItemInArray(event.container.data, dropIndexes.previousIndex, dropIndexes.currentIndex);
+        this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
+      }
+    } else {
+      if (isTransfer) {
+        transferArrayItem(event.previousContainer.data, event.container.data, dropIndexes.previousIndex, dropIndexes.currentIndex);
+        if (this.filteredSourceList) this.filteredSourceList.splice(event.previousIndex, 1);
+        if (this.draggedSource === this.selectedSource) {
+          this.sourceSelect(undefined);
+        }
+        this.filter(<any[]>this.targetList, this.TARGET_LIST);
+      } else {
+        moveItemInArray(event.container.data, dropIndexes.previousIndex, dropIndexes.currentIndex);
+        this.filter(<any[]>this.targetList, this.TARGET_LIST);
+      }
+    }
+  }
   toTargetDrop(data: any): void {
-    const isTransfer = data.previousContainer === data.container;
-    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, true, isTransfer, data.item.data);
+    const isTransfer = data.previousContainer !== data.container;
+    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, this.SOURCE_LIST, isTransfer, data.item.data);
     if (isTransfer) {
       moveItemInArray(data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
-      this.filter(<any[]>this.sourceList, true);
+      this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
     } else {
       transferArrayItem(data.previousContainer.data, data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
       if (this.filteredTargetList) this.filteredTargetList.splice(data.previousIndex, 1);
       if (this.draggedTarget === this.selectedTarget) {
         this.targetSelect(undefined);
       }
-      this.filter(<any[]>this.sourceList, true);
+      this.filter(<any[]>this.sourceList, this.SOURCE_LIST);
     }
     this.draggedTarget = undefined;
     this.sourceDropChange.emit(data);
   }
   toSourceDrop(data: any): void {
     const isTransfer = data.previousContainer === data.container;
-    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, false, isTransfer, data.item.data);
+    const dropIndex = this.getDropIndexes(data.previousIndex, data.currentIndex, this.TARGET_LIST, isTransfer, data.item.data);
     if (isTransfer) {
       moveItemInArray(data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
-      this.filter(<any[]>this.targetList, false);
+      this.filter(<any[]>this.targetList, this.TARGET_LIST);
     } else {
       transferArrayItem(data.previousContainer.data, data.container.data, dropIndex.previousIndex, dropIndex.currentIndex);
       if (this.filteredSourceList) this.filteredSourceList.splice(data.previousIndex, 1);
       if (this.draggedSource === this.selectedSource) {
         this.sourceSelect(undefined);
       }
-      this.filter(<any[]>this.targetList, false);
+      this.filter(<any[]>this.targetList, this.TARGET_LIST);
     }
     this.draggedSource = undefined;
     this.targetDropChange.emit(data);
