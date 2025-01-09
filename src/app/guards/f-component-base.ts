@@ -11,6 +11,7 @@ import {AzureBlobService} from "../services/rest/azure-blob.service";
 import {UserStatus} from "../models/rest/user/user-status";
 import {Router} from "@angular/router";
 import {Subject} from "rxjs";
+import {MqttService} from "../services/rest/mqtt.service";
 
 @Component({
   selector: "f-component-base",
@@ -25,6 +26,7 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
   isMobile: boolean = false;
   protected sub: Subject<any>[] = [];
   protected commonService: CommonService;
+  protected mqttService: MqttService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService;
   protected configService: AppConfigService;
@@ -32,6 +34,7 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
   protected router: Router
   protected constructor(protected arrayRole: Array<UserRole> = Array<UserRole>(UserRole.None)) {
     this.commonService = inject(CommonService);
+    this.mqttService = inject(MqttService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
     this.configService = inject(AppConfigService);

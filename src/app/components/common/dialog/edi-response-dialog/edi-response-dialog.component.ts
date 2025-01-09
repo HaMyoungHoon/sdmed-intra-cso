@@ -35,6 +35,17 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
 
   }
 
+  async mqttSend(userPK: string | undefined, thisPK: string | undefined, content: string | undefined, ediState: EDIState | undefined): Promise<void> {
+    if (userPK == undefined || thisPK == undefined || content == undefined || ediState == undefined) {
+      return;
+    }
+    const ret = await FExtensions.restTry(async() => this.mqttService.postEDIResponse(userPK, thisPK, content, ediState));
+//      e => this.fDialogService.warn("notice", e));
+//    if (ret.result) {
+//      return;
+//    }
+//    this.fDialogService.warn("notice", ret.msg);
+  }
   async postData(): Promise<void> {
     if (!this.postAble) {
       return;
@@ -47,6 +58,7 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
     const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.pharma.thisPK, ediUploadResponseModel),
       e => this.fDialogService.error("postData", e));
     if (ret.result) {
+      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, ret.data?.orgName, ret.data?.ediState);
       this.ref.close(this.pharma);
       return;
     }

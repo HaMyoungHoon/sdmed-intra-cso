@@ -7,6 +7,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {CommonService} from "../services/rest/common.service";
 import {AzureBlobService} from "../services/rest/azure-blob.service";
 import {Subject} from "rxjs";
+import {MqttService} from "../services/rest/mqtt.service";
 
 @Component({
   selector: "f-dialog-component-base",
@@ -23,6 +24,7 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
   protected ref: DynamicDialogRef;
   protected dialogService: DialogService;
   protected commonService: CommonService;
+  protected mqttService: MqttService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService;
   protected azureBlobService: AzureBlobService;
@@ -30,6 +32,7 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
     this.ref = inject(DynamicDialogRef);
     this.dialogService = inject(DialogService);
     this.commonService = inject(CommonService);
+    this.mqttService = inject(MqttService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
     this.azureBlobService = inject(AzureBlobService);

@@ -105,7 +105,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
         this.menuConfig.menuClose();
       }
     });
-//    await this.mqttInit();
+    await this.mqttInit();
   }
 
   async mqttInit(): Promise<void> {
@@ -123,19 +123,37 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
   }
 
   async mqttMessageParse(mqttContentModel: MqttContentModel): Promise<void> {
-    this.fDialogService.info("info", mqttContentModel.content);
+    if (mqttContentModel.senderPK == FAmhohwa.getThisPK()) {
+      return;
+    }
+    let title = "";
+    switch (mqttContentModel.contentType) {
+      case MqttContentType.None: title = "info"; break;
+      case MqttContentType.QNA_REQUEST: title = "QNA"; break;
+      case MqttContentType.QNA_REPLY: title = "QNA"; break;
+      case MqttContentType.EDI_REQUEST: title = "EDI Request"; break;
+      case MqttContentType.EDI_REJECT: title = "EDI Reject"; break;
+      case MqttContentType.EDI_OK: title = "EDI OK"; break;
+      case MqttContentType.EDI_RECEP: title = "EDI Recep"; break;
+    }
+    this.fDialogService.info(title, `${mqttContentModel.senderName}\n${mqttContentModel.content}`);
   }
 
   get testVisible(): boolean {
-    return true;
+    return false;
   }
   async test(): Promise<void> {
-    await this.mqttService.postPublish("notice", FExtensions.applyClass(MqttContentModel, (obj) => {
+    const mqtt = FExtensions.applyClass(MqttContentModel, (obj) => {
       obj.senderPK = "senderPK test";
       obj.senderName = "senderName test";
       obj.content = "content test";
       obj.contentType = MqttContentType.EDI_REJECT;
       obj.targetItemPK = "targetItemPK test";
-    }));
+    });
+    const ret = await FExtensions.restTry(async() => await this.mqttService.postPublish("notice", mqtt), e => this.fDialogService.error("test", e));
+    if (ret.result) {
+      return;
+    }
+    this.fDialogService.warn("test", ret.msg);
   }
 }

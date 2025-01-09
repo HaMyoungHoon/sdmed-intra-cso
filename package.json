@@ -32,6 +32,7 @@
     "crypto-js": "^4.2.0",
     "file-saver": "^2.0.5",
     "handsontable": "^15.0.0",
+    "heic2any": "^0.0.4",
     "mqtt": "^5.10.3",
     "ngx-extended-pdf-viewer": "^22.2.0-alpha.0",
     "pdf-lib": "^1.17.1",

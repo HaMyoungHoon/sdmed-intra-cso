@@ -19,6 +19,8 @@ import fontkit from "@pdf-lib/fontkit";
 import {AddTextOptionModel} from "../models/common/add-text-option-model";
 import {UserFileModel} from "../models/rest/user/user-file-model";
 import {BlobStorageInfoModel} from "../models/rest/blob-storage-info-model";
+import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
+import heic2any from "heic2any";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -109,6 +111,18 @@ export function plusMonths(targetDate: Date, months: number): Date {
   const ret = new Date(targetDate);
   ret.setMonth(ret.getMonth() + months);
   return ret;
+}
+
+export function ediStateToMqttContentType(ediState: EDIState): MqttContentType {
+  switch (ediState) {
+    case EDIState.None: return MqttContentType.EDI_RECEP;
+    case EDIState.OK: return MqttContentType.EDI_OK;
+    case EDIState.Reject: return MqttContentType.EDI_REJECT;
+    case EDIState.Pending: return MqttContentType.EDI_RECEP;
+    case EDIState.Partial: return MqttContentType.EDI_RECEP;
+  }
+
+  return MqttContentType.EDI_RECEP;
 }
 
 export function getResponseTypeSeverity(data?: ResponseType): any {
@@ -286,21 +300,29 @@ function getBlobModel(blobName: string, thisPK: string, file: File, blobStorageI
     obj.mimeType = getMimeTypeExt(ext);
   });
 }
-export function getUserBlobModel(userId: string, file: File, blobStorageInfo: BlobStorageInfoModel, ext: string): BlobUploadModel {
-  const blobName = `user/${userId}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+export function getUserBlobName(userId: String, ext: string): string {
+  return `user/${userId}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+}
+export function getUserBlobModel(file: File, blobStorageInfo: BlobStorageInfoModel, blobName: string, ext: string): BlobUploadModel {
   return getBlobModel(blobName, FAmhohwa.getThisPK(), file, blobStorageInfo, ext);
 }
-export function getPharmaBlobModel(file: File, blobStorageInfo: BlobStorageInfoModel, ext: string): BlobUploadModel {
-  const blobName = `pharma/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+export function getPharmaBlobName(ext: string): string {
+  return `pharma/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+}
+export function getPharmaBlobModel(file: File, blobStorageInfo: BlobStorageInfoModel, blobName: string, ext: string): BlobUploadModel {
   return getBlobModel(blobName, FAmhohwa.getThisPK(), file, blobStorageInfo, ext);
 }
-export function getHospitalBlobModel(file: File, blobStorageInfo: BlobStorageInfoModel, ext: string): BlobUploadModel {
-  const blobName = `hospital/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+export function getHospitalBlobName(ext: string): string {
+  return `hospital/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+}
+export function getHospitalBlobModel(file: File, blobStorageInfo: BlobStorageInfoModel, blobName: string, ext: string): BlobUploadModel {
   return getBlobModel(blobName, FAmhohwa.getThisPK(), file, blobStorageInfo, ext);
 }
-export function getQnAReplyPostFileModel(file: File, thisPK: string, blobStorageInfo: BlobStorageInfoModel, ext: string, mimeType: string): QnAReplyFileModel {
+export function getQnAReplyBlobName(ext: string): string {
   const userName = FAmhohwa.getUserID();
-  const blobName = `qna/${userName}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+  return `qna/${userName}/${currentDateYYYYMMdd()}/${FAmhohwa.getRandomUUID()}.${ext}`;
+}
+export function getQnAReplyPostFileModel(file: File, thisPK: string, blobStorageInfo: BlobStorageInfoModel, blobName: string, ext: string, mimeType: string): QnAReplyFileModel {
   const blobUrl = `${blobStorageInfo.blobUrl}/${blobStorageInfo.blobContainerName}/${blobName}`;
   return applyClass(QnAReplyFileModel, (obj) => {
     obj.replyPK = thisPK;
@@ -351,16 +373,21 @@ export function qnaReplyFileListToViewModel(qnaReplyFileList: QnAReplyFileModel[
 export async function gatheringAbleFile(fileList: FileList, notAble: (file: File) => void): Promise<UploadFileBuffModel[]> {
   const ret: UploadFileBuffModel[] = [];
   for (let buff of fileList) {
-    const ext = await getFileExt(buff);
+    let ext = await getFileExt(buff);
     if (!isAbleUpload(ext)) {
       notAble(buff);
       continue;
     }
+    if (isHeic(ext)) {
+      buff = await heicToWebpFile(buff, ext);
+      ext = "webp";
+    }
+    const buffUrl = await parseFileBlobUrl(buff, ext);
     ret.push(applyClass(UploadFileBuffModel, (obj) => {
       obj.file = buff;
       obj.filename = ableFilename(buff.name);
       obj.mimeType = getMimeTypeExt(ext);
-      obj.blobUrl = parseFileBlobUrl(buff, ext);
+      obj.blobUrl = buffUrl;
       obj.ext = ext;
     }));
   }
@@ -391,11 +418,13 @@ export function blobUrlThumbnail(blobUrl: string, mimeType: string): string {
 
   return FConstants.ASSETS_NO_IMAGE;
 }
-export function parseFileBlobUrl(file: File, ext?: string): string {
+export async function parseFileBlobUrl(file: File, ext?: string): Promise<string> {
   if (ext == null) {
     return FConstants.ASSETS_NO_IMAGE;
   }
-  if (isImage(ext)) {
+  if (isHeic(ext)) {
+    return blobToObjectUrl(await heicToWebpBlob(file, ext));
+  } else if (isImage(ext)) {
     return URL.createObjectURL(file);
   } else if (ext == "zip") {
     return FConstants.ASSETS_ZIP_IMAGE;
@@ -408,6 +437,33 @@ export function parseFileBlobUrl(file: File, ext?: string): string {
   }
 
   return FConstants.ASSETS_NO_IMAGE;
+}
+export function blobToObjectUrl(blob: File | Blob): string {
+  return URL.createObjectURL(blob);
+}
+export async function heicToWebpFile(file: File, ext: string): Promise<File> {
+  if (isHeic(ext)) {
+    const buff = await heic2any({ blob: file, toType: FContentsType.type_webp });
+    if (buff instanceof Blob) {
+      return new File([buff], `${file.name}.webp`, { type: FContentsType.type_webp});
+    } else {
+      return new File(buff, `${file.name}.webp`, { type: FContentsType.type_webp });
+    }
+  } else {
+    return file;
+  }
+}
+export async function heicToWebpBlob(file: File, ext: string): Promise<Blob> {
+  if (isHeic(ext)) {
+    const buff = await heic2any({ blob: file, toType: FContentsType.type_webp });
+    if (buff instanceof Blob) {
+      return buff;
+    } else {
+      return new File(buff, `${file.name}.webp`);
+    }
+  } else {
+    return file;
+  }
 }
 export function extToBlobUrl(ext: string): string {
   if (ext == "zip") {
@@ -454,6 +510,9 @@ export function isAbleUpload(ext: string): boolean {
   if (ext == "xlsx" || ext == "xls") return true;
   if (ext == "docx" || ext == "doc") return true;
   return false;
+}
+export function isHeic(ext: string): boolean {
+  return ext == "heic";
 }
 export function isImage(ext: string): boolean {
   if (ext == "jpeg") return true;

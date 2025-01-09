@@ -118,14 +118,15 @@ export class PharmaEditComponent extends FComponentBase {
         return;
       }
 
-      const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(),
+      const blobName = FExtensions.getPharmaBlobName(ext);
+      const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobName),
         e => this.fDialogService.error("imageView", e));
       if (blobStorageInfo.result != true || blobStorageInfo.data == undefined) {
         this.fDialogService.warn("imageView", blobStorageInfo.msg);
         this.setLoading(false);
         return;
       }
-      const blobModel = FExtensions.getPharmaBlobModel(file, blobStorageInfo.data, ext);
+      const blobModel = FExtensions.getPharmaBlobModel(file, blobStorageInfo.data, blobName, ext);
       await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
       const ret = await FExtensions.restTry(async() => await this.thisService.putImage(this.pharmaModel.thisPK, blobModel),

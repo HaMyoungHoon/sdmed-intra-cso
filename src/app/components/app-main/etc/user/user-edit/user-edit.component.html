@@ -105,10 +105,10 @@
             <p-image width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
           </div>
         </div>
-        <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.Taxpayer)">
-        <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.BankAccount)">
-        <input #csoReportImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.CsoReport)">
-        <input #marketingContractImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" (change)="userImageSelected($event, UserFileType.MarketingContract)">
+        <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.Taxpayer)">
+        <input #bankAccountImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.BankAccount)">
+        <input #csoReportImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.CsoReport)">
+        <input #marketingContractImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.MarketingContract)">
       </p-accordion-content>
     </p-accordion-panel>
     <p-accordion-panel value="1">

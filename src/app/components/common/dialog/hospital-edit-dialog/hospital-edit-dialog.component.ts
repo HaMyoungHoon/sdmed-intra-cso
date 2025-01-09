@@ -90,14 +90,15 @@ export class HospitalEditDialogComponent extends FDialogComponentBase {
         return;
       }
 
-      const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(),
+      const blobName = FExtensions.getHospitalBlobName(ext);
+      const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobName),
         e => this.fDialogService.error("imageView", e));
       if (blobStorageInfo.result != true || blobStorageInfo.data == undefined) {
         this.fDialogService.warn("imageView", blobStorageInfo.msg);
         this.setLoading(false);
         return;
       }
-      const blobModel = FExtensions.getHospitalBlobModel(file, blobStorageInfo.data, ext);
+      const blobModel = FExtensions.getHospitalBlobModel(file, blobStorageInfo.data, blobName, ext);
       await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
         e => this.fDialogService.error("imageView", e));
       const ret = await FExtensions.restTry(async() => await this.thisService.putImage(this.hospitalModel.thisPK, blobModel),
