@@ -35,6 +35,12 @@ export class UserAddComponent extends FComponentBase {
   }
 
   async saveData(): Promise<void> {
+    if (!FExtensions.regexIdCheck(this.userDataModel.id)) {
+      this.translateService.get("user-add.warn.id").subscribe(x => {
+        this.fDialogService.warn("save", x);
+      });
+      return
+    }
     if (!FExtensions.regexPasswordCheck(this.userDataModel.pw)) {
       this.translateService.get("user-add.warn.after-pw").subscribe(x => {
         this.fDialogService.warn("save", x);
