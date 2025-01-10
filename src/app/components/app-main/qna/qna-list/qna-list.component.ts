@@ -95,6 +95,7 @@ export class QnaListComponent extends FComponentBase {
   }
   async viewTypeChange(data: any): Promise<void> {
     FAmhohwa.setLocalStorage(FConstants.STORAGE_QNA_VIEW_TYPE, this.selectedViewType.label);
+    await this.refreshData();
   }
   async startDateChange(data: any): Promise<void> {
     if (this.startDate.getTime() > this.endDate.getTime()) {
