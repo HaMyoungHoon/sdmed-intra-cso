@@ -195,7 +195,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
           this.activeIndex = 0;
         }
       }
-      if (index > 0) {
+      if (index >= 0) {
         this.uploadModel.fileList = [...this.uploadModel.fileList.filter(x => x.thisPK != item.thisPK)];
       }
       return;
