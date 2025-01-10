@@ -72,7 +72,7 @@ export class MqttService {
     const options: mqtt.IClientOptions = {
       defaultProtocol: "wss",
       protocol: "wss",
-      clientId: `intra-cso-${clientId}`,
+      clientId: `intra-cso-${clientId}-${FAmhohwa.getRandomUUID()}`,
       username: mqttConnectModel.userName,
       password: mqttConnectModel.password
     }
