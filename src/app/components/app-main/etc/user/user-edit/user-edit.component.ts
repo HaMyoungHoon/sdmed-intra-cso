@@ -122,6 +122,21 @@ export class UserEditComponent extends FComponentBase {
     }
     this.fDialogService.warn("saveUserData", ret.msg);
   }
+  async passwordInit(event: Event): Promise<void> {
+    this.translateService.get(["user-edit.password-init", "user-edit.password-init-sure", "common-desc.cancel", "common-desc.confirm"]).subscribe(x => {
+      this.confirmCall(event, x["user-edit.password-init"], x["user-edit.password-init-sure"], x["common-desc.cancel"], x["common-desc.confirm"], async() => {
+        this.setLoading();
+        const ret = await FExtensions.restTry(async() => await this.thisService.putPasswordInit(this.userDataModel.thisPK),
+          e => this.fDialogService.error("password init"));
+        this.setLoading(false);
+        if (ret.result) {
+          this.fDialogService.info("password init", ret.data);
+          return;
+        }
+        this.fDialogService.warn("password init", ret.msg);
+      });
+    });
+  }
   async saveUserChildData(): Promise<void> {
     const ret = await FExtensions.restTry(async() => await this.thisService.postChildModify(this.userDataModel.thisPK, this.userDataModel.children.map(x => x.thisPK)),
       e => this.fDialogService.error("saveUserChildData", e));
@@ -180,6 +195,9 @@ export class UserEditComponent extends FComponentBase {
   }
   get filterPlaceHolder(): string {
     return "user-edit.user-pick-list.filter-place-holder";
+  }
+  get isAdmin(): boolean {
+    return ((this.myRole & UserRole.Admin.valueOf()) != 0) || ((this.myRole & UserRole.CsoAdmin.valueOf()) != 0)
   }
 
   protected readonly stringToDate = FExtensions.stringToDate;

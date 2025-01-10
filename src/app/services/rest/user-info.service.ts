@@ -47,4 +47,8 @@ export class UserInfoService {
     this.httpResponse.addParam("userFileType", userFileType);
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}`, blobModel);
   }
+  putPasswordInit(userPK: string): Promise<RestResult<string>> {
+    this.httpResponse.addParam("userPK", userPK);
+    return this.httpResponse.put(`${this.baseUrl}/passwordInit`);
+  }
 }

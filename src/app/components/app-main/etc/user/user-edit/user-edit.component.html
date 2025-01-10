@@ -26,6 +26,8 @@
   </p-card>
   <div class="m-1">
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
+    <p-confirm-popup />
+    <p-button class="m-1" (click)="passwordInit($event)" *ngIf="isAdmin">{{"user-edit.password-init" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="multipleEnable" [value]="accordionValue">
     <p-accordion-panel *ngIf="userDataModel" value="0">
