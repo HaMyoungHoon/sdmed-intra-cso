@@ -230,6 +230,7 @@
   },
   "user-add": {
     "warn": {
+      "id": "문자 또는 숫자 4-20자만 허용 됩니다.",
       "after-pw": "문자, 숫자 조합의 8-20자를 입력해주세요.",
       "confirm-pw": "비밀번호와 확인이 일치하지 않습니다."
     },
@@ -261,6 +262,8 @@
       "request-user-name": "요청자",
       "response-date": "응답일"
     },
+    "password-init-sure": "정말 초기화 하시겠습니까?",
+    "password-init": "비밀번호 초기화",
     "accordion-header": {
       "detail": "유저 정보 편집",
       "child": "하위 유저",
@@ -514,11 +517,24 @@
     "remove": "제거",
     "close": "닫기",
     "change": "변경",
+    "cancel": "취소",
+    "confirm": "확인",
     "sample-download": "샘플 다운로드",
     "in-visible": "숨김",
     "logout": "로그아웃",
     "all-save": "전체저장",
     "font-size": "글자크기"
+  },
+  "mqtt-desc": {
+    "title": {
+      "none": "info",
+      "qna-request": "QNA 요청",
+      "qna-reply": "QNA 답변",
+      "edi-request": "EDI 요청",
+      "edi-reject": "EDI 반려",
+      "edi-ok": "EDI 승인",
+      "edi-recep": "EDI 수신"
+    }
   },
   "primeng": {
     "dayNames": ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],

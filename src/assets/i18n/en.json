@@ -261,6 +261,8 @@
       "request-user-name": "req user",
       "response-date": "res date"
     },
+    "password-init-sure": "r u sure?",
+    "password-init": "init password",
     "accordion-header": {
       "detail": "user info edit",
       "child": "child",
@@ -514,11 +516,24 @@
     "remove": "remove",
     "close": "close",
     "change": "change",
+    "cancel": "cancel",
+    "confirm": "confirm",
     "sample-download": "sample download",
     "in-visible": "invisible",
     "logout": "logout",
     "all-save": "all save",
     "font-size": "font size"
+  },
+  "mqtt-desc": {
+    "title": {
+      "none": "info",
+      "qna-request": "qna request",
+      "qna-reply": "qna reply",
+      "edi-request": "edi request",
+      "edi-reject": "edi reject",
+      "edi-ok": "edi ok",
+      "edi-recep": "edi recep"
+    }
   },
   "primeng": {
     "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
