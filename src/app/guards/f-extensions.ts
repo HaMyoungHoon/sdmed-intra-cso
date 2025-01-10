@@ -380,7 +380,7 @@ export async function gatheringAbleFile(fileList: FileList, notAble: (file: File
     }
     if (isHeic(ext)) {
       buff = await heicToWebpFile(buff, ext);
-      ext = "webp";
+      ext = "jpeg";
     }
     const buffUrl = await parseFileBlobUrl(buff, ext);
     ret.push(applyClass(UploadFileBuffModel, (obj) => {
@@ -441,13 +441,27 @@ export async function parseFileBlobUrl(file: File, ext?: string): Promise<string
 export function blobToObjectUrl(blob: File | Blob): string {
   return URL.createObjectURL(blob);
 }
+export function fileSizeToQuality(fileSize: number): number {
+  if (fileSize < 1 * 1024 * 1024) return 1;
+  if (fileSize < 2 * 1024 * 1024) return 0.9;
+  if (fileSize < 3 * 1024 * 1024) return 0.8;
+  if (fileSize < 4 * 1024 * 1024) return 0.8;
+  if (fileSize < 5 * 1024 * 1024) return 0.7;
+  if (fileSize < 6 * 1024 * 1024) return 0.7;
+  if (fileSize < 7 * 1024 * 1024) return 0.7;
+  if (fileSize < 8 * 1024 * 1024) return 0.6;
+  if (fileSize < 9 * 1024 * 1024) return 0.6;
+  if (fileSize < 10 * 1024 * 1024) return 0.6;
+  return 0.5;
+}
 export async function heicToWebpFile(file: File, ext: string): Promise<File> {
   if (isHeic(ext)) {
-    const buff = await heic2any({ blob: file, toType: FContentsType.type_webp });
+    const quality = fileSizeToQuality(file.size);
+    const buff = await heic2any({ blob: file, toType: FContentsType.type_jpeg , quality: quality});
     if (buff instanceof Blob) {
-      return new File([buff], `${file.name}.webp`, { type: FContentsType.type_webp});
+      return new File([buff], `${file.name}.jpeg`, { type: FContentsType.type_jpeg});
     } else {
-      return new File(buff, `${file.name}.webp`, { type: FContentsType.type_webp });
+      return new File(buff, `${file.name}.jpeg`, { type: FContentsType.type_jpeg });
     }
   } else {
     return file;
@@ -455,11 +469,12 @@ export async function heicToWebpFile(file: File, ext: string): Promise<File> {
 }
 export async function heicToWebpBlob(file: File, ext: string): Promise<Blob> {
   if (isHeic(ext)) {
-    const buff = await heic2any({ blob: file, toType: FContentsType.type_webp });
+    const quality = fileSizeToQuality(file.size);
+    const buff = await heic2any({ blob: file, toType: FContentsType.type_jpeg , quality: quality});
     if (buff instanceof Blob) {
       return buff;
     } else {
-      return new File(buff, `${file.name}.webp`);
+      return new File(buff, `${file.name}.jpeg`);
     }
   } else {
     return file;
@@ -724,6 +739,12 @@ export function getMimeTypeExt(ext?: string): string {
   }
 }
 
+export function regexIdCheck(data: string | undefined): boolean {
+  if (data == undefined) {
+    return false;
+  }
+  return FConstants.REGEX_CHECK_ID.test(data);
+}
 export function regexPasswordCheck(data: string | undefined): boolean {
   if (data == undefined) {
     return false;
