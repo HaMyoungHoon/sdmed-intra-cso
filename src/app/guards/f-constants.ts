@@ -51,6 +51,7 @@ export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";
 export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "600px", "height": "660px"};
 
+export const REGEX_CHECK_ID: RegExp = /^[A-Za-z0-9가-힣]{4,20}$/;
 export const REGEX_CHECK_PASSWORD_0: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[0-9]).{8,20}$/;
 export const REGEX_CHECK_PASSWORD_1: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 export const REGEX_CHECK_PASSWORD_2: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
