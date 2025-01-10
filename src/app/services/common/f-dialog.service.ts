@@ -18,15 +18,10 @@ import {MedicineAddDialogComponent} from "../../components/common/dialog/medicin
 import {PasswordChangeDialogComponent} from "../../components/common/dialog/password-change-dialog/password-change-dialog.component";
 import {QnaViewDialogComponent} from "../../components/common/dialog/qna-view-dialog/qna-view-dialog.component";
 import {EdiViewDialogComponent} from "../../components/common/dialog/edi-view-dialog/edi-view-dialog.component";
-import {
-  EdiResponseDialogComponent
-} from "../../components/common/dialog/edi-response-dialog/edi-response-dialog.component";
-import {
-  FullScreenFileViewDialogComponent
-} from "../../components/common/dialog/full-screen-file-view-dialog/full-screen-file-view-dialog.component";
-import {
-  UserAddDialogComponentComponent
-} from "../../components/common/dialog/user-add-dialog-component/user-add-dialog-component.component";
+import {EdiResponseDialogComponent} from "../../components/common/dialog/edi-response-dialog/edi-response-dialog.component";
+import {FullScreenFileViewDialogComponent} from "../../components/common/dialog/full-screen-file-view-dialog/full-screen-file-view-dialog.component";
+import {UserAddDialogComponentComponent} from "../../components/common/dialog/user-add-dialog-component/user-add-dialog-component.component";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -110,10 +105,10 @@ export class FDialogService {
     return this.ref.onClose;
   }
   alertToast(data: ToastItem): void {
-    this.add(data.level, data.title, data.detail)
+    this.add(data.level, data.title, data.detail, data.text, data.sticky)
   }
-  alert(level: ToastLevel, title: string, detail: string): void {
-    this.add(level, title, detail, true);
+  alert(level: ToastLevel, title: string, detail: string, text: any): void {
+    this.add(level, title, detail, text, true);
   }
   warn(title: string, detail?: string): void {
     if ((detail?.length ?? 0) <= 0) {
@@ -127,25 +122,42 @@ export class FDialogService {
     }
     this.add(ToastLevel.error, title, detail);
   }
-  info(title: string, detail?: string): void {
+  info(title: string, detail?: string, text?: any): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.info, title, detail, true);
+    this.add(ToastLevel.info, title, detail, text, true);
   }
-  success(title: string, detail?: string): void {
+  mqttInfo(title: string, detail?: string, text?: any, confirmFn?: (event: MouseEvent, message: any, router: Router) => void, thisData?: any): void {
+    if ((detail?.length ?? 0) <= 0) {
+      return;
+    }
+    this.add(ToastLevel.info, title, detail, text, true, confirmFn, thisData, "common-desc.move");
+  }
+  success(title: string, detail: string): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
     this.add(ToastLevel.success, title, detail);
   }
 
-  add(severity: string, title: string, detail?: string, sticky: boolean = false): void {
+  add(severity: string, title: string, detail?: string, text?: any, sticky: boolean = false,
+      confirmFn?: (event: MouseEvent, message: any, router: Router) => void, thisData?: any,
+      confirmLabel: string = "common-desc.confirm"): void {
     this.messageService.add({
       severity: severity,
       summary: title,
       detail: detail,
-      sticky: sticky
+      text: text,
+      sticky: sticky,
+      data: {
+        "this-data": thisData,
+        "confirm-label": confirmLabel,
+        "confirm-able": confirmFn,
+        confirmFn: (event: MouseEvent, message: any, router: Router): void => {
+          if (confirmFn) confirmFn(event, message, router);
+        }
+      }
     });
   }
 }

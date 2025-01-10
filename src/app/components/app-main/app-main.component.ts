@@ -126,34 +126,53 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
     if (mqttContentModel.senderPK == FAmhohwa.getThisPK()) {
       return;
     }
-    let title = "";
+    let title: string = "";
     switch (mqttContentModel.contentType) {
-      case MqttContentType.None: title = "info"; break;
-      case MqttContentType.QNA_REQUEST: title = "QNA"; break;
-      case MqttContentType.QNA_REPLY: title = "QNA"; break;
-      case MqttContentType.EDI_REQUEST: title = "EDI Request"; break;
-      case MqttContentType.EDI_REJECT: title = "EDI Reject"; break;
-      case MqttContentType.EDI_OK: title = "EDI OK"; break;
-      case MqttContentType.EDI_RECEP: title = "EDI Recep"; break;
+      case MqttContentType.None: title = "mqtt-desc.title.none"; break;
+      case MqttContentType.QNA_REQUEST: title = "mqtt-desc.title.qna-request"; break;
+      case MqttContentType.QNA_REPLY: title = "mqtt-desc.title.qna-reply"; break;
+      case MqttContentType.EDI_REQUEST: title = "mqtt-desc.title.edi-request"; break;
+      case MqttContentType.EDI_REJECT: title = "mqtt-desc.title.edi-reject"; break;
+      case MqttContentType.EDI_OK: title = "mqtt-desc.title.edi-ok"; break;
+      case MqttContentType.EDI_RECEP: title = "mqtt-desc.title.edi-recep"; break;
     }
-    this.fDialogService.info(title, `${mqttContentModel.senderName}\n${mqttContentModel.content}`);
+    this.fDialogService.mqttInfo(title, mqttContentModel.senderName,`${mqttContentModel.content}`, this.mqttConfirmFn, mqttContentModel);
+  }
+  async mqttConfirmFn(event: MouseEvent, message: any, router: Router): Promise<void> {
+    const mqttContentModel = message.data["this-data"] as MqttContentModel;
+    switch (mqttContentModel.contentType) {
+      case MqttContentType.None: await router.navigate([`/${FConstants.DASH_BOARD_URL}`]); break;
+      case MqttContentType.QNA_REQUEST:
+      case MqttContentType.QNA_REPLY: await router.navigate([`/${FConstants.QNA_LIST_URL}/${mqttContentModel.targetItemPK}`]); break;
+      case MqttContentType.EDI_REQUEST:
+      case MqttContentType.EDI_REJECT:
+      case MqttContentType.EDI_OK:
+      case MqttContentType.EDI_RECEP: await router.navigate([`/${FConstants.EDI_LIST_URL}/${mqttContentModel.targetItemPK}`]); break;
+    }
   }
 
   get testVisible(): boolean {
     return false;
   }
+  async testRouter(event: MouseEvent, message: any, router: Router): Promise<void> {
+    await router.navigate([`/${FConstants.DASH_BOARD_URL}`]);
+  }
   async test(): Promise<void> {
-    const mqtt = FExtensions.applyClass(MqttContentModel, (obj) => {
-      obj.senderPK = "senderPK test";
-      obj.senderName = "senderName test";
-      obj.content = "content test";
-      obj.contentType = MqttContentType.EDI_REJECT;
-      obj.targetItemPK = "targetItemPK test";
-    });
-    const ret = await FExtensions.restTry(async() => await this.mqttService.postPublish("notice", mqtt), e => this.fDialogService.error("test", e));
-    if (ret.result) {
-      return;
-    }
-    this.fDialogService.warn("test", ret.msg);
+    this.fDialogService.mqttInfo("info", "detail", "text", this.testRouter, FExtensions.applyClass(MqttContentModel, obj => {
+      obj.senderName = "test sender";
+      obj.topic = "test topic";
+    }));
+//    const mqtt = FExtensions.applyClass(MqttContentModel, (obj) => {
+//      obj.senderPK = "senderPK test";
+//      obj.senderName = "senderName test";
+//      obj.content = "content test";
+//      obj.contentType = MqttContentType.EDI_REJECT;
+//      obj.targetItemPK = "targetItemPK test";
+//    });
+//    const ret = await FExtensions.restTry(async() => await this.mqttService.postPublish("notice", mqtt), e => this.fDialogService.error("test", e));
+//    if (ret.result) {
+//      return;
+//    }
+//    this.fDialogService.warn("test", ret.msg);
   }
 }

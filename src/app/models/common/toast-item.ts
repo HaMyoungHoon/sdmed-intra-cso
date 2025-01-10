@@ -4,4 +4,6 @@ export interface ToastItem {
   level: ToastLevel;
   title: string;
   detail?: string;
+  text?: any;
+  sticky?: boolean;
 }
