@@ -8,6 +8,7 @@ import {CommonService} from "../services/rest/common.service";
 import {AzureBlobService} from "../services/rest/azure-blob.service";
 import {Subject} from "rxjs";
 import {MqttService} from "../services/rest/mqtt.service";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: "f-dialog-component-base",
@@ -24,6 +25,7 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
   protected ref: DynamicDialogRef;
   protected dialogService: DialogService;
   protected commonService: CommonService;
+  protected confirmService: ConfirmationService;
   protected mqttService: MqttService;
   protected fDialogService: FDialogService;
   protected translateService: TranslateService;
@@ -32,6 +34,7 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
     this.ref = inject(DynamicDialogRef);
     this.dialogService = inject(DialogService);
     this.commonService = inject(CommonService);
+    this.confirmService = inject(ConfirmationService);
     this.mqttService = inject(MqttService);
     this.fDialogService = inject(FDialogService);
     this.translateService = inject(TranslateService);
@@ -74,5 +77,29 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
 
   setLoading(data: boolean = true): void {
     this.isLoading = data;
+  }
+
+  confirmCall(event: Event, header: string = "", message: string = "", rejectLabel: string = "", acceptLabel: string = "", accept?: () => void, reject?: () => void): void {
+    this.confirmService.confirm({
+      target: event.target as EventTarget,
+      message: message,
+      header: "",
+      closable: false,
+      closeOnEscape: false,
+      icon: "pi pi-exclamation-triangle",
+      rejectButtonProps: {
+        label: rejectLabel,
+        severity: "secondary"
+      },
+      acceptButtonProps: {
+        label: acceptLabel
+      },
+      accept: (): void => {
+        if (accept) accept();
+      },
+      reject: (): void => {
+        if (reject) reject();
+      }
+    });
   }
 }
