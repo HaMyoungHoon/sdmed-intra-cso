@@ -18,6 +18,7 @@ import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-mo
 import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {QnAReplyFileModel} from "../../../../models/rest/qna/qna-reply-file-model";
 import {saveAs} from "file-saver";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-qna-view",
@@ -45,12 +46,20 @@ export class QnaViewComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    await this.refreshData();
+    this.subscribeRouter();
   }
   layoutInit(): void {
     this.qnaReplyModel = new QnAReplyModel();
     this.content = "";
     this.uploadFileBuffModel = [];
+  }
+  subscribeRouter(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.route.params.pipe(takeUntil(sub)).subscribe(async(x) => {
+      this.thisPK = x["thisPK"];
+      await this.refreshData();
+    });
   }
 
   async refreshData(): Promise<void> {

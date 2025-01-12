@@ -9,6 +9,7 @@ import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, co
 import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import * as FExtensions from "../../../../guards/f-extensions";
 import * as FConstants from "../../../../guards/f-constants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-hospital-edit",
@@ -31,7 +32,15 @@ export class HospitalEditComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    await this.getHospitalData();
+    this.subscribeRouter();
+  }
+  subscribeRouter(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.route.params.pipe(takeUntil(sub)).subscribe(async(x) => {
+      this.hospitalModel.thisPK = x["thisPK"];
+      await this.getHospitalData();
+    });
   }
 
   async getHospitalData(): Promise<void> {

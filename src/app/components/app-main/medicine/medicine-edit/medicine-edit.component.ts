@@ -16,6 +16,7 @@ import * as FExtensions from "../../../../guards/f-extensions";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {ActivatedRoute} from "@angular/router";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-medicine-edit",
@@ -53,11 +54,22 @@ export class MedicineEditComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
+    this.subscribeRouter();
+  }
+  subscribeRouter(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.route.params.pipe(takeUntil(sub)).subscribe(async(x) => {
+      this.medicineModel.thisPK = x["thisPK"];
+      await this.refreshData();
+    });
+  }
+
+  async refreshData(): Promise<void> {
     this.setLoading();
     await this.getMedicineData();
     this.setLoading(false);
   }
-
   async getMedicineData(): Promise<void> {
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.medicineModel.thisPK),
       e => this.fDialogService.error("getMedicineData", e));

@@ -48,7 +48,7 @@ export class PharmaEditComponent extends FComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    await this.getPharmaData();
+    this.subscribeRouter();
   }
   initLayoutData(): void {
     const sub = new Subject<any>();
@@ -59,8 +59,15 @@ export class PharmaEditComponent extends FComponentBase {
         await this.medicineSearch();
       });
   }
+  subscribeRouter(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.route.params.pipe(takeUntil(sub)).subscribe(async(x) => {
+      this.pharmaModel.thisPK = x["thisPK"];
+      await this.getPharmaData();
+    });
+  }
   async getPharmaData(): Promise<void> {
-    this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.pharmaModel.thisPK, true),
       e => this.fDialogService.error("getPharmaData", e));
     this.setLoading(false);

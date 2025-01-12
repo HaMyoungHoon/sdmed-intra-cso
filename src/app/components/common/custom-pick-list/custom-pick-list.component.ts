@@ -129,7 +129,6 @@ export class CustomPickListComponent implements AfterContentInit, OnChanges {
   }
   onDrop(event: CdkDragDrop<string[]>, listType: number): void {
     const isTransfer = event.previousContainer !== event.container;
-    console.log(event.item.data);
     const dropIndexes = this.getDropIndexes(event.previousIndex, event.currentIndex, listType, isTransfer, event.item.data);
     if (listType == this.SOURCE_LIST) {
       if (isTransfer) {

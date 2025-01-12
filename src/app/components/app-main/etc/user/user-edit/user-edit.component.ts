@@ -16,6 +16,7 @@ import {requestTypeToRequestTypeDesc} from "../../../../../models/rest/requst/re
 import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {DashboardService} from "../../../../../services/rest/dashboard.service";
 import {UserFileType} from "../../../../../models/rest/user/user-file-type";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: "app-user-edit",
@@ -45,13 +46,24 @@ export class UserEditComponent extends FComponentBase {
     this.userDataModel.thisPK = this.route.snapshot.params["thisPK"];
   }
   override async ngInit(): Promise<void> {
+    this.subscribeRouter();
+  }
+  subscribeRouter(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.route.params.pipe(takeUntil(sub)).subscribe(async(x) => {
+      this.userDataModel.thisPK = x["thisPK"];
+      await this.refreshData();
+    });
+  }
+
+  async refreshData(): Promise<void> {
     this.setLoading();
     await this.getRequestModel();
     await this.getUserData();
     await this.getChildAble();
     this.setLoading(false);
   }
-
   async getRequestModel(): Promise<void> {
     const ret = await FExtensions.restTry(async() => await this.dashboardService.getRequestData(this.userDataModel.thisPK),
       e => this.fDialogService.error("getRequestModel", e));
