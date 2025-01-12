@@ -154,14 +154,11 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
   get testVisible(): boolean {
     return false;
   }
-  async testRouter(event: MouseEvent, message: any, router: Router): Promise<void> {
-    await router.navigate([`/${FConstants.DASH_BOARD_URL}`]);
-  }
   async test(): Promise<void> {
-    this.fDialogService.mqttInfo("info", "detail", "text", this.testRouter, FExtensions.applyClass(MqttContentModel, obj => {
-      obj.senderName = "test sender";
-      obj.topic = "test topic";
-    }));
+//    this.fDialogService.mqttInfo("info", "detail", "text", this.testRouter, FExtensions.applyClass(MqttContentModel, obj => {
+//      obj.senderName = "test sender";
+//      obj.topic = "test topic";
+//    }));
 //    const mqtt = FExtensions.applyClass(MqttContentModel, (obj) => {
 //      obj.senderPK = "senderPK test";
 //      obj.senderName = "senderName test";
