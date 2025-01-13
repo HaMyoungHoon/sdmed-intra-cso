@@ -81,23 +81,32 @@ export class HospitalEditComponent extends FComponentBase {
       const ext = await FExtensions.getFileExt(file);
       if (!FExtensions.isImage(ext)) {
         this.setLoading(false);
-        this.fDialogService.warn("imageView", "only image file");
+        this.fDialogService.warn("upload file", "only image file");
         return;
       }
 
       const blobName = FExtensions.getHospitalBlobName(ext);
       const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobName),
-        e => this.fDialogService.error("imageView", e));
+        e => this.fDialogService.error("upload file", e));
       if (blobStorageInfo.result != true || blobStorageInfo.data == undefined) {
-        this.fDialogService.warn("imageView", blobStorageInfo.msg);
+        this.fDialogService.warn("upload file", blobStorageInfo.msg);
         this.setLoading(false);
         return;
       }
       const blobModel = FExtensions.getHospitalBlobModel(file, blobStorageInfo.data, blobName, ext);
-      await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
-        e => this.fDialogService.error("imageView", e));
+      let uploadRet = true;
+      const azureRet = await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
+        e => {
+        this.fDialogService.error("upload file", e);
+        uploadRet = false;
+      });
+      if (azureRet == null || !uploadRet) {
+        this.imageInput.nativeElement.value = "";
+        this.setLoading(false);
+        return;
+      }
       const ret = await FExtensions.restTry(async() => await this.thisService.putImage(this.hospitalModel.thisPK, blobModel),
-        e => this.fDialogService.error("imageView", e));
+        e => this.fDialogService.error("upload file", e));
       this.imageInput.nativeElement.value = "";
       this.setLoading(false);
       if (ret.result) {
@@ -105,7 +114,7 @@ export class HospitalEditComponent extends FComponentBase {
         return;
       }
 
-      this.fDialogService.warn("imageView", ret.msg);
+      this.fDialogService.warn("upload file", ret.msg);
     }
   }
   get imageUrl(): string {
