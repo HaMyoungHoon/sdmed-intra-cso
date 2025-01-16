@@ -16,13 +16,15 @@ import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
 import {Select} from "primeng/select";
 import {IftaLabel} from "primeng/iftalabel";
+import {ImageModifyViewComponent} from "../../../common/image-modify-view/image-modify-view.component";
+import {ColorPicker} from "primeng/colorpicker";
 
 
 
 @NgModule({
   declarations: [EdiViewComponent],
-	imports: [
-		CommonModule, EdiViewRoutingModule, Accordion, AccordionPanel, AccordionHeader, AccordionContent, ProgressSpinComponent, FullscreenFileViewComponent, TranslatePipe, GalleriaModule, Button, Tooltip, Tag, TableModule, FormsModule, InputText, Textarea, Select, IftaLabel
-	]
+  imports: [
+    CommonModule, EdiViewRoutingModule, Accordion, AccordionPanel, AccordionHeader, AccordionContent, ProgressSpinComponent, FullscreenFileViewComponent, TranslatePipe, GalleriaModule, Button, Tooltip, Tag, TableModule, FormsModule, InputText, Textarea, Select, IftaLabel, ImageModifyViewComponent, ColorPicker
+  ]
 })
 export class EdiViewModule { }

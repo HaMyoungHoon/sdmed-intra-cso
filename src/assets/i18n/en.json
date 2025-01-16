@@ -522,7 +522,10 @@
     "in-visible": "invisible",
     "logout": "logout",
     "all-save": "all save",
-    "font-size": "font size"
+    "font-size": "font size",
+    "back-color": "back color",
+    "text-color": "text color",
+    "print": "print"
   },
   "mqtt-desc": {
     "title": {

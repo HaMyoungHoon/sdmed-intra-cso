@@ -32,10 +32,11 @@ import {AddTextOptionModel} from "../../../../../models/common/add-text-option-m
 import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../../../models/common/text-position";
 import {InputText} from "primeng/inputtext";
 import {IftaLabel} from "primeng/iftalabel";
+import {ImageModifyViewComponent} from "../../../../common/image-modify-view/image-modify-view.component";
 
 @Component({
   selector: "app-request-sub-edi-upload",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent],
   templateUrl: "./request-sub-edi-upload.component.html",
   styleUrl: "./request-sub-edi-upload.component.scss",
   standalone: true,
@@ -44,12 +45,15 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   @Input() requestModel?: RequestModel
   @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter<RequestModel>();
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
+  @ViewChild("imageModifyView") imageModifyView!: ImageModifyViewComponent;
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
   fontSize: number = 12;
   activeIndex: number = 0;
   selectPrintPharma?: EDIUploadPharmaModel;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
+  backColor: string = "#FFFFFF";
+  textColor: string = "#000000";
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
@@ -170,10 +174,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     try {
       if (ret && ret.body) {
         const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
-          obj.textPosition = DescToTextPosition[this.selectTextPosition];
-          obj.fontSize = this.fontSize;
-        }));
+        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
         saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
       }
     } catch (e: any) {
@@ -202,6 +203,14 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.fDialogService.warn("delete", ret.msg);
   }
+  async imageModify(): Promise<void> {
+    if (this.selectPrintPharma == null) {
+      return;
+    }
+    const buff = this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType));
+    const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+    await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
+  }
   async allDownload(): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
@@ -213,10 +222,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
       try {
         if (ret && ret.body) {
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, FExtensions.applyClass(AddTextOptionModel, obj => {
-            obj.textPosition = DescToTextPosition[this.selectTextPosition];
-            obj.fontSize = this.fontSize;
-          }));
+          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
           saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
         }
       } catch (e: any) {
@@ -225,12 +231,29 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.setLoading(false);
   }
+  addTextOptionMerge(): AddTextOptionModel {
+    return FExtensions.applyClass(AddTextOptionModel, obj => {
+      obj.textPosition = DescToTextPosition[this.selectTextPosition];
+      obj.fontSize = this.fontSize;
+      obj.textBackground = FExtensions.hexColorWithAlpha(this.backColor, 127);
+      obj.textColor = FExtensions.hexColorWithAlpha(this.textColor, 255);
+    });
+  }
 
   get downloadFileTooltip(): string {
     return "common-desc.save";
   }
   get removeFileTooltip(): string {
     return "common-desc.remove";
+  }
+  get textColorTooltip(): string {
+    return "common-desc.text-color";
+  }
+  get imageModifyVisible(): boolean {
+    return this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType)).length > 0;
+  }
+  get imageModifyDisable(): boolean {
+    return this.selectPrintPharma == null;
   }
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd
   protected readonly ellipsis = FExtensions.ellipsis;

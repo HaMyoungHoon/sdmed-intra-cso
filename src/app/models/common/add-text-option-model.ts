@@ -7,8 +7,9 @@ export class AddTextOptionModel {
   correctionY: number = 10;
   paddingX: number = 20;
   paddingY: number = 5;
-  imageBackground: string = "white";
-  textColor: string = "black";
+  // 둘 다 됨
+  textBackground: string = "#FFFFFF7F"; // "rgba(255, 255, 255, 0.5)";
+  textColor: string = "#000000FF"; // "rgba(0, 0, 0, 1)";
 
   calcPdfTextX(imageWidth: number, textWidth: number): number {
     switch (this.textPosition) {
@@ -32,46 +33,69 @@ export class AddTextOptionModel {
     }
     return this.correctionY;
   }
-  calcImageTextX(imageWidth: number, textWidth: number): number {
+  calcImageTextX(imageWidth: number, textWidth: number, dragX: number = 0): number {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.LB:
-        return this.correctionX;
+        return this.correctionX + dragX;
       case TextPosition.RT:
       case TextPosition.RB:
-        return imageWidth - textWidth - this.correctionX;
+        return imageWidth - textWidth - this.correctionX + dragX;
     }
     return this.correctionX;
   }
-  calcImageTextY(imageHeight: number): number {
+  calcImageTextY(imageHeight: number, dragY: number = 0): number {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize();
+        return this.correctionY + this.calcImageFontSize() + dragY;
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight + this.correctionY + this.calcImageFontSize() - this.paddingY;
+        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY + dragY;
     }
     return this.correctionY;
   }
-  calcCanvasY(imageHeight: number): number {
-    return imageHeight + this.correctionY + this.calcImageFontSize() + this.paddingY;
-  }
-  calcImageY(): number {
+  calcImageTextYLine(imageHeight: number, index: number, count: number, dragY: number): number {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize() + this.paddingY;
+        return this.correctionY + this.calcImageFontSize() + ((this.calcImageFontSize() + this.paddingY) * index) + dragY;
       case TextPosition.LB:
       case TextPosition.RB:
-        return 0;
+        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + dragY;
     }
+    return this.correctionY;
+  }
+  calcTextBackgroundY(imageHeight: number, dragY: number = 0): number {
+    switch (this.textPosition) {
+      case TextPosition.LT:
+      case TextPosition.RT:
+        return this.correctionY + dragY;
+      case TextPosition.LB:
+      case TextPosition.RB:
+        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY + dragY;
+    }
+    return this.correctionY;
+  }
+  calcTextBackgroundYLine(imageHeight: number, index: number, count: number, dragY: number = 0): number {
+    switch (this.textPosition) {
+      case TextPosition.LT:
+      case TextPosition.RT:
+        return this.correctionY + ((this.calcImageFontSize() + this.paddingY) * index) + dragY;
+      case TextPosition.LB:
+      case TextPosition.RB:
+        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + dragY;
+    }
+    return this.correctionY;
+  }
+  calcTextBackgroundHeight(): number {
+    return this.fontSize + this.paddingY;
   }
   calcImageFont(): string {
     return `${this.calcImageFontSize()}px sans-serif`;
   }
   calcImageFontSize(): number {
-    return this.fontSize * 2;
+    return this.fontSize;
   }
   calcPdfFontSize(): number {
     return this.fontSize;

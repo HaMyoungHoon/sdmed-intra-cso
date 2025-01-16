@@ -21,6 +21,7 @@ import {UserFileModel} from "../models/rest/user/user-file-model";
 import {BlobStorageInfoModel} from "../models/rest/blob-storage-info-model";
 import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
 import heic2any from "heic2any";
+import {Vector2d} from "../models/common/vector-2d";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -111,6 +112,29 @@ export function plusMonths(targetDate: Date, months: number): Date {
   const ret = new Date(targetDate);
   ret.setMonth(ret.getMonth() + months);
   return ret;
+}
+
+export function hexColorWithAlpha(hexColor: string, alpha: number = 1): string {
+  return `${hexColor}${alpha.toString(16).toUpperCase()}`;
+}
+export function hexColorWithoutAlpha(hexColor: string): string {
+  if (hexColor.length >= 9) return `${hexColor.slice(0, 7)}`.toUpperCase();
+  else if (hexColor.length == 7) return hexColor.toUpperCase();
+  else return "#123456".toUpperCase();
+}
+export function hexColorToRgba1(hexColor: string, alpha: number = 1): string {
+  const result = FConstants.REGEX_HEX_COLOR_RGB.exec(hexColor);
+  if (result == null) {
+    return `rgba(255, 255, 255, ${alpha})`;
+  }
+  return `rgba(${result[1]}, ${result[2]}, ${result[3]}, ${alpha})`;
+}
+export function hexColorToRgba2(hexColor: string): string {
+  const result = FConstants.REGEX_HEX_COLOR_RGBA.exec(hexColor);
+  if (result == null) {
+    return `rgba(255, 255, 255, 255)`;
+  }
+  return `rgba(${result[1]}, ${result[2]}, ${result[3]}, ${result[4]})`;
 }
 
 export function ediStateToMqttContentType(ediState: EDIState): MqttContentType {
@@ -540,6 +564,94 @@ export function isImage(ext: string): boolean {
 
   return false;
 }
+export function isImageMimeType(mimeType: string): boolean {
+  if (mimeType == FContentsType.type_jpeg) return true;
+  if (mimeType == FContentsType.type_jpg) return true;
+  if (mimeType == FContentsType.type_png) return true;
+  if (mimeType == FContentsType.type_webp) return true;
+  if (mimeType == FContentsType.type_heic) return true;
+  if (mimeType == FContentsType.type_heif) return true;
+  if (mimeType == FContentsType.type_gif) return true;
+
+  return false;
+}
+export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob): Promise<Vector2d> {
+  const context = canvas.getContext("2d");
+  const image = new Image();
+  return new Promise((resolve, reject): void => {
+    image.onload = (): void => {
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0);
+        resolve(applyClass(Vector2d, obj => {
+          obj.width = image.width;
+          obj.height = image.height;
+        }));
+      }
+      URL.revokeObjectURL(image.src);
+    }
+    image.src = URL.createObjectURL(blob);
+  });
+}
+export function textToCanvas(canvas: HTMLCanvasElement, text: string, vector: Vector2d, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Vector2d {
+  const context = canvas.getContext("2d");
+  let firstDragTextWidth = 0;
+  if (context) {
+    canvas.width = vector.width;
+    canvas.height = vector.height;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.font = addTextOptionModel.calcImageFont();
+    const textWidth = context.measureText(text).width;
+    firstDragTextWidth = textWidth;
+    context.fillStyle = addTextOptionModel.textBackground;
+    context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+    context.fillStyle = addTextOptionModel.textColor;
+    context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height), canvas.width);
+  }
+  return applyClass(Vector2d, obj => {
+    obj.x = addTextOptionModel.calcImageTextX(canvas.width, firstDragTextWidth);
+    obj.y = addTextOptionModel.calcImageTextY(canvas.height);
+  });
+}
+//export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): void {
+//  const context = canvas.getContext("2d");
+//  if (context) {
+//    context.clearRect(0, 0, canvas.width, canvas.height);
+//    const textWidth = context.measureText(text).width;
+//    canvas.width = canvas.width > textWidth ? canvas.width : textWidth;
+//    context.font = addTextOptionModel.calcImageFont();
+//    context.fillStyle = addTextOptionModel.textBackground;
+//    context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+//    context.fillStyle = addTextOptionModel.textColor;
+//    context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height), canvas.width);
+//  }
+//}
+export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel(), dragVector: Vector2d = new Vector2d()): Vector2d {
+  const context = canvas.getContext("2d");
+  let firstDragTextWidth = 0;
+  if (context) {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    const textEnter = text.split("\n");
+    for (let i = 0; i < textEnter.length; i++) {
+      context.font = addTextOptionModel.calcImageFont();
+      const textWidth = context.measureText(textEnter[i]).width;
+      if (i == 0) {
+        firstDragTextWidth =  textWidth;
+      }
+      context.fillStyle = addTextOptionModel.textBackground;
+      context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth, dragVector.x), addTextOptionModel.calcTextBackgroundYLine(canvas.height, i, textEnter.length, dragVector.y), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+      context.fillStyle = addTextOptionModel.textColor;
+      context.fillText(textEnter[i], addTextOptionModel.calcImageTextX(canvas.width, textWidth, dragVector.x), addTextOptionModel.calcImageTextYLine(canvas.height, i, textEnter.length, dragVector.y), canvas.width);
+    }
+  }
+  return applyClass(Vector2d, obj => {
+    obj.x = addTextOptionModel.calcImageTextX(canvas.width, firstDragTextWidth);
+    obj.y = addTextOptionModel.calcImageTextY(canvas.height);
+  });
+}
 export async function blobAddText(blob: Blob, text: string, mimeType: string = "image/jpeg", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {
   const ext = getExtMimeType(mimeType);
   if (ext == "pdf") {
@@ -555,21 +667,70 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
     image.onload = () => {
       if (context) {
         canvas.width = image.width;
-        canvas.height = addTextOptionModel.calcCanvasY(image.height);
-        context.fillStyle = addTextOptionModel.imageBackground;
+        canvas.height = image.height;
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, addTextOptionModel.calcImageY());
+        context.drawImage(image, 0, 0);
         context.font = addTextOptionModel.calcImageFont();
         context.fillStyle = addTextOptionModel.textColor;
         const textWidth = context.measureText(text).width;
-        context.fillText(text, addTextOptionModel.calcImageTextX(image.width, textWidth), addTextOptionModel.calcImageTextY(image.height));
+        context.fillStyle = addTextOptionModel.textBackground;
+        context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+        context.fillStyle = addTextOptionModel.textColor;
+        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height));
         canvas.toBlob((blob) => resolve(blob!), mimeType);
+        canvas.remove();
       } else {
         reject("이미지 초기화 실패");
       }
       URL.revokeObjectURL(image.src);
     };
     image.src = URL.createObjectURL(blob);
+  });
+}
+export function canvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropX: number = 0, cropY: number = 0): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = imageCanvas.width;
+  canvas.height = imageCanvas.height;
+  const context = canvas.getContext("2d");
+  if (context) {
+    context.drawImage(imageCanvas, cropX, cropY);
+    context.drawImage(watermarkCanvas, cropX, cropY);
+  }
+  return canvas;
+}
+export async function canvasPrint(canvas: HTMLCanvasElement, alt: string = "", mimeType: string = "image/jpeg"): Promise<void> {
+  const printWindow = window.open("", "print", "location=no, directories=no, status=no, toolbar=no, menubar=no, width=1020, height=650 left=0, top=0");
+  if (printWindow) {
+    const html = await fetch("assets/html/canvas-print.html");
+    printWindow.document.write(await html.text());
+    const img = printWindow.document.getElementById("printImage") as HTMLImageElement;
+    img.src = canvas.toDataURL(mimeType);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.setTimeout(function (): void {
+      printWindow.print();
+      printWindow.close();
+    }, 2000);
+  }
+}
+export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, mimeType: string = "image/jpeg", cropX: number = 0, cropY: number = 0): Promise<Blob> {
+  const canvas = document.createElement("canvas");
+  canvas.width = imageCanvas.width;
+  canvas.height = imageCanvas.height;
+  const context = canvas.getContext("2d");
+  return new Promise((resolve, reject): void => {
+    if (context) {
+      context.drawImage(imageCanvas, cropX, cropY);
+      context.drawImage(watermarkCanvas, cropX, cropY);
+      canvas.toBlob((blob) => {
+        if (blob == null) {
+          reject(blob);
+        } else {
+          resolve(blob);
+        }
+      }, mimeType);
+      canvas.remove();
+    }
   });
 }
 export async function pdfBlobAddText(blob: Blob, text: string, mimeType: string = "application/pdf", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {

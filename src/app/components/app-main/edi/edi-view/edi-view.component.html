@@ -1,6 +1,7 @@
 <div class="edi-view-container">
   <app-progress-spin [isLoading]="isLoading" />
   <drawer-fullscreen-file-view #fullscreenFileView />
+  <drawer-image-modify-view #imageModifyView />
   <div>
     <span>{{"edi-view.apply-date" | translate}}</span>
     <span>{{getApplyDate()}}</span>
@@ -107,13 +108,16 @@
     </p-accordion-panel>
   </p-accordion>
   <div class="flex" *ngIf="uploadModel.fileList.length > 0">
+    <p-button class="m-1 align-content-center" (click)="imageModify()" *ngIf="imageModifyVisible" [disabled]="imageModifyDisable">{{"common-desc.modify" | translate}}</p-button>
     <p-button class="m-1 align-content-center" (click)="allDownload()">{{"common-desc.all-save" | translate}}</p-button>
-    <p-select class="m-1 align-content-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" />
-    <p-select class="m-1 align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" />
-    <p-ifta-label>
+    <p-select class="m-1 align-self-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" />
+    <p-select class="m-1 align-self-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" />
+    <p-ifta-label class="m-1">
       <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
       <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
     </p-ifta-label>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}"/>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}"/>
   </div>
   <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
               [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex" *ngIf="uploadModel.fileList.length > 0">

@@ -1,0 +1,38 @@
+<p-drawer class="image-modify-view-container" [fullScreen]="true" [(visible)]="isVisible" (onHide)="onHide()" [closeOnEscape]="true" [closable]="false">
+  <app-progress-spin [isLoading]="isLoading" />
+  <p-context-menu [target]="contentContainer" [model]="contextMenu">
+    <ng-template pTemplate="item" let-item>
+      <a pRipple class="flex align-items-center p-contextmenu-item-link">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">{{item.label | translate}}</span>
+      </a>
+    </ng-template>
+  </p-context-menu>
+  <div class="m-1" *ngIf="!isLoading">
+    <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
+    <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
+    <p-button class="m-1" size="small" icon="pi pi-download" (click)="download()" [rounded]="true" />
+    <label>esc on close</label>
+  </div>
+  <div class="image-modify-view-sub-container">
+    <div #contentContainer class="content-container">
+      <canvas #imageCanvas class="image-canvas"></canvas>
+      <canvas #watermarkCanvas class="text-canvas" (mousedown)="watermarkDragStart($event)" (mousemove)="watermarkDrag($event)" (mouseup)="watermarkDragEnd()" (mouseleave)="watermarkDragEnd()"></canvas>
+    </div>
+    <div class="option-container">
+      <!--
+      <p-select class="m-1 align-content-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" (onChange)="onSelectChange()" />
+      -->
+      <div class="flex">
+        <p-ifta-label class="m-1">
+          <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText (input)="optionInput()"/>
+          <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
+        </p-ifta-label>
+        <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}" (onChange)="optionInput()"/>
+        <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}" (onChange)="optionInput()"/>
+      </div>
+      <textarea class="text-base" pTextarea type="text" [(ngModel)]="fileName"
+                (input)="optionInput()" (compositionstart)="fileNameCompStart()" (compositionupdate)="fileNameCompUpdate($event)" (compositionend)="fileNameCompEnd()"></textarea>
+    </div>
+  </div>
+</p-drawer>
