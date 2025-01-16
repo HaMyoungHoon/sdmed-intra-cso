@@ -607,13 +607,13 @@ export function textToCanvas(canvas: HTMLCanvasElement, text: string, vector: Ve
     const textWidth = context.measureText(text).width;
     firstDragTextWidth = textWidth;
     context.fillStyle = addTextOptionModel.textBackground;
-    context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+    context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height, canvas.clientHeight), textWidth, addTextOptionModel.calcTextBackgroundHeight());
     context.fillStyle = addTextOptionModel.textColor;
-    context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height), canvas.width);
+    context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight), canvas.width);
   }
   return applyClass(Vector2d, obj => {
-    obj.x = addTextOptionModel.calcImageTextX(canvas.width, firstDragTextWidth);
-    obj.y = addTextOptionModel.calcImageTextY(canvas.height);
+    obj.x = addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, firstDragTextWidth);
+    obj.y = addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight);
   });
 }
 //export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): void {
@@ -642,14 +642,14 @@ export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTex
         firstDragTextWidth =  textWidth;
       }
       context.fillStyle = addTextOptionModel.textBackground;
-      context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth, dragVector.x), addTextOptionModel.calcTextBackgroundYLine(canvas.height, i, textEnter.length, dragVector.y), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+      context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth, dragVector.x), addTextOptionModel.calcTextBackgroundYLine(canvas.height, canvas.clientHeight, i, textEnter.length, dragVector.y), textWidth, addTextOptionModel.calcTextBackgroundHeight());
       context.fillStyle = addTextOptionModel.textColor;
-      context.fillText(textEnter[i], addTextOptionModel.calcImageTextX(canvas.width, textWidth, dragVector.x), addTextOptionModel.calcImageTextYLine(canvas.height, i, textEnter.length, dragVector.y), canvas.width);
+      context.fillText(textEnter[i], addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth, dragVector.x), addTextOptionModel.calcImageTextYLine(canvas.height, canvas.clientHeight, i, textEnter.length, dragVector.y), canvas.width);
     }
   }
   return applyClass(Vector2d, obj => {
-    obj.x = addTextOptionModel.calcImageTextX(canvas.width, firstDragTextWidth);
-    obj.y = addTextOptionModel.calcImageTextY(canvas.height);
+    obj.x = addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, firstDragTextWidth);
+    obj.y = addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight);
   });
 }
 export async function blobAddText(blob: Blob, text: string, mimeType: string = "image/jpeg", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {
@@ -674,9 +674,9 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
         context.fillStyle = addTextOptionModel.textColor;
         const textWidth = context.measureText(text).width;
         context.fillStyle = addTextOptionModel.textBackground;
-        context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+        context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height, canvas.clientHeight), textWidth, addTextOptionModel.calcTextBackgroundHeight());
         context.fillStyle = addTextOptionModel.textColor;
-        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height));
+        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight));
         canvas.toBlob((blob) => resolve(blob!), mimeType);
         canvas.remove();
       } else {
@@ -698,13 +698,27 @@ export function canvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: 
   }
   return canvas;
 }
-export async function canvasPrint(canvas: HTMLCanvasElement, alt: string = "", mimeType: string = "image/jpeg"): Promise<void> {
+export async function canvasPrint(canvas: HTMLCanvasElement, alt: string = "", mimeType: string = "image/jpeg", height_width_full: number = 0): Promise<void> {
   const printWindow = window.open("", "print", "location=no, directories=no, status=no, toolbar=no, menubar=no, width=1020, height=650 left=0, top=0");
   if (printWindow) {
     const html = await fetch("assets/html/canvas-print.html");
     printWindow.document.write(await html.text());
-    const img = printWindow.document.getElementById("printImage") as HTMLImageElement;
-    img.src = canvas.toDataURL(mimeType);
+    const heightAutoImage = printWindow.document.getElementById("heightAutoImage") as HTMLImageElement;
+    const widthAutoImage = printWindow.document.getElementById("widthAutoImage") as HTMLImageElement;
+    const fullImage = printWindow.document.getElementById("fullImage") as HTMLImageElement;
+    if (height_width_full == 0) {
+      heightAutoImage.src = canvas.toDataURL(mimeType);
+      widthAutoImage.remove();
+      fullImage.remove();
+    } else if (height_width_full == 1) {
+      heightAutoImage.remove();
+      widthAutoImage.src = canvas.toDataURL(mimeType);
+      fullImage.remove();
+    } else {
+      heightAutoImage.remove();
+      widthAutoImage.remove();
+      fullImage.src = canvas.toDataURL(mimeType);
+    }
     printWindow.document.close();
     printWindow.focus();
     printWindow.setTimeout(function (): void {

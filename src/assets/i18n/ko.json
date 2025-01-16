@@ -526,7 +526,9 @@
     "font-size": "글자크기",
     "back-color": "배경색",
     "text-color": "글자색",
-    "print": "인쇄"
+    "height-auto-print": "인쇄(가로맞춤)",
+    "width-auto-print": "인쇄(세로맞춤)",
+    "full-print": "인쇄(가로세로맞춤)"
   },
   "mqtt-desc": {
     "title": {

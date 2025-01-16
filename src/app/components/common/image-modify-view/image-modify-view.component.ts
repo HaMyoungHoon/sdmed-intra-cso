@@ -80,10 +80,24 @@ export class ImageModifyViewComponent {
         }
       },
       {
-        label: "common-desc.print",
+        label: "common-desc.height-auto-print",
         icon: "pi pi-print",
         command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.print();
+          await this.print(0);
+        }
+      },
+      {
+        label: "common-desc.width-auto-print",
+        icon: "pi pi-print",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.print(1);
+        }
+      },
+      {
+        label: "common-desc.full-print",
+        icon: "pi pi-print",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.print(2);
         }
       }
     ];
@@ -127,14 +141,14 @@ export class ImageModifyViewComponent {
     saveAs(blob, filename);
     this.isLoading = false;
   }
-  async print(): Promise<void> {
+  async print(height_width_full: number): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;
     if (item == undefined) {
       return;
     }
     this.isLoading = true;
     const canvas: HTMLCanvasElement = FExtensions.canvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement);
-    await FExtensions.canvasPrint(canvas, item.filename, item.mimeType);
+    await FExtensions.canvasPrint(canvas, item.filename, item.mimeType, height_width_full);
     this.isLoading = false;
     canvas.remove();
   }
@@ -143,13 +157,11 @@ export class ImageModifyViewComponent {
       return;
     }
     this.isDrag = true;
-    this.dragVector.x = data.offsetX - this.watermarkVector.x;
-    this.dragVector.y = data.offsetY - this.watermarkVector.y;
   }
   watermarkDrag(data: MouseEvent): void {
     if (this.isDrag) {
-      this.dragVector.x = data.offsetX - this.watermarkVector.x;
-      this.dragVector.y = data.offsetY - this.watermarkVector.y;
+      this.dragVector.x = data.offsetX; // - this.watermarkVector.x;
+      this.dragVector.y = data.offsetY; // - this.watermarkVector.y;
       this.watermarkVector = FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
   }

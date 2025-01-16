@@ -33,58 +33,63 @@ export class AddTextOptionModel {
     }
     return this.correctionY;
   }
-  calcImageTextX(imageWidth: number, textWidth: number, dragX: number = 0): number {
+  calcImageTextX(imageWidth: number, canvasWidth: number, textWidth: number, dragX: number = 0): number {
+    const scale = imageWidth / canvasWidth;
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.LB:
-        return this.correctionX + dragX;
+        return this.correctionX + (scale * dragX);
       case TextPosition.RT:
       case TextPosition.RB:
-        return imageWidth - textWidth - this.correctionX + dragX;
+        return imageWidth - textWidth - this.correctionX + (scale * dragX);
     }
     return this.correctionX;
   }
-  calcImageTextY(imageHeight: number, dragY: number = 0): number {
+  calcImageTextY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+    const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize() + dragY;
+        return this.correctionY + this.calcImageFontSize() + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY + dragY;
+        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcImageTextYLine(imageHeight: number, index: number, count: number, dragY: number): number {
+  calcImageTextYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number): number {
+    const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize() + ((this.calcImageFontSize() + this.paddingY) * index) + dragY;
+        return this.correctionY + this.calcImageFontSize() + ((this.calcImageFontSize() + this.paddingY) * index) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + dragY;
+        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcTextBackgroundY(imageHeight: number, dragY: number = 0): number {
+  calcTextBackgroundY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+    const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + dragY;
+        return this.correctionY + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY + dragY;
+        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcTextBackgroundYLine(imageHeight: number, index: number, count: number, dragY: number = 0): number {
+  calcTextBackgroundYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number = 0): number {
+    const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + ((this.calcImageFontSize() + this.paddingY) * index) + dragY;
+        return this.correctionY + ((this.calcImageFontSize() + this.paddingY) * index) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + dragY;
+        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY - ((imageHeight / this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + (scale * dragY);
     }
     return this.correctionY;
   }

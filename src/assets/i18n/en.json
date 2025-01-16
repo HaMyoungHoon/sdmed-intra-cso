@@ -525,7 +525,9 @@
     "font-size": "font size",
     "back-color": "back color",
     "text-color": "text color",
-    "print": "print"
+    "height-auto-print": "print fit width",
+    "width-auto-print": "print fit height",
+    "full-print": "print fit full"
   },
   "mqtt-desc": {
     "title": {
