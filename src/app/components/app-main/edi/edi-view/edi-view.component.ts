@@ -24,6 +24,7 @@ import {
 import {AddTextOptionModel} from "../../../../models/common/add-text-option-model";
 import {ImageModifyViewComponent} from "../../../common/image-modify-view/image-modify-view.component";
 import {hexColorWithAlpha} from "../../../../guards/f-extensions";
+import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 
 @Component({
   selector: "app-edi-view",
@@ -43,6 +44,7 @@ export class EdiViewComponent extends FComponentBase {
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
+  contextMenu: MenuItem[] = [];
   constructor(private thisService: EdiListService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
     this.thisPK = this.route.snapshot.params["thisPK"];
@@ -50,6 +52,57 @@ export class EdiViewComponent extends FComponentBase {
 
   override async ngInit(): Promise<void> {
     this.subscribeRouter();
+  }
+  contextMenuOnShow(): void {
+    this.initMenu();
+  }
+  initMenu(): void {
+    this.contextMenu = [
+      {
+        label: "edi-view.image-modify",
+        icon: "pi pi-wrench",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.imageModify();
+        },
+        disabled: this.imageModifyDisable,
+        visible: this.imageModifyVisible,
+      },
+      {
+        separator: true,
+        visible: this.imageModifyVisible,
+      },
+      {
+        label: "edi-view.all-download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(true);
+        },
+      },
+      {
+        label: "edi-view.all-download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(false);
+        },
+      },
+      {
+        separator: true
+      },
+      {
+        label: "edi-view.download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], true);
+        },
+      },
+      {
+        label: "edi-view.download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], false);
+        },
+      },
+    ]
   }
   subscribeRouter(): void {
     const sub = new Subject<any>();
@@ -158,7 +211,7 @@ export class EdiViewComponent extends FComponentBase {
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
-  async downloadEDIFile(item: EDIUploadFileModel): Promise<void> {
+  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -168,7 +221,7 @@ export class EdiViewComponent extends FComponentBase {
     try {
       if (ret && ret.body) {
         const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+        const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
         saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
       }
     } catch (e: any) {
@@ -205,7 +258,7 @@ export class EdiViewComponent extends FComponentBase {
     const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
-  async allDownload(): Promise<void> {
+  async allDownload(withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -216,7 +269,7 @@ export class EdiViewComponent extends FComponentBase {
       try {
         if (ret && ret.body) {
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
         }
       } catch (e: any) {

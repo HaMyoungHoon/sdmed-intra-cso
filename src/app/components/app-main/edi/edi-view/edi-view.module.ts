@@ -18,13 +18,15 @@ import {Select} from "primeng/select";
 import {IftaLabel} from "primeng/iftalabel";
 import {ImageModifyViewComponent} from "../../../common/image-modify-view/image-modify-view.component";
 import {ColorPicker} from "primeng/colorpicker";
+import {ContextMenu} from "primeng/contextmenu";
+import {Ripple} from "primeng/ripple";
 
 
 
 @NgModule({
   declarations: [EdiViewComponent],
-  imports: [
-    CommonModule, EdiViewRoutingModule, Accordion, AccordionPanel, AccordionHeader, AccordionContent, ProgressSpinComponent, FullscreenFileViewComponent, TranslatePipe, GalleriaModule, Button, Tooltip, Tag, TableModule, FormsModule, InputText, Textarea, Select, IftaLabel, ImageModifyViewComponent, ColorPicker
-  ]
+	imports: [
+		CommonModule, EdiViewRoutingModule, Accordion, AccordionPanel, AccordionHeader, AccordionContent, ProgressSpinComponent, FullscreenFileViewComponent, TranslatePipe, GalleriaModule, Button, Tooltip, Tag, TableModule, FormsModule, InputText, Textarea, Select, IftaLabel, ImageModifyViewComponent, ColorPicker, ContextMenu, Ripple
+	]
 })
 export class EdiViewModule { }

@@ -8,7 +8,7 @@ import {FormsModule} from "@angular/forms";
 import {FullscreenFileViewComponent} from "../../fullscreen-file-view/fullscreen-file-view.component";
 import {GalleriaModule} from "primeng/galleria";
 import {NgForOf, NgIf} from "@angular/common";
-import {PrimeTemplate} from "primeng/api";
+import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../../progress-spin/progress-spin.component";
 import {TableModule} from "primeng/table";
 import {Tag} from "primeng/tag";
@@ -32,11 +32,13 @@ import {IftaLabel} from "primeng/iftalabel";
 import {InputText} from "primeng/inputtext";
 import {AddTextOptionModel} from "../../../../models/common/add-text-option-model";
 import {ImageModifyViewComponent} from "../../image-modify-view/image-modify-view.component";
+import {ContextMenu} from "primeng/contextmenu";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: "app-edi-view-dialog",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, TableModule, Tag, Tooltip, TranslatePipe, Textarea, Select, IftaLabel, InputText, ImageModifyViewComponent
-  ],
+	imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, TableModule, Tag, Tooltip, TranslatePipe, Textarea, Select, IftaLabel, InputText, ImageModifyViewComponent, ContextMenu, Ripple
+	],
   templateUrl: "./edi-view-dialog.component.html",
   styleUrl: "./edi-view-dialog.component.scss",
   standalone: true,
@@ -53,6 +55,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
+  contextMenu: MenuItem[] = [];
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
     const dlg = this.dialogService.getInstance(this.ref);
@@ -61,6 +64,57 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
 
   override async ngInit(): Promise<void> {
     await this.getData();
+  }
+  contextMenuOnShow(): void {
+    this.initMenu();
+  }
+  initMenu(): void {
+    this.contextMenu = [
+      {
+        label: "edi-view.image-modify",
+        icon: "pi pi-wrench",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.imageModify();
+        },
+        disabled: this.imageModifyDisable,
+        visible: this.imageModifyVisible,
+      },
+      {
+        separator: true,
+        visible: this.imageModifyVisible,
+      },
+      {
+        label: "edi-view.all-download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(true);
+        },
+      },
+      {
+        label: "edi-view.all-download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(false);
+        },
+      },
+      {
+        separator: true
+      },
+      {
+        label: "edi-view.download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], true);
+        },
+      },
+      {
+        label: "edi-view.download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], false);
+        },
+      },
+    ]
   }
 
   async getData(): Promise<void> {
@@ -161,7 +215,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
-  async downloadEDIFile(item: EDIUploadFileModel): Promise<void> {
+  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -171,7 +225,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     try {
       if (ret && ret.body) {
         const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+        const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
         saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
       }
     } catch (e: any) {
@@ -208,7 +262,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
-  async allDownload(): Promise<void> {
+  async allDownload(withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -219,7 +273,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
       try {
         if (ret && ret.body) {
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
         }
       } catch (e: any) {

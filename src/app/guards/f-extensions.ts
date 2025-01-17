@@ -22,6 +22,7 @@ import {BlobStorageInfoModel} from "../models/rest/blob-storage-info-model";
 import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
 import heic2any from "heic2any";
 import {Vector2d} from "../models/common/vector-2d";
+import {FILL_CROP_ORIGIN_COLOR} from "./f-constants";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -575,17 +576,21 @@ export function isImageMimeType(mimeType: string): boolean {
 
   return false;
 }
-export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob): Promise<Vector2d> {
+export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d): Promise<Vector2d> {
   const context = canvas.getContext("2d");
   const image = new Image();
   return new Promise((resolve, reject): void => {
     image.onload = (): void => {
       if (context) {
+        if (vector.width != 0 && vector.height != 0) {
+          image.width = vector.width;
+          image.height = vector.height;
+        }
         canvas.width = image.width;
         canvas.height = image.height;
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0);
+        context.drawImage(image, 0, 0, image.width, image.height);
         resolve(applyClass(Vector2d, obj => {
           obj.width = image.width;
           obj.height = image.height;
@@ -595,6 +600,26 @@ export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob): Promi
     }
     image.src = URL.createObjectURL(blob);
   });
+}
+export async function cropToCanvas(canvas: HTMLCanvasElement, imageCanvas: HTMLCanvasElement, imageVector: Vector2d, cropVector: Vector2d): Promise<void> {
+  const context = canvas.getContext("2d");
+  if (context) {
+    canvas.width = imageVector.width;
+    canvas.height = imageVector.height;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = FConstants.FILL_CROP_ORIGIN_COLOR;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(cropVector.left, cropVector.top, cropVector.width, cropVector.height);
+    context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, cropVector.left, cropVector.top, cropVector.width, cropVector.height);
+    context.strokeStyle = FConstants.FILL_CROP_BORDER_COLOR;
+    let clientWidth = imageCanvas.clientWidth;
+    if (clientWidth == 0) {
+      clientWidth = imageCanvas.width;
+    }
+    const borderSize = FConstants.FILL_CROP_BORDER_WIDTH * imageCanvas.width / clientWidth;
+    context.lineWidth = borderSize;
+    context.strokeRect(cropVector.left - borderSize / 2, cropVector.top - borderSize / 2, cropVector.width + borderSize, cropVector.height + borderSize);
+  }
 }
 export function textToCanvas(canvas: HTMLCanvasElement, text: string, vector: Vector2d, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Vector2d {
   const context = canvas.getContext("2d");
@@ -616,19 +641,6 @@ export function textToCanvas(canvas: HTMLCanvasElement, text: string, vector: Ve
     obj.y = addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight);
   });
 }
-//export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): void {
-//  const context = canvas.getContext("2d");
-//  if (context) {
-//    context.clearRect(0, 0, canvas.width, canvas.height);
-//    const textWidth = context.measureText(text).width;
-//    canvas.width = canvas.width > textWidth ? canvas.width : textWidth;
-//    context.font = addTextOptionModel.calcImageFont();
-//    context.fillStyle = addTextOptionModel.textBackground;
-//    context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height), textWidth, addTextOptionModel.calcTextBackgroundHeight());
-//    context.fillStyle = addTextOptionModel.textColor;
-//    context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, textWidth), addTextOptionModel.calcImageTextY(canvas.height), canvas.width);
-//  }
-//}
 export function canvasTextUpdate(canvas: HTMLCanvasElement, text: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel(), dragVector: Vector2d = new Vector2d()): Vector2d {
   const context = canvas.getContext("2d");
   let firstDragTextWidth = 0;
@@ -668,15 +680,15 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
       if (context) {
         canvas.width = image.width;
         canvas.height = image.height;
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.drawImage(image, 0, 0);
         context.font = addTextOptionModel.calcImageFont();
-        context.fillStyle = addTextOptionModel.textColor;
         const textWidth = context.measureText(text).width;
         context.fillStyle = addTextOptionModel.textBackground;
         context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height, canvas.clientHeight), textWidth, addTextOptionModel.calcTextBackgroundHeight());
         context.fillStyle = addTextOptionModel.textColor;
-        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight));
+        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight), canvas.width);
         canvas.toBlob((blob) => resolve(blob!), mimeType);
         canvas.remove();
       } else {
@@ -687,14 +699,14 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
     image.src = URL.createObjectURL(blob);
   });
 }
-export function canvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropX: number = 0, cropY: number = 0): HTMLCanvasElement {
+export function canvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropVector: Vector2d): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
-  canvas.width = imageCanvas.width;
-  canvas.height = imageCanvas.height;
+  canvas.width = cropVector.width;
+  canvas.height = cropVector.height;
   const context = canvas.getContext("2d");
   if (context) {
-    context.drawImage(imageCanvas, cropX, cropY);
-    context.drawImage(watermarkCanvas, cropX, cropY);
+    context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
+    context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
   }
   return canvas;
 }
@@ -727,15 +739,15 @@ export async function canvasPrint(canvas: HTMLCanvasElement, alt: string = "", m
     }, 2000);
   }
 }
-export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, mimeType: string = "image/jpeg", cropX: number = 0, cropY: number = 0): Promise<Blob> {
+export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, mimeType: string = "image/jpeg", cropVector: Vector2d): Promise<Blob> {
   const canvas = document.createElement("canvas");
-  canvas.width = imageCanvas.width;
-  canvas.height = imageCanvas.height;
+  canvas.width = cropVector.width;
+  canvas.height = cropVector.height;
   const context = canvas.getContext("2d");
   return new Promise((resolve, reject): void => {
     if (context) {
-      context.drawImage(imageCanvas, cropX, cropY);
-      context.drawImage(watermarkCanvas, cropX, cropY);
+      context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
+      context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       canvas.toBlob((blob) => {
         if (blob == null) {
           reject(blob);

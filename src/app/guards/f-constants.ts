@@ -49,7 +49,11 @@ export const ASSETS_DOCX_IMAGE: string = "assets/image/word-image.png";
 
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";
-export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "600px", "height": "660px"};
+export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "auto", "height": "760px"};
+
+export const FILL_CROP_ORIGIN_COLOR = "#0000005F";
+export const FILL_CROP_BORDER_COLOR = "#18C818FF"
+export const FILL_CROP_BORDER_WIDTH = 4;
 
 export const REGEX_CHECK_ID: RegExp = /^[A-Za-z0-9가-힣]{4,20}$/;
 export const REGEX_CHECK_PASSWORD_0: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[0-9]).{8,20}$/;

@@ -34,6 +34,9 @@ export class AddTextOptionModel {
     return this.correctionY;
   }
   calcImageTextX(imageWidth: number, canvasWidth: number, textWidth: number, dragX: number = 0): number {
+    if (canvasWidth == 0) {
+      canvasWidth = imageWidth;
+    }
     const scale = imageWidth / canvasWidth;
     switch (this.textPosition) {
       case TextPosition.LT:
@@ -46,6 +49,9 @@ export class AddTextOptionModel {
     return this.correctionX;
   }
   calcImageTextY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+    if (canvasHeight == 0) {
+      canvasHeight = imageHeight;
+    }
     const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
@@ -58,6 +64,9 @@ export class AddTextOptionModel {
     return this.correctionY;
   }
   calcImageTextYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number): number {
+    if (canvasHeight == 0) {
+      canvasHeight = imageHeight;
+    }
     const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
@@ -70,6 +79,9 @@ export class AddTextOptionModel {
     return this.correctionY;
   }
   calcTextBackgroundY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+    if (canvasHeight == 0) {
+      canvasHeight = imageHeight;
+    }
     const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:
@@ -82,6 +94,9 @@ export class AddTextOptionModel {
     return this.correctionY;
   }
   calcTextBackgroundYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number = 0): number {
+    if (canvasHeight == 0) {
+      canvasHeight = imageHeight;
+    }
     const scale = imageHeight / canvasHeight;
     switch (this.textPosition) {
       case TextPosition.LT:

@@ -107,7 +107,10 @@
       "edi-state": "reply state",
       "reg-date": "reply date",
       "user-name": "reply user"
-    }
+    },
+    "image-modify": "image modify",
+    "all-download-with-watermark": "all download(with watermark)",
+    "all-download-without-watermark": "all download(without watermark)"
   },
   "edi-apply-date": {
     "year": "year",
@@ -519,8 +522,10 @@
     "cancel": "cancel",
     "confirm": "confirm",
     "sample-download": "sample download",
+    "download": "download",
     "in-visible": "invisible",
     "logout": "logout",
+    "all-download": "all download",
     "all-save": "all save",
     "font-size": "font size",
     "back-color": "back color",

@@ -11,12 +11,12 @@
   <div class="m-1" *ngIf="!isLoading">
     <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
     <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
-    <p-button class="m-1" size="small" icon="pi pi-download" (click)="download()" [rounded]="true" />
     <label>esc on close</label>
   </div>
   <div class="image-modify-view-sub-container">
     <div #contentContainer class="content-container">
       <canvas #imageCanvas class="image-canvas"></canvas>
+      <canvas #cropCanvas class="crop-canvas"></canvas>
       <canvas #watermarkCanvas class="text-canvas" (mousedown)="watermarkDragStart($event)" (mousemove)="watermarkDrag($event)" (mouseup)="watermarkDragEnd()" (mouseleave)="watermarkDragEnd()"></canvas>
     </div>
     <div class="option-container">
@@ -30,6 +30,34 @@
         </p-ifta-label>
         <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}" (onChange)="optionInput()"/>
         <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}" (onChange)="optionInput()"/>
+      </div>
+      <div class="flex">
+        <p-ifta-label class="m-1">
+          <input id="imageWidth" [(ngModel)]="imageVectorBuff.width" type="number" pInputText (keydown)="resizeKeydown($event)">
+          <label for="imageWidth">width</label>
+        </p-ifta-label>
+        <p-ifta-label class="m-1">
+          <input id="imageHeight" [(ngModel)]="imageVectorBuff.height" type="number" pInputText (keydown)="resizeKeydown($event)">
+          <label for="imageHeight">height</label>
+        </p-ifta-label>
+      </div>
+      <div class="flex">
+        <p-ifta-label class="m-1">
+          <input id="imageCropLeft" [(ngModel)]="imageCropVectorBuff.left" type="number" pInputText (keydown)="cropKeydown($event)">
+          <label for="imageCropLeft">left</label>
+        </p-ifta-label>
+        <p-ifta-label class="m-1">
+          <input id="imageCropTop" [(ngModel)]="imageCropVectorBuff.top" type="number" pInputText (keydown)="cropKeydown($event)">
+          <label for="imageCropTop">top</label>
+        </p-ifta-label>
+        <p-ifta-label class="m-1">
+          <input id="imageCropRight" [(ngModel)]="imageCropVectorBuff.right" type="number" pInputText (keydown)="cropKeydown($event)">
+          <label for="imageCropRight">right</label>
+        </p-ifta-label>
+        <p-ifta-label class="m-1">
+          <input id="imageCropBottom" [(ngModel)]="imageCropVectorBuff.bottom" type="number" pInputText (keydown)="cropKeydown($event)">
+          <label for="imageCropBottom">bottom</label>
+        </p-ifta-label>
       </div>
       <textarea class="text-base" pTextarea type="text" [(ngModel)]="fileName"
                 (input)="optionInput()" (compositionstart)="fileNameCompStart()" (compositionupdate)="fileNameCompUpdate($event)" (compositionend)="fileNameCompEnd()"></textarea>

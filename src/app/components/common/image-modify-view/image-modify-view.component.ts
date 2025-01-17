@@ -33,6 +33,7 @@ import {Ripple} from "primeng/ripple";
 })
 export class ImageModifyViewComponent {
   @ViewChild("imageCanvas") imageCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild("cropCanvas") cropCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("watermarkCanvas") watermarkCanvas!: ElementRef<HTMLCanvasElement>;
   isVisible: boolean = false;
   fileViewModel: FileViewModel[] = [];
@@ -44,8 +45,11 @@ export class ImageModifyViewComponent {
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
+  imageVectorBuff: Vector2d = new Vector2d();
+  imageVector: Vector2d = new Vector2d();
+  imageCropVectorBuff: Vector2d = new Vector2d();
+  imageCropVector: Vector2d = new Vector2d();
   dragVector: Vector2d = new Vector2d();
-  watermarkVector: Vector2d = new Vector2d();
   isDrag: boolean = false;
   contextMenu: MenuItem[] = [];
   constructor(@Inject(DOCUMENT) private document: Document, private commonService: CommonService, private fDialogService: FDialogService) {
@@ -73,11 +77,14 @@ export class ImageModifyViewComponent {
   menuInit(): void {
     this.contextMenu = [
       {
-        label: "common-desc.save",
+        label: "common-desc.download",
         icon: "pi pi-download",
         command: async(_: MenuItemCommandEvent): Promise<void> => {
           await this.download();
         }
+      },
+      {
+        separator: true
       },
       {
         label: "common-desc.height-auto-print",
@@ -111,8 +118,13 @@ export class ImageModifyViewComponent {
     const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async(): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(item.blobUrl),
       e => this.fDialogService.error("downloadFile", e));
     if (ret && ret.body) {
-      const vector: Vector2d = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body);
-      this.watermarkVector = FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, vector, this.getTextOptionModel())
+      this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector);
+      this.imageVectorBuff.copy(this.imageVector);
+      this.imageCropVector.copy(this.imageVector);
+      this.imageCropVectorBuff.copy(this.imageCropVector);
+      await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
+      FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
     this.isLoading = false;
   }
@@ -136,7 +148,7 @@ export class ImageModifyViewComponent {
       return;
     }
     this.isLoading = true;
-    const blob: Blob = await FExtensions.toBlobCanvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement);
+    const blob: Blob = await FExtensions.toBlobCanvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement, item.mimeType, this.imageCropVector);
     const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
     saveAs(blob, filename);
     this.isLoading = false;
@@ -147,7 +159,7 @@ export class ImageModifyViewComponent {
       return;
     }
     this.isLoading = true;
-    const canvas: HTMLCanvasElement = FExtensions.canvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement);
+    const canvas: HTMLCanvasElement = FExtensions.canvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement, this.imageCropVector);
     await FExtensions.canvasPrint(canvas, item.filename, item.mimeType, height_width_full);
     this.isLoading = false;
     canvas.remove();
@@ -160,9 +172,9 @@ export class ImageModifyViewComponent {
   }
   watermarkDrag(data: MouseEvent): void {
     if (this.isDrag) {
-      this.dragVector.x = data.offsetX; // - this.watermarkVector.x;
-      this.dragVector.y = data.offsetY; // - this.watermarkVector.y;
-      this.watermarkVector = FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+      this.dragVector.x = data.offsetX;
+      this.dragVector.y = data.offsetY;
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
   }
   watermarkDragEnd(): void {
@@ -170,12 +182,55 @@ export class ImageModifyViewComponent {
   }
   onSelectChange(): void {
     this.dragVector.init();
-    this.watermarkVector = FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
   }
   optionInput(): void {
     if (!this.isComposing) {
-      this.watermarkVector = FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
+  }
+  async resizeKeydown(data: KeyboardEvent): Promise<void> {
+    if (data.key == "Enter") {
+      await this.resizeImage();
+    }
+  }
+  async resizeImage(): Promise<void> {
+    if (this.imageVectorBuff.width <= 0) {
+      this.imageVectorBuff.width = this.imageVector.width;
+    }
+    if (this.imageVectorBuff.height <= 0) {
+      this.imageVectorBuff.height = this.imageVector.height;
+    }
+    this.imageVector.copy(this.imageVectorBuff);
+    await this.imageReady();
+  }
+  async cropKeydown(data: KeyboardEvent): Promise<void> {
+    if (data.key == "Enter") {
+      await this.cropImage();
+    }
+  }
+  async cropImage(): Promise<void> {
+    if (this.imageCropVectorBuff.left < 0) {
+      this.imageCropVectorBuff.left = this.imageCropVector.left;
+    }
+    if (this.imageCropVectorBuff.top < 0) {
+      this.imageCropVectorBuff.top = this.imageCropVector.top;
+    }
+    if (this.imageCropVectorBuff.right < 0) {
+      this.imageCropVectorBuff.right = this.imageCropVector.right;
+    }
+    if (this.imageCropVectorBuff.right > this.imageVector.right) {
+      this.imageCropVectorBuff.right = this.imageVector.right;
+    }
+    if (this.imageCropVectorBuff.bottom < 0) {
+      this.imageCropVectorBuff.bottom = this.imageCropVector.bottom;
+    }
+    if (this.imageCropVectorBuff.bottom > this.imageVector.bottom) {
+      this.imageCropVectorBuff.bottom = this.imageVector.bottom;
+    }
+    this.imageCropVector.copy(this.imageCropVectorBuff);
+    await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
   }
   fileNameCompStart(): void {
     this.isComposing = true;

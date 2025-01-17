@@ -107,7 +107,12 @@
       "edi-state": "응답 상태",
       "reg-date": "응답일",
       "user-name": "응답 유저"
-    }
+    },
+    "image-modify": "이미지 수정",
+    "all-download-with-watermark": "전체 저장(워터마크 포함)",
+    "all-download-without-watermark": "전체 저장",
+    "download-with-watermark": "저장(워터마크 포함)",
+    "download-without-watermark": "저장"
   },
   "edi-apply-date": {
     "year": "연",
@@ -520,9 +525,11 @@
     "cancel": "취소",
     "confirm": "확인",
     "sample-download": "샘플 다운로드",
+    "download": "다운로드",
     "in-visible": "숨김",
     "logout": "로그아웃",
-    "all-save": "전체저장",
+    "all-download": "전체 다운로드",
+    "all-save": "전체 저장",
     "font-size": "글자크기",
     "back-color": "배경색",
     "text-color": "글자색",

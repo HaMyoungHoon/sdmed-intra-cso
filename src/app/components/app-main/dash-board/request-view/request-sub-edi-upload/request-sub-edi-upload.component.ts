@@ -17,7 +17,7 @@ import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from "prim
 import {Button} from "primeng/button";
 import {GalleriaModule} from "primeng/galleria";
 import {NgForOf, NgIf} from "@angular/common";
-import {PrimeTemplate} from "primeng/api";
+import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
@@ -33,10 +33,12 @@ import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTex
 import {InputText} from "primeng/inputtext";
 import {IftaLabel} from "primeng/iftalabel";
 import {ImageModifyViewComponent} from "../../../../common/image-modify-view/image-modify-view.component";
+import {ContextMenu} from "primeng/contextmenu";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: "app-request-sub-edi-upload",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent],
+	imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent, ContextMenu, Ripple],
   templateUrl: "./request-sub-edi-upload.component.html",
   styleUrl: "./request-sub-edi-upload.component.scss",
   standalone: true,
@@ -54,12 +56,64 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
+  contextMenu: MenuItem[] = [];
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
 
   override async ngInit(): Promise<void> {
     await this.getData();
+  }
+  contextMenuOnShow(): void {
+    this.initMenu();
+  }
+  initMenu(): void {
+    this.contextMenu = [
+      {
+        label: "edi-view.image-modify",
+        icon: "pi pi-wrench",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.imageModify();
+        },
+        disabled: this.imageModifyDisable,
+        visible: this.imageModifyVisible,
+      },
+      {
+        separator: true,
+        visible: this.imageModifyVisible,
+      },
+      {
+        label: "edi-view.all-download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(true);
+        },
+      },
+      {
+        label: "edi-view.all-download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload(false);
+        },
+      },
+      {
+        separator: true
+      },
+      {
+        label: "edi-view.download-with-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], true);
+        },
+      },
+      {
+        label: "edi-view.download-without-watermark",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], false);
+        },
+      },
+    ]
   }
 
   async getData(): Promise<void> {
@@ -164,7 +218,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
-  async downloadEDIFile(item: EDIUploadFileModel): Promise<void> {
+  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -174,7 +228,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     try {
       if (ret && ret.body) {
         const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-        const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+        const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
         saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
       }
     } catch (e: any) {
@@ -211,7 +265,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
-  async allDownload(): Promise<void> {
+  async allDownload(withWatermark: boolean = true): Promise<void> {
     if (this.selectPrintPharma == null) {
       return;
     }
@@ -222,7 +276,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
       try {
         if (ret && ret.body) {
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
-          const blob = await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge());
+          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
         }
       } catch (e: any) {
