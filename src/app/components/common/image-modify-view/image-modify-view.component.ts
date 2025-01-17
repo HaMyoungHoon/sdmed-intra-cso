@@ -42,11 +42,15 @@ export class ImageModifyViewComponent {
   isComposing: boolean = false;
   isLoading: boolean = false;
   fontSize: number = 12;
+  previousImageAngle: number = 0;
+  imageAngle: number = 0;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
   imageVectorBuff: Vector2d = new Vector2d();
   imageVector: Vector2d = new Vector2d();
+  imageCropRightBuff: number = 0;
+  imageCropBottomBuff: number = 0;
   imageCropVectorBuff: Vector2d = new Vector2d();
   imageCropVector: Vector2d = new Vector2d();
   dragVector: Vector2d = new Vector2d();
@@ -118,10 +122,12 @@ export class ImageModifyViewComponent {
     const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async(): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(item.blobUrl),
       e => this.fDialogService.error("downloadFile", e));
     if (ret && ret.body) {
-      this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector);
+      this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector, this.imageAngle);
       this.imageVectorBuff.copy(this.imageVector);
       this.imageCropVector.copy(this.imageVector);
       this.imageCropVectorBuff.copy(this.imageCropVector);
+      this.imageCropRightBuff = this.imageVector.width - this.imageCropVector.right;
+      this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
       await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
       FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
       FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
@@ -189,6 +195,13 @@ export class ImageModifyViewComponent {
       FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
   }
+  async onAngleChange(): Promise<void> {
+    if (Math.abs(this.previousImageAngle - this.imageAngle) == 90) {
+      this.imageVector.rotate();
+    }
+    this.previousImageAngle = this.imageAngle;
+    await this.imageReady();
+  }
   async resizeKeydown(data: KeyboardEvent): Promise<void> {
     if (data.key == "Enter") {
       await this.resizeImage();
@@ -216,18 +229,22 @@ export class ImageModifyViewComponent {
     if (this.imageCropVectorBuff.top < 0) {
       this.imageCropVectorBuff.top = this.imageCropVector.top;
     }
-    if (this.imageCropVectorBuff.right < 0) {
-      this.imageCropVectorBuff.right = this.imageCropVector.right;
+    if (this.imageCropRightBuff < 0) {
+      this.imageCropRightBuff = 0;
     }
-    if (this.imageCropVectorBuff.right > this.imageVector.right) {
-      this.imageCropVectorBuff.right = this.imageVector.right;
+    if (this.imageCropBottomBuff < 0) {
+      this.imageCropBottomBuff = 0;
     }
-    if (this.imageCropVectorBuff.bottom < 0) {
-      this.imageCropVectorBuff.bottom = this.imageCropVector.bottom;
+    if (this.imageCropVectorBuff.left + this.imageCropRightBuff > this.imageVector.width) {
+      this.imageCropVectorBuff.left = this.imageCropVector.left;
+      this.imageCropRightBuff = this.imageVector.width - this.imageCropVector.right;
     }
-    if (this.imageCropVectorBuff.bottom > this.imageVector.bottom) {
-      this.imageCropVectorBuff.bottom = this.imageVector.bottom;
+    if (this.imageCropVectorBuff.top + this.imageCropBottomBuff > this.imageVector.height) {
+      this.imageCropVectorBuff.top = this.imageCropVector.top;
+      this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
     }
+    this.imageCropVectorBuff.right = this.imageVector.width - this.imageCropRightBuff;
+    this.imageCropVectorBuff.bottom = this.imageVector.height - this.imageCropBottomBuff;
     this.imageCropVector.copy(this.imageCropVectorBuff);
     await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
     FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);

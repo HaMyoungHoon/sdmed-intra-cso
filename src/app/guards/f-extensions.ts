@@ -576,7 +576,7 @@ export function isImageMimeType(mimeType: string): boolean {
 
   return false;
 }
-export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d): Promise<Vector2d> {
+export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d, angle: number = 0): Promise<Vector2d> {
   const context = canvas.getContext("2d");
   const image = new Image();
   return new Promise((resolve, reject): void => {
@@ -586,11 +586,19 @@ export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector
           image.width = vector.width;
           image.height = vector.height;
         }
+        context.clearRect(0, 0, canvas.width, canvas.height);
         canvas.width = image.width;
         canvas.height = image.height;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0, image.width, image.height);
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(angle * Math.PI / 180);
+        context.translate(-canvas.width / 2, -canvas.height / 2);
+        if (angle == 90 || angle == 270) {
+          // 아 이거 비율 좀 찾아야겠는데
+          context.drawImage(image, ((canvas.width - canvas.height) / 2), -(canvas.height / 4), canvas.height, canvas.width);
+          console.log(`canvas.height: ${canvas.height}, canvas.width: ${canvas.width}`);
+        } else {
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
         resolve(applyClass(Vector2d, obj => {
           obj.width = image.width;
           obj.height = image.height;

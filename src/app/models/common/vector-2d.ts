@@ -12,6 +12,15 @@ export class Vector2d {
   isInit(): boolean {
     return this.width == 0 && this.height == 0 && this.x == 0 && this.y == 0;
   }
+  rotate(): Vector2d {
+    let buff = this.width;
+    this.width = this.height;
+    this.height = buff;
+    buff = this.x;
+    this.x = this.y;
+    this.y = buff;
+    return this;
+  }
   copy(data: Vector2d): Vector2d {
     this.width = data.width;
     this.height = data.height;
