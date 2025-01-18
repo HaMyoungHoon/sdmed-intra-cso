@@ -591,12 +591,11 @@ export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector
         canvas.height = image.height;
         context.translate(canvas.width / 2, canvas.height / 2);
         context.rotate(angle * Math.PI / 180);
-        context.translate(-canvas.width / 2, -canvas.height / 2);
         if (angle == 90 || angle == 270) {
-          // 아 이거 비율 좀 찾아야겠는데
-          context.drawImage(image, ((canvas.width - canvas.height) / 2), -(canvas.height / 4), canvas.height, canvas.width);
-          console.log(`canvas.height: ${canvas.height}, canvas.width: ${canvas.width}`);
+          context.translate(-canvas.height / 2, -canvas.width / 2);
+          context.drawImage(image, 0, 0, canvas.height, canvas.width);
         } else {
+          context.translate(-canvas.width / 2, -canvas.height / 2);
           context.drawImage(image, 0, 0, canvas.width, canvas.height);
         }
         resolve(applyClass(Vector2d, obj => {

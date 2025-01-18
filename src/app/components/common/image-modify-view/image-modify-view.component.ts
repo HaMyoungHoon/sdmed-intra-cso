@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Inject, Output, ViewChild} from "@angular/core";
 import {FileViewModel} from "../../../models/rest/file-view-model";
 import {DOCUMENT, NgIf} from "@angular/common";
 import * as FExtensions from "../../../guards/f-extensions";
@@ -7,7 +7,6 @@ import {Button} from "primeng/button";
 import {ProgressSpinComponent} from "../progress-spin/progress-spin.component";
 import {AddTextOptionModel} from "../../../models/common/add-text-option-model";
 import {CommonService} from "../../../services/rest/common.service";
-import {FDialogService} from "../../../services/common/f-dialog.service";
 import {FormsModule} from "@angular/forms";
 import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
@@ -35,6 +34,7 @@ export class ImageModifyViewComponent {
   @ViewChild("imageCanvas") imageCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("cropCanvas") cropCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("watermarkCanvas") watermarkCanvas!: ElementRef<HTMLCanvasElement>;
+  @Output() error: EventEmitter<{title: string, msg: string}> = new EventEmitter<{title: string; msg: string}>();
   isVisible: boolean = false;
   fileViewModel: FileViewModel[] = [];
   fileName: string = "";
@@ -56,8 +56,11 @@ export class ImageModifyViewComponent {
   dragVector: Vector2d = new Vector2d();
   isDrag: boolean = false;
   contextMenu: MenuItem[] = [];
-  constructor(@Inject(DOCUMENT) private document: Document, private commonService: CommonService, private fDialogService: FDialogService) {
+  constructor(@Inject(DOCUMENT) private document: Document, private commonService: CommonService) {
     this.menuInit();
+  }
+  onError(title: string, msg: string): void {
+    this.error.next({title: title, msg: msg});
   }
   async show(fileViewModel: FileViewModel[], fileName: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<void> {
     this.fileViewModel = fileViewModel;
@@ -120,7 +123,7 @@ export class ImageModifyViewComponent {
     }
     this.isLoading = true;
     const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async(): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(item.blobUrl),
-      e => this.fDialogService.error("downloadFile", e));
+      e => this.onError("downloadFile", e));
     if (ret && ret.body) {
       this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector, this.imageAngle);
       this.imageVectorBuff.copy(this.imageVector);
@@ -196,7 +199,7 @@ export class ImageModifyViewComponent {
     }
   }
   async onAngleChange(): Promise<void> {
-    if (Math.abs(this.previousImageAngle - this.imageAngle) == 90) {
+    if (Math.abs(this.previousImageAngle - this.imageAngle) % 180 == 90) {
       this.imageVector.rotate();
     }
     this.previousImageAngle = this.imageAngle;
