@@ -1,7 +1,7 @@
 <div class="edi-view-dialog-container">
   <app-progress-spin [isLoading]="isLoading" />
   <drawer-fullscreen-file-view #fullscreenFileView />
-  <drawer-image-modify-view #imageModifyView />
+  <drawer-image-modify-view #imageModifyView (error)="onError($event)" />
   <p-context-menu [target]="ediGalleria" [model]="contextMenu" (onShow)="contextMenuOnShow()">
     <ng-template pTemplate="item" let-item>
       <a pRipple class="flex align-items-center p-contextmenu-item-link">

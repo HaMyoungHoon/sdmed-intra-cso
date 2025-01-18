@@ -65,6 +65,9 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   override async ngInit(): Promise<void> {
     await this.getData();
   }
+  onError(data: {title: string, msg: string}): void {
+    this.fDialogService.error(data.title, data.msg);
+  }
   contextMenuOnShow(): void {
     this.initMenu();
   }

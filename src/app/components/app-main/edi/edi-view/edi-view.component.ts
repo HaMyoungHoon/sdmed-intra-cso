@@ -53,6 +53,9 @@ export class EdiViewComponent extends FComponentBase {
   override async ngInit(): Promise<void> {
     this.subscribeRouter();
   }
+  onError(data: {title: string, msg: string}): void {
+    this.fDialogService.error(data.title, data.msg);
+  }
   contextMenuOnShow(): void {
     this.initMenu();
   }
