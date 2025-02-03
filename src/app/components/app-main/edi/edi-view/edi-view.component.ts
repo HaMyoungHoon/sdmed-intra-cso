@@ -238,6 +238,17 @@ export class EdiViewComponent extends FComponentBase {
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
+  async mqttSend(userPK: string | undefined, thisPK: string | undefined, content: string | undefined): Promise<void> {
+    if (userPK == undefined || thisPK == undefined || content == undefined) {
+      return;
+    }
+    const ret = await FExtensions.restTry(async() => this.mqttService.postEDIFileDelete(userPK, thisPK, content));
+//      e => this.fDialogService.warn("notice", e));
+//    if (ret.result) {
+//      return;
+//    }
+//    this.fDialogService.warn("notice", ret.msg);
+  }
   async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
     const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     this.setLoading();
@@ -260,6 +271,7 @@ export class EdiViewComponent extends FComponentBase {
       e => this.fDialogService.error("delete", e));
     this.setLoading(false);
     if (ret.result) {
+      await this.mqttSend(this.uploadModel.userPK, this.uploadModel.thisPK, item.originalFilename);
       const index = this.uploadModel.fileList.indexOf(item);
       if (index == this.uploadModel.fileList.length - 1) {
         if (this.uploadModel.fileList.length - 1 > 0) {

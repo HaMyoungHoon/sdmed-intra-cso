@@ -64,6 +64,17 @@ export class MqttService {
       resolve(new RestResult<any>().setFail("통신에러"));
     });
   }
+  async postEDIFileDelete(userPK: string, thisPK: string, content: string): Promise<RestResult<any>> {
+    const topic = `private/${userPK}`;
+    await this.postPublish(topic, FExtensions.applyClass(MqttContentModel, (obj) => {
+      obj.contentType = MqttContentType.EDI_FILE_DELETE;
+      obj.content = content;
+      obj.targetItemPK = thisPK;
+    }));
+    return new Promise((resolve): void => {
+      resolve(new RestResult<any>().setFail("통신 에러"))
+    });
+  }
   mqttConnect(mqttConnectModel: MqttConnectModel): void {
     if (this.mqttClient?.connected) {
       return;

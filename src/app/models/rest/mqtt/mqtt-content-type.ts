@@ -6,4 +6,6 @@ export enum MqttContentType {
   EDI_REJECT = "EDI_REJECT",
   EDI_OK = "EDI_OK",
   EDI_RECEP = "EDI_RECEP",
+  EDI_FILE_ADD = "EDI_FILE_ADD",
+  EDI_FILE_DELETE = "EDI_FILE_DELETE",
 }
