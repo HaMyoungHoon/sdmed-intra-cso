@@ -54,6 +54,7 @@ export const galleriaContainerStyle: {"width": string, "height": string} = {"wid
 export const FILL_CROP_ORIGIN_COLOR = "#0000005F";
 export const FILL_CROP_BORDER_COLOR = "#18C818FF"
 export const FILL_CROP_BORDER_WIDTH = 4;
+export const FILL_BACKGROUND_COLOR = "#FFFFFF";
 
 export const REGEX_CHECK_ID: RegExp = /^[A-Za-z0-9가-힣]{3,20}$/;
 export const REGEX_CHECK_PASSWORD_0: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[0-9]).{8,20}$/;

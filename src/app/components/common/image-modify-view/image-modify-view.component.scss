@@ -24,8 +24,13 @@
 .option-container {
   position: relative;
   display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+.option-sub-container {
+  position: relative;
+  display: flex;
   flex-direction: column;
-  flex: 0;
   max-width: 100%;
 }
 

@@ -576,7 +576,7 @@ export function isImageMimeType(mimeType: string): boolean {
 
   return false;
 }
-export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d, angle: number = 0): Promise<Vector2d> {
+export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d, angle: number = 0, rotate: Vector2d = new Vector2d()): Promise<Vector2d> {
   const context = canvas.getContext("2d");
   const image = new Image();
   return new Promise((resolve, reject): void => {
@@ -591,6 +591,9 @@ export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector
         canvas.height = image.height;
         context.translate(canvas.width / 2, canvas.height / 2);
         context.rotate(angle * Math.PI / 180);
+        const angleX = rotate.x * Math.PI / 180;
+        const angleY = rotate.y * Math.PI / 180;
+        context.transform(Math.cos(angleX), 0, 0, Math.cos(angleY), 0, 0);
         if (angle == 90 || angle == 270) {
           context.translate(-canvas.height / 2, -canvas.width / 2);
           context.drawImage(image, 0, 0, canvas.height, canvas.width);
@@ -753,6 +756,9 @@ export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, water
   const context = canvas.getContext("2d");
   return new Promise((resolve, reject): void => {
     if (context) {
+      context.clearRect(0, 0, cropVector.width, cropVector.height);
+      context.fillStyle = FConstants.FILL_BACKGROUND_COLOR;
+      context.fillRect(0, 0, cropVector.width, cropVector.height);
       context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       canvas.toBlob((blob) => {

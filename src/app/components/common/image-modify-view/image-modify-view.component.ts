@@ -49,6 +49,9 @@ export class ImageModifyViewComponent {
   textColor: string = "#000000";
   imageVectorBuff: Vector2d = new Vector2d();
   imageVector: Vector2d = new Vector2d();
+  rotateVector: Vector2d = new Vector2d();
+  rotateIntervalX: any;
+  rotateIntervalY: any;
   imageCropRightBuff: number = 0;
   imageCropBottomBuff: number = 0;
   imageCropVectorBuff: Vector2d = new Vector2d();
@@ -68,6 +71,8 @@ export class ImageModifyViewComponent {
     this.setAddTextOptionModel(addTextOptionModel);
     this.isVisible = true;
     await this.imageReady();
+    this.fontSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
+    await this.optionInput();
   }
   async hide(): Promise<void> {
     this.isVisible = false;
@@ -121,11 +126,10 @@ export class ImageModifyViewComponent {
     if (item == undefined) {
       return;
     }
-    this.isLoading = true;
     const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async(): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(item.blobUrl),
       e => this.onError("downloadFile", e));
     if (ret && ret.body) {
-      this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector, this.imageAngle);
+      this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, ret.body, this.imageVector, this.imageAngle, this.rotateVector);
       this.imageVectorBuff.copy(this.imageVector);
       this.imageCropVector.copy(this.imageVector);
       this.imageCropVectorBuff.copy(this.imageCropVector);
@@ -135,7 +139,6 @@ export class ImageModifyViewComponent {
       FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
       FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
-    this.isLoading = false;
   }
   get prevAble(): boolean {
     return this.selectedIndex > 0;
@@ -205,6 +208,17 @@ export class ImageModifyViewComponent {
     this.previousImageAngle = this.imageAngle;
     await this.imageReady();
   }
+  async angleChange(): Promise<void> {
+    this.imageAngle += 90;
+    if (this.imageAngle == 360) {
+      this.imageAngle = 0;
+    }
+    if (Math.abs(this.previousImageAngle - this.imageAngle) % 180 == 90) {
+      this.imageVector.rotate();
+    }
+    this.previousImageAngle = this.imageAngle;
+    await this.imageReady();
+  }
   async resizeKeydown(data: KeyboardEvent): Promise<void> {
     if (data.key == "Enter") {
       await this.resizeImage();
@@ -251,6 +265,53 @@ export class ImageModifyViewComponent {
     this.imageCropVector.copy(this.imageCropVectorBuff);
     await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
     FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+  }
+  async rotateXChange(positive: boolean): Promise<void> {
+    this.rotateIntervalX = setInterval(async() => {
+      if (positive) {
+        this.rotateVector.x += 1;
+        if (this.rotateVector.x >= 360) {
+          this.rotateVector.x = 0;
+        }
+      } else {
+        this.rotateVector.x -= 1;
+        if (this.rotateVector.x <= -360) {
+          this.rotateVector.x = 0;
+        }
+      }
+      await this.imageReady();
+    }, 20);
+  }
+  rotateXStop(): void {
+    if (this.rotateIntervalX) {
+      clearInterval(this.rotateIntervalX);
+    }
+  }
+  async rotateYChange(positive: boolean): Promise<void> {
+    this.rotateIntervalY = setInterval(async() => {
+      if (positive) {
+        this.rotateVector.y += 1;
+        if (this.rotateVector.y >= 360) {
+          this.rotateVector.y = 0;
+        }
+      } else {
+        this.rotateVector.y -= 1;
+        if (this.rotateVector.y <= -360) {
+          this.rotateVector.y = 0;
+        }
+      }
+      await this.imageReady();
+    }, 20);
+  }
+  rotateYStop(): void {
+    if (this.rotateIntervalY) {
+      clearInterval(this.rotateIntervalY);
+    }
+  }
+  async rotateKeydown(data: KeyboardEvent): Promise<void> {
+    if (data.key == "Enter") {
+      await this.imageReady();
+    }
   }
   fileNameCompStart(): void {
     this.isComposing = true;
