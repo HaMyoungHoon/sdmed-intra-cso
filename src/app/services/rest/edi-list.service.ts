@@ -28,6 +28,9 @@ export class EdiListService {
   postData(ediPharmaPK: string, ediUploadResponseModel: EDIUploadResponseModel): Promise<RestResult<EDIUploadModel>> {
     return this.httpResponse.post(`${this.baseUrl}/data/${ediPharmaPK}`, ediUploadResponseModel);
   }
+  postEDINewData(ediPK: string, ediUploadResponseModel: EDIUploadResponseModel): Promise<RestResult<EDIUploadModel>> {
+    return this.httpResponse.post(`${this.baseUrl}/data/new-edi/${ediPK}`, ediUploadResponseModel);
+  }
   putData(thisPK: string, ediUploadModel: EDIUploadModel): Promise<RestResult<EDIUploadModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data/${thisPK}`, ediUploadModel);
   }

@@ -11,6 +11,7 @@ import {FormsModule} from "@angular/forms";
 import {Button} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Textarea} from "primeng/textarea";
+import {EDIUploadModel} from "../../../../models/rest/edi/edi-upload-model";
 
 @Component({
   selector: "app-edi-response-dialog",
@@ -20,15 +21,21 @@ import {Textarea} from "primeng/textarea";
   standalone: true,
 })
 export class EdiResponseDialogComponent extends FDialogComponentBase {
-  pharma: EDIUploadPharmaModel;
+  pharma?: EDIUploadPharmaModel;
   etc: string = "";
+  ediUploadModel?: EDIUploadModel;
   ediStateList = allEDIStateArray();
   selectEDIState: EDIState;
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
     const dlg = this.dialogService.getInstance(this.ref);
-    this.pharma = (dlg.data as EDIUploadPharmaModel) ?? new EDIUploadPharmaModel();
-    this.selectEDIState = this.pharma.ediState;
+    this.pharma = (dlg.data.pharma as EDIUploadPharmaModel);
+    if (this.pharma) {
+      this.selectEDIState = this.pharma.ediState;
+    } else {
+      this.ediUploadModel = (dlg.data.edi as EDIUploadModel);
+      this.selectEDIState = this.ediUploadModel.ediState;
+    }
   }
 
   override async ngInit(): Promise<void> {
@@ -55,8 +62,12 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
       obj.etc = this.etc;
       obj.ediState = this.selectEDIState;
     });
-    const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.pharma.thisPK, ediUploadResponseModel),
-      e => this.fDialogService.error("postData", e));
+    const ret =
+    this.pharma ?
+      await FExtensions.restTry(async() => await this.thisService.postData(this.pharma!!.thisPK, ediUploadResponseModel),
+        e => this.fDialogService.error("postData", e))
+    : await FExtensions.restTry(async() => await this.thisService.postEDINewData(this.ediUploadModel!!.thisPK, ediUploadResponseModel),
+        e => this.fDialogService.error("postData", e));
     if (ret.result) {
       await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, ret.data?.orgName, ret.data?.ediState);
       this.ref.close(this.pharma);
@@ -67,10 +78,14 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
 
   get postAble(): boolean {
     if (!this.haveRole) return false;
-    if (this.pharma.thisPK.length <= 0) return false;
-    if (this.pharma.ediState == EDIState.OK) return false;
-    if (this.pharma.ediState == EDIState.Reject) return false;
-    if (this.pharma.ediState == this.selectEDIState) return false;
+    if (this.pharma) {
+      if (this.pharma.thisPK.length <= 0) return false;
+      if (this.pharma.ediState == EDIState.OK) return false;
+      if (this.pharma.ediState == EDIState.Reject) return false;
+      if (this.pharma.ediState == this.selectEDIState) return false;
+    } else {
+
+    }
     return true;
   }
 }

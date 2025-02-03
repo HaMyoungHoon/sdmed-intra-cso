@@ -1,11 +1,13 @@
 <div>
   <div class="m-1">
-  <span>
-    <label>{{pharma.orgName}}</label>
-  </span>
     <span>
-    <p-select [options]="ediStateList" [(ngModel)]="selectEDIState" (click)="$event.stopPropagation()" appendTo="body"/>
-  </span>
+      <label>{{pharma?.orgName ?? "신규처"}}</label>
+    </span>
+  </div>
+  <div class="m-1">
+    <span>
+      <p-select [options]="ediStateList" [(ngModel)]="selectEDIState" (click)="$event.stopPropagation()" appendTo="body"/>
+    </span>
   </div>
   <div class="m-1">
     <span>
