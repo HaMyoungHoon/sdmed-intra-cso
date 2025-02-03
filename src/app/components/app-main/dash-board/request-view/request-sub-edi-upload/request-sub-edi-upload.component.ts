@@ -222,15 +222,13 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
   async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
-    if (this.selectPrintPharma == null) {
-      return;
-    }
+    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     this.setLoading();
     const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
       e => this.fDialogService.error("downloadFile", e));
     try {
       if (ret && ret.body) {
-        const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+        const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
         const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
         saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
       }
@@ -261,24 +259,20 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.fDialogService.warn("delete", ret.msg);
   }
   async imageModify(): Promise<void> {
-    if (this.selectPrintPharma == null) {
-      return;
-    }
+    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     const buff = this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType));
-    const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+    const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
   async allDownload(withWatermark: boolean = true): Promise<void> {
-    if (this.selectPrintPharma == null) {
-      return;
-    }
+    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     this.setLoading();
     for (const item of this.uploadModel.fileList) {
       const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
         e => this.fDialogService.error("downloadFile", e));
       try {
         if (ret && ret.body) {
-          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${this.selectPrintPharma.orgName}`;
+          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
           const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
         }
