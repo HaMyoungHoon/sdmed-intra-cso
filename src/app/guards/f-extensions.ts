@@ -691,8 +691,12 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
         canvas.width = image.width;
         canvas.height = image.height;
         context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        // png 안보임
+//        context.fillRect(0, 0, canvas.width, canvas.height);
         context.drawImage(image, 0, 0);
+        if (addTextOptionModel.fontSize == 0) {
+          addTextOptionModel.fontSize = Math.max(image.width, image.height) / 40;
+        }
         context.font = addTextOptionModel.calcImageFont();
         const textWidth = context.measureText(text).width;
         context.fillStyle = addTextOptionModel.textBackground;
@@ -757,8 +761,8 @@ export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, water
   return new Promise((resolve, reject): void => {
     if (context) {
       context.clearRect(0, 0, cropVector.width, cropVector.height);
-      context.fillStyle = FConstants.FILL_BACKGROUND_COLOR;
-      context.fillRect(0, 0, cropVector.width, cropVector.height);
+//      context.fillStyle = FConstants.FILL_BACKGROUND_COLOR;
+//      context.fillRect(0, 0, cropVector.width, cropVector.height);
       context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       canvas.toBlob((blob) => {

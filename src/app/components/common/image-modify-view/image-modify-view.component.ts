@@ -41,7 +41,7 @@ export class ImageModifyViewComponent {
   selectedIndex: number = 0;
   isComposing: boolean = false;
   isLoading: boolean = false;
-  fontSize: number = 12;
+  fontSize: number = 0;
   previousImageAngle: number = 0;
   imageAngle: number = 0;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];

@@ -1,7 +1,7 @@
 import {TextPosition} from "./text-position";
 
 export class AddTextOptionModel {
-  fontSize: number = 12;
+  fontSize: number = 0;
   textPosition: TextPosition = TextPosition.LT;
   correctionX: number = 10;
   correctionY: number = 10;
