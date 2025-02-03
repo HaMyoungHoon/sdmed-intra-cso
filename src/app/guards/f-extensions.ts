@@ -593,7 +593,7 @@ export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector
         context.rotate(angle * Math.PI / 180);
         const angleX = rotate.x * Math.PI / 180;
         const angleY = rotate.y * Math.PI / 180;
-        context.transform(Math.cos(angleX), 0, 0, Math.cos(angleY), 0, 0);
+        context.transform(Math.cos(angleX), -Math.sin(angleY), -Math.sin(angleX), Math.cos(angleY), 0, 0);
         if (angle == 90 || angle == 270) {
           context.translate(-canvas.height / 2, -canvas.width / 2);
           context.drawImage(image, 0, 0, canvas.height, canvas.width);
