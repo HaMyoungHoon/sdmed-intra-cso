@@ -5,7 +5,7 @@
   </div>
   <div class="field grid">
     <p-ifta-label class="col">
-      <input id="userID" [(ngModel)]="userDataModel.id" type="text" pInputText>
+      <input id="userID" [(ngModel)]="userDataModel.id" type="text" pInputText (ngModelChange)="onIDChange($event)" (keydown.space)="$event.preventDefault()">
       <label for="userID">{{"user-add.detail.id" | translate}}</label>
     </p-ifta-label>
     <p-ifta-label class="col">
@@ -15,11 +15,11 @@
   </div>
   <div class="field grid">
     <p-ifta-label class="col">
-      <input id="password" [(ngModel)]="userDataModel.pw" type="text" pInputText>
+      <input id="password" [(ngModel)]="userDataModel.pw" type="text" pInputText (ngModelChange)="onPWChange($event)" (keydown.space)="$event.preventDefault()">
       <label for="password">{{"user-add.detail.password" | translate}}</label>
     </p-ifta-label>
     <p-ifta-label class="col">
-      <input id="confirmPW" [(ngModel)]="confirmPW" type="text" pInputText>
+      <input id="confirmPW" [(ngModel)]="confirmPW" type="text" pInputText (ngModelChange)="onPWConfirmChange($event)" (keydown.space)="$event.preventDefault()">
       <label for="confirmPW">{{"user-add.detail.confirm-pw" | translate}}</label>
     </p-ifta-label>
   </div>

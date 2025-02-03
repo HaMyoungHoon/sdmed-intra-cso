@@ -66,4 +66,13 @@ export class UserAddComponent extends FComponentBase {
     }
     this.fDialogService.warn("save", ret.msg);
   }
+  async onIDChange(data: any): Promise<void> {
+    this.userDataModel.id = this.userDataModel.id.replace(" ", "");
+  }
+  async onPWChange(data: any): Promise<void> {
+    this.userDataModel.pw = this.userDataModel.pw.replace(" ", "");
+  }
+  async onPWConfirmChange(data: any): Promise<void> {
+    this.confirmPW = this.confirmPW.replace(" ", "");
+  }
 }

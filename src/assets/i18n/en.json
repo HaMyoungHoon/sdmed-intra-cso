@@ -233,7 +233,8 @@
   },
   "user-add": {
     "warn": {
-      "after-pw": "plz input 8-20 characters of letters and numbers.",
+      "id": "id: plz input 3-20 characters of letters and numbers.",
+      "after-pw": "pw: plz input 8-20 characters of letters and numbers.",
       "confirm-pw": "password un match"
     },
     "detail": {
