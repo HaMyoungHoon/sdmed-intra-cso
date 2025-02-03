@@ -49,7 +49,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   thisPK: string = "";
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
-  fontSize: number = 12;
+  fontSize: number = 0;
   activeIndex: number = 0;
   selectPrintPharma?: EDIUploadPharmaModel;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
@@ -146,6 +146,31 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     return FExtensions.dateToYYYYMMdd(FExtensions.stringToDate(`${medicine.year}-${medicine.month}-${medicine.day}`));
   }
 
+  responseNewEDI(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openEDIResponseDialog({
+      modal: true,
+      closable: false,
+      closeOnEscape: true,
+      draggable: true,
+      data: {
+        edi: this.uploadModel,
+      },
+    }).pipe(takeUntil(sub)).subscribe(async (x): Promise<void> => {
+      if (x == null) {
+        return;
+      }
+      await this.getData();
+    });
+  }
+  newEDIModifyDisable(): boolean {
+    if (this.uploadModel.ediState == EDIState.OK || this.uploadModel.ediState == EDIState.Reject) {
+      return true;
+    }
+
+    return this.uploadModel.etc.length <= 0;
+  }
   responsePharma(pharma: EDIUploadPharmaModel): void {
     const sub = new Subject<any>();
     this.sub.push(sub);
@@ -156,7 +181,9 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
-      data: pharma
+      data: {
+        pharma: pharma,
+      },
     }).pipe(takeUntil(sub)).subscribe(async (x): Promise<void> => {
       if (x == null) {
         return;

@@ -30,6 +30,7 @@
     <span>
       <p-tag [value]="uploadModel.ediState" [severity]="getEDIStateSeverity(uploadModel.ediState)" />
     </span>
+    <p-button (click)="$event.stopPropagation(); responseNewEDI()" *ngIf="!newEDIModifyDisable()">{{"common-desc.modify" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="multipleEnable">
     <p-accordion-panel *ngFor="let pharma of uploadModel.pharmaList" value="{{accordionPharmaIndex(pharma)}}">
@@ -119,7 +120,7 @@
     </p-accordion-panel>
   </p-accordion>
   <div class="flex" *ngIf="uploadModel.fileList.length > 0">
-    <p-select class="m-1 align-self-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" />
+    <p-select class="m-1 align-self-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" *ngIf="uploadModel.pharmaList.length > 0"/>
     <p-select class="m-1 align-self-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" />
     <p-ifta-label class="m-1">
       <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
