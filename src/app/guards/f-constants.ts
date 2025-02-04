@@ -3,6 +3,10 @@ export const AUTH_TOKEN: string = "token";
 export const STORAGE_KEY_LANG: string = "lang";
 export const STORAGE_DASHBOARD_VIEW_TYPE: string = "dashboardViewType";
 export const STORAGE_QNA_VIEW_TYPE: string = "qnaViewType";
+export const STORAGE_IMAGE_CACHE_CLEAR_TIME: string = "imageCacheClearTime";
+
+export const HEADERS_CACHE_TIMESTAMP: string = "X-Cache-Timestamp";
+export const CACHES_IMAGE_CACHE: string = "image-cache";
 
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
@@ -49,7 +53,7 @@ export const ASSETS_DOCX_IMAGE: string = "assets/image/word-image.png";
 
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";
-export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "auto", "height": "760px"};
+export const galleriaContainerStyle: {"width": string, "height": string} = {"width": "560px", "height": "660px"};
 
 export const FILL_CROP_ORIGIN_COLOR = "#0000005F";
 export const FILL_CROP_BORDER_COLOR = "#18C818FF"
