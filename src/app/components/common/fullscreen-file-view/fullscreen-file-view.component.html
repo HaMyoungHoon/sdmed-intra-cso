@@ -6,13 +6,13 @@
     <label>esc on close</label>
   </div>
   <div *ngIf="isImage">
-    <p-image [src]="getImageSrc" [alt]="getFilename" [preview]="true" />
+    <p-image [src]="getImageSrc" [alt]="getFilename"/>
   </div>
   <div *ngIf="isDoc">
-    <p-image [src]="getDocSrc" [alt]="getFilename" [preview]="true" />
+    <p-image [src]="getDocSrc" [alt]="getFilename"/>
   </div>
   <div *ngIf="isZip">
-    <p-image [src]="getZipSrc" [alt]="getFilename" [preview]="true" />
+    <p-image [src]="getZipSrc" [alt]="getFilename"/>
   </div>
   <div *ngIf="isPdf">
     <ngx-extended-pdf-viewer class="pdf-viewer-container" [src]="getPdfSrc" />
