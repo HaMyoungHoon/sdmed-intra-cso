@@ -97,11 +97,7 @@ export class RequestSubQnaComponent extends FComponentBase {
   }
 
   getBlobUrl(item: QnAFileModel): string {
-    const ext = FExtensions.getExtMimeType(item.mimeType);
-    if (FExtensions.isImage(ext)) {
-      return item.blobUrl;
-    }
-    return FExtensions.extToBlobUrl(ext);
+    return this.imageCacheUrl.find(x => x.blobUrl == item.blobUrl)?.objectUrl ?? FConstants.ASSETS_NO_IMAGE;
   }
   async viewItem(data: QnAFileModel[], item: QnAFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.qnaFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
