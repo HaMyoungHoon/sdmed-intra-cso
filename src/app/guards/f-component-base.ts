@@ -63,6 +63,9 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
     await this.ngInit();
   }
   async ngOnDestroy(): Promise<void> {
+    for (const buff of this.sub) {
+      buff.complete();
+    }
     await this.ngDestroy();
   }
   async getMyRole(): Promise<void> {
@@ -99,9 +102,6 @@ export abstract class FComponentBase implements AfterContentInit, OnDestroy {
 
   }
   async ngDestroy(): Promise<void> {
-    for (const buff of this.sub) {
-      buff.complete();
-    }
   }
 
   setLoading(data: boolean = true): void {
