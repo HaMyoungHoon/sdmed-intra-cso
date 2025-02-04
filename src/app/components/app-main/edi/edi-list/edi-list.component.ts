@@ -6,9 +6,9 @@ import * as FExtensions from "../../../../guards/f-extensions";
 import {EDIUploadModel} from "../../../../models/rest/edi/edi-upload-model";
 import {Table} from "primeng/table";
 import {DatePicker} from "primeng/datepicker";
-import {ediStateToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
+import * as FImageCache from "../../../../guards/f-image-cache";
 
 @Component({
   selector: "app-edi-list",
@@ -36,6 +36,7 @@ export class EdiListComponent extends FComponentBase {
 
   async getList(): Promise<void> {
     this.setLoading();
+    await FExtensions.tryCatchAsync(async() => await FImageCache.clearExpiredImage());
     const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.startDate), FExtensions.dateToYYYYMMdd(this.endDate), this.myChild),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
@@ -123,7 +124,6 @@ export class EdiListComponent extends FComponentBase {
 
   protected readonly filterTable = FExtensions.filterTable;
   protected readonly customSort = FExtensions.customSort;
-  protected readonly ediStateToEDIStateDesc = ediStateToEDIStateDesc;
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
   protected readonly tableStyle = FConstants.tableStyle;
