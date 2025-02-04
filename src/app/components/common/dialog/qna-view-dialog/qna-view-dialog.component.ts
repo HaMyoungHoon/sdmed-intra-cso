@@ -29,6 +29,8 @@ import {FormsModule} from "@angular/forms";
 import {FullscreenFileViewComponent} from "../../fullscreen-file-view/fullscreen-file-view.component";
 import {QnAReplyFileModel} from "../../../../models/rest/qna/qna-reply-file-model";
 import {saveAs} from "file-saver";
+import * as FImageCache from "../../../../guards/f-image-cache";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: "app-qna-view-dialog",
@@ -51,6 +53,7 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
   saveAble: boolean = false;
   uploadFileBuffModel: UploadFileBuffModel[] = [];
   activeIndex: number = 0;
+  imageCacheUrl: {blobUrl: string, objectUrl: string}[] = [];
   constructor(private thisService: QnaListService, private dashboardService: DashboardService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
     const dlg = this.dialogService.getInstance(this.ref);
@@ -59,6 +62,9 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
 
   override async ngInit(): Promise<void> {
     await this.refreshData();
+  }
+  override async ngDestroy(): Promise<void> {
+    this.imageCacheClear();
   }
   layoutInit(): void {
     this.qnaReplyModel = new QnAReplyModel();
@@ -99,23 +105,108 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
     if (ret.result) {
       this.qnaContentModel = ret.data ?? new QnAContentModel();
       this.accordionValue = [`${this.qnaContentModel.replyList.length - 1}`];
+      await this.readyImage();
       return;
     }
     this.fDialogService.warn("getContent", ret.msg);
   }
 
+  imageCacheClear(): void {
+    this.imageCacheUrl.forEach(x => {
+      URL.revokeObjectURL(x.objectUrl);
+    });
+    this.imageCacheUrl = [];
+  }
+  async readyImage(): Promise<void> {
+    this.imageCacheClear();
+    for (let qnaFile of this.qnaContentModel.fileList) {
+      const ext = FExtensions.getExtMimeType(qnaFile.mimeType);
+      if (!FExtensions.isImage(ext)) {
+        this.imageCacheUrl.push({
+          blobUrl: qnaFile.blobUrl,
+          objectUrl: FExtensions.extToBlobUrl(ext)
+        });
+      } else {
+        let blobBuff = await FImageCache.getImage(qnaFile.blobUrl);
+        if (blobBuff == undefined) {
+          const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(qnaFile.blobUrl),
+            e => this.fDialogService.error("downloadFile", e));
+          if (ret && ret.body) {
+            blobBuff = ret.body;
+            await FImageCache.putImage(qnaFile.blobUrl, blobBuff);
+          } else {
+            this.imageCacheUrl.push({
+              blobUrl: qnaFile.blobUrl,
+              objectUrl: FConstants.ASSETS_NO_IMAGE
+            });
+            continue;
+          }
+        }
+        this.imageCacheUrl.push({
+          blobUrl: qnaFile.blobUrl,
+          objectUrl: URL.createObjectURL(blobBuff)
+        });
+      }
+    }
+    for (let reply of this.qnaContentModel.replyList) {
+      for (let qnaFile of reply.fileList) {
+        const ext = FExtensions.getExtMimeType(qnaFile.mimeType);
+        if (!FExtensions.isImage(ext)) {
+          this.imageCacheUrl.push({
+            blobUrl: qnaFile.blobUrl,
+            objectUrl: FExtensions.extToBlobUrl(ext)
+          });
+        } else {
+          let blobBuff = await FImageCache.getImage(qnaFile.blobUrl);
+          if (blobBuff == undefined) {
+            const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(qnaFile.blobUrl),
+              e => this.fDialogService.error("downloadFile", e));
+            if (ret && ret.body) {
+              blobBuff = ret.body;
+              await FImageCache.putImage(qnaFile.blobUrl, blobBuff);
+            } else {
+              this.imageCacheUrl.push({
+                blobUrl: qnaFile.blobUrl,
+                objectUrl: FConstants.ASSETS_NO_IMAGE
+              });
+              continue;
+            }
+          }
+          this.imageCacheUrl.push({
+            blobUrl: qnaFile.blobUrl,
+            objectUrl: URL.createObjectURL(blobBuff)
+          });
+        }
+      }
+    }
+  }
+
   async downloadFile(item: QnAFileModel): Promise<void> {
-    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-      e => this.fDialogService.error("downloadFile", e));
-    if (ret && ret.body) {
-      saveAs(ret.body, item.originalFilename);
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      if (ret && ret.body) {
+        blobBuff = ret.body;
+        await FImageCache.putImage(item.blobUrl, blobBuff);
+      }
+    }
+    if (blobBuff) {
+      saveAs(blobBuff, item.originalFilename);
     }
   }
   async downloadReplyFile(item: QnAReplyFileModel): Promise<void> {
-    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-      e => this.fDialogService.error("downloadFile", e));
-    if (ret && ret.body) {
-      saveAs(ret.body, item.originalFilename);
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      if (ret && ret.body) {
+        blobBuff = ret.body;
+        await FImageCache.putImage(item.blobUrl, blobBuff);
+      }
+    }
+    if (blobBuff) {
+      saveAs(blobBuff, item.originalFilename);
     }
   }
 
