@@ -162,7 +162,7 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
       this.setLoading(false);
       return;
     }
-    this.uploadFileBuffModel.forEach(x => x.revokeBLob());
+    this.uploadFileBuffModel.forEach(x => x.revokeBlob());
 
     this.setLoading(false);
   }
@@ -272,7 +272,7 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
     }
 
     if (index >= 0) {
-      data.revokeBLob();
+      data.revokeBlob();
       this.uploadFileBuffModel.splice(index, 1);
     }
   }
