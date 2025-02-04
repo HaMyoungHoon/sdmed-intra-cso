@@ -104,6 +104,11 @@ export function stringToDate(dateString?: string): Date {
 
   return new Date(dateString);
 }
+export function plusHours(targetDate: Date, hours: number): Date {
+  const ret = new Date(targetDate);
+  ret.setHours(ret.getHours() + hours);
+  return ret;
+}
 export function plusDays(targetDate: Date, days: number): Date {
   const ret = new Date(targetDate);
   ret.setDate(ret.getDate() + days);
@@ -576,6 +581,34 @@ export function isImageMimeType(mimeType: string): boolean {
 
   return false;
 }
+export async function imageToCanvas(canvas: HTMLCanvasElement, image: HTMLImageElement, vector: Vector2d, angle: number = 0, rotate: Vector2d = new Vector2d()): Promise<Vector2d> {
+  const context = canvas.getContext("2d");
+  if (context) {
+    if (vector.width != 0 && vector.height != 0) {
+      image.width = vector.width;
+      image.height = vector.height;
+    }
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = image.width;
+    canvas.height = image.height;
+    context.translate(canvas.width / 2, canvas.height / 2);
+    context.rotate(angle * Math.PI / 180);
+    const angleX = rotate.x * Math.PI / 180;
+    const angleY = rotate.y * Math.PI / 180;
+    context.transform(Math.cos(angleX), -Math.sin(angleY), -Math.sin(angleX), Math.cos(angleY), 0, 0);
+    if (angle == 90 || angle == 270) {
+      context.translate(-canvas.height / 2, -canvas.width / 2);
+      context.drawImage(image, 0, 0, canvas.height, canvas.width);
+    } else {
+      context.translate(-canvas.width / 2, -canvas.height / 2);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    }
+  }
+  return (applyClass(Vector2d, obj => {
+    obj.width = image.width;
+    obj.height = image.height;
+  }));
+}
 export async function blobToCanvas(canvas: HTMLCanvasElement, blob: Blob, vector: Vector2d, angle: number = 0, rotate: Vector2d = new Vector2d()): Promise<Vector2d> {
   const context = canvas.getContext("2d");
   const image = new Image();
@@ -694,15 +727,16 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
         // png 안보임
 //        context.fillRect(0, 0, canvas.width, canvas.height);
         context.drawImage(image, 0, 0);
-        if (addTextOptionModel.fontSize == 0) {
-          addTextOptionModel.fontSize = Math.max(image.width, image.height) / 40;
+        let fontSize = addTextOptionModel.fontSize;
+        if (fontSize == 0) {
+          fontSize = Math.max(image.width, image.height) / 40;
         }
-        context.font = addTextOptionModel.calcImageFont();
+        context.font = addTextOptionModel.calcImageFont(fontSize);
         const textWidth = context.measureText(text).width;
         context.fillStyle = addTextOptionModel.textBackground;
-        context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height, canvas.clientHeight), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+        context.fillRect(addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcTextBackgroundY(canvas.height, canvas.clientHeight, 0, fontSize), textWidth, addTextOptionModel.calcTextBackgroundHeight(fontSize));
         context.fillStyle = addTextOptionModel.textColor;
-        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight), canvas.width);
+        context.fillText(text, addTextOptionModel.calcImageTextX(canvas.width, canvas.clientWidth, textWidth), addTextOptionModel.calcImageTextY(canvas.height, canvas.clientHeight, 0, fontSize), canvas.width);
         canvas.toBlob((blob) => resolve(blob!), mimeType);
         canvas.remove();
       } else {
@@ -786,14 +820,18 @@ export async function pdfBlobAddText(blob: Blob, text: string, mimeType: string 
   const pages = pdfDoc.getPages();
   const fontBytes = await fetch("assets/fonts/NanumGothicLight.ttf").then(res => res.arrayBuffer());
   const customFont = await pdfDoc.embedFont(fontBytes);
-  const textWidth = customFont.widthOfTextAtSize(text, addTextOptionModel.fontSize);
   for (let i = 0; i < pages.length; i++) {
     const pageBuff = pages[i];
     const { width, height } = pageBuff.getSize();
+    let fontSize = addTextOptionModel.fontSize;
+    if (fontSize == 0) {
+      fontSize = Math.max(width, height) / 40;
+    }
+    const textWidth = customFont.widthOfTextAtSize(text, fontSize);
     pageBuff.drawText(`${text}_${i + 1}`, {
       x: addTextOptionModel.calcPdfTextX(width, textWidth),
-      y: addTextOptionModel.calcPdfTextY(height),
-      size: addTextOptionModel.calcPdfFontSize(),
+      y: addTextOptionModel.calcPdfTextY(height, fontSize),
+      size: addTextOptionModel.calcPdfFontSize(fontSize),
       font: customFont,
       color: rgb(0,0,0)
     });

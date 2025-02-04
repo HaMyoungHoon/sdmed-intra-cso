@@ -22,14 +22,14 @@ export class AddTextOptionModel {
     }
     return this.correctionX;
   }
-  calcPdfTextY(imageHeight: number): number {
+  calcPdfTextY(imageHeight: number, fontSize: number = 0): number {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return imageHeight - this.correctionY - this.calcPdfFontSize();
+        return imageHeight - this.correctionY - this.calcPdfFontSize(fontSize);
       case TextPosition.LB:
       case TextPosition.RB:
-        return this.correctionY + this.calcPdfFontSize();
+        return this.correctionY + this.calcPdfFontSize(fontSize);
     }
     return this.correctionY;
   }
@@ -48,7 +48,7 @@ export class AddTextOptionModel {
     }
     return this.correctionX;
   }
-  calcImageTextY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+  calcImageTextY(imageHeight: number, canvasHeight: number, dragY: number = 0, fontSize: number = 0): number {
     if (canvasHeight == 0) {
       canvasHeight = imageHeight;
     }
@@ -56,14 +56,14 @@ export class AddTextOptionModel {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize() + (scale * dragY);
+        return this.correctionY + this.calcImageFontSize(fontSize) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY + (scale * dragY);
+        return imageHeight + this.correctionY - this.calcImageFontSize(fontSize) - this.paddingY + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcImageTextYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number): number {
+  calcImageTextYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number, fontSize: number = 0): number {
     if (canvasHeight == 0) {
       canvasHeight = imageHeight;
     }
@@ -71,14 +71,14 @@ export class AddTextOptionModel {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + this.calcImageFontSize() + ((this.calcImageFontSize() + this.paddingY) * index) + (scale * dragY);
+        return this.correctionY + this.calcImageFontSize(fontSize) + ((this.calcImageFontSize(fontSize) + this.paddingY) * index) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight + this.correctionY - this.calcImageFontSize() - this.paddingY - ((this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + (scale * dragY);
+        return imageHeight + this.correctionY - this.calcImageFontSize(fontSize) - this.paddingY - ((this.calcImageFontSize(fontSize) + this.paddingY) * (count - index - 1)) + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcTextBackgroundY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+  calcTextBackgroundY(imageHeight: number, canvasHeight: number, dragY: number = 0, fontSize: number = 0): number {
     if (canvasHeight == 0) {
       canvasHeight = imageHeight;
     }
@@ -89,11 +89,11 @@ export class AddTextOptionModel {
         return this.correctionY + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY + (scale * dragY);
+        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) + this.paddingY + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcTextBackgroundYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number = 0): number {
+  calcTextBackgroundYLine(imageHeight: number, canvasHeight: number, index: number, count: number, dragY: number = 0, fontSize: number = 0): number {
     if (canvasHeight == 0) {
       canvasHeight = imageHeight;
     }
@@ -101,23 +101,35 @@ export class AddTextOptionModel {
     switch (this.textPosition) {
       case TextPosition.LT:
       case TextPosition.RT:
-        return this.correctionY + ((this.calcImageFontSize() + this.paddingY) * index) + (scale * dragY);
+        return this.correctionY + ((this.calcImageFontSize(fontSize) + this.paddingY) * index) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize() + this.paddingY - ((imageHeight / this.calcImageFontSize() + this.paddingY) * (count - index - 1)) + (scale * dragY);
+        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) + this.paddingY - ((imageHeight / this.calcImageFontSize(fontSize) + this.paddingY) * (count - index - 1)) + (scale * dragY);
     }
     return this.correctionY;
   }
-  calcTextBackgroundHeight(): number {
-    return this.fontSize + this.paddingY;
+  calcTextBackgroundHeight(fontSize: number = 0): number {
+    if (fontSize <= 0) {
+      return this.fontSize + this.paddingY;
+    } else {
+      return fontSize + this.paddingY;
+    }
   }
-  calcImageFont(): string {
-    return `${this.calcImageFontSize()}px sans-serif`;
+  calcImageFont(fontSize: number = 0): string {
+    return `${this.calcImageFontSize(fontSize)}px sans-serif`;
   }
-  calcImageFontSize(): number {
-    return this.fontSize;
+  calcImageFontSize(fontSize: number = 0): number {
+    if (fontSize <= 0) {
+      return this.fontSize;
+    } else {
+      return fontSize;
+    }
   }
-  calcPdfFontSize(): number {
-    return this.fontSize;
+  calcPdfFontSize(fontSize: number = 0): number {
+    if (fontSize <= 0) {
+      return this.fontSize;
+    } else {
+      return fontSize;
+    }
   }
 }
