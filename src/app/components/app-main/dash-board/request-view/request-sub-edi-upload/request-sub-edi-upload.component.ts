@@ -133,15 +133,17 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(thisPK),
       e => this.fDialogService.error("getData", e));
-    this.setLoading(false);
     if (ret.result) {
       this.uploadModel = ret.data ?? new EDIUploadModel();
       this.pharmaStateList = [...this.uploadModel.pharmaList.map(x => x.ediState)];
       if (this.uploadModel.pharmaList.length >= 1) {
         this.selectPrintPharma = this.uploadModel.pharmaList[0];
       }
+      await this.readyImage();
+      this.setLoading(false);
       return;
     }
+    this.setLoading(false);
     this.fDialogService.warn("getData", ret.msg);
   }
   imageCacheClear(): void {
@@ -283,11 +285,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
 
   getBlobUrl(item: EDIUploadFileModel): string {
-    const ext = FExtensions.getExtMimeType(item.mimeType);
-    if (FExtensions.isImage(ext)) {
-      return item.blobUrl;
-    }
-    return FExtensions.extToBlobUrl(ext);
+    return this.imageCacheUrl.find(x => x.blobUrl == item.blobUrl)?.objectUrl ?? FConstants.ASSETS_NO_IMAGE;
   }
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
