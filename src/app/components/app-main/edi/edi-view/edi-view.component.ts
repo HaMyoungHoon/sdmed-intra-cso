@@ -15,16 +15,12 @@ import {EDIState} from "../../../../models/rest/edi/edi-state";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {Subject, takeUntil} from "rxjs";
 import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
-import {
-  allTextPositionDesc,
-  DescToTextPosition,
-  TextPosition,
-  TextPositionToTextPositionDesc
-} from "../../../../models/common/text-position";
+import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../../models/common/text-position";
 import {AddTextOptionModel} from "../../../../models/common/add-text-option-model";
 import {ImageModifyViewComponent} from "../../../common/image-modify-view/image-modify-view.component";
-import {hexColorWithAlpha} from "../../../../guards/f-extensions";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import * as FImageCache from "../../../../guards/f-image-cache";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: "app-edi-view",
@@ -45,6 +41,7 @@ export class EdiViewComponent extends FComponentBase {
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
   contextMenu: MenuItem[] = [];
+  imageCacheUrl: {blobUrl: string, objectUrl: string}[] = [];
   constructor(private thisService: EdiListService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.EdiChanger));
     this.thisPK = this.route.snapshot.params["thisPK"];
@@ -52,6 +49,9 @@ export class EdiViewComponent extends FComponentBase {
 
   override async ngInit(): Promise<void> {
     this.subscribeRouter();
+  }
+  override async ngDestroy(): Promise<void> {
+    this.imageCacheClear();
   }
   onError(data: {title: string, msg: string}): void {
     this.fDialogService.error(data.title, data.msg);
@@ -119,16 +119,56 @@ export class EdiViewComponent extends FComponentBase {
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getData(this.thisPK),
       e => this.fDialogService.error("getData", e));
-    this.setLoading(false);
     if (ret.result) {
       this.uploadModel = ret.data ?? new EDIUploadModel();
       this.pharmaStateList = [...this.uploadModel.pharmaList.map(x => x.ediState)];
       if (this.uploadModel.pharmaList.length >= 1) {
         this.selectPrintPharma = this.uploadModel.pharmaList[0];
       }
+      await this.readyImage();
+      this.setLoading(false);
       return;
     }
+    this.setLoading(false);
     this.fDialogService.warn("getData", ret.msg);
+  }
+  imageCacheClear(): void {
+    this.imageCacheUrl.forEach(x => {
+      URL.revokeObjectURL(x.objectUrl);
+    });
+    this.imageCacheUrl = [];
+  }
+  async readyImage(): Promise<void> {
+    this.imageCacheClear();
+    for (let ediFile of this.uploadModel.fileList) {
+      const ext = FExtensions.getExtMimeType(ediFile.mimeType);
+      if (!FExtensions.isImage(ext)) {
+        this.imageCacheUrl.push({
+          blobUrl: ediFile.blobUrl,
+          objectUrl: FExtensions.extToBlobUrl(ext)
+        });
+      } else {
+        let blobBuff = await FImageCache.getImage(ediFile.blobUrl);
+        if (blobBuff == undefined) {
+          const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(ediFile.blobUrl),
+            e => this.fDialogService.error("downloadFile", e));
+          if (ret && ret.body) {
+            blobBuff = ret.body;
+            await FImageCache.putImage(ediFile.blobUrl, blobBuff);
+          } else {
+            this.imageCacheUrl.push({
+              blobUrl: ediFile.blobUrl,
+              objectUrl: FConstants.ASSETS_NO_IMAGE
+            });
+            continue;
+          }
+        }
+        this.imageCacheUrl.push({
+          blobUrl: ediFile.blobUrl,
+          objectUrl: URL.createObjectURL(blobBuff)
+        });
+      }
+    }
   }
 
   getApplyDate(): string {
@@ -229,11 +269,7 @@ export class EdiViewComponent extends FComponentBase {
   }
 
   getBlobUrl(item: EDIUploadFileModel): string {
-    const ext = FExtensions.getExtMimeType(item.mimeType);
-    if (FExtensions.isImage(ext)) {
-      return item.blobUrl;
-    }
-    return FExtensions.extToBlobUrl(ext);
+    return this.imageCacheUrl.find(x => x.blobUrl == item.blobUrl)?.objectUrl ?? FConstants.ASSETS_NO_IMAGE;
   }
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
@@ -249,19 +285,46 @@ export class EdiViewComponent extends FComponentBase {
 //    }
 //    this.fDialogService.warn("notice", ret.msg);
   }
-  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
+  async downloadImageFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
     const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
-    this.setLoading();
-    const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-      e => this.fDialogService.error("downloadFile", e));
-    try {
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
       if (ret && ret.body) {
-        const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
-        const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-        saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+        blobBuff = ret.body;
+        await FImageCache.putImage(item.blobUrl, blobBuff);
+      } else {
+        this.fDialogService.warn("download", "edi file download fail");
+        return;
       }
+    }
+    try {
+      const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+      const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
+      saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
+    }
+  }
+  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
+    this.setLoading();
+    const ext = FExtensions.getExtMimeType(item.mimeType);
+    if (FExtensions.isImage(ext)) {
+      await this.downloadImageFile(item);
+    } else {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      try {
+        if (ret && ret.body) {
+          const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
+          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+        }
+      } catch (e: any) {
+        this.fDialogService.warn("download", e?.message?.toString());
+      }
     }
     this.setLoading(false);
   }
@@ -294,19 +357,24 @@ export class EdiViewComponent extends FComponentBase {
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
   async allDownload(withWatermark: boolean = true): Promise<void> {
-    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     this.setLoading();
     for (const item of this.uploadModel.fileList) {
-      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-        e => this.fDialogService.error("downloadFile", e));
-      try {
-        if (ret && ret.body) {
-          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
-          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+      const ext = FExtensions.getExtMimeType(item.mimeType);
+      if (FExtensions.isImage(ext)) {
+        await this.downloadImageFile(item);
+      } else {
+        const ret = await FExtensions.tryCatchAsync(async () => await this.commonService.downloadFile(item.blobUrl),
+          e => this.fDialogService.error("downloadFile", e));
+        try {
+          if (ret && ret.body) {
+            const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+            const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+            const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
+            saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+          }
+        } catch (e: any) {
+          this.fDialogService.warn("download", e?.message?.toString());
         }
-      } catch (e: any) {
-        this.fDialogService.warn("download", e?.message?.toString());
       }
     }
     this.setLoading(false);

@@ -22,6 +22,7 @@ import {ContextMenu} from "primeng/contextmenu";
 import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
 import {Ripple} from "primeng/ripple";
+import * as FImageCache from "../../../guards/f-image-cache";
 
 @Component({
   selector: "drawer-image-modify-view",
@@ -35,6 +36,7 @@ export class ImageModifyViewComponent {
   @ViewChild("cropCanvas") cropCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("watermarkCanvas") watermarkCanvas!: ElementRef<HTMLCanvasElement>;
   @Output() error: EventEmitter<{title: string, msg: string}> = new EventEmitter<{title: string; msg: string}>();
+  imageCacheSource: HTMLImageElement = new Image();
   isVisible: boolean = false;
   fileViewModel: FileViewModel[] = [];
   fileName: string = "";
@@ -121,7 +123,7 @@ export class ImageModifyViewComponent {
       }
     ];
   }
-  async imageReady(): Promise<void> {
+  async imageReady_old1(): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;
     if (item == undefined) {
       return;
@@ -139,6 +141,52 @@ export class ImageModifyViewComponent {
       FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
       FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
     }
+  }
+  async imageReady_old2(): Promise<void> {
+    const item: FileViewModel | undefined = this.selectViewModel;
+    if (item == undefined) {
+      return;
+    }
+    if (item.blobUrl != this.imageCacheSource.src) {
+      this.imageCacheSource.src = item.blobUrl;
+    }
+    this.imageVector = await FExtensions.imageToCanvas(this.imageCanvas.nativeElement, this.imageCacheSource, this.imageVector, this.imageAngle, this.rotateVector);
+    this.imageVectorBuff.copy(this.imageVector);
+    this.imageCropVector.copy(this.imageVector);
+    this.imageCropVectorBuff.copy(this.imageCropVector);
+    this.imageCropRightBuff = this.imageVector.width - this.imageCropVector.right;
+    this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
+    await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
+    FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+  }
+  async imageReady(): Promise<void> {
+    const item: FileViewModel | undefined = this.selectViewModel;
+    if (item == undefined) {
+      return;
+    }
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      this.isLoading = true;
+      const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async(): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(item.blobUrl),
+        e => this.onError("downloadFile", e));
+      this.isLoading = false;
+      if (ret && ret.body) {
+        await FImageCache.putImage(item.blobUrl, ret.body);
+        blobBuff = ret.body;
+      } else {
+        return;
+      }
+    }
+    this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, blobBuff, this.imageVector, this.imageAngle, this.rotateVector);
+    this.imageVectorBuff.copy(this.imageVector);
+    this.imageCropVector.copy(this.imageVector);
+    this.imageCropVectorBuff.copy(this.imageCropVector);
+    this.imageCropRightBuff = this.imageVector.width - this.imageCropVector.right;
+    this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
+    await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
+    FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
   }
   get prevAble(): boolean {
     return this.selectedIndex > 0;
