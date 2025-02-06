@@ -37,10 +37,11 @@ import {ContextMenu} from "primeng/contextmenu";
 import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
+import {ColorPicker} from "primeng/colorpicker";
 
 @Component({
   selector: "app-request-sub-edi-upload",
-	imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent, ContextMenu, Ripple],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent, ContextMenu, Ripple, ColorPicker],
   templateUrl: "./request-sub-edi-upload.component.html",
   styleUrl: "./request-sub-edi-upload.component.scss",
   standalone: true,
@@ -409,6 +410,9 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
   get removeFileTooltip(): string {
     return "common-desc.remove";
+  }
+  get backColorTooltip(): string {
+    return "common-desc.back-color";
   }
   get textColorTooltip(): string {
     return "common-desc.text-color";

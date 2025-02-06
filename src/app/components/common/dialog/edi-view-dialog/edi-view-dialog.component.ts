@@ -36,11 +36,12 @@ import {ContextMenu} from "primeng/contextmenu";
 import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
+import {ColorPicker} from "primeng/colorpicker";
 
 @Component({
   selector: "app-edi-view-dialog",
-	imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, TableModule, Tag, Tooltip, TranslatePipe, Textarea, Select, IftaLabel, InputText, ImageModifyViewComponent, ContextMenu, Ripple
-	],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FormsModule, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, TableModule, Tag, Tooltip, TranslatePipe, Textarea, Select, IftaLabel, InputText, ImageModifyViewComponent, ContextMenu, Ripple, ColorPicker
+  ],
   templateUrl: "./edi-view-dialog.component.html",
   styleUrl: "./edi-view-dialog.component.scss",
   standalone: true,
@@ -406,6 +407,9 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
   }
   get removeFileTooltip(): string {
     return "common-desc.remove";
+  }
+  get backColorTooltip(): string {
+    return "common-desc.back-color";
   }
   get textColorTooltip(): string {
     return "common-desc.text-color";

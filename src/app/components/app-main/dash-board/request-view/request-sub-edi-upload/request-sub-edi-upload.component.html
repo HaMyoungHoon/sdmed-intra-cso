@@ -125,6 +125,8 @@
       <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
       <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
     </p-ifta-label>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}"/>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}"/>
   </div>
   <div #ediGalleria>
     <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
