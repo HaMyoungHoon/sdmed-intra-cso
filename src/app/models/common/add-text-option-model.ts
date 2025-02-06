@@ -89,7 +89,7 @@ export class AddTextOptionModel {
         return this.correctionY + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) + this.paddingY + (scale * dragY);
+        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) - this.paddingY + (scale * dragY);
     }
     return this.correctionY;
   }
@@ -104,7 +104,7 @@ export class AddTextOptionModel {
         return this.correctionY + ((this.calcImageFontSize(fontSize) + this.paddingY) * index) + (scale * dragY);
       case TextPosition.LB:
       case TextPosition.RB:
-        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) + this.paddingY - ((imageHeight / this.calcImageFontSize(fontSize) + this.paddingY) * (count - index - 1)) + (scale * dragY);
+        return imageHeight - this.correctionY - this.calcImageFontSize(fontSize) - this.paddingY - ((imageHeight / this.calcImageFontSize(fontSize) + this.paddingY) * (count - index - 1)) + (scale * dragY);
     }
     return this.correctionY;
   }
