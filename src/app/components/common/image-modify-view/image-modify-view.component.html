@@ -51,6 +51,19 @@
           <label for="imageCropBottom">bottom</label>
         </p-ifta-label>
       </div>
+      <div class="flex">
+        <p-ifta-label class="m-1">
+          <input id="brushSize" [(ngModel)]="brushSize" type="number" pInputText>
+          <label for="brushSize">brush size</label>
+        </p-ifta-label>
+        <p-ifta-label class="m-1">
+          <input id="brushAlpha" [(ngModel)]="brushAlpha" type="number" pInputText>
+          <label for="brushAlpha">brush alpha</label>
+        </p-ifta-label>
+        <p-color-picker class="m-1 align-content-center" [(ngModel)]="brushColor" pTooltip="{{brushColorTooltip | translate}}" />
+        <p-button class="align-content-center mr-1" size="small" (click)="clearBrushCanvas()" icon="pi pi-eraser" pTooltip="{{brushClearTooltip | translate}}" />
+        <p-select class="flex h-fit align-self-center" [options]="imageDragList" [(ngModel)]="imageDragMode" />
+      </div>
     </div>
     <div>
       <div class="flex flex-row">
@@ -78,11 +91,12 @@
               (input)="optionInput()" (compositionstart)="fileNameCompStart()" (compositionupdate)="fileNameCompUpdate($event)" (compositionend)="fileNameCompEnd()"></textarea>
   </div>
   <div class="image-modify-view-sub-container">
-    <div #contentContainer class="content-container">
+    <div #contentContainer class="content-container" [ngClass]="brushClassActive">
       <canvas #imageCanvas class="image-canvas"></canvas>
       <canvas #cropCanvas class="crop-canvas"></canvas>
-      <canvas #watermarkCanvas class="text-canvas" (mousedown)="watermarkDragStart($event)" (mousemove)="watermarkDrag($event)"
-              (mouseup)="watermarkDragEnd()" (mouseleave)="watermarkDragEnd()"></canvas>
+      <canvas #brushCanvas class="brush-canvas"></canvas>
+      <canvas #watermarkCanvas class="text-canvas" (mousedown)="canvasDragStart($event)" (mousemove)="canvasDrag($event)"
+              (mouseup)="canvasDragEnd()" (mouseleave)="canvasDragEnd()"></canvas>
     </div>
   </div>
 </p-drawer>

@@ -1,6 +1,6 @@
-import {Component, ElementRef, EventEmitter, Inject, Output, ViewChild} from "@angular/core";
+import {Component, ElementRef, EventEmitter, HostListener, Inject, Output, ViewChild} from "@angular/core";
 import {FileViewModel} from "../../../models/rest/file-view-model";
-import {DOCUMENT, NgIf} from "@angular/common";
+import {DOCUMENT, NgClass, NgIf} from "@angular/common";
 import * as FExtensions from "../../../guards/f-extensions";
 import {Drawer} from "primeng/drawer";
 import {Button} from "primeng/button";
@@ -10,7 +10,7 @@ import {CommonService} from "../../../services/rest/common.service";
 import {FormsModule} from "@angular/forms";
 import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
-import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../models/common/text-position";
+import {DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../models/common/text-position";
 import {ColorPicker} from "primeng/colorpicker";
 import {IftaLabel} from "primeng/iftalabel";
 import {Select} from "primeng/select";
@@ -23,17 +23,20 @@ import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
 import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../guards/f-image-cache";
+import {allDesc, ImageDragMode} from "./image-drag-mode";
 
 @Component({
   selector: "drawer-image-modify-view",
-  imports: [Drawer, Button, NgIf, ProgressSpinComponent, FormsModule, InputText, Textarea, ColorPicker, IftaLabel, Select, Tooltip, TranslatePipe, ContextMenu, PrimeTemplate, Ripple],
+  imports: [Drawer, Button, NgIf, ProgressSpinComponent, FormsModule, InputText, Textarea, ColorPicker, IftaLabel, Select, Tooltip, TranslatePipe, ContextMenu, PrimeTemplate, Ripple, NgClass],
   templateUrl: "./image-modify-view.component.html",
   styleUrl: "./image-modify-view.component.scss",
   standalone: true,
 })
 export class ImageModifyViewComponent {
+  @ViewChild("contentContainer") contentContainer!: ElementRef<HTMLDivElement>;
   @ViewChild("imageCanvas") imageCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("cropCanvas") cropCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild("brushCanvas") brushCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("watermarkCanvas") watermarkCanvas!: ElementRef<HTMLCanvasElement>;
   @Output() error: EventEmitter<{title: string, msg: string}> = new EventEmitter<{title: string; msg: string}>();
   imageCacheSource: HTMLImageElement = new Image();
@@ -43,10 +46,13 @@ export class ImageModifyViewComponent {
   selectedIndex: number = 0;
   isComposing: boolean = false;
   isLoading: boolean = false;
+  brushSize: number = 0;
   fontSize: number = 0;
   previousImageAngle: number = 0;
   imageAngle: number = 0;
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
+  brushColor: string = "#FFFFAF";
+  brushAlpha: number = 10;
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
   imageVectorBuff: Vector2d = new Vector2d();
@@ -58,8 +64,15 @@ export class ImageModifyViewComponent {
   imageCropBottomBuff: number = 0;
   imageCropVectorBuff: Vector2d = new Vector2d();
   imageCropVector: Vector2d = new Vector2d();
-  dragVector: Vector2d = new Vector2d();
-  isDrag: boolean = false;
+  imageDragMode: ImageDragMode = ImageDragMode.WATERMARK;
+  imageDragList: ImageDragMode[] = allDesc();
+  previousBrushVector: Vector2d | null = null;
+  brushVector: Vector2d = new Vector2d();
+  isBrushDrag: boolean = false;
+  watermarkVector: Vector2d = new Vector2d();
+  isWatermarkDrag: boolean = false;
+  brushHistory: string[] = [];
+  brushRedoStack: string[] = [];
   contextMenu: MenuItem[] = [];
   constructor(@Inject(DOCUMENT) private document: Document, private commonService: CommonService) {
     this.menuInit();
@@ -74,6 +87,7 @@ export class ImageModifyViewComponent {
     this.isVisible = true;
     await this.imageReady();
     this.fontSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
+    this.brushSize = this.fontSize / 2;
     await this.optionInput();
   }
   async hide(): Promise<void> {
@@ -139,7 +153,7 @@ export class ImageModifyViewComponent {
       this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
       await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
       FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
-      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
     }
   }
   async imageReady_old2(): Promise<void> {
@@ -158,7 +172,7 @@ export class ImageModifyViewComponent {
     this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
     await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
     FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
   }
   async imageReady(): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;
@@ -181,12 +195,17 @@ export class ImageModifyViewComponent {
     this.imageVector = await FExtensions.blobToCanvas(this.imageCanvas.nativeElement, blobBuff, this.imageVector, this.imageAngle, this.rotateVector);
     this.imageVectorBuff.copy(this.imageVector);
     this.imageCropVector.copy(this.imageVector);
+    this.brushVector.copy(this.imageVector);
     this.imageCropVectorBuff.copy(this.imageCropVector);
     this.imageCropRightBuff = this.imageVector.width - this.imageCropVector.right;
     this.imageCropBottomBuff = this.imageVector.height - this.imageCropVector.bottom;
-    await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
-    FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel())
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+
+    await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector);
+    FExtensions.textToCanvas(this.watermarkCanvas.nativeElement, this.fileName, this.imageVector, this.getTextOptionModel());
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
+    FExtensions.clearBrushCanvas(this.brushCanvas.nativeElement, this.imageVector);
+    this.brushHistory = [];
+    this.clearBrushCanvas();
   }
   get prevAble(): boolean {
     return this.selectedIndex > 0;
@@ -208,7 +227,7 @@ export class ImageModifyViewComponent {
       return;
     }
     this.isLoading = true;
-    const blob: Blob = await FExtensions.toBlobCanvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement, item.mimeType, this.imageCropVector);
+    const blob: Blob = await FExtensions.toBlobCanvasCombined(this.imageCanvas.nativeElement, this.brushCanvas.nativeElement, this.watermarkCanvas.nativeElement, item.mimeType, this.imageCropVector);
     const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
     saveAs(blob, filename);
     this.isLoading = false;
@@ -219,34 +238,83 @@ export class ImageModifyViewComponent {
       return;
     }
     this.isLoading = true;
-    const canvas: HTMLCanvasElement = FExtensions.canvasCombined(this.imageCanvas.nativeElement, this.watermarkCanvas.nativeElement, this.imageCropVector);
+    const canvas: HTMLCanvasElement = FExtensions.canvasCombined(this.imageCanvas.nativeElement, this.brushCanvas.nativeElement, this.watermarkCanvas.nativeElement, this.imageCropVector);
     await FExtensions.canvasPrint(canvas, item.filename, item.mimeType, height_width_full);
     this.isLoading = false;
     canvas.remove();
   }
-  watermarkDragStart(data: MouseEvent): void {
+  clearBrushCanvas(): void {
+    FExtensions.clearBrushCanvas(this.brushCanvas.nativeElement, this.brushVector);
+  }
+  canvasDragStart(data: MouseEvent): void {
     if (data.button == 2 || data.button == 3) {
       return;
     }
-    this.isDrag = true;
+    switch (this.imageDragMode) {
+      case ImageDragMode.WATERMARK: this.watermarkDragStart(data); break;
+      case ImageDragMode.BRUSH: this.brushCanvasDragStart(data); break;
+      case ImageDragMode.BRUSH_REMOVE: this.brushCanvasDragStart(data); break;
+    }
+  }
+  canvasDrag(data: MouseEvent): void {
+    switch (this.imageDragMode) {
+      case ImageDragMode.WATERMARK: this.watermarkDrag(data); break;
+      case ImageDragMode.BRUSH: this.brushCanvasDrag(data); break;
+      case ImageDragMode.BRUSH_REMOVE: this.brushCanvasDrag(data); break;
+    }
+  }
+  canvasDragEnd(): void {
+    this.brushCanvasDragEnd();
+    this.watermarkDragEnd();
+  }
+  brushCanvasDragStart(data: MouseEvent): void {
+    if (!this.isBrushDrag) {
+      this.isBrushDrag = true;
+      this.previousBrushVector = null;
+      FExtensions.canvasSaveState(this.brushCanvas.nativeElement, this.brushHistory, this.brushRedoStack);
+    }
+  }
+  brushCanvasDrag(data: MouseEvent): void {
+    if (this.isBrushDrag) {
+      this.brushVector.x = data.offsetX
+      this.brushVector.y = data.offsetY
+      if (this.imageDragMode == ImageDragMode.BRUSH) {
+        this.previousBrushVector = FExtensions.addBrushToCanvas(this.brushCanvas.nativeElement, this.previousBrushVector, this.brushVector, this.getBrushOptionModel());
+      } else {
+        this.previousBrushVector = FExtensions.removeBrushToCanvas(this.brushCanvas.nativeElement, this.previousBrushVector, this.brushVector, this.getBrushOptionModel());
+      }
+    }
+  }
+  brushCanvasDragEnd(): void {
+    if (this.isBrushDrag) {
+      this.isBrushDrag = false;
+//    this.isBrushMode = false;
+    }
+  }
+  watermarkDragStart(data: MouseEvent): void {
+    if (!this.isWatermarkDrag) {
+      this.isWatermarkDrag = true;
+    }
   }
   watermarkDrag(data: MouseEvent): void {
-    if (this.isDrag) {
-      this.dragVector.x = data.offsetX;
-      this.dragVector.y = data.offsetY;
-      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    if (this.isWatermarkDrag) {
+      this.watermarkVector.x = data.offsetX;
+      this.watermarkVector.y = data.offsetY;
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
     }
   }
   watermarkDragEnd(): void {
-    this.isDrag = false;
+    if (this.isWatermarkDrag) {
+      this.isWatermarkDrag = false;
+    }
   }
   onSelectChange(): void {
-    this.dragVector.init();
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    this.watermarkVector.init();
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
   }
   optionInput(): void {
     if (!this.isComposing) {
-      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+      FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
     }
   }
   async onAngleChange(): Promise<void> {
@@ -312,7 +380,7 @@ export class ImageModifyViewComponent {
     this.imageCropVectorBuff.bottom = this.imageVector.height - this.imageCropBottomBuff;
     this.imageCropVector.copy(this.imageCropVectorBuff);
     await FExtensions.cropToCanvas(this.cropCanvas.nativeElement, this.imageCanvas.nativeElement, this.imageVector, this.imageCropVector)
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
   }
   async rotateXChange(positive: boolean): Promise<void> {
     this.rotateIntervalX = setInterval(async() => {
@@ -366,11 +434,11 @@ export class ImageModifyViewComponent {
   }
   fileNameCompUpdate(data: CompositionEvent): void {
     const buff: string = (data.target as HTMLInputElement).value;
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, buff, this.getTextOptionModel(), this.dragVector);
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, buff, this.getTextOptionModel(), this.watermarkVector);
   }
   fileNameCompEnd(): void {
     this.isComposing = false;
-    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.dragVector);
+    FExtensions.canvasTextUpdate(this.watermarkCanvas.nativeElement, this.fileName, this.getTextOptionModel(), this.watermarkVector);
   }
 
   get selectViewModel(): FileViewModel | undefined {
@@ -400,6 +468,28 @@ export class ImageModifyViewComponent {
   get textColorTooltip(): string {
     return "common-desc.text-color";
   }
+  get brushColorTooltip(): string {
+    return "common-desc.brush-color";
+  }
+  get brushClearTooltip(): string {
+    return "common-desc.brush-clear";
+  }
+  get brushClassActive(): {"brush-active": boolean} {
+    return {"brush-active": this.imageDragMode != ImageDragMode.WATERMARK}
+  }
+  getBrushOptionModel(): AddTextOptionModel {
+    if (this.brushAlpha < 0) {
+      this.brushAlpha = 0;
+    }
+    if (this.brushAlpha > 255) {
+      this.brushAlpha = 255;
+    }
+    return FExtensions.applyClass(AddTextOptionModel, obj => {
+      obj.textPosition = DescToTextPosition[this.selectTextPosition];
+      obj.fontSize = this.brushSize;
+      obj.textBackground = FExtensions.hexColorWithAlpha(this.brushColor, this.brushAlpha);
+    })
+  }
   getTextOptionModel(): AddTextOptionModel {
     return FExtensions.applyClass(AddTextOptionModel, obj => {
       obj.textPosition = DescToTextPosition[this.selectTextPosition];
@@ -414,6 +504,14 @@ export class ImageModifyViewComponent {
     this.backColor = FExtensions.hexColorWithoutAlpha(addTextOptionModel.textBackground);
     this.textColor = FExtensions.hexColorWithoutAlpha(addTextOptionModel.textColor);
   }
-
-  protected readonly allTextPositionDesc = allTextPositionDesc;
+  @HostListener("window:keydown", ["$event"])
+  async handleKeydown(event: KeyboardEvent): Promise<void> {
+    if (event.ctrlKey && event.key == "z") {
+      event.preventDefault();
+      await FExtensions.undoCanvas(this.brushCanvas.nativeElement, this.brushHistory, this.brushRedoStack);
+    } else if (event.ctrlKey && event.key == "y") {
+      event.preventDefault();
+      await FExtensions.redoCanvas(this.brushCanvas.nativeElement, this.brushHistory, this.brushRedoStack);
+    }
+  }
 }

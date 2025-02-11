@@ -121,7 +121,7 @@ export function plusMonths(targetDate: Date, months: number): Date {
 }
 
 export function hexColorWithAlpha(hexColor: string, alpha: number = 1): string {
-  return `${hexColor}${alpha.toString(16).toUpperCase()}`;
+  return `${hexColorWithoutAlpha(hexColor)}${alpha.toString(16).toUpperCase().padStart(2, "0")}`;
 }
 export function hexColorWithoutAlpha(hexColor: string): string {
   if (hexColor.length >= 9) return `${hexColor.slice(0, 7)}`.toUpperCase();
@@ -664,6 +664,57 @@ export async function cropToCanvas(canvas: HTMLCanvasElement, imageCanvas: HTMLC
     context.strokeRect(cropVector.left - borderSize / 2, cropVector.top - borderSize / 2, cropVector.width + borderSize, cropVector.height + borderSize);
   }
 }
+export function clearBrushCanvas(canvas: HTMLCanvasElement, vector: Vector2d) {
+  const context = canvas.getContext("2d");
+  if (context) {
+    canvas.width = vector.width;
+    canvas.height = vector.height;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+export function addBrushToCanvas(canvas: HTMLCanvasElement, previousDragVector: Vector2d | null, dragVector: Vector2d, addTextOptionModel: AddTextOptionModel): Vector2d {
+  const context = canvas.getContext("2d");
+  if (context) {
+    context.globalCompositeOperation = "source-over";
+    context.fillStyle = addTextOptionModel.textBackground;
+    context.strokeStyle = addTextOptionModel.textBackground;
+    context.lineWidth = addTextOptionModel.calcTextBackgroundHeight();
+    context.lineCap = "square";
+    if (previousDragVector != null) {
+      if (previousDragVector.x == dragVector.x && previousDragVector.y == dragVector.y) {
+
+      } else {
+        context.beginPath();
+        context.moveTo(addTextOptionModel.calcBrushX(canvas.width, canvas.clientWidth, previousDragVector.x), addTextOptionModel.calcBrushY(canvas.height, canvas.clientHeight, previousDragVector.y));
+        context.lineTo(addTextOptionModel.calcBrushX(canvas.width, canvas.clientWidth, dragVector.x), addTextOptionModel.calcBrushY(canvas.height, canvas.clientHeight, dragVector.y));
+        context.stroke();
+      }
+    }
+//    context.fillRect(addTextOptionModel.calcBrushX(canvas.width, canvas.clientWidth, dragVector.x), addTextOptionModel.calcBrushY(canvas.height, canvas.clientHeight, dragVector.y), textWidth, addTextOptionModel.calcTextBackgroundHeight());
+  }
+  return applyClass(Vector2d, obj => {
+    obj.x = dragVector.x;
+    obj.y = dragVector.y;
+  });
+}
+export function removeBrushToCanvas(canvas: HTMLCanvasElement, previousDragVector: Vector2d | null, dragVector: Vector2d, addTextOptionModel: AddTextOptionModel): Vector2d {
+  const context = canvas.getContext("2d");
+  if (context) {
+    context.globalCompositeOperation = "destination-out";
+    context.lineWidth = addTextOptionModel.calcTextBackgroundHeight() * 1.5;
+    context.lineCap = "square";
+    if (previousDragVector != null) {
+      context.beginPath();
+      context.moveTo(addTextOptionModel.calcBrushX(canvas.width, canvas.clientWidth, previousDragVector.x), addTextOptionModel.calcBrushY(canvas.height, canvas.clientHeight, previousDragVector.y));
+      context.lineTo(addTextOptionModel.calcBrushX(canvas.width, canvas.clientWidth, dragVector.x), addTextOptionModel.calcBrushY(canvas.height, canvas.clientHeight, dragVector.y));
+      context.stroke();
+    }
+  }
+  return applyClass(Vector2d, obj => {
+    obj.x = dragVector.x;
+    obj.y = dragVector.y;
+  });
+}
 export function textToCanvas(canvas: HTMLCanvasElement, text: string, vector: Vector2d, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Vector2d {
   const context = canvas.getContext("2d");
   let firstDragTextWidth = 0;
@@ -747,13 +798,14 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
     image.src = URL.createObjectURL(blob);
   });
 }
-export function canvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropVector: Vector2d): HTMLCanvasElement {
+export function canvasCombined(imageCanvas: HTMLCanvasElement, brushCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropVector: Vector2d): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = cropVector.width;
   canvas.height = cropVector.height;
   const context = canvas.getContext("2d");
   if (context) {
     context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
+    context.drawImage(brushCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
     context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
   }
   return canvas;
@@ -787,7 +839,7 @@ export async function canvasPrint(canvas: HTMLCanvasElement, alt: string = "", m
     }, 2000);
   }
 }
-export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, mimeType: string = "image/jpeg", cropVector: Vector2d): Promise<Blob> {
+export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, brushCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, mimeType: string = "image/jpeg", cropVector: Vector2d): Promise<Blob> {
   const canvas = document.createElement("canvas");
   canvas.width = cropVector.width;
   canvas.height = cropVector.height;
@@ -798,6 +850,7 @@ export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, water
 //      context.fillStyle = FConstants.FILL_BACKGROUND_COLOR;
 //      context.fillRect(0, 0, cropVector.width, cropVector.height);
       context.drawImage(imageCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
+      context.drawImage(brushCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       context.drawImage(watermarkCanvas, cropVector.left, cropVector.top, cropVector.width, cropVector.height, 0, 0, cropVector.width, cropVector.height);
       canvas.toBlob((blob) => {
         if (blob == null) {
@@ -809,6 +862,43 @@ export async function toBlobCanvasCombined(imageCanvas: HTMLCanvasElement, water
       canvas.remove();
     }
   });
+}
+export function canvasSaveState(canvas: HTMLCanvasElement, canvasHistory: string[], canvasRedoStack: string[]): void {
+  const historyBuff = canvas.toDataURL();
+  canvasHistory.push(historyBuff);
+  if (canvasHistory.length > 20) {
+    canvasHistory.shift();
+  }
+  canvasRedoStack.splice(0);
+}
+export async function canvasRestoreState(canvas: HTMLCanvasElement, canvasState: string | undefined): Promise<void> {
+  if (canvasState == undefined) {
+    return;
+  }
+
+  const context = canvas.getContext("2d");
+  const image = new Image();
+  image.src = canvasState;
+  image.onload = (): void => {
+    if (context) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0);
+    }
+  }
+}
+export async function undoCanvas(canvas: HTMLCanvasElement, canvasHistory: string[], redoStack: string[]): Promise<void> {
+  if (canvasHistory.length > 0) {
+    redoStack.push(canvas.toDataURL());
+    const lastState = canvasHistory.pop();
+    await canvasRestoreState(canvas, lastState);
+  }
+}
+export async function redoCanvas(canvas: HTMLCanvasElement, canvasHistory: string[], redoStack: string[]): Promise<void> {
+  if (redoStack.length > 0) {
+    canvasHistory.push(canvas.toDataURL());
+    const redoState = redoStack.pop();
+    await canvasRestoreState(canvas, redoState);
+  }
 }
 export async function pdfBlobAddText(blob: Blob, text: string, mimeType: string = "application/pdf", addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<Blob> {
   if (getExtMimeType(mimeType) != "pdf") {

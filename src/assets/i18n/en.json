@@ -110,7 +110,9 @@
     },
     "image-modify": "image modify",
     "all-download-with-watermark": "all download(with watermark)",
-    "all-download-without-watermark": "all download(without watermark)"
+    "all-download-without-watermark": "all download(without watermark)",
+    "download-with-watermark": "save(with watermark)",
+    "download-without-watermark": "save"
   },
   "edi-apply-date": {
     "year": "year",
@@ -531,6 +533,8 @@
     "font-size": "font size",
     "back-color": "back color",
     "text-color": "text color",
+    "brush-color": "brush color",
+    "brush-clear": "brush clear",
     "height-auto-print": "print fit width",
     "width-auto-print": "print fit height",
     "full-print": "print fit full"

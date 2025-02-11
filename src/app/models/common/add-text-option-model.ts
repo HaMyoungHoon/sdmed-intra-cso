@@ -33,6 +33,20 @@ export class AddTextOptionModel {
     }
     return this.correctionY;
   }
+  calcBrushX(imageWidth: number, canvasWidth: number, dragX: number = 0): number {
+    if (canvasWidth == 0) {
+      canvasWidth = imageWidth;
+    }
+    const scale = imageWidth / canvasWidth;
+    return (scale * dragX);
+  }
+  calcBrushY(imageHeight: number, canvasHeight: number, dragY: number = 0): number {
+    if (canvasHeight == 0) {
+      canvasHeight = imageHeight;
+    }
+    const scale = imageHeight / canvasHeight;
+    return (scale * dragY);
+  }
   calcImageTextX(imageWidth: number, canvasWidth: number, textWidth: number, dragX: number = 0): number {
     if (canvasWidth == 0) {
       canvasWidth = imageWidth;
