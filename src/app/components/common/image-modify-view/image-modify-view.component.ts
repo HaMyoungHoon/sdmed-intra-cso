@@ -215,11 +215,23 @@ export class ImageModifyViewComponent {
   }
   async prev(): Promise<void> {
     this.selectedIndex--;
+    this.imageVector.init()
+    this.rotateVector.init()
+    this.imageAngle = 0
     await this.imageReady();
+    this.fontSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
+    this.brushSize = this.fontSize / 2;
+    await this.optionInput();
   }
   async next(): Promise<void> {
     this.selectedIndex++;
+    this.imageVector.init()
+    this.rotateVector.init()
+    this.imageAngle = 0
     await this.imageReady();
+    this.fontSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
+    this.brushSize = this.fontSize / 2;
+    await this.optionInput();
   }
   async download(): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;
