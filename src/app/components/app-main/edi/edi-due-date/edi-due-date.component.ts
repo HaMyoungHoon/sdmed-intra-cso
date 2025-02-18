@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, signal, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, ElementRef, signal, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {haveRole, UserRole} from "../../../../models/rest/user/user-role";
 import {EdiDueDateService} from "../../../../services/rest/edi-due-date.service";
@@ -11,6 +11,7 @@ import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
 import {FullCalendarComponent} from "@fullcalendar/angular";
 import {LangChangeEvent} from "@ngx-translate/core";
 import {Subject, takeUntil} from "rxjs";
+import {saveAs} from "file-saver";
 
 
 @Component({
@@ -21,13 +22,24 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class EdiDueDateComponent extends FComponentBase {
   @ViewChild("calendar") calendar!: FullCalendarComponent;
+  @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>
   viewModel: EDIPharmaDueDateModel[] = [];
   calendarOptions = signal<CalendarOptions>({
     plugins: [interactionPlugin, dayGridPlugin],
+    customButtons: {
+      excelUpload: {
+        text: "upload",
+        click: this.excelUpload.bind(this),
+      },
+      sampleDownload: {
+        text: "sample down",
+        click: this.sampleDownload.bind(this)
+      }
+    },
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "",
+      right: "excelUpload sampleDownload",
     },
     initialView: "dayGridMonth",
     weekends: true,
@@ -230,6 +242,33 @@ export class EdiDueDateComponent extends FComponentBase {
         "pharmaPK": dueDateModel.pharmaPK
       }
     });
+  }
+  excelUpload(ev: MouseEvent, element: HTMLElement): void {
+    this.inputUploadExcel.nativeElement.click();
+  }
+  sampleDownload(ev: MouseEvent, element: HTMLElement): void {
+    this.thisService.getExcelSample().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "calendarSample.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
+    });
+  }
+  async excelSelected(event: any): Promise<void>  {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.setLoading();
+      const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
+        e => this.fDialogService.error("excelSelected", e));
+      this.inputUploadExcel.nativeElement.value = "";
+      this.setLoading(false);
+      if (ret.result) {
+        await this.getList();
+        return;
+      }
+      this.fDialogService.warn("excelSelected", ret.msg);
+    }
   }
 
   get filterFields(): string[] {

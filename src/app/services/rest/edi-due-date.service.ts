@@ -53,4 +53,14 @@ export class EdiDueDateService {
     this.httpResponse.addParam("date", date);
     return this.httpResponse.delete(`${this.baseUrl}/data/${pharmaPK}`);
   }
+
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+  postExcel(file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/file/excel`, formData);
+  }
 }

@@ -8,6 +8,7 @@
       </ng-template>
     </full-calendar>
   </div>
+  <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
   <p-drawer class="flex" [(visible)]="pharmaSelectVisible" (onHide)="pharmaDrawerOnHide()" position="right" [baseZIndex]="1000" closable="false">
     <p-button class="flex m-1" (click)="pharmaDrawerClose()">{{"common-desc.save" | translate}}</p-button>
     <p-listbox class="flex" [options]="ablePharmaList" [(ngModel)]="selectedPharma" [multiple]="true" [filter]="true" [filterFields]="filterFields">
