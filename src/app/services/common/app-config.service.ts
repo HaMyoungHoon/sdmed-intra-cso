@@ -12,12 +12,14 @@ export class AppConfigService {
     isNewTab: false,
     scale: 14
   });
+  infoSticky = signal(true);
+  toastLife = signal(4000);
   document = inject(DOCUMENT);
   platformId = inject(PLATFORM_ID);
   transitionComplete = signal<boolean>(false);
   constructor() {
     this.appState.set({ ...this.loadAppState() });
-
+    this.loadToastConfig();
     effect(
       () => {
         const state = this.appState();
@@ -61,11 +63,25 @@ export class AppConfigService {
       isNewTab: isNewTab
     }));
   }
+  toggleInfoSticky(sticky: boolean): void {
+    this.infoSticky.set(sticky);
+    FAmhohwa.setLocalStorage(FConstants.STORAGE_INFO_STICKY, `${sticky}`);
+  }
+  setToastLife(life: number): void {
+    if (life < 3000) {
+      life = 3000;
+    } else if (life > 10000) {
+      life = 10000;
+    }
+    this.toastLife.set(life);
+    FAmhohwa.setLocalStorage(FConstants.STORAGE_TOAST_LIFE, life.toString());
+  }
   isDarkMode = computed(() => this.appState().darkTheme ?? false);
   isMenuActive = computed(() => this.appState().menuActive ?? false);
   isNewTab = computed(() => this.appState().isNewTab ?? false);
   getScale = computed(() => this.appState().scale ?? 14);
-
+  isInfoSticky = computed(() => this.infoSticky());
+  getToastLife = computed(() => this.toastLife());
 
   private onTransitionEnd() {
     this.transitionComplete.set(true);
@@ -116,6 +132,23 @@ export class AppConfigService {
       isNewTab: false,
       scale: 14,
     };
+  }
+  private loadToastConfig(): void {
+    let sticky = FAmhohwa.getLocalStorage(FConstants.STORAGE_INFO_STICKY);
+    if (sticky != "true" && sticky != "false") {
+      sticky = "true";
+      FAmhohwa.setLocalStorage(FConstants.STORAGE_INFO_STICKY, sticky);
+    }
+    let life = Number(FAmhohwa.getLocalStorage(FConstants.STORAGE_TOAST_LIFE));
+    if (life < 3000) {
+      life = 3000;
+      FAmhohwa.setLocalStorage(FConstants.STORAGE_TOAST_LIFE, life.toString());
+    } else if (life > 10000) {
+      life = 10000;
+      FAmhohwa.setLocalStorage(FConstants.STORAGE_TOAST_LIFE, life.toString());
+    }
+    this.infoSticky.set(Boolean(sticky));
+    this.toastLife.set(life);
   }
 
   private saveAppState(state: any): void {

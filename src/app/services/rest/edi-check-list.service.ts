@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {RestResult} from "../../models/common/rest-result";
 import {EdiUploadCheckModel} from "../../models/rest/edi/edi-upload-check-model";
 import {UserDataModel} from "../../models/rest/user/user-data-model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class EdiCheckListService {
   private baseUrl = "/apiCSO/intra/ediCheck";

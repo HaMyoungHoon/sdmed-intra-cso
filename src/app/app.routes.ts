@@ -38,6 +38,8 @@ export const routes: Routes = [
       { path: FConstants.USER_MAPPING_URL, loadChildren: () => import("./components/app-main/etc/user/user-mapping/user-mapping.module").then(m => m.UserMappingModule) },
 
       { path: FConstants.MAIN_INGREDIENT_METHOD_URL, loadChildren: () => import("./components/app-main/etc/manual/main-ingredient-method/main-ingredient-method.module").then(m => m.MainIngredientMethodModule) },
+
+      { path: FConstants.SETTING_URL, loadChildren: () => import("./components/app-main/etc/setting/setting.module").then(m => m.SettingModule) }
     ]
   },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import("./components/notfound/notfound.module").then(m => m.NotfoundModule) },

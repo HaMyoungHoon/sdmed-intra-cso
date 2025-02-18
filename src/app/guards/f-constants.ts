@@ -4,6 +4,8 @@ export const STORAGE_KEY_LANG: string = "lang";
 export const STORAGE_DASHBOARD_VIEW_TYPE: string = "dashboardViewType";
 export const STORAGE_QNA_VIEW_TYPE: string = "qnaViewType";
 export const STORAGE_IMAGE_CACHE_CLEAR_TIME: string = "imageCacheClearTime";
+export const STORAGE_INFO_STICKY: string = "infoSticky";
+export const STORAGE_TOAST_LIFE: string = "toastLife";
 
 export const HEADERS_CACHE_TIMESTAMP: string = "X-Cache-Timestamp";
 export const CACHES_IMAGE_CACHE: string = "image-cache";
@@ -45,6 +47,7 @@ export const USER_EDIT_URL: string = "etc/userInfo/:thisPK";
 
 export const USER_MAPPING_URL: string = "etc/userMapping";
 export const MAIN_INGREDIENT_METHOD_URL: string = "etc/manual/main_ingredient_method";
+export const SETTING_URL: string = "etc/setting";
 
 export const ASSETS_NO_IMAGE: string = "assets/image/no-image-1920.png";
 export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";

@@ -276,7 +276,7 @@ export class RequestSubQnaComponent extends FComponentBase {
     const ret = await FExtensions.restTry(async() => await this.thisService.postReply(thisPK, this.qnaReplyModel),
       e => this.fDialogService.error("saveData", e));
     if (ret.result) {
-      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, this.qnaHeaderModel.title);
+      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, `${this.qnaHeaderModel.name}\n${this.qnaHeaderModel.title}`);
       await this.getHeader();
       return true;
     }

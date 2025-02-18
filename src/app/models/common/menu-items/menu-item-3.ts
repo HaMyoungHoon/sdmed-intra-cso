@@ -32,6 +32,12 @@ export function MenuItem3(): MenuItem {
         styleClass: "sub-menu",
         routerLink: `/${FConstants.MAIN_INGREDIENT_METHOD_URL}`
       },
+      {
+        label: "menu-3.sub-menu.sub-5",
+        icon: "pi pi-fw pi-cog",
+        styleClass: "sub-menu",
+        routerLink: `/${FConstants.SETTING_URL}`
+      }
     ]
   };
 }

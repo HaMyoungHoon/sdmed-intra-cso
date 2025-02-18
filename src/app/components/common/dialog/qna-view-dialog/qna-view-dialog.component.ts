@@ -293,7 +293,7 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
       e => this.fDialogService.error("saveData", e));
     if (ret.result) {
       await this.refreshData();
-      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, this.qnaHeaderModel.title);
+      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, `${this.qnaHeaderModel.name}\n${this.qnaHeaderModel.title}`);
       return true;
     }
 

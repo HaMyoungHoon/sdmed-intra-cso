@@ -22,13 +22,14 @@ import {EdiResponseDialogComponent} from "../../components/common/dialog/edi-res
 import {FullScreenFileViewDialogComponent} from "../../components/common/dialog/full-screen-file-view-dialog/full-screen-file-view-dialog.component";
 import {UserAddDialogComponentComponent} from "../../components/common/dialog/user-add-dialog-component/user-add-dialog-component.component";
 import {Router} from "@angular/router";
+import {AppConfigService} from "./app-config.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class FDialogService {
   ref?: DynamicDialogRef
-  constructor(private dialogService: DialogService, private messageService: MessageService) { }
+  constructor(private dialogService: DialogService, private messageService: MessageService, private appConfig: AppConfigService) { }
 
   openSignIn(): Observable<any> {
     this.ref = this.dialogService.open(SignDialogComponent, {
@@ -114,34 +115,45 @@ export class FDialogService {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.warn, title, detail);
+    const sticky = false;
+    const life = this.appConfig.getToastLife();
+    this.add(ToastLevel.warn, title, detail, null, sticky, life);
   }
   error(title: string, detail?: string): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.error, title, detail);
+    const sticky = false;
+    const life = this.appConfig.getToastLife();
+    this.add(ToastLevel.error, title, detail, null, sticky, life);
   }
   info(title: string, detail?: string, text?: any): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.info, title, detail, text, true);
+
+    const sticky = this.appConfig.isInfoSticky();
+    const life = this.appConfig.getToastLife();
+    this.add(ToastLevel.info, title, detail, text, sticky, life);
   }
   mqttInfo(title: string, detail?: string, text?: any, confirmFn?: (event: MouseEvent, message: any, router: Router) => void, thisData?: any): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.info, title, detail, text, true, confirmFn, thisData, "common-desc.move");
+    const sticky = this.appConfig.isInfoSticky();
+    const life = this.appConfig.getToastLife();
+    this.add(ToastLevel.info, title, detail, text, sticky, life, confirmFn, thisData, "common-desc.move");
   }
   success(title: string, detail: string): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
-    this.add(ToastLevel.success, title, detail);
+    const sticky = false;
+    const life = this.appConfig.getToastLife();
+    this.add(ToastLevel.success, title, detail, null, sticky, life);
   }
 
-  add(severity: string, title: string, detail?: string, text?: any, sticky: boolean = false,
+  add(severity: string, title: string, detail?: string, text?: any, sticky: boolean = false, life: number = 3000,
       confirmFn?: (event: MouseEvent, message: any, router: Router) => void, thisData?: any,
       confirmLabel: string = "common-desc.confirm"): void {
     this.messageService.add({
@@ -150,6 +162,7 @@ export class FDialogService {
       detail: detail,
       text: text,
       sticky: sticky,
+      life: life,
       data: {
         "this-data": thisData,
         "confirm-label": confirmLabel,

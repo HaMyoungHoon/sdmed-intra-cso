@@ -1,0 +1,15 @@
+<div class="setting-container">
+  <div class="formgrid grid">
+    <div class="field grid m-1 shadow-7 p-1">
+      <p-ifta-label class="m-1 align-self-center">
+        <input id="toastLife" type="number" pInputText [(ngModel)]="toastLife" />
+        <label for="toastLife">{{"setting.toast-life" | translate}}</label>
+      </p-ifta-label>
+      <p-button class="m-1 align-self-center" size="small" icon="pi pi-check" (click)="toastLifeSave()" />
+    </div>
+    <div class="field grid m-1 shadow-7 p-1 cursor-pointer" (click)="toggleInfoSticky()">
+      <p-icon-field class="align-self-center cursor-pointer" [ngClass]="stickyCheckIcon"></p-icon-field>
+      <label class="m-1 align-self-center cursor-pointer">{{"setting.info-sticky" | translate}}</label>
+    </div>
+  </div>
+</div>

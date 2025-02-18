@@ -334,7 +334,7 @@ export class EdiViewComponent extends FComponentBase {
       e => this.fDialogService.error("delete", e));
     this.setLoading(false);
     if (ret.result) {
-      await this.mqttSend(this.uploadModel.userPK, this.uploadModel.thisPK, item.originalFilename);
+      await this.mqttSend(this.uploadModel.userPK, this.uploadModel.thisPK, `${this.uploadModel.name}\n${this.uploadModel.orgName}\n${item.originalFilename}`);
       const index = this.uploadModel.fileList.indexOf(item);
       if (index == this.uploadModel.fileList.length - 1) {
         if (this.uploadModel.fileList.length - 1 > 0) {

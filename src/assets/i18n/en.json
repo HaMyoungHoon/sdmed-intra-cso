@@ -21,7 +21,8 @@
       "sub-1": "my info",
       "sub-2": "user info",
       "sub-3": "user mapping",
-      "sub-4": "main ingredient method"
+      "sub-4": "main ingredient method",
+      "sub-5": "setting"
     }
   },
   "menu-4": {
@@ -520,6 +521,10 @@
     "unit": "unit",
     "etc1": "et cetera",
     "etc2": "et cetera"
+  },
+  "setting": {
+    "info-sticky": "info toast sticky",
+    "toast-life": "toast timeout(ms)"
   },
   "error": {
     "title": "cannot found page",
