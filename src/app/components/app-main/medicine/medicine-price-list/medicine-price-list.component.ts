@@ -49,6 +49,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       e => this.fDialogService.error("getLastApplyDate", e));
     this.setLoading(false);
     if (ret.result) {
+      console.log(ret.data);
       this.lastApplyDate = FExtensions.stringToDate(ret.data);
       return;
     }
@@ -138,7 +139,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["name", "kdCode", "pharma", "maxPrice"];
+    return ["name", "kdCode", "pharma", "maxPrice", "medicineIngredientModel.mainIngredientName"];
   }
   get uploadPriceTooltip(): string {
     return "medicine-price-list.price-excel";

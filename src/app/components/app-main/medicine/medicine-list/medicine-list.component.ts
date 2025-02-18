@@ -131,6 +131,9 @@ export class MedicineListComponent extends FComponentBase {
   get filterFields(): string[] {
     return ["code", "name", "medicineIngredientModel.mainIngredientName"];
   }
+  get uploadExcelTooltip(): string {
+    return "common-desc.excel-upload";
+  }
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";
   }

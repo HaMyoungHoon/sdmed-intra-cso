@@ -129,6 +129,9 @@ export class HospitalListComponent extends FComponentBase {
   get filterFields(): string[] {
     return ["code", "orgName", "innerName"];
   }
+  get uploadExcelTooltip(): string {
+    return "common-desc.excel-upload";
+  }
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";
   }
