@@ -29,7 +29,8 @@
     "sub-menu": {
       "sub-1": "목록",
       "sub-2": "마감일",
-      "sub-3": "적용일자"
+      "sub-3": "적용일자",
+      "sub-4": "체크리스트"
     }
   },
   "menu-config": {
@@ -118,6 +119,21 @@
     "year": "연",
     "month": "월",
     "apply-date-state": "상태"
+  },
+  "edi-check-list": {
+    "date-mode-option1": "요청적용일 기준",
+    "date-mode-option2": "실적용일 기준",
+    "user-mode-option1": "담당만 선택",
+    "user-mode-option2": "전체유저중 선택",
+    "table": {
+      "name": "이름",
+      "hospital-name": "병원",
+      "pharma-name": "제약사",
+      "edi-state": "상태",
+      "reg-date": "등록일",
+      "req-apply-date": "요청적용일",
+      "actual-apply-date": "실적용일"
+    }
   },
   "medicine-price-list": {
     "price-excel": "약가 업로드",

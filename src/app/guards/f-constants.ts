@@ -20,6 +20,7 @@ export const EDI_LIST_URL: string = "ediList";
 export const EDI_DUE_DATE_URL: string = "ediDueDate";
 export const EDI_APPLY_DATE_URL: string = "ediApplyDate";
 export const EDI_VIEW_URL: string = "ediList/:thisPK";
+export const EDI_CHECK_LIST_URL: string = "ediCheckList";
 
 export const QNA_LIST_URL: string = "qnaList";
 export const QNA_VIEW_URL: string = "qnaList/:thisPK";

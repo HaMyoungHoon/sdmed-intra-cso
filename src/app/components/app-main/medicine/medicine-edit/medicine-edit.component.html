@@ -9,12 +9,12 @@
       <label class="col-4">{{medicineModel.code}}</label>
       <label class="col-2 align-self-center">{{"medicine-edit.main-ingredient-code" | translate}}</label>
       <div class="col-4">
-        <p-autoComplete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
+        <p-auto-complete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
           <ng-template #item let-mainIngredient>
             <div>{{mainIngredient.mainIngredientCode}}</div>
             <div>{{mainIngredient.mainIngredientName}}</div>
           </ng-template>
-        </p-autoComplete>
+        </p-auto-complete>
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.kd-code" | translate}}</label>
       <div class="col-4">

@@ -2,11 +2,11 @@
   <div class="col-12 formgroup-inline p-0 justify-content-center">
     <div class="field flex flex-row mb-0">
       <p-button class="col-2" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
-      <p-selectButton class="col-10" [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
+      <p-select-button class="col-10" [options]="viewTypeList" [(ngModel)]="selectedViewType" [disabled]="!haveRole" (onChange)="viewTypeChange($event)">
         <ng-template #item let-item>
           <label>{{item.label | translate}}</label>
         </ng-template>
-      </p-selectButton>
+      </p-select-button>
     </div>
     <div class="field flex mt-1 mb-0" *ngIf="selectedViewType.index == 2">
       <p-date-picker class="flex m-1 w-8rem" #startCalendar [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{startDateTooltip | translate}}" />

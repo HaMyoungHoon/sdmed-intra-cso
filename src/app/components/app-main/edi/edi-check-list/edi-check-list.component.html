@@ -1,0 +1,75 @@
+<div class="edi-check-list-container">
+  <p-table #listTable dataKey="hospitalName" [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initList, viewList)" [customSort]="true"
+           [tableStyle]="tableStyle" size="small" stripedRows="true">
+    <ng-template #caption>
+      <div class="flex">
+        <p-date-picker class="flex m-1 w-8rem" [(ngModel)]="selectMonth" view="month" dateFormat="yy-mm" readonlyInput="true" />
+        <p-select class="m-1 w-12rem" [options]="dateModeList" [(ngModel)]="selectDateMode">
+          <ng-template #selectedItem let-item>
+            <label>{{item | translate}}</label>
+          </ng-template>
+          <ng-template #item let-item>
+            <label>{{item | translate}}</label>
+          </ng-template>
+        </p-select>
+        <p-select class="m-1 w-12rem" [options]="userModeList" [(ngModel)]="selectUserMode" (onChange)="getUserList()">
+          <ng-template #selectedItem let-item>
+            <label>{{item | translate}}</label>
+          </ng-template>
+          <ng-template #item let-item>
+            <label>{{item | translate}}</label>
+          </ng-template>
+        </p-select>
+        <p-select class="m-1" [options]="userList" [(ngModel)]="selectUser" optionLabel="name" />
+        <p-button class="align-self-center" icon="pi pi-refresh" size="small" (click)="refreshData()" />
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th style="width: 5rem"></th>
+        <th pSortableColumn="name">{{"edi-check-list.table.name" | translate}}<p-sortIcon field="name"/></th>
+        <th pSortableColumn="hospitalName">{{"edi-check-list.table.hospital-name" | translate}}<p-sortIcon field="ediState" /></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-data let-expanded="expanded">
+      <tr class="click-tr" [pRowToggler]="data">
+        <td>
+          <p-button type="button" pRipple [text]="true" [rounded]="true" [icon]="expanded ? downIcon : rightIcon" />
+        </td>
+        <td>{{data.name}}</td>
+        <td>{{data.hospitalName}}</td>
+      </tr>
+    </ng-template>
+    <ng-template #expandedrow let-data>
+      <tr>
+        <td colspan="3">
+          <div class="p-4">
+            <p-table [value]="data.subModel" dataKey="hospitalName">
+              <ng-template #header>
+                <tr>
+                  <th pSortableColumn="pharmaName">{{"edi-check-list.table.pharma-name" | translate}}<p-sortIcon field="pharmaName" /></th>
+                  <th pSortableColumn="ediState">{{"edi-check-list.table.edi-state" | translate}}<p-sortIcon field="ediState" /></th>
+                  <th>{{"edi-check-list.table.reg-date" | translate}}</th>
+                  <td>{{"edi-check-list.table.req-apply-date" | translate}}</td>
+                  <td>{{"edi-check-list.table.actual-apply-date" | translate}}</td>
+                </tr>
+              </ng-template>
+              <ng-template #body let-subModel>
+                <tr class="click-tr" (click)="openData(subModel)">
+                  <td>{{subModel.pharmaName}}</td>
+                  <td>
+                    <p-tag [value]="subModel.ediState" [severity]="getEDIStateSeverity(subModel.ediState)" />
+                  </td>
+                  <td>{{dateToYYYYMMdd(subModel.regDate)}}</td>
+                  <td>{{requestApplyDate(subModel)}}</td>
+                  <td>{{actualApplyDate(subModel)}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -29,7 +29,8 @@
     "sub-menu": {
       "sub-1": "list",
       "sub-2": "due date",
-      "sub-3": "apply date"
+      "sub-3": "apply date",
+      "sub-4": "check list"
     }
   },
   "menu-config": {
@@ -118,6 +119,21 @@
     "year": "year",
     "month": "month",
     "apply-date-state": "state"
+  },
+  "edi-check-list": {
+    "date-mode-option1": "request apply date",
+    "date-mode-option2": "actual apply date",
+    "user-mode-option1": "child only",
+    "user-mode-option2": "all user",
+    "table": {
+      "name": "name",
+      "hospital-name": "hospital",
+      "pharma-name": "pharma",
+      "edi-state": "state",
+      "reg-date": "reg date",
+      "req-apply-date": "request apply date",
+      "actual-apply-date": "actual apply date"
+    }
   },
   "medicine-price-list": {
     "price-excel": "medicine price upload",

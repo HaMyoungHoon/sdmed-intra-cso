@@ -11,6 +11,7 @@ export const routes: Routes = [
       { path: FConstants.EDI_DUE_DATE_URL, loadChildren: () => import("./components/app-main/edi/edi-due-date/edi-due-date.module").then(m => m.EdiDueDateModule) },
       { path: FConstants.EDI_APPLY_DATE_URL, loadChildren: () => import("./components/app-main/edi/edi-apply-date/edi-apply-date.module").then(m => m.EdiApplyDateModule) },
       { path: FConstants.EDI_VIEW_URL, loadChildren: () => import("./components/app-main/edi/edi-view/edi-view.module").then(m => m.EdiViewModule) },
+      { path: FConstants.EDI_CHECK_LIST_URL, loadChildren: () => import("./components/app-main/edi/edi-check-list/edi-check-list.module").then(m => m.EdiCheckListModule) },
 
       { path: FConstants.QNA_LIST_URL, loadChildren: () => import("./components/app-main/qna/qna-list/qna-list.module").then(m => m.QnaListModule) },
       { path: FConstants.QNA_VIEW_URL, loadChildren: () => import("./components/app-main/qna/qna-view/qna-view.module").then(m => m.QnaViewModule) },

@@ -27,6 +27,13 @@ export function MenuItem4(): MenuItem {
         icon: "pi pi-fw pi-file-check",
         styleClass: "top-menu",
         routerLink: `/${FConstants.EDI_APPLY_DATE_URL}`,
+      },
+      {
+        label: "menu-4.sub-menu.sub-4",
+        visible: true,
+        icon: "pi- pi-fw pi-file-check",
+        styleClass: "top-menu",
+        routerLink: `/${FConstants.EDI_CHECK_LIST_URL}`,
       }
     ]
   };
