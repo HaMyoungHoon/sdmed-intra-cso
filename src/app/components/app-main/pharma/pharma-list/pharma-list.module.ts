@@ -9,13 +9,14 @@ import {InputTextModule} from "primeng/inputtext";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Tooltip} from "primeng/tooltip";
+import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 
 
 
 @NgModule({
   declarations: [PharmaListComponent],
-  imports: [
-    CommonModule, PharmaListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TranslatePipe, Tooltip
-  ]
+	imports: [
+		CommonModule, PharmaListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TranslatePipe, Tooltip, ProgressSpinComponent
+	]
 })
 export class PharmaListModule { }

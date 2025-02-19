@@ -12,6 +12,7 @@ export const CACHES_IMAGE_CACHE: string = "image-cache";
 
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
+export const LOADING_IMAGE_ARRAY: string = "loading-image-array";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";
@@ -54,6 +55,19 @@ export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";
 export const ASSETS_PDF_IMAGE: string = "assets/image/pdf-image.png";
 export const ASSETS_XLSX_IMAGE: string = "assets/image/excel-image.png";
 export const ASSETS_DOCX_IMAGE: string = "assets/image/word-image.png";
+
+export const ASSETS_LOADING_IMAGE: string[] = [
+  "assets/image/loading_0.webp",
+  "assets/image/loading_1.webp",
+  "assets/image/loading_2.webp",
+  "assets/image/loading_3.webp",
+  "assets/image/loading_4.webp",
+  "assets/image/loading_5.webp",
+  "assets/image/loading_6.webp",
+  "assets/image/loading_7.webp",
+  "assets/image/loading_8.webp",
+];
+export const DEF_LOADING_IMAGE_ARRAY: number[] = [0,1,2,3,4,5,6,7,8];
 
 export const tableStyle: {"min-width": string} = {"min-width": "25rem"};
 export const filterTableOption: string = "contains";

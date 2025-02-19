@@ -12,13 +12,14 @@ import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
 import {InputTextModule} from "primeng/inputtext";
 import {Tooltip} from "primeng/tooltip";
+import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 
 
 
 @NgModule({
   declarations: [UserSettingComponent],
 	imports: [
-		CommonModule, UserSettingRoutingModule, TableModule, ButtonModule, TranslatePipe, FormsModule, MultiSelectModule, TagModule, IconField, InputIcon, InputTextModule, Tooltip
+		CommonModule, UserSettingRoutingModule, TableModule, ButtonModule, TranslatePipe, FormsModule, MultiSelectModule, TagModule, IconField, InputIcon, InputTextModule, Tooltip, ProgressSpinComponent
 	]
 })
 export class UserSettingModule { }

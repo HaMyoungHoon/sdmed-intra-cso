@@ -1,4 +1,5 @@
 <div class="medicine-list-container">
+  <app-progress-spin [isLoading]="isLoading" />
   <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
            [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
            [tableStyle]="tableStyle" size="small" stripedRows="true">

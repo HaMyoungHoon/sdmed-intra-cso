@@ -10,13 +10,14 @@ import {InputText} from "primeng/inputtext";
 import {Button} from "primeng/button";
 import {Card} from "primeng/card";
 import {IconField} from "primeng/iconfield";
+import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 
 
 
 @NgModule({
   declarations: [SettingComponent],
   imports: [
-    CommonModule, SettingRoutingModule, Checkbox, FormsModule, IftaLabel, TranslatePipe, InputText, Button, Card, IconField
+    CommonModule, SettingRoutingModule, Checkbox, FormsModule, IftaLabel, TranslatePipe, InputText, Button, Card, IconField, ProgressSpinComponent
   ]
 })
 export class SettingModule { }

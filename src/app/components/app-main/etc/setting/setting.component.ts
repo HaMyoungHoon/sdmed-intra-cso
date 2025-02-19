@@ -10,6 +10,7 @@ import {AppConfigService} from "../../../../services/common/app-config.service";
 export class SettingComponent implements AfterViewInit {
   infoSticky: boolean = false;
   toastLife: number = 3000;
+  isLoading: boolean = false;
   constructor(private appConfig: AppConfigService) {
   }
   ngAfterViewInit(): void {

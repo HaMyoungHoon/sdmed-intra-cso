@@ -1,3 +1,8 @@
 <div class="progress-spin-loading" *ngIf="isLoading">
-  <p-progress-spinner class="w-4rem h-4rem" strokeWidth="4" />
+  <div class="progress-background"></div>
+  <div class="progress-foreground flex flex-column justify-content-center">
+    <p-progress-spinner class="flex align-self-center w-4rem h-4rem" strokeWidth="4" *ngIf="isRandomLoading"/>
+    <img class="align-self-center" src="{{imageSrc}}" alt="loading" *ngIf="!isRandomLoading" />
+    <label class="flex align-self-center">loading...</label>
+  </div>
 </div>

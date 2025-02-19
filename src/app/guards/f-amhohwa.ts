@@ -35,6 +35,9 @@ export function decrypt(data : string | null): string {
 export function getRandomUUID(): string {
   return crypto.randomUUID()
 }
+export function getRandom(mod: number = 10): number {
+  return new Date().getTime() % mod;
+}
 
 const AES_KEY = "6574852065748520"
 const toHexStr = (data: string) : string => {

@@ -13,13 +13,14 @@ import {SelectButton} from "primeng/selectbutton";
 import {Tooltip} from "primeng/tooltip";
 import {FormsModule} from "@angular/forms";
 import {InputText} from "primeng/inputtext";
+import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 
 
 
 @NgModule({
   declarations: [QnaListComponent],
-  imports: [
-    CommonModule, QnaListRoutingModule, TableModule, Button, IconField, InputIcon, TranslatePipe, Tag, DatePicker, SelectButton, Tooltip, FormsModule, InputText,
-  ]
+	imports: [
+		CommonModule, QnaListRoutingModule, TableModule, Button, IconField, InputIcon, TranslatePipe, Tag, DatePicker, SelectButton, Tooltip, FormsModule, InputText, ProgressSpinComponent,
+	]
 })
 export class QnaListModule { }

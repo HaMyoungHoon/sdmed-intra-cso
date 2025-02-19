@@ -120,6 +120,23 @@ export function plusMonths(targetDate: Date, months: number): Date {
   return ret;
 }
 
+export function fixedNumber(data: number, fixed: number = 5): number {
+  return Number(data.toFixed(fixed));
+}
+
+export function getLocalImageArray(): number[] {
+  const buff = FAmhohwa.getLocalStorage(FConstants.LOADING_IMAGE_ARRAY);
+  if (buff.length <= 0) {
+    return FConstants.DEF_LOADING_IMAGE_ARRAY;
+  }
+  try {
+    return JSON.parse(buff) as number[];
+  } catch (e) {
+    FAmhohwa.setLocalStorage(FConstants.LOADING_IMAGE_ARRAY, JSON.stringify(FConstants.DEF_LOADING_IMAGE_ARRAY));
+    return FConstants.DEF_LOADING_IMAGE_ARRAY;
+  }
+}
+
 export function hexColorWithAlpha(hexColor: string, alpha: number = 1): string {
   return `${hexColorWithoutAlpha(hexColor)}${alpha.toString(16).toUpperCase().padStart(2, "0")}`;
 }
