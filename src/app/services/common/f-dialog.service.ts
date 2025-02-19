@@ -144,13 +144,13 @@ export class FDialogService {
     const life = this.appConfig.getToastLife();
     this.add(ToastLevel.info, title, detail, text, sticky, life, confirmFn, thisData, "common-desc.move");
   }
-  success(title: string, detail: string): void {
+  success(title: string, detail: string, text: string = ""): void {
     if ((detail?.length ?? 0) <= 0) {
       return;
     }
     const sticky = false;
     const life = this.appConfig.getToastLife();
-    this.add(ToastLevel.success, title, detail, null, sticky, life);
+    this.add(ToastLevel.success, title, detail, text, sticky, life);
   }
 
   add(severity: string, title: string, detail?: string, text?: any, sticky: boolean = false, life: number = 3000,

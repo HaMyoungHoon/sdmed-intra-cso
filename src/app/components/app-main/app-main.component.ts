@@ -128,7 +128,11 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
     }
     let title: string = "";
     switch (mqttContentModel.contentType) {
-      case MqttContentType.None: title = "mqtt-desc.title.none"; break;
+      case MqttContentType.None: {
+        title = "mqtt-desc.title.none";
+        this.fDialogService.success(title, mqttContentModel.senderName, mqttContentModel.content);
+        return;
+      }
       case MqttContentType.QNA_REQUEST: title = "mqtt-desc.title.qna-request"; break;
       case MqttContentType.QNA_REPLY: title = "mqtt-desc.title.qna-reply"; break;
       case MqttContentType.EDI_REQUEST: title = "mqtt-desc.title.edi-request"; break;
