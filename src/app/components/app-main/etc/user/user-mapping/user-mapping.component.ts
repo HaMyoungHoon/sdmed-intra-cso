@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
 import {HospitalModel} from "../../../../../models/rest/hospital/hospital-model";
@@ -9,6 +9,7 @@ import {debounceTime, Subject, Subscription, takeUntil} from "rxjs";
 import {HosPharmaMedicinePairModel} from "../../../../../models/rest/user/hos-pharma-medicine-pair-model";
 import * as FExtensions from "../../../../../guards/f-extensions";
 import {UserMappingService} from "../../../../../services/rest/user-mapping.service";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: "app-user-mapping",
@@ -17,6 +18,7 @@ import {UserMappingService} from "../../../../../services/rest/user-mapping.serv
   standalone: false
 })
 export class UserMappingComponent extends FComponentBase {
+  @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>
   userList: UserDataModel[] = [];
   selectUser?: UserDataModel;
 
@@ -94,6 +96,33 @@ export class UserMappingComponent extends FComponentBase {
     await this.hosSearch();
     await this.pharmaSearch();
     await this.pharmaSearch();
+  }
+  uploadExcel(): void {
+    this.inputUploadExcel.nativeElement.click();
+  }
+  async sampleDown(): Promise<void> {
+    this.thisService.getExcelSample().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "userMappingSample.xlsx");
+    }).catch(x => {
+      this.fDialogService.error("sampleDown", x.message);
+    });
+  }
+  async excelSelected(event: any): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.setLoading();
+      const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
+        e => this.fDialogService.error("excelSelected", e));
+      this.setLoading(false);
+      this.inputUploadExcel.nativeElement.value = "";
+      if (ret.result) {
+        await this.getAllList();
+        return;
+      }
+      this.fDialogService.warn("excelSelected", ret.msg);
+    }
   }
   mergePairModel(): HosPharmaMedicinePairModel[] {
     const ret: HosPharmaMedicinePairModel[] = [];
@@ -343,6 +372,12 @@ export class UserMappingComponent extends FComponentBase {
   }
   get medicineFilterPlaceHolder(): string {
     return "user-mapping.medicine-pick-list.filter-place-holder";
+  }
+  get uploadExcelTooltip(): string {
+    return "common-desc.excel-upload";
+  }
+  get sampleDownloadTooltip(): string {
+    return "common-desc.sample-download";
   }
 
   protected readonly ellipsis = FExtensions.ellipsis;

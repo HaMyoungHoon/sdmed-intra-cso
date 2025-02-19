@@ -41,4 +41,13 @@ export class UserMappingService {
   putUserRelationModifyByPK(userPK: string, hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[]): Promise<RestResult<UserDataModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data/user/${userPK}`, hosPharmaMedicinePairModel);
   }
+  getExcelSample(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
+  }
+  postExcel(file: File): Promise<RestResult<string>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    this.httpResponse.setMultipartContentType();
+    return this.httpResponse.post(`${this.baseUrl}/file/excel`, formData);
+  }
 }

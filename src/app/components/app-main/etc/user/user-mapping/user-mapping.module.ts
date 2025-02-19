@@ -14,13 +14,14 @@ import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-s
 import {InputTextModule} from "primeng/inputtext";
 import {CdkDrag, CdkDropList, CdkDropListGroup} from "@angular/cdk/drag-drop";
 import {CustomPickListComponent} from "../../../../common/custom-pick-list/custom-pick-list.component";
+import {Tooltip} from "primeng/tooltip";
 
 
 
 @NgModule({
   declarations: [UserMappingComponent],
 	imports: [
-		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, TranslatePipe, ButtonModule, IconField, InputIcon, Chip, CheckboxModule, ProgressSpinComponent, InputTextModule, CdkDropListGroup, CdkDrag, CdkDropList, CustomPickListComponent
+		CommonModule, UserMappingRoutingModule, ListboxModule, FormsModule, TranslatePipe, ButtonModule, IconField, InputIcon, Chip, CheckboxModule, ProgressSpinComponent, InputTextModule, CdkDropListGroup, CdkDrag, CdkDropList, CustomPickListComponent, Tooltip
 	]
 })
 export class UserMappingModule { }
