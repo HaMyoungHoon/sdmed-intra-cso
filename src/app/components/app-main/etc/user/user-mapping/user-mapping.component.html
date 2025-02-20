@@ -69,11 +69,11 @@
                           targetFilterPlaceHolder="{{medicineFilterPlaceHolder | translate}}">
       <ng-template #sourceItem let-source>
         <div>{{source.code}}</div>
-        <div>{{ellipsis(source.name)}}</div>
+        <div>{{ellipsis(source.innerName)}}</div>
       </ng-template>
       <ng-template #targetItem let-target>
         <div>{{target.code}}</div>
-        <div>{{ellipsis(target.name)}}</div>
+        <div>{{ellipsis(target.innerName)}}</div>
       </ng-template>
     </app-custom-pick-list>
   </div>

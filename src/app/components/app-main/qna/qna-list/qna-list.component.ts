@@ -155,7 +155,7 @@ export class QnaListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["title", "name", "qnaState"];
+    return ["title", "id", "name", "qnaState"];
   }
   get startDateTooltip(): string {
     return "qna-list.header.start-date";

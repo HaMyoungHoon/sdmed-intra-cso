@@ -90,14 +90,15 @@ export class PharmaListComponent extends FComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await FExtensions.restTry(async() => await this.thisService.postExcel(file),
-        e => this.fDialogService.error("excelSelected", e));
+        e => this.fDialogService.error("excel upload", e));
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.getPharmaAll();
+        this.fDialogService.success("excel upload", ret.data);
         return;
       }
-      this.fDialogService.warn("excelSelected", ret.msg);
+      this.fDialogService.warn("excel upload", ret.msg);
     }
   }
   uploadPharmaMedicineExcel(): void {
@@ -117,14 +118,14 @@ export class PharmaListComponent extends FComponentBase {
       const file = input.files[0];
       this.setLoading();
       const ret = await FExtensions.restTry(async() => await this.thisService.postPharmaMedicineExcel(file),
-        e => this.fDialogService.error("excelSelected", e));
+        e => this.fDialogService.error("excel upload", e));
       this.setLoading(false);
       this.inputPharmaMedicineUploadExcel.nativeElement.value = "";
       if (ret.result) {
         await this.getPharmaAll();
         return;
       }
-      this.fDialogService.warn("excelSelected", ret.msg);
+      this.fDialogService.warn("excel upload", ret.msg);
     }
   }
   pharmaEdit(data: PharmaModel): void {

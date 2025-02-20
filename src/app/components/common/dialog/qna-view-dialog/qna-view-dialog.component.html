@@ -9,6 +9,7 @@
     </div>
     <div class="flex grid w-full justify-content-center">
       <div class="m-1 select-none">
+        <span class="m-1">{{qnaHeaderModel.id}}</span>
         <span class="m-1">{{qnaHeaderModel.name}}</span>
         <span class="m-1">{{dateToYYYYMMdd(qnaHeaderModel.regDate)}}</span>
         <p-tag class="m-1" [value]="qnaHeaderModel.qnaState" [severity]="getQnAStateSeverity(qnaHeaderModel.qnaState)"/>

@@ -4,6 +4,7 @@ export class EDIUploadPharmaMedicineModel {
   pharmaPK: string = "";
   makerCode: string = "";
   medicinePK: string = "";
+  kdCode: string = "";
   name: string = "";
   count: number = 0;
   charge: number = 0;
