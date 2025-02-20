@@ -21,6 +21,7 @@
       <tr>
         <th>{{"edi-list.table.year" | translate}}</th>
         <th>{{"edi-list.table.month" | translate}}</th>
+        <th>{{"edi-list.table.id" | translate}}</th>
         <th>{{"edi-list.table.user-name" | translate}}</th>
         <th>{{"edi-list.table.org-name" | translate}}</th>
         <th pSortableColumn="ediState">{{"edi-list.table.edi-state" | translate}} <p-sortIcon field="ediState" /></th>
@@ -31,6 +32,7 @@
       <tr class="click-tr" (click)="openData(data)">
         <td>{{data.year}}</td>
         <td>{{data.month}}</td>
+        <td>{{data.id}}</td>
         <td>{{data.name}}</td>
         <td>{{data.orgName}}</td>
         <td>

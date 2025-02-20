@@ -31,7 +31,7 @@
     "sub-menu": {
       "sub-1": "목록",
       "sub-2": "마감일",
-      "sub-3": "적용일자",
+      "sub-3": "처방일",
       "sub-4": "체크리스트"
     }
   },
@@ -86,6 +86,7 @@
     "table": {
       "year": "적용연도",
       "month": "적용월",
+      "id": "아이디",
       "user-name": "이름",
       "org-name": "병원명",
       "edi-state": "상태",
@@ -93,9 +94,10 @@
     }
   },
   "edi-view": {
-    "apply-date": "적용일자",
+    "apply-date": "처방일",
     "reg-date": "등록일",
     "hospital-name": "병원명",
+    "id": "아이디",
     "user-name": "이름",
     "edi-state": "상태",
     "pharma-name": "제약사명",
@@ -151,13 +153,13 @@
     "special": "전문",
     "price-history": "가격 이력",
     "etc": "비고",
-    "apply-date": "적용일자",
+    "apply-date": "처방일",
     "ancestor-code": "목록정비전코드"
   },
   "hospital-list": {
     "code": "코드",
     "inner-name": "내부명",
-    "org-name": "이름",
+    "org-name": "원어명",
     "address": "주소",
     "etc1": "비고1",
     "etc2": "비고2"
@@ -168,7 +170,7 @@
     "sample-pharma-medicine": "제약사-약품 샘플 다운로드",
     "code": "코드",
     "inner-name": "내부명",
-    "org-name": "이름",
+    "org-name": "원어명",
     "address": "주소",
     "etc1": "비고1",
     "etc2": "비고2"
@@ -347,7 +349,7 @@
   },
   "hospital-edit": {
     "code": "코드",
-    "org-name": "이름",
+    "org-name": "원어명",
     "inner-name": "내부명",
     "owner-name": "대표자명",
     "phone-number": "전화번호",
@@ -378,7 +380,7 @@
       "inner-name": "내부명을 입력해주세요."
     },
     "code": "코드",
-    "org-name": "이름",
+    "org-name": "원어명",
     "inner-name": "내부명",
     "owner-name": "대표자명",
     "phone-number": "전화번호",
@@ -412,7 +414,7 @@
       "search-name": "이름"
     },
     "code": "코드",
-    "org-name": "이름",
+    "org-name": "원어명",
     "inner-name": "내부명",
     "owner-name": "대표자명",
     "phone-number": "전화번호",
@@ -443,7 +445,7 @@
       "inner-name": "내부명을 입력해주세요."
     },
     "code": "코드",
-    "org-name": "이름",
+    "org-name": "원어명",
     "inner-name": "내부명",
     "owner-name": "대표자명",
     "phone-number": "전화번호",

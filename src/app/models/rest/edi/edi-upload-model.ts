@@ -11,6 +11,7 @@ export class EDIUploadModel {
   day: string = "";
   hospitalPK: string = "";
   orgName: string = "";
+  id: string = "";
   name: string = "";
   ediState: EDIState = EDIState.None;
   regDate: Date = new Date();
