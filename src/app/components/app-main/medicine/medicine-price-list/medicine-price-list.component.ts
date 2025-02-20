@@ -160,6 +160,9 @@ export class MedicinePriceListComponent extends FComponentBase {
     };
   }
   headerSelectChange(data: TableHeaderModel[]): void {
+    if (data.length <= 0) {
+      this.selectedHeaders = [];
+    }
     this.configService.setMedicinePriceListTableHeaderList(this.selectedHeaders);
   }
   layoutInit(): void {

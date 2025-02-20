@@ -142,6 +142,9 @@ export class MedicineListComponent extends FComponentBase {
     return "common-desc.sample-download";
   }
   headerSelectChange(data: TableHeaderModel[]): void {
+    if (data.length <= 0) {
+      this.selectedHeaders = [];
+    }
     this.configService.setMedicineListTableHeaderList(this.selectedHeaders);
   }
   layoutInit(): void {

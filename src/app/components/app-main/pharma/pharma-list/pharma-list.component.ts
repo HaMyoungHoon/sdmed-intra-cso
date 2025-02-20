@@ -176,6 +176,9 @@ export class PharmaListComponent extends FComponentBase {
     return "pharma-list.sample-pharma-medicine";
   }
   headerSelectChange(data: TableHeaderModel[]): void {
+    if (data.length <= 0) {
+      this.selectedHeaders = [];
+    }
     this.configService.setPharmaListTableHeaderList(this.selectedHeaders);
   }
   layoutInit(): void {

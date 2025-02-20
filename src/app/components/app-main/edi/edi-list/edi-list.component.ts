@@ -126,6 +126,9 @@ export class EdiListComponent extends FComponentBase {
     return "edi-list.header.my-child";
   }
   headerSelectChange(data: TableHeaderModel[]): void {
+    if (data.length <= 0) {
+      this.selectedHeaders = [];
+    }
     this.configService.setEDIListTableHeaderList(this.selectedHeaders);
   }
   layoutInit(): void {
