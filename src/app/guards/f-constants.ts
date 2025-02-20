@@ -49,6 +49,7 @@ export const USER_EDIT_URL: string = "etc/userInfo/:thisPK";
 export const USER_MAPPING_URL: string = "etc/userMapping";
 export const MAIN_INGREDIENT_METHOD_URL: string = "etc/manual/main_ingredient_method";
 export const SETTING_URL: string = "etc/setting";
+export const LOG_LIST_URL: string = "etc/logList";
 
 export const ASSETS_NO_IMAGE: string = "assets/image/no-image-1920.png";
 export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";

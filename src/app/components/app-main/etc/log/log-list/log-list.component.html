@@ -1,0 +1,22 @@
+<div class="log-list-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <p-table #listTable [value]="viewList" [scrollable]="true" [rows]="size" [tableStyle]="tableStyle" size="small" [stripedRows]="true">
+    <ng-template #header>
+      <tr>
+        <th>{{"log-list.table.id" | translate}}</th>
+        <th>{{"log-list.table.content" | translate}}</th>
+        <th>{{"log-list.table.class-name" | translate}}</th>
+        <th>{{"log-list.table.reg-date" | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr>
+        <td class="w-10rem">{{item.id}}</td>
+        <td>{{item.content}}</td>
+        <td class="w-fit">{{item.className}}</td>
+        <td class="w-10rem">{{dateToYYYYMMdd(item.regDate)}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator (onPageChange)="paginatorChange($event)" [rows]="size" [totalRecords]="totalElement" [rowsPerPageOptions]="sizeList" />
+</div>

@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import * as FConstants from "./guards/f-constants"
 import {AppMainComponent} from "./components/app-main/app-main.component";
+import {LOG_LIST_URL} from "./guards/f-constants";
 
 export const routes: Routes = [
   { path: "", component: AppMainComponent,
@@ -39,7 +40,8 @@ export const routes: Routes = [
 
       { path: FConstants.MAIN_INGREDIENT_METHOD_URL, loadChildren: () => import("./components/app-main/etc/manual/main-ingredient-method/main-ingredient-method.module").then(m => m.MainIngredientMethodModule) },
 
-      { path: FConstants.SETTING_URL, loadChildren: () => import("./components/app-main/etc/setting/setting.module").then(m => m.SettingModule) }
+      { path: FConstants.SETTING_URL, loadChildren: () => import("./components/app-main/etc/setting/setting.module").then(m => m.SettingModule) },
+      { path: FConstants.LOG_LIST_URL, loadChildren: () => import("./components/app-main/etc/log/log-list/log-list.module").then(m => m.LogListModule) }
     ]
   },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import("./components/notfound/notfound.module").then(m => m.NotfoundModule) },

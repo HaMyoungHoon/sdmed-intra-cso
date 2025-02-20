@@ -22,7 +22,8 @@
       "sub-2": "user info",
       "sub-3": "user mapping",
       "sub-4": "main ingredient method",
-      "sub-5": "setting"
+      "sub-5": "setting",
+      "sub-6": "log list"
     }
   },
   "menu-4": {
@@ -530,6 +531,14 @@
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
     "back-to-home": "back to home"
+  },
+  "log-list": {
+    "table": {
+      "id": "id",
+      "content": "content",
+      "class-name": "작명 모라 하징",
+      "reg-date": "regDate"
+    }
   },
   "common-desc": {
     "open": "open",
