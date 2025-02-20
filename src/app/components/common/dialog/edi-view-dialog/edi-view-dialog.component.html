@@ -10,27 +10,37 @@
       </a>
     </ng-template>
   </p-context-menu>
-  <div>
-    <span>{{"edi-view.apply-date" | translate}}</span>
-    <span>{{getApplyDate()}}</span>
-    <span>{{"edi-view.reg-date" | translate}}</span>
-    <span>{{dateToYYYYMMdd(uploadModel.regDate)}}</span>
+  <div class="flex">
+    <p-ifta-label class="m-1">
+      <input id="applyDate" [ngModel]="getApplyDate()" readonly pInputText />
+      <label for="applyDate">{{"edi-view.apply-date" | translate}}</label>
+    </p-ifta-label>
+    <p-ifta-label class="m-1">
+      <input id="regDate" [ngModel]="dateToYYYYMMdd(uploadModel.regDate)" readonly pInputText />
+      <label for="regDate">{{"edi-view.reg-date" | translate}}</label>
+    </p-ifta-label>
+    <p-ifta-label class="m-1">
+      <input id="hospitalName" [ngModel]="uploadModel.orgName" readonly pInputText />
+      <label for="hospitalName">{{"edi-view.hospital-name" | translate}}</label>
+    </p-ifta-label>
+    <p-ifta-label class="m-1" *ngIf="uploadModel.etc.length > 0">
+      <input id="hospitalNewName" [ngModel]="uploadModel.etc" readonly pInputText />
+      <label for="hospitalNewName">{{"edi-view.hospital-new-name" | translate}}</label>
+    </p-ifta-label>
   </div>
-  <div>
-    <span>{{"edi-view.hospital-name" | translate}}</span>
-    <span>{{uploadModel.orgName}}</span>
-    <div *ngIf="uploadModel.etc.length > 0">
-      <span>{{uploadModel.etc}}</span>
-    </div>
-  </div>
-  <div>
-    <span>{{"edi-view.user-name" | translate}}</span>
-    <span>{{uploadModel.name}}</span>
-    <span>{{"edi-view.edi-state" | translate}}</span>
-    <span>
+  <div class="flex">
+    <p-ifta-label class="m-1">
+      <input id="userId" [ngModel]="uploadModel.id" readonly pInputText />
+      <label for="userId">{{"edi-view.id" | translate}}</label>
+    </p-ifta-label>
+    <p-ifta-label class="m-1">
+      <input id="userName" [ngModel]="uploadModel.name" readonly pInputText />
+      <label for="userName">{{"edi-view.user-name" | translate}}</label>
+    </p-ifta-label>
+    <span class="m-1 align-self-center">
       <p-tag [value]="uploadModel.ediState" [severity]="getEDIStateSeverity(uploadModel.ediState)" />
     </span>
-    <p-button (click)="$event.stopPropagation(); responseNewEDI()" *ngIf="!newEDIModifyDisable()">{{"common-desc.modify" | translate}}</p-button>
+    <p-button class="m-1 align-self-center" (click)="$event.stopPropagation(); responseNewEDI()" *ngIf="!newEDIModifyDisable()">{{"common-desc.modify" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="multipleEnable">
     <p-accordion-panel *ngFor="let pharma of uploadModel.pharmaList" value="{{accordionPharmaIndex(pharma)}}">
