@@ -10,13 +10,15 @@ import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Tooltip} from "primeng/tooltip";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
+import {MultiSelect} from "primeng/multiselect";
+import {FormsModule} from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [PharmaListComponent],
-	imports: [
-		CommonModule, PharmaListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TranslatePipe, Tooltip, ProgressSpinComponent
-	]
+  imports: [
+    CommonModule, PharmaListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TranslatePipe, Tooltip, ProgressSpinComponent, MultiSelect, FormsModule
+  ]
 })
 export class PharmaListModule { }

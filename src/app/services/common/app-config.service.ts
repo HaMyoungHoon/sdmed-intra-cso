@@ -4,6 +4,7 @@ import * as FAmhohwa from "../../guards/f-amhohwa";
 import {AppState} from "../../models/common/app-state";
 import {DOCUMENT, isPlatformBrowser} from "@angular/common";
 import {TableHeaderModel} from "../../models/common/table-header-model";
+import {THEME_LINK} from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -158,15 +159,80 @@ export class AppConfigService {
     }
   }
 
-  getMedicinePriceTableHeaderList(): TableHeaderModel[] {
-    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_PRICE_HEADER_LIST);
+  getEDIListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.EDI_LIST_HEADER_LIST)
     if (buff.length <= 0) {
       return [];
     }
     return JSON.parse(buff) as TableHeaderModel[]
   }
-  setMedicinePriceTableHeaderList(data: TableHeaderModel[]): void {
+  setEDIListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
-    FAmhohwa.setLocalStorage(FConstants.MEDICINE_PRICE_HEADER_LIST, buff);
+    FAmhohwa.setLocalStorage(FConstants.EDI_LIST_HEADER_LIST, buff);
+  }
+  getHospitalListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.HOSPITAL_LIST_HEADER_LIST)
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setHospitalListTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.HOSPITAL_LIST_HEADER_LIST, buff);
+  }
+  getPharmaListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.PHARMA_LIST_HEADER_LIST)
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setPharmaListTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.PHARMA_LIST_HEADER_LIST, buff);
+  }
+  getMedicineListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_LIST_HEADER_LIST)
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setMedicineListTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.MEDICINE_LIST_HEADER_LIST, buff);
+  }
+  getMedicinePriceListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_LIST_PRICE_HEADER_LIST);
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setMedicinePriceListTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.MEDICINE_LIST_PRICE_HEADER_LIST, buff);
+  }
+
+  allStorageClear(): void {
+    const storage: string[] = [
+      FConstants.STORAGE_KEY_LANG,
+      FConstants.STORAGE_DASHBOARD_VIEW_TYPE,
+      FConstants.STORAGE_QNA_VIEW_TYPE,
+      FConstants.STORAGE_IMAGE_CACHE_CLEAR_TIME,
+      FConstants.STORAGE_INFO_STICKY,
+      FConstants.STORAGE_TOAST_LIFE,
+      FConstants.CACHES_IMAGE_CACHE,
+      FConstants.THEME_LINK,
+      FConstants.MQTT_CONNECT_DATA,
+      FConstants.LOADING_IMAGE_ARRAY,
+      FConstants.EDI_LIST_HEADER_LIST,
+      FConstants.HOSPITAL_LIST_HEADER_LIST,
+      FConstants.PHARMA_LIST_HEADER_LIST,
+      FConstants.MEDICINE_LIST_HEADER_LIST,
+      FConstants.MEDICINE_LIST_PRICE_HEADER_LIST
+    ];
+    storage.forEach(x => FAmhohwa.removeLocalStorage(x));
   }
 }

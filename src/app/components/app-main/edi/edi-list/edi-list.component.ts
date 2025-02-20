@@ -9,6 +9,8 @@ import {DatePicker} from "primeng/datepicker";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
 import * as FImageCache from "../../../../guards/f-image-cache";
+import {TableHeaderModel} from "../../../../models/common/table-header-model";
+import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 
 @Component({
   selector: "app-edi-list",
@@ -22,12 +24,14 @@ export class EdiListComponent extends FComponentBase {
   @ViewChild("endDatePicker") endDatePicker !: DatePicker;
   startDate: Date = FExtensions.plusDays(new Date(), -31);
   endDate: Date = new Date();
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   viewList: EDIUploadModel[] = [];
   initList: EDIUploadModel[] = [];
-  isSorted: boolean | null = null;
   myChild: boolean = true;
   constructor(private thisService: EdiListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee, UserRole.EdiChanger));
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -121,11 +125,63 @@ export class EdiListComponent extends FComponentBase {
   get myChildTooltip(): string {
     return "edi-list.header.my-child";
   }
+  headerSelectChange(data: TableHeaderModel[]): void {
+    this.configService.setEDIListTableHeaderList(this.selectedHeaders);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.year-month";
+      obj.field = "yearMonth";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.id";
+      obj.field = "id";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.user-name";
+      obj.field = "userName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.org-name";
+      obj.field = "orgName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.edi-state";
+      obj.htmlType = "tag";
+      obj.field = "ediState";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.reg-date";
+      obj.field = "regDate";
+    }));
+
+    this.selectedHeaders = this.configService.getEDIListTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "yearMonth": return `${item.year}-${item.month}` ;
+      case "id": return item.id;
+      case "userName": return item.name;
+      case "orgName": return item.orgName;
+      case "ediState": return StringToEDIStateDesc[item.ediState];
+      case "regDate": return FExtensions.dateToYYYYMMdd(item.regDate);
+      default: return ""
+    }
+  }
+  getTableItemSeverity(item: EDIUploadModel): any {
+    return FExtensions.getEDIStateSeverity(item.ediState);
+  }
+  isHeaderLabel(tableHeaderModel: TableHeaderModel): boolean {
+    return tableHeaderModel.htmlType == "label";
+  }
+  isHeaderTag(tableHeaderModel: TableHeaderModel): boolean {
+    return tableHeaderModel.htmlType == "tag";
+  }
 
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly customSort = FExtensions.customSort;
-  protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
-  protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
 }

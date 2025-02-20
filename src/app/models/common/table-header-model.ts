@@ -3,4 +3,5 @@ export class TableHeaderModel {
   className: string = "";
   style: {[key: string]: string} = { };
   field: string = "";
+  htmlType: string = "label";
 }

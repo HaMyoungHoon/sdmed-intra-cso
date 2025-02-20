@@ -84,6 +84,7 @@
       "my-child": "child only"
     },
     "table": {
+      "year-month": "apply date",
       "year": "apply year",
       "month": "apply month",
       "id": "id",
@@ -106,7 +107,7 @@
     "approx-apply-date": "approx apply date",
     "medicine-name": "medicine name",
     "medicine-count": "count",
-    "medicine-charge": "charge %",
+    "medicine-charge": "charge",
     "medicine-price": "price",
     "medicine-date": "medicine price date",
     "reply": {
@@ -147,44 +148,54 @@
     "inner-name": "inner name",
     "kd-code": "insurance code",
     "maker-name": "maker name",
-    "main-ingredient-code": "main ingredient code",
+    "main-ingredient-name": "ingredient name",
     "max-price": "price",
     "custom-price": "custom price",
-    "charge": "charge %",
+    "charge": "charge",
     "standard": "standard",
     "general": "general",
     "special": "special",
     "price-history": "history",
-    "etc": "etc",
+    "etc1": "et cetera",
     "apply-date": "apply date",
     "ancestor-code": "ancestor code"
   },
   "hospital-list": {
-    "code": "code",
-    "inner-name": "inner name",
-    "org-name": "org name",
-    "address": "address",
-    "etc1": "et cetera",
-    "etc2": "et cetera"
+    "table": {
+      "org-name": "org name",
+      "inner-name": "inner name",
+      "owner-name": "owner name",
+      "address": "address",
+      "etc1": "et cetera",
+      "etc2": "et cetera"
+    }
   },
   "pharma-list": {
     "post-pharma-data": "upload pharma excel",
     "post-pharma-medicine": "upload pharma-medicine excel",
     "sample-pharma-medicine": "sample download pharma-medicine excel",
-    "code": "code",
-    "inner-name": "inner name",
-    "org-name": "org name",
-    "address": "address",
-    "etc1": "et cetera",
-    "etc2": "et cetera"
+    "table": {
+      "org-name": "org name",
+      "inner-name": "inner name",
+      "owner-name": "owner name",
+      "address": "address",
+      "retroactive-rule": "retroactive rule",
+      "inner-settlement-rule": "inner settlement rule",
+      "outer-settlement-rule": "outer settlement rule",
+      "etc1": "et cetera",
+      "etc2": "et cetera"
+    }
   },
   "medicine-list": {
     "code": "code",
-    "name": "name",
+    "org-name": "product name",
+    "kd-code": "insurance code",
+    "inner-name": "inner name",
     "maker-name": "maker name",
-    "main-ingredient-name": "main ingredient name",
+    "main-ingredient-name": "ingredient name",
     "custom-price": "custom price",
-    "charge": "charge %",
+    "charge": "charge",
+    "standard": "standard",
     "max-price": "max price",
     "etc1": "et cetera",
     "etc2": "et cetera"
@@ -478,14 +489,14 @@
       "maker": "plz input pharma"
     },
     "code": "code",
-    "main-ingredient-code": "main ingredient code",
-    "kd-code": "kd code",
+    "main-ingredient-code": "ingredient code",
+    "kd-code": "insurance code",
     "standard-code": "standard code",
     "pharma": "pharma",
     "org-name": "org name",
     "inner-name": "inner name",
     "custom-price": "custom price",
-    "charge": "charge %",
+    "charge": "charge",
     "standard": "standard",
     "account-unit": "account unit",
     "medicine-type": "type",
@@ -508,14 +519,14 @@
       "maker": "plz input pharma"
     },
     "code": "code",
-    "main-ingredient-code": "main ingredient code",
-    "kd-code": "kd code",
+    "main-ingredient-code": "ingredient code",
+    "kd-code": "insurance code",
     "standard-code": "standard code",
     "pharma": "pharma",
     "org-name": "org name",
     "inner-name": "inner name",
     "custom-price": "custom price",
-    "charge": "charge %",
+    "charge": "charge",
     "standard": "standard",
     "account-unit": "account unit",
     "medicine-type": "type",
@@ -533,7 +544,9 @@
   },
   "setting": {
     "info-sticky": "info toast sticky",
-    "toast-life": "toast timeout(ms)"
+    "toast-life": "toast timeout(ms)",
+    "remove-cache": "remove cache",
+    "setting-init": "setting init"
   },
   "error": {
     "title": "cannot found page",

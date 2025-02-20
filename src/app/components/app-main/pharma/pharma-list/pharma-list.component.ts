@@ -8,6 +8,8 @@ import {saveAs} from "file-saver";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
+import {TableHeaderModel} from "../../../../models/common/table-header-model";
+import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 
 @Component({
   selector: "app-pharma-list",
@@ -19,11 +21,14 @@ export class PharmaListComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   @ViewChild("inputPharmaMedicineUploadExcel") inputPharmaMedicineUploadExcel!: ElementRef<HTMLInputElement>;
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   initValue: PharmaModel[] = [];
   viewList: PharmaModel[] = [];
   isSorted: boolean | null = null;
   constructor(private thisService: PharmaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.PharmaChanger));
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -169,10 +174,68 @@ export class PharmaListComponent extends FComponentBase {
   get pharmaMedicineSampleDownloadTooltip(): string {
     return "pharma-list.sample-pharma-medicine";
   }
+  headerSelectChange(data: TableHeaderModel[]): void {
+    this.configService.setPharmaListTableHeaderList(this.selectedHeaders);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.org-name";
+      obj.field = "orgName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.inner-name";
+      obj.field = "innerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.owner-name";
+      obj.field = "ownerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.address";
+      obj.field = "address";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.retroactive-rule";
+      obj.field = "retroactiveRule";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.inner-settlement-rule";
+      obj.field = "innerSettlementRule";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.outer-settlement-rule";
+      obj.field = "outerSettlementRule";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.etc1";
+      obj.field = "etc1";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "pharma-list.table.etc2";
+      obj.field = "etc2";
+    }));
 
-  protected readonly customSort = FExtensions.customSort;
+    this.selectedHeaders = this.configService.getPharmaListTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: PharmaModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "orgName": return item.orgName;
+      case "innerName": return item.innerName;
+      case "ownerName": return item.ownerName;
+      case "address": return item.address;
+      case "retroactiveRule": return item.retroactiveRule;
+      case "innerSettlementRule": return item.innerSettlementRule;
+      case "outerSettlementRule": return item.outerSettlementRule;
+      case "etc1": return item.etc1;
+      case "etc2": return item.etc2;
+      default: return ""
+    }
+  }
+
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly ellipsis = FExtensions.ellipsis;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
 }

@@ -8,6 +8,7 @@ import {saveAs} from "file-saver";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
+import {TableHeaderModel} from "../../../../models/common/table-header-model";
 
 @Component({
   selector: "app-hospital-list",
@@ -18,11 +19,14 @@ import {Subject, takeUntil} from "rxjs";
 export class HospitalListComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   initValue: HospitalModel[] = [];
   viewList: HospitalModel[] = [];
   isSorted: boolean | null = null;
   constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -135,10 +139,53 @@ export class HospitalListComponent extends FComponentBase {
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";
   }
+  headerSelectChange(data: TableHeaderModel[]): void {
+    this.configService.setHospitalListTableHeaderList(this.selectedHeaders);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.org-name";
+      obj.field = "orgName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.inner-name";
+      obj.field = "innerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.owner-name";
+      obj.field = "ownerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.address";
+      obj.field = "address";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.etc1";
+      obj.field = "etc1";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "hospital-list.table.etc2";
+      obj.field = "etc2";
+    }));
 
-  protected readonly customSort = FExtensions.customSort;
+    this.selectedHeaders = this.configService.getHospitalListTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: HospitalModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "orgName": return item.orgName;
+      case "innerName": return item.innerName;
+      case "ownerName": return item.ownerName;
+      case "address": return item.address;
+      case "etc1": return item.etc1;
+      case "etc2": return item.etc2;
+      default: return ""
+    }
+  }
+
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly ellipsis = FExtensions.ellipsis;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
 }

@@ -13,7 +13,11 @@ export const CACHES_IMAGE_CACHE: string = "image-cache";
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
 export const LOADING_IMAGE_ARRAY: string = "loading-image-array";
-export const MEDICINE_PRICE_HEADER_LIST: string = "medicinePriceHeaderList";
+export const EDI_LIST_HEADER_LIST: string = "ediListHeaderList";
+export const HOSPITAL_LIST_HEADER_LIST: string = "hospitalListHeaderList";
+export const PHARMA_LIST_HEADER_LIST: string = "pharmaListHeaderList";
+export const MEDICINE_LIST_HEADER_LIST: string = "medicineListHeaderList";
+export const MEDICINE_LIST_PRICE_HEADER_LIST: string = "medicinePriceListHeaderList";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";

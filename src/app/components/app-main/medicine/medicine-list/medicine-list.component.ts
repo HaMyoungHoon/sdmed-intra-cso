@@ -8,6 +8,7 @@ import {MedicineListService} from "../../../../services/rest/medicine-list.servi
 import {saveAs} from "file-saver";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
+import {TableHeaderModel} from "../../../../models/common/table-header-model";
 
 @Component({
   selector: "app-medicine-list",
@@ -18,11 +19,13 @@ import {Subject, takeUntil} from "rxjs";
 export class MedicineListComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   initValue: MedicineModel[] = [];
   viewList: MedicineModel[] = [];
-  isSorted: boolean | null = null;
   constructor(private thisService: MedicineListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.MedicineChanger));
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -129,7 +132,7 @@ export class MedicineListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["code", "name", "medicineIngredientModel.mainIngredientName"];
+    return ["orgName", "kdCode", "makerName", "maxPrice", "medicineIngredientModel.mainIngredientName"];
   }
   get uploadExcelTooltip(): string {
     return "common-desc.excel-upload";
@@ -137,10 +140,77 @@ export class MedicineListComponent extends FComponentBase {
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";
   }
+  headerSelectChange(data: TableHeaderModel[]): void {
+    this.configService.setMedicineListTableHeaderList(this.selectedHeaders);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.inner-name";
+      obj.className = "minW30rem";
+      obj.field = "innerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.main-ingredient-name";
+      obj.className = "minW20rem";
+      obj.field = "mainIngredientName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.kd-code";
+      obj.field = "kdCode";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.max-price";
+      obj.className = "minW5rem";
+      obj.field = "maxPrice";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.charge";
+      obj.className = "minW5rem";
+      obj.field = "charge";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.standard";
+      obj.className = "minW5rem";
+      obj.field = "standard";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.etc1";
+      obj.className = "minW5rem";
+      obj.field = "etc";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.maker-name";
+      obj.className = "minW5rem";
+      obj.field = "makerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-list.custom-price";
+      obj.className = "minW5rem";
+      obj.field = "customPrice";
+    }));
 
-  protected readonly customSort = FExtensions.customSort;
+    this.selectedHeaders = this.configService.getMedicineListTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: MedicineModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "orgName": return item.orgName;
+      case "innerName": return item.innerName;
+      case "kdCode": return item.kdCode;
+      case "makerName": return item.makerName ?? "";
+      case "mainIngredientName": return item.medicineIngredientModel.mainIngredientName;
+      case "maxPrice": return item.maxPrice.toString();
+      case "customPrice": return item.customPrice.toString();
+      case "charge": return item.charge.toString();
+      case "standard": return item.medicineSubModel.standard;
+      case "etc": return item.medicineSubModel.etc1;
+      default: return ""
+    }
+  }
+
   protected readonly filterTable = FExtensions.filterTable;
-  protected readonly ellipsis = FExtensions.ellipsis;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
 }

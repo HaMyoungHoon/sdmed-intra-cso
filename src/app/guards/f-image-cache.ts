@@ -21,6 +21,12 @@ export async function deleteImage(url: string): Promise<void> {
     await openCache.delete(url);
   }
 }
+export async function clearAllImage(): Promise<void> {
+  const openCache = await caches.open(FConstants.CACHES_IMAGE_CACHE);
+  const keys = await openCache.keys();
+  const buff = keys.map(x => openCache.delete(x));
+  await Promise.all(buff);
+}
 export async function clearExpiredImage(): Promise<void> {
   if (!ableImageClear()) {
     return;

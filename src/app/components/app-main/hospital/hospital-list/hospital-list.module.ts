@@ -11,13 +11,15 @@ import {TagModule} from "primeng/tag";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Tooltip} from "primeng/tooltip";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
+import {MultiSelect} from "primeng/multiselect";
+import {FormsModule} from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [HospitalListComponent],
-	imports: [
-		CommonModule, HospitalListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TagModule, TranslatePipe, Tooltip, ProgressSpinComponent
-	]
+  imports: [
+    CommonModule, HospitalListRoutingModule, ButtonModule, IconField, InputIcon, InputTextModule, TableModule, TagModule, TranslatePipe, Tooltip, ProgressSpinComponent, MultiSelect, FormsModule
+  ]
 })
 export class HospitalListModule { }

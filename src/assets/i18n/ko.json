@@ -21,7 +21,7 @@
       "sub-1": "내 정보",
       "sub-2": "유저 정보",
       "sub-3": "유저 매핑",
-      "sub-4": "주성분코드 부여방법",
+      "sub-4": "성분코드 부여방법",
       "sub-5": "설정",
       "sub-6": "로그 리스트"
     }
@@ -84,6 +84,7 @@
       "my-child": "담당만"
     },
     "table": {
+      "year-month": "처방월",
       "year": "적용연도",
       "month": "적용월",
       "id": "아이디",
@@ -106,7 +107,7 @@
     "approx-apply-date": "예정반영일",
     "medicine-name": "약품명",
     "medicine-count": "개수",
-    "medicine-charge": "수수료율 %",
+    "medicine-charge": "요율",
     "medicine-price": "가격",
     "medicine-date": "가격반영일",
     "reply": {
@@ -147,45 +148,55 @@
     "inner-name": "내부명",
     "kd-code": "보험코드",
     "maker-name": "제조사",
-    "main-ingredient-code": "주성분코드",
+    "main-ingredient-name": "성분명",
     "max-price": "약가",
     "custom-price": "지정가",
-    "charge": "수수료율 %",
+    "charge": "요율",
     "standard": "규격",
     "general": "일반",
     "special": "전문",
     "price-history": "가격 이력",
-    "etc": "비고",
+    "etc1": "비고1",
     "apply-date": "기준일",
     "ancestor-code": "목록정비전코드"
   },
   "hospital-list": {
-    "code": "코드",
-    "inner-name": "내부명",
-    "org-name": "원어명",
-    "address": "주소",
-    "etc1": "비고1",
-    "etc2": "비고2"
+    "table": {
+      "org-name": "원어명",
+      "inner-name": "내부명",
+      "owner-name": "대표명",
+      "address": "주소",
+      "etc1": "비고1",
+      "etc2": "비고2"
+    }
   },
   "pharma-list": {
     "post-pharma-data": "제약사 엑셀 업로드",
     "post-pharma-medicine": "제약사-약품 엑셀 업로드",
     "sample-pharma-medicine": "제약사-약품 샘플 다운로드",
-    "code": "코드",
-    "inner-name": "내부명",
-    "org-name": "원어명",
-    "address": "주소",
-    "etc1": "비고1",
-    "etc2": "비고2"
+    "table": {
+      "org-name": "원어명",
+      "inner-name": "내부명",
+      "owner-name": "대표명",
+      "retroactive-rule": "소급기준",
+      "inner-settlement-rule": "내부정산기준",
+      "outer-settlement-rule": "외부정산기준",
+      "address": "주소",
+      "etc1": "비고1",
+      "etc2": "비고2"
+    }
   },
   "medicine-list": {
     "code": "코드",
-    "name": "이름",
+    "org-name": "제품명",
+    "kd-code": "보험코드",
+    "inner-name": "내부명",
     "maker-name": "제조사",
-    "main-ingredient-name": "주성분이름",
+    "main-ingredient-name": "성분명",
     "custom-price": "지정가",
-    "charge": "수수료율 %",
-    "max-price": "상한가",
+    "charge": "요율",
+    "standard": "규격",
+    "max-price": "기준가",
     "etc1": "비고1",
     "etc2": "비고2"
   },
@@ -478,14 +489,14 @@
       "maker": "제조사를 입력해주세요"
     },
     "code": "코드",
-    "main-ingredient-code": "주성분코드",
-    "kd-code": "kd 코드",
+    "main-ingredient-code": "성분코드",
+    "kd-code": "보험코드",
     "standard-code": "표준코드",
     "org-name": "제품명",
     "inner-name": "내부명",
     "pharma": "제약사",
     "custom-price": "지정가",
-    "charge": "수수료율 %",
+    "charge": "요율",
     "standard": "규격",
     "account-unit": "계산단위",
     "medicine-type": "제품종류",
@@ -508,14 +519,14 @@
       "maker": "제조사를 입력해주세요."
     },
     "code": "코드",
-    "main-ingredient-code": "주성분코드",
-    "kd-code": "kd 코드",
+    "main-ingredient-code": "성분코드",
+    "kd-code": "보험코드",
     "standard-code": "표준코드",
     "pharma": "제약사",
     "org-name": "제품명",
     "inner-name": "내부명",
     "custom-price": "지정가",
-    "charge": "수수료율 %",
+    "charge": "요율",
     "standard": "규격",
     "account-unit": "계산단위",
     "medicine-type": "제품종류",
@@ -533,7 +544,9 @@
   },
   "setting": {
     "info-sticky": "정보알림 붙여놓기",
-    "toast-life": "정보알림 유지시간(ms)"
+    "toast-life": "정보알림 유지시간(ms)",
+    "remove-cache": "캐시 지우기",
+    "setting-init": "설정 초기화"
   },
   "log-list": {
     "table": {

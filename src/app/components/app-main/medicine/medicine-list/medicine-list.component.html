@@ -1,8 +1,7 @@
 <div class="medicine-list-container">
   <app-progress-spin [isLoading]="isLoading" />
-  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, viewList)" [customSort]="true"
-           [tableStyle]="tableStyle" size="small" stripedRows="true">
+  <p-table #listTable [columns]="selectedHeaders" [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="filterFields" [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" [disabled]="!haveRole"/>
@@ -10,6 +9,16 @@
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{sampleDownloadTooltip | translate}}" />
         <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
+        <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
+          <ng-template #item let-item>
+            <div>{{item.header | translate}}</div>
+          </ng-template>
+          <ng-template #selecteditems let-items>
+            <div *ngFor="let item of items">
+              {{item?.header | translate}},
+            </div>
+          </ng-template>
+        </p-multi-select>
         <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
           <p-inputicon>
             <i class="pi pi-search"></i>
@@ -18,34 +27,14 @@
         </p-iconfield>
       </div>
     </ng-template>
-    <ng-template #header>
+    <ng-template #header let-columns>
       <tr>
-        <th pSortableColumn="code">{{"medicine-list.code" | translate}} <p-sortIcon field="code" /></th>
-        <th pSortableColumn="name">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
-        <th>{{"medicine-list.maker-name" | translate}}</th>
-        <th>{{"medicine-list.main-ingredient-name" | translate}}</th>
-        <th>{{"medicine-list.custom-price" | translate}}</th>
-        <th>{{"medicine-list.charge" | translate}}</th>
-        <th>{{"medicine-list.max-price" | translate}}</th>
-        <th>{{"medicine-list.etc1" | translate}}</th>
-        <th>{{"medicine-list.etc2" | translate}}</th>
-        <th>{{"common-desc.edit" | translate}}</th>
+        <th *ngFor="let col of columns" [ngClass]="col.className">{{col.header | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template #body let-medicine>
-      <tr>
-        <td>{{medicine.code}}</td>
-        <td>{{medicine.innerName}}</td>
-        <td>{{medicine.makerName}}</td>
-        <td>{{medicine.medicineIngredientModel.mainIngredientName}}</td>
-        <td>{{medicine.customPrice}}</td>
-        <td>{{medicine.charge}}</td>
-        <td>{{medicine.maxPrice}}</td>
-        <td>{{ellipsis(medicine.medicineSubModel.etc1)}}</td>
-        <td>{{ellipsis(medicine.medicineSubModel.etc2)}}</td>
-        <td>
-          <p-button size="small" (onClick)="medicineEdit(medicine)" [disabled]="!haveRole">{{"common-desc.edit" | translate}}</p-button>
-        </td>
+    <ng-template #body let-item let-columns="columns">
+      <tr class="click-tr" (click)="medicineEdit(item)">
+        <td *ngFor="let col of columns">{{getTableItem(item, col)}}</td>
       </tr>
     </ng-template>
   </p-table>

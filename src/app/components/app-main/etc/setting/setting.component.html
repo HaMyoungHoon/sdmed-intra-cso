@@ -12,5 +12,11 @@
       <p-icon-field class="align-self-center cursor-pointer" [ngClass]="stickyCheckIcon"></p-icon-field>
       <label class="m-1 align-self-center cursor-pointer">{{"setting.info-sticky" | translate}}</label>
     </div>
+    <div class="field grid m-1 shadow-7 p-1 cursor-pointer" (click)="removeCache()">
+      <p-button class="m-1 align-self-center">{{"setting.remove-cache" | translate}}</p-button>
+    </div>
+    <div class="field grid m-1 shadow-7 p-1 cursor-pointer" (click)="settingInit()">
+      <p-button class="m-1 align-self-center">{{"setting.setting-init" | translate}}</p-button>
+    </div>
   </div>
 </div>

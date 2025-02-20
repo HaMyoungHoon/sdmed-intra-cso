@@ -14,13 +14,14 @@ import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
 import {Checkbox} from "primeng/checkbox";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
+import {MultiSelect} from "primeng/multiselect";
 
 
 
 @NgModule({
   declarations: [EdiListComponent],
 	imports: [
-		CommonModule, EdiListRoutingModule, TableModule, Button, IconField, InputIcon, InputText, Tag, Tooltip, TranslatePipe, DatePicker, FormsModule, Checkbox, ProgressSpinComponent
+		CommonModule, EdiListRoutingModule, TableModule, Button, IconField, InputIcon, InputText, Tag, Tooltip, TranslatePipe, DatePicker, FormsModule, Checkbox, ProgressSpinComponent, MultiSelect
 	]
 })
 export class EdiListModule { }

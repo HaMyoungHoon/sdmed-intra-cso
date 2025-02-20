@@ -1,14 +1,23 @@
 <div class="edi-list-container">
   <app-progress-spin [isLoading]="isLoading" />
-  <p-table #listTable [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initList, viewList)" [customSort]="true"
-           [tableStyle]="tableStyle" size="small" stripedRows="true">
+  <p-table #listTable [columns]="selectedHeaders" [value]="viewList" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="filterFields" [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-date-picker #startDatePicker [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{startDatePlaceHolder | translate}}" />
         <p-date-picker #endDatePicker [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{endDatePlaceHolder | translate}}" />
         <p-checkbox class="align-self-center ml-2" binary="true" [(ngModel)]="myChild" pTooltip="{{myChildTooltip | translate}}" />
         <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" />
+        <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
+          <ng-template #item let-item>
+            <div>{{item.header | translate}}</div>
+          </ng-template>
+          <ng-template #selecteditems let-items>
+            <div *ngFor="let item of items">
+              {{item?.header | translate}},
+            </div>
+          </ng-template>
+        </p-multi-select>
         <p-iconfield iconPosition="left" class="ml-auto justify-content-end">
           <p-inputicon>
             <i class="pi pi-search"></i>
@@ -17,28 +26,17 @@
         </p-iconfield>
       </div>
     </ng-template>
-    <ng-template #header>
+    <ng-template #header let-columns>
       <tr>
-        <th>{{"edi-list.table.year" | translate}}</th>
-        <th>{{"edi-list.table.month" | translate}}</th>
-        <th>{{"edi-list.table.id" | translate}}</th>
-        <th>{{"edi-list.table.user-name" | translate}}</th>
-        <th>{{"edi-list.table.org-name" | translate}}</th>
-        <th pSortableColumn="ediState">{{"edi-list.table.edi-state" | translate}} <p-sortIcon field="ediState" /></th>
-        <th>{{"edi-list.table.reg-date" | translate}}</th>
+        <th *ngFor="let col of columns" [ngClass]="col.className">{{col.header | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template #body let-data>
-      <tr class="click-tr" (click)="openData(data)">
-        <td>{{data.year}}</td>
-        <td>{{data.month}}</td>
-        <td>{{data.id}}</td>
-        <td>{{data.name}}</td>
-        <td>{{data.orgName}}</td>
-        <td>
-          <p-tag [value]="data.ediState" [severity]="getEDIStateSeverity(data.ediState)"/>
+    <ng-template #body let-item let-columns="columns">
+      <tr class="click-tr" (click)="openData(item)">
+        <td *ngFor="let col of columns">
+          <label *ngIf="isHeaderLabel(col)">{{getTableItem(item, col)}}</label>
+          <p-tag *ngIf="isHeaderTag(col)" [severity]="getTableItemSeverity(item)">{{getTableItem(item, col)}}</p-tag>
         </td>
-        <td>{{dateToYYYYMMdd(data.regDate)}}</td>
       </tr>
     </ng-template>
   </p-table>
