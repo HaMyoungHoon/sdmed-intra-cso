@@ -72,6 +72,7 @@
     },
     "table": {
       "title": "title",
+      "id": "id",
       "name": "name",
       "qna-state": "state",
       "reg-date": "reg date"

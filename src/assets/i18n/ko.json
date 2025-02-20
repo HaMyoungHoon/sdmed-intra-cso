@@ -72,6 +72,7 @@
     },
     "table": {
       "title": "제목",
+      "id": "아이디",
       "name": "이름",
       "qna-state": "상태",
       "reg-date": "등록일"

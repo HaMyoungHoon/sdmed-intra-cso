@@ -2,7 +2,6 @@ import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
 import {ToolbarModule} from "primeng/toolbar";
 import {ButtonModule} from "primeng/button";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {LanguageService} from "../../../services/common/language.service";
 import {MenuItem} from "primeng/api";
@@ -21,11 +20,12 @@ import {FormsModule} from "@angular/forms";
 import {CommonService} from "../../../services/rest/common.service";
 import {Tooltip} from "primeng/tooltip";
 import {Drawer} from "primeng/drawer";
+import {FNewTabItemDirective} from "../../../guards/f-new-tab-item.directive";
 
 
 @Component({
   selector: "app-menu-config",
-  imports: [ToolbarModule, ButtonModule, NgForOf, RouterLink, TranslatePipe, NgClass, NgIf, MenuModule, RippleModule, BadgeModule, CheckboxModule, FormsModule, Tooltip, Drawer],
+  imports: [ToolbarModule, ButtonModule, NgForOf, TranslatePipe, NgClass, NgIf, MenuModule, RippleModule, BadgeModule, CheckboxModule, FormsModule, Tooltip, Drawer, FNewTabItemDirective],
   templateUrl: "./menu-config.component.html",
   styleUrl: "./menu-config.component.scss",
   standalone: true,
