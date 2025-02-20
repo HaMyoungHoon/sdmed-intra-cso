@@ -38,19 +38,19 @@ export class PharmaAddComponent extends FComponentBase {
 
   async saveData(): Promise<void> {
     if (this.pharmaModel.code.length <= 0) {
-      this.translateService.get("pharma-add-dialog.warn.code").subscribe(x => {
+      this.translateService.get("pharma-add.warn.code").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return
     }
     if (this.pharmaModel.orgName.length <= 0) {
-      this.translateService.get("pharma-add-dialog.warn.org-name").subscribe(x => {
+      this.translateService.get("pharma-add.warn.org-name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;
     }
     if (this.pharmaModel.innerName.length <= 0) {
-      this.translateService.get("pharma-add-dialog.warn.inner-name").subscribe(x => {
+      this.translateService.get("pharma-add.warn.inner-name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;

@@ -450,10 +450,13 @@
     "close-date": "close date",
     "taxpayer-number": "taxpayer number",
     "image-url": "taxpayer image",
+    "retroactive-rule": "retroactive rule",
+    "inner-settlement-rule": "inner settlement rule",
+    "outer-settlement-rule": "outer settlement rule",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
-  "pharma-add-dialog": {
+  "pharma-add": {
     "warn": {
       "code": "plz input code",
       "org-name": "plz input org name",
@@ -509,6 +512,9 @@
     "medicine-storage-box": "storage box",
     "package-unit": "package unit",
     "unit": "unit",
+    "retroactive-rule": "retroactive rule",
+    "inner-settlement-rule": "inner settlement rule",
+    "outer-settlement-rule": "outer settlement rule",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },

@@ -92,6 +92,18 @@
       <div class="col-4">
         <p-date-picker [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" appendTo="body"/>
       </div>
+      <label class="col-1 align-self-center">{{"pharma-edit.retroactive-rule" | translate}}</label>
+      <div class="col-3">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.retroactiveRule" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-edit.inner-settlement-rule" | translate}}</label>
+      <div class="col-3">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.innerSettlementRule" />
+      </div>
+      <label class="col-1 align-self-center">{{"pharma-edit.outer-settlement-rule" | translate}}</label>
+      <div class="col-3">
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.outerSettlementRule" />
+      </div>
       <label class="col-2 align-self-center">{{"pharma-edit.etc1" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="pharmaModel.etc1" />

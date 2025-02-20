@@ -450,10 +450,13 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
+    "retroactive-rule": "소급기준",
+    "inner-settlement-rule": "내부정산기준",
+    "outer-settlement-rule": "외부정산기준",
     "etc1": "비고1",
     "etc2": "비고2"
   },
-  "pharma-add-dialog": {
+  "pharma-add": {
     "warn": {
       "code": "코드를 입력해주세요.",
       "org-name": "이름을 입력해주세요.",
@@ -481,6 +484,9 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
+    "retroactive-rule": "소급기준",
+    "inner-settlement-rule": "내부정산기준",
+    "outer-settlement-rule": "외부정산기준",
     "etc1": "비고1",
     "etc2": "비고2"
   },
