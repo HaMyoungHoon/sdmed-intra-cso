@@ -3,6 +3,7 @@ import * as FConstants from "../../guards/f-constants";
 import * as FAmhohwa from "../../guards/f-amhohwa";
 import {AppState} from "../../models/common/app-state";
 import {DOCUMENT, isPlatformBrowser} from "@angular/common";
+import {TableHeaderModel} from "../../models/common/table-header-model";
 
 @Injectable({
   providedIn: "root"
@@ -155,5 +156,17 @@ export class AppConfigService {
     if (isPlatformBrowser(this.platformId)) {
       FAmhohwa.setLocalStorage(FConstants.THEME_LINK, JSON.stringify(state));
     }
+  }
+
+  getMedicinePriceTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_PRICE_HEADER_LIST);
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setMedicinePriceTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.MEDICINE_PRICE_HEADER_LIST, buff);
   }
 }

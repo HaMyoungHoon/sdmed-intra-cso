@@ -13,6 +13,7 @@ export const CACHES_IMAGE_CACHE: string = "image-cache";
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
 export const LOADING_IMAGE_ARRAY: string = "loading-image-array";
+export const MEDICINE_PRICE_HEADER_LIST: string = "medicinePriceHeaderList";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";

@@ -1,8 +1,7 @@
 <div class="medicine-price-list-container">
   <app-progress-spin [isLoading]="isLoading" />
-  <p-table #listTable [value]="medicineModel" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
-           [globalFilterFields]="filterFields" (sortFunction)="customSort($event, isSorted, listTable, initValue, medicineModel)" [customSort]="true"
-           [tableStyle]="tableStyle" size="small" stripedRows="true">
+  <p-table #listTable [value]="medicineModel" [columns]="selectedHeaders" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="isLoading"
+           [globalFilterFields]="filterFields" [tableStyle]="tableStyle" size="small" stripedRows="true">
     <ng-template #caption>
       <div class="flex">
         <p-button class="m-1" (onClick)="refresh()" icon="pi pi-refresh" [disabled]="!haveRole" />
@@ -11,6 +10,16 @@
         <p-button class="m-1" (onClick)="uploadMainIngredientExcel()" icon="pi pi-file-excel" [disabled]="!isAdmin" pTooltip="{{uploadMainIngredient | translate}}" />
         <input #inputPriceUploadExcel class="collapse" type="file" accept=".xlsx" (change)="priceExcelSelected($event)">
         <input #inputMainIngredientUploadExcel class="collapse" type="file" accept=".xlsx" (change)="mainIngredientExcelSelected($event)">
+        <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
+          <ng-template #item let-item>
+            <div>{{item.header | translate}}</div>
+          </ng-template>
+          <ng-template #selecteditems let-items>
+            <div *ngFor="let item of items">
+              {{item?.header | translate}},
+            </div>
+          </ng-template>
+        </p-multi-select>
         <div class="flex ml-auto justify-content-end">
           <label class="m-1 align-self-center">{{dateToYYYYMMdd(lastApplyDate)}}</label>
           <p-iconfield iconPosition="left" class="m-1">
@@ -22,32 +31,14 @@
         </div>
       </div>
     </ng-template>
-    <ng-template #header>
+    <ng-template #header let-columns>
       <tr>
-        <th pSortableColumn="name" style="min-width: 30rem">{{"medicine-price-list.name" | translate}} <p-sortIcon field="name" /></th>
-        <th>{{"medicine-price-list.kd-code" | translate}}</th>
-        <th pSortableColumn="pharma" style="min-width: 5rem">{{"medicine-price-list.pharma-name" | translate}} <p-sortIcon field="pharma" /></th>
-        <th style="width: 20rem">{{"medicine-price-list.main-ingredient-code" | translate}}</th>
-        <th pSortableColumn="maxPrice" style="min-width: 5rem">{{"medicine-price-list.max-price" | translate}} <p-sortIcon field="maxPrice" /></th>
-        <th style="min-width: 5rem">{{"medicine-price-list.custom-price" | translate}}</th>
-        <th style="min-width: 5rem">{{"medicine-price-list.charge" | translate}}</th>
-        <th style="min-width: 5rem">{{"medicine-price-list.apply-date" | translate}}</th>
-        <th style="min-width: 5rem">{{"medicine-price-list.price-history" | translate}}</th>
+        <th *ngFor="let col of columns" [ngClass]="col.className">{{col.header | translate}}</th>
       </tr>
     </ng-template>
-    <ng-template #body let-item>
-      <tr [ngClass]="tableNgClass(item)">
-        <td>{{item.innerName}}</td>
-        <td>{{item.kdCode}}</td>
-        <td>{{item.makerName}}</td>
-        <td>{{item.medicineIngredientModel.mainIngredientName}}</td>
-        <td>{{item.maxPrice}}</td>
-        <td>{{item.customPrice}}</td>
-        <td>{{item.charge}}</td>
-        <td>{{getApplyDate(item)}}</td>
-        <td>
-          <p-button (onClick)="priceHistoryDialogOpen(item)" [disabled]="disablePriceHistory(item)">{{"medicine-price-list.price-history" | translate}}</p-button>
-        </td>
+    <ng-template #body let-item let-columns="columns">
+      <tr [ngClass]="tableNgClass(item)" (click)="priceHistoryDialogOpen(item)">
+        <td *ngFor="let col of columns">{{getTableItem(item, col)}}</td>
       </tr>
     </ng-template>
   </p-table>

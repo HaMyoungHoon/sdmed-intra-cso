@@ -22,6 +22,7 @@
       <tr>
         <th pSortableColumn="code">{{"medicine-list.code" | translate}} <p-sortIcon field="code" /></th>
         <th pSortableColumn="name">{{"medicine-list.name" | translate}} <p-sortIcon field="name" /></th>
+        <th>{{"medicine-list.maker-name" | translate}}</th>
         <th>{{"medicine-list.main-ingredient-name" | translate}}</th>
         <th>{{"medicine-list.custom-price" | translate}}</th>
         <th>{{"medicine-list.charge" | translate}}</th>
@@ -35,6 +36,7 @@
       <tr>
         <td>{{medicine.code}}</td>
         <td>{{medicine.innerName}}</td>
+        <td>{{medicine.makerName}}</td>
         <td>{{medicine.medicineIngredientModel.mainIngredientName}}</td>
         <td>{{medicine.customPrice}}</td>
         <td>{{medicine.charge}}</td>

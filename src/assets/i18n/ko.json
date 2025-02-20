@@ -3,7 +3,7 @@
     "title": "메뉴 1",
     "sub-menu": {
       "sub-1": "대시보드",
-      "sub-2": "qna"
+      "sub-2": "QnA"
     }
   },
   "menu-2": {
@@ -31,7 +31,7 @@
     "sub-menu": {
       "sub-1": "목록",
       "sub-2": "마감일",
-      "sub-3": "처방일",
+      "sub-3": "처방월 등록",
       "sub-4": "체크리스트"
     }
   },
@@ -94,7 +94,7 @@
     }
   },
   "edi-view": {
-    "apply-date": "처방일",
+    "apply-date": "처방월",
     "reg-date": "등록일",
     "hospital-name": "병원명",
     "hospital-new-name": "신규처명",
@@ -126,8 +126,8 @@
     "apply-date-state": "상태"
   },
   "edi-check-list": {
-    "date-mode-option1": "요청적용일 기준",
-    "date-mode-option2": "실적용일 기준",
+    "date-mode-option1": "처방월 기준",
+    "date-mode-option2": "정산월 기준",
     "user-mode-option1": "담당만 선택",
     "user-mode-option2": "전체유저중 선택",
     "table": {
@@ -136,20 +136,22 @@
       "pharma-name": "제약사",
       "edi-state": "상태",
       "reg-date": "등록일",
-      "req-apply-date": "요청적용일",
-      "actual-apply-date": "실적용일"
+      "req-apply-date": "처방월",
+      "actual-apply-date": "정산월"
     }
   },
   "medicine-price-list": {
     "price-excel": "약가 업로드",
     "main-ingredient-excel": "주성분코드 업로드",
-    "name": "제품명",
+    "org-name": "제품명",
+    "inner-name": "내부명",
     "kd-code": "보험코드",
-    "pharma-name": "판매사",
+    "maker-name": "제조사",
     "main-ingredient-code": "주성분코드",
     "max-price": "약가",
     "custom-price": "지정가",
     "charge": "수수료율 %",
+    "standard": "규격",
     "general": "일반",
     "special": "전문",
     "price-history": "가격 이력",
@@ -179,6 +181,7 @@
   "medicine-list": {
     "code": "코드",
     "name": "이름",
+    "maker-name": "제조사",
     "main-ingredient-name": "주성분이름",
     "custom-price": "지정가",
     "charge": "수수료율 %",

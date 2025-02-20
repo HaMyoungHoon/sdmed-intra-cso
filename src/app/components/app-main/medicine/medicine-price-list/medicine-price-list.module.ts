@@ -13,13 +13,14 @@ import {Tooltip} from "primeng/tooltip";
 import {FormsModule} from "@angular/forms";
 import {DatePicker} from "primeng/datepicker";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
+import {MultiSelect} from "primeng/multiselect";
 
 
 
 @NgModule({
   declarations: [MedicinePriceListComponent],
 	imports: [
-		CommonModule, MedicinePriceListRoutingModule, TableModule, ButtonModule, TagModule, TranslatePipe, IconField, InputIcon, InputTextModule, Tooltip, FormsModule, DatePicker, ProgressSpinComponent
+		CommonModule, MedicinePriceListRoutingModule, TableModule, ButtonModule, TagModule, TranslatePipe, IconField, InputIcon, InputTextModule, Tooltip, FormsModule, DatePicker, ProgressSpinComponent, MultiSelect
 	]
 })
 export class MedicinePriceListModule { }

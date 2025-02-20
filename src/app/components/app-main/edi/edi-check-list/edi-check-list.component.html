@@ -21,7 +21,12 @@
             <label>{{item | translate}}</label>
           </ng-template>
         </p-select>
-        <p-select class="m-1" [options]="userList" [(ngModel)]="selectUser" optionLabel="name" />
+        <p-select class="m-1" [options]="userList" [(ngModel)]="selectUser">
+          <ng-template #item let-item>
+            <div>{{item.id}}</div>
+            <div>{{item.name}}</div>
+          </ng-template>
+        </p-select>
         <p-button class="align-self-center" icon="pi pi-refresh" size="small" (click)="refreshData()" />
       </div>
     </ng-template>

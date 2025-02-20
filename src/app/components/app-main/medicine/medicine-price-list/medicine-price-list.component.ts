@@ -7,6 +7,7 @@ import * as FExtensions from "../../../../guards/f-extensions";
 import {MedicinePriceListService} from "../../../../services/rest/medicine-price-list.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import * as FConstants from "../../../../guards/f-constants";
+import {TableHeaderModel} from "../../../../models/common/table-header-model";
 
 @Component({
   selector: "app-medicine-price-list",
@@ -19,12 +20,14 @@ export class MedicinePriceListComponent extends FComponentBase {
   @ViewChild("inputPriceUploadExcel") inputPriceUploadExcel!: ElementRef<HTMLInputElement>;
   @ViewChild("inputMainIngredientUploadExcel") inputMainIngredientUploadExcel!: ElementRef<HTMLInputElement>;
   lastApplyDate?: Date;
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   applyDate: Date = new Date();
   initValue: MedicineModel[] = [];
   medicineModel: MedicineModel[] = [];
-  isSorted: boolean | null = null;
   constructor(private thisService: MedicinePriceListService) {
     super();
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -56,6 +59,9 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
 
   async priceHistoryDialogOpen(data: MedicineModel): Promise<void> {
+    if (this.disablePriceHistory(data)) {
+      return;
+    }
     const col: TableDialogColumn[] = [];
     col.push(new TableDialogColumn().build("maxPrice", "medicine-price-list.max-price"))
     col.push(new TableDialogColumn().build("ancestorCode", "medicine-price-list.ancestor-code"))
@@ -138,7 +144,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["name", "kdCode", "pharma", "maxPrice", "medicineIngredientModel.mainIngredientName"];
+    return ["orgName", "kdCode", "pharma", "maxPrice", "medicineIngredientModel.mainIngredientName"];
   }
   get uploadPriceTooltip(): string {
     return "medicine-price-list.price-excel";
@@ -147,8 +153,88 @@ export class MedicinePriceListComponent extends FComponentBase {
     return "medicine-price-list.main-ingredient-excel";
   }
 
-  tableNgClass(item: MedicineModel): {"zero-price": boolean} {
-    return {"zero-price": item.maxPrice === 0};
+  tableNgClass(item: MedicineModel): {"zero-price": boolean, "click-tr": boolean} {
+    return {
+      "zero-price": item.maxPrice === 0,
+      "click-tr": !this.disablePriceHistory(item),
+    };
+  }
+  headerSelectChange(data: TableHeaderModel[]): void {
+    this.configService.setMedicinePriceTableHeaderList(this.selectedHeaders);
+  }
+  test(data: any): void {
+    console.log(data);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.org-name";
+      obj.className = "minW30rem";
+      obj.field = "orgName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.inner-name";
+      obj.className = "minW30rem";
+      obj.field = "innerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.kd-code";
+      obj.field = "kdCode";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.maker-name";
+      obj.className = "minW5rem";
+      obj.field = "makerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.main-ingredient-code";
+      obj.className = "minW20rem";
+      obj.field = "mainIngredientCode";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.max-price";
+      obj.className = "minW5rem";
+      obj.field = "maxPrice";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.custom-price";
+      obj.className = "minW5rem";
+      obj.field = "customPrice";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.charge";
+      obj.className = "minW5rem";
+      obj.field = "charge";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.standard";
+      obj.className = "minW5rem";
+      obj.field = "standard";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.apply-date";
+      obj.className = "minW5rem";
+      obj.field = "applyDate";
+    }));
+
+    this.selectedHeaders = this.configService.getMedicinePriceTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: MedicineModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "orgName": return item.orgName;
+      case "innerName": return item.innerName;
+      case "kdCode": return item.kdCode;
+      case "makerName": return item.makerName ?? "";
+      case "mainIngredientCode": return item.medicineIngredientModel.mainIngredientName;
+      case "maxPrice": return item.maxPrice.toString();
+      case "customPrice": return item.customPrice.toString();
+      case "charge": return item.charge.toString();
+      case "standard": return item.medicineSubModel.standard;
+      case "applyDate": return this.getApplyDate(item)
+      default: return ""
+    }
   }
 
   protected readonly customSort = FExtensions.customSort
