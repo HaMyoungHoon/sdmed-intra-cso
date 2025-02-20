@@ -114,7 +114,7 @@ export class EdiListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["ediState", "orgName", "name"];
+    return ["ediState", "orgName", "id", "name"];
   }
   get startDatePlaceHolder(): string {
     return "edi-list.header.start-date";

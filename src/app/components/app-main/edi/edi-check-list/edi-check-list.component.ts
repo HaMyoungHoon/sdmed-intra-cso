@@ -137,7 +137,7 @@ export class EdiCheckListComponent extends FComponentBase {
     return `${data.actualApplyYear}-${data.actualApplyMonth}-${data.actualApplyDay}`;
   }
   get filterFields(): string[] {
-    return ["name", "hospitalName"];
+    return ["id", "name", "hospitalName"];
   }
   get downIcon(): string {
     return "pi pi-chevron-down";

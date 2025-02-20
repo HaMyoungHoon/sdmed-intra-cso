@@ -230,7 +230,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     return "pharma-edit.medicine-pick-list.header";
   }
   get filterFields(): string[] {
-    return ["code", "kdCode", "name"];
+    return ["code", "kdCode", "innerName"];
   }
   get filterPlaceHolder(): string {
     return "pharma-edit.medicine-pick-list.filter-place-holder";
