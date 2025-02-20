@@ -49,7 +49,6 @@ export class MedicinePriceListComponent extends FComponentBase {
       e => this.fDialogService.error("getLastApplyDate", e));
     this.setLoading(false);
     if (ret.result) {
-      console.log(ret.data);
       this.lastApplyDate = FExtensions.stringToDate(ret.data);
       return;
     }

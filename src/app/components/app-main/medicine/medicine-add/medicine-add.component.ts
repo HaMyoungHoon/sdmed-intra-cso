@@ -82,7 +82,13 @@ export class MedicineAddComponent extends FComponentBase {
       });
       return
     }
-    if (this.medicineModel.name.length <= 0) {
+    if (this.medicineModel.orgName.length <= 0) {
+      this.translateService.get("medicine-add.warn.name").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
+    if (this.medicineModel.innerName.length <= 0) {
       this.translateService.get("medicine-add.warn.name").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });

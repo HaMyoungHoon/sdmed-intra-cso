@@ -28,9 +28,13 @@
       <div class="col-4">
         <p-select [options]="pharmaList" [(ngModel)]="selectPharma" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName" />
       </div>
-      <label class="col-2 align-self-center">{{"medicine-edit.name" | translate}}</label>
+      <label class="col-2 align-self-center">{{"medicine-edit.org-name" | translate}}</label>
       <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.name" />
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.orgName" />
+      </div>
+      <label class="col-2 align-self-center">{{"medicine-edit.inner-name" | translate}}</label>
+      <div class="col-4">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.innerName" />
       </div>
       <label class="col-2 align-self-center">{{"medicine-edit.custom-price" | translate}}</label>
       <div class="col-4">

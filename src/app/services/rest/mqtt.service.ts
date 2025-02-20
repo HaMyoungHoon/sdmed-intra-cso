@@ -95,7 +95,6 @@ export class MqttService {
     this.mqttClient = mqtt.connect(search[0], options);
     this.mqttClient.on("connect", (): void => {
       mqttConnectModel.topic.forEach((x: string): void => {
-        console.log(x);
         this.mqttClient?.subscribe(x, (err: Error | null): void => {
           if (err) {
             throw new Error(err.message);
