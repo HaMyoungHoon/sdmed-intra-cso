@@ -144,7 +144,7 @@ export class MedicinePriceListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["orgName", "kdCode", "makerName", "maxPrice", "medicineIngredientModel.mainIngredientName"];
+    return ["orgName", "kdCode", "clientName", "makerName", "maxPrice", "medicineIngredientModel.mainIngredientName"];
   }
   get uploadPriceTooltip(): string {
     return "medicine-price-list.price-excel";
@@ -201,6 +201,11 @@ export class MedicinePriceListComponent extends FComponentBase {
       obj.field = "etc";
     }));
     this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "medicine-price-list.client-name";
+      obj.className = "minW5rem";
+      obj.field = "clientName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
       obj.header = "medicine-price-list.maker-name";
       obj.className = "minW5rem";
       obj.field = "makerName";
@@ -226,6 +231,7 @@ export class MedicinePriceListComponent extends FComponentBase {
       case "orgName": return item.orgName;
       case "innerName": return item.innerName;
       case "kdCode": return item.kdCode;
+      case "clientName": return item.clientName ?? "";
       case "makerName": return item.makerName ?? "";
       case "mainIngredientName": return item.medicineIngredientModel.mainIngredientName;
       case "maxPrice": return item.maxPrice.toString();

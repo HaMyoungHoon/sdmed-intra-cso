@@ -100,7 +100,6 @@ export class MedicineAddComponent extends FComponentBase {
       });
       return;
     }
-    this.medicineModel.makerName = this.selectPharma?.orgName;
     this.medicineModel.makerCode = this.selectPharma?.code;
     this.medicineModel.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
     this.medicineModel.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];

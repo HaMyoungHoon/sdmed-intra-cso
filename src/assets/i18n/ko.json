@@ -30,7 +30,7 @@
     "title": "EDI",
     "sub-menu": {
       "sub-1": "목록",
-      "sub-2": "마감일",
+      "sub-2": "마감일정",
       "sub-3": "처방월 등록",
       "sub-4": "체크리스트"
     }
@@ -148,6 +148,7 @@
     "org-name": "제품명",
     "inner-name": "내부명",
     "kd-code": "보험코드",
+    "client-name": "발주처",
     "maker-name": "제조사",
     "main-ingredient-name": "성분명",
     "max-price": "약가",
@@ -192,6 +193,7 @@
     "org-name": "제품명",
     "kd-code": "보험코드",
     "inner-name": "내부명",
+    "client-name": "발주처",
     "maker-name": "제조사",
     "main-ingredient-name": "성분명",
     "custom-price": "지정가",
