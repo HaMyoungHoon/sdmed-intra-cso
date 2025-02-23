@@ -91,6 +91,14 @@
       <div class="col-3">
         <p-date-picker [(ngModel)]="hospitalModel.closeDate" dateFormat="yy-mm-dd" appendTo="body" />
       </div>
+      <label class="col-1 align-self-center">{{"hospital-edit.manager1" | translate}}</label>
+      <div class="col-3">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.manager1" />
+      </div>
+      <label class="col-1 align-self-center">{{"hospital-edit.manager2" | translate}}</label>
+      <div class="col-3">
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.manager2" />
+      </div>
       <label class="col-1 align-self-center">{{"hospital-edit.etc1" | translate}}</label>
       <div class="col-3">
         <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="hospitalModel.etc1" />

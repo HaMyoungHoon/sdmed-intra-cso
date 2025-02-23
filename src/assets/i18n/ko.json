@@ -168,6 +168,8 @@
       "inner-name": "내부명",
       "owner-name": "대표명",
       "address": "주소",
+      "manager1": "영업담당",
+      "manager2": "부서장",
       "etc1": "비고1",
       "etc2": "비고2"
     }
@@ -388,6 +390,8 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
+    "manager1": "영업담당",
+    "manager2": "부서장",
     "etc1": "비고1",
     "etc2": "비고2"
   },
@@ -419,6 +423,8 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
+    "manager1": "영업담당",
+    "manager2": "부서장",
     "etc1": "비고1",
     "etc2": "비고2"
   },

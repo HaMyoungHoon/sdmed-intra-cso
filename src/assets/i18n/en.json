@@ -168,6 +168,8 @@
       "inner-name": "inner name",
       "owner-name": "owner name",
       "address": "address",
+      "manager1": "manager",
+      "manager2": "head",
       "etc1": "et cetera",
       "etc2": "et cetera"
     }
@@ -388,6 +390,8 @@
     "close-date": "close date",
     "taxpayer-number": "taxpayer number",
     "image-url": "taxpayer image",
+    "manager1": "manager",
+    "manager2": "head",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
@@ -419,6 +423,8 @@
     "close-date": "close date",
     "taxpayer-number": "taxpayer number",
     "image-url": "taxpayer image",
+    "manager1": "manager",
+    "manager2": "head",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },

@@ -26,6 +26,8 @@ export class HospitalModel {
   mobilePhone: string = "";
   openDate?: Date;
   closeDate?: Date;
+  manager1: string = "";
+  manager2: string = "";
   etc1: string = "";
   etc2: string = "";
   imageUrl: string = "";
@@ -85,6 +87,7 @@ export class HospitalModel {
     lhs.mobilePhone = rhs.mobilePhone;
     lhs.openDate = rhs.openDate;
     lhs.closeDate = rhs.closeDate;
+    lhs.manager1 = rhs.manager2;
     lhs.etc1 = rhs.etc1;
     lhs.etc2 = rhs.etc2;
     lhs.imageUrl = rhs.imageUrl;
