@@ -26,10 +26,12 @@ import {CustomPickListComponent} from "../../custom-pick-list/custom-pick-list.c
 import * as FUserInfoMethod from "../../../../guards/f-user-info-method";
 import {UserFileType} from "../../../../models/rest/user/user-file-type";
 import {IftaLabel} from "primeng/iftalabel";
+import {Divider} from "primeng/divider";
+import {ConfirmPopup} from "primeng/confirmpopup";
 
 @Component({
   selector: "app-user-edit-dialog",
-  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent, IftaLabel],
+  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent, IftaLabel, Divider, ConfirmPopup],
   templateUrl: "./user-edit-dialog.component.html",
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,
@@ -91,6 +93,21 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     }
     this.fDialogService.warn("saveUserData", ret.msg);
   }
+  async passwordInit(event: Event): Promise<void> {
+    this.translateService.get(["user-edit.password-init", "user-edit.password-init-sure", "common-desc.cancel", "common-desc.confirm"]).subscribe(x => {
+      this.confirmCall(event, x["user-edit.password-init"], x["user-edit.password-init-sure"], x["common-desc.cancel"], x["common-desc.confirm"], async() => {
+        this.setLoading();
+        const ret = await FExtensions.restTry(async() => await this.thisService.putPasswordInit(this.userDataModel.thisPK),
+          e => this.fDialogService.error("password init"));
+        this.setLoading(false);
+        if (ret.result) {
+          this.fDialogService.info("password init", ret.data);
+          return;
+        }
+        this.fDialogService.warn("password init", ret.msg);
+      });
+    });
+  }
   closeThis(): void {
     this.ref.close();
   }
@@ -151,6 +168,9 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
   get filterPlaceHolder(): string {
     return "user-edit.user-pick-list.filter-place-holder";
+  }
+  get isAdmin(): boolean {
+    return ((this.myRole & UserRole.Admin.valueOf()) != 0) || ((this.myRole & UserRole.CsoAdmin.valueOf()) != 0)
   }
 
   protected readonly stringToDate = FExtensions.stringToDate;

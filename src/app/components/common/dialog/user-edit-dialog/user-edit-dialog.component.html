@@ -2,66 +2,75 @@
   <app-progress-spin [isLoading]="isLoading" />
   <div class="m-1">
     <p-button class="m-1" (onClick)="saveUserData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
-    <p-button class="m-1" (onClick)="closeThis()">{{"common-desc.close" | translate}}</p-button>
+    <p-confirm-popup />
+    <p-button class="m-1" (click)="passwordInit($event)" *ngIf="isAdmin">{{"user-edit.password-init" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="multipleEnable" [value]="accordionValue">
     <p-accordion-panel *ngIf="userDataModel" value="0">
       <p-accordion-header>{{"user-edit.accordion-header.detail" | translate}}</p-accordion-header>
       <p-accordion-content>
         <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.id" | translate}}</label>
           <label class="col">{{userDataModel.id}}</label>
         </div>
         <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.name" | translate}}</label>
-          <div class="col">
-            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.name" />
+          <p-ifta-label class="m-1">
+            <input id="name" class="text-base" pInputText type="text" [(ngModel)]="userDataModel.name" />
+            <label for="name" class="col-fixed w-3">{{"user-edit.detail.name" | translate}}</label>
+          </p-ifta-label>
+          <p-ifta-label class="m-1">
+            <input id="mail" class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
+            <label for="mail" class="col-fixed w-3">{{"user-edit.detail.mail" | translate}}</label>
+          </p-ifta-label>
+          <p-ifta-label class="m-1">
+            <input id="phoneNumber" class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
+            <label for="phoneNumber" class="col-fixed w-3">{{"user-edit.detail.phone-number" | translate}}</label>
+          </p-ifta-label>
+        </div>
+        <div class="field grid">
+          <div class="m-1">
+            <label class="flex flex-auto justify-content-center">{{"user-edit.detail.role" | translate}}</label>
+            <div class="col">
+              <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
+            </div>
+          </div>
+          <div class="m-1">
+            <label class="flex flex-auto justify-content-center">{{"user-edit.detail.dept" | translate}}</label>
+            <div class="col">
+              <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
+            </div>
+          </div>
+          <div class="m-1">
+            <label class="flex flex-auto justify-content-center">{{"user-edit.detail.status" | translate}}</label>
+            <div class="col">
+              <p-select [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
+            </div>
           </div>
         </div>
         <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.mail" | translate}}</label>
-          <div class="col">
-            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
+        </div>
+        <div class="field grid">
+          <div class="m-1">
+            <label class="flex flex-auto justify-content-center">{{"user-edit.detail.reg-date" | translate}}</label>
+            <label class="col">{{dateToYearFullString(userDataModel.regDate)}}</label>
+          </div>
+          <div class="m-1">
+            <label class="flex flex-auto justify-content-center">{{"user-edit.detail.last-login-date" | translate}}</label>
+            <label class="col">{{dateToYearFullString(userDataModel.lastLoginDate)}}</label>
           </div>
         </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.phone-number" | translate}}</label>
-          <div class="col">
-            <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
-          </div>
-        </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.role" | translate}}</label>
-          <div class="col">
-            <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" appendTo="body"/>
-          </div>
-        </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.dept" | translate}}</label>
-          <div class="col">
-            <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" appendTo="body"/>
-          </div>
-        </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.status" | translate}}</label>
-          <div class="col">
-            <p-select [options]="userStatusList" [(ngModel)]="selectedUserStatus" appendTo="body"/>
-          </div>
-        </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.reg-date" | translate}}</label>
-          <label class="col">{{dateToYearFullString(userDataModel.regDate)}}</label>
-        </div>
-        <div class="field grid">
-          <label class="col-fixed w-3">{{"user-edit.detail.last-login-date" | translate}}</label>
-          <label class="col">{{dateToYearFullString(userDataModel.lastLoginDate)}}</label>
-        </div>
+        <p-divider layout="horizontal" />
         <div class="field grid">
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
-          <p-ifta-label class="col">
-            <input id="taxpayer" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
-            <label for="taxpayer">{{"user-edit.detail.company-name" | translate}}</label>
-          </p-ifta-label>
+          <div class="col">
+            <p-ifta-label class="col">
+              <input id="taxpayerName" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+              <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
+            </p-ifta-label>
+            <p-ifta-label class="col">
+              <input id="taxpayerNumber" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
+              <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
+            </p-ifta-label>
+          </div>
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
           <p-ifta-label class="col">
             <input id="bankAccount" [(ngModel)]="userDataModel.bankAccount" type="text" pInputText>
@@ -69,11 +78,13 @@
           </p-ifta-label>
         </div>
         <div class="field grid">
+          <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
           <div class="col">
-            <p-image width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
+            <label>{{"user-edit.detail.cso-report-image" | translate}}</label>
           </div>
+          <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
           <div class="col">
-            <p-image width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
+            <label>{{"user-edit.detail.marketing-contract-image" | translate}}</label>
           </div>
         </div>
         <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.Taxpayer)">

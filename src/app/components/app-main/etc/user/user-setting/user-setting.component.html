@@ -26,11 +26,10 @@
         <th>{{"user-setting.phone-number" | translate}}</th>
         <th pSortableColumn="status">{{"user-setting.status" | translate}} <p-sortIcon field="status" /></th>
         <th pSortableColumn="role">{{"user-setting.role" | translate}} <p-sortIcon field="role" /></th>
-        <th>{{"common-desc.edit" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template #body let-userData>
-      <tr>
+      <tr class="click-tr" (click)="userEdit(userData)">
         <td>{{userData.id}}</td>
         <td>{{userData.name}}</td>
         <td>{{userData.mail}}</td>
@@ -42,9 +41,6 @@
           <span class="flex h-full mr-1 align-items-center inline-flex" *ngFor="let role of flagToRoleDesc(userData.role)">
             <p-tag [value]="role"/>
           </span>
-        </td>
-        <td>
-          <p-button size="small" (onClick)="userEdit(userData)">{{"common-desc.edit" | translate}}</p-button>
         </td>
       </tr>
     </ng-template>

@@ -10,13 +10,14 @@ import {MultiSelect} from "primeng/multiselect";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 import {Select} from "primeng/select";
 import {TranslatePipe} from "@ngx-translate/core";
+import {Divider} from "primeng/divider";
 
 
 
 @NgModule({
   declarations: [UserAddComponent],
-  imports: [
-    CommonModule, UserAddRoutingModule, Button, FormsModule, IftaLabel, InputText, MultiSelect, ProgressSpinComponent, Select, TranslatePipe
-  ]
+	imports: [
+		CommonModule, UserAddRoutingModule, Button, FormsModule, IftaLabel, InputText, MultiSelect, ProgressSpinComponent, Select, TranslatePipe, Divider
+	]
 })
 export class UserAddModule { }

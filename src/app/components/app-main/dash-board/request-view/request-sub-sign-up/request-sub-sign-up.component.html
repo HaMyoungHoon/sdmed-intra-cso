@@ -57,12 +57,19 @@
             <label class="col-fixed w-3">{{"user-edit.detail.last-login-date" | translate}}</label>
             <label class="col">{{dateToYearFullString(userDataModel.lastLoginDate)}}</label>
           </div>
+          <p-divider layout="horizontal" />
           <div class="field grid">
             <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
-            <p-ifta-label class="col">
-              <input id="taxpayer" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
-              <label for="taxpayer">{{"user-edit.detail.company-name" | translate}}</label>
-            </p-ifta-label>
+            <div class="col">
+              <p-ifta-label class="col">
+                <input id="taxpayerName" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+                <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
+              </p-ifta-label>
+              <p-ifta-label class="col">
+                <input id="taxpayerNumber" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
+                <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
+              </p-ifta-label>
+            </div>
             <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
             <p-ifta-label class="col">
               <input id="bankAccount" [(ngModel)]="userDataModel.bankAccount" type="text" pInputText>

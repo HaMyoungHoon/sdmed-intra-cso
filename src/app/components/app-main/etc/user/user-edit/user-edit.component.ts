@@ -129,7 +129,7 @@ export class UserEditComponent extends FComponentBase {
       e => this.fDialogService.error("saveUserData", e));
     this.setLoading(false);
     if (ret.result) {
-      this.userDataModel = ret.data ?? new UserDataModel();
+      await this.refreshData();
       return;
     }
     this.fDialogService.warn("saveUserData", ret.msg);

@@ -1,66 +1,77 @@
-<div class="user-add-container">
+<div class="flex flex-wrap flex-column user-add-container">
   <app-progress-spin [isLoading]="isLoading" />
-  <div class="m-1">
+  <div class="flex m-1">
     <p-button class="m-1" (onClick)="saveData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
   </div>
-  <div class="field grid">
-    <p-ifta-label class="col">
-      <input id="userID" [(ngModel)]="userDataModel.id" type="text" pInputText (ngModelChange)="onIDChange($event)" (keydown.space)="$event.preventDefault()">
-      <label for="userID">{{"user-add.detail.id" | translate}}</label>
-    </p-ifta-label>
-    <p-ifta-label class="col">
-      <input id="userName" [(ngModel)]="userDataModel.name" type="text" pInputText>
-      <label for="userName">{{"user-add.detail.name" | translate}}</label>
-    </p-ifta-label>
-  </div>
-  <div class="field grid">
-    <p-ifta-label class="col">
-      <input id="password" [(ngModel)]="userDataModel.pw" type="text" pInputText (ngModelChange)="onPWChange($event)" (keydown.space)="$event.preventDefault()">
-      <label for="password">{{"user-add.detail.password" | translate}}</label>
-    </p-ifta-label>
-    <p-ifta-label class="col">
-      <input id="confirmPW" [(ngModel)]="confirmPW" type="text" pInputText (ngModelChange)="onPWConfirmChange($event)" (keydown.space)="$event.preventDefault()">
-      <label for="confirmPW">{{"user-add.detail.confirm-pw" | translate}}</label>
-    </p-ifta-label>
-  </div>
-  <div class="field grid">
-    <label class="col-fixed w-3">{{"user-add.detail.mail" | translate}}</label>
-    <div class="col">
-      <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.mail" />
+  <div class="flex flex-wrap grid flex-auto flex-row">
+    <div class="flex field m-2">
+      <p-ifta-label class="flex m-1">
+        <input id="userID" [(ngModel)]="userDataModel.id" type="text" pInputText (ngModelChange)="onIDChange($event)" (keydown.space)="$event.preventDefault()">
+        <label for="userID">{{"user-add.detail.id" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label class="flex m-1">
+        <input id="userName" [(ngModel)]="userDataModel.name" type="text" pInputText>
+        <label for="userName">{{"user-add.detail.name" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex field m-2">
+      <p-ifta-label class="flex m-1">
+        <input id="password" [(ngModel)]="userDataModel.pw" type="text" pInputText (ngModelChange)="onPWChange($event)" (keydown.space)="$event.preventDefault()">
+        <label for="password">{{"user-add.detail.password" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label class="flex m-1">
+        <input id="confirmPW" [(ngModel)]="confirmPW" type="text" pInputText (ngModelChange)="onPWConfirmChange($event)" (keydown.space)="$event.preventDefault()">
+        <label for="confirmPW">{{"user-add.detail.confirm-pw" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex field m-2">
+      <p-ifta-label class="flex m-1">
+        <input id="mail" [(ngModel)]="userDataModel.mail" type="text" pInputText />
+        <label for="mail">{{"user-add.detail.mail" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label class="flex m-1">
+        <input id="phoneNumber" [(ngModel)]="userDataModel.phoneNumber" type="text" pInputText />
+        <label for="phoneNumber">{{"user-add.detail.phone-number" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex field m-2">
+      <div>
+        <label class="col-fixed w-3">{{"user-add.detail.role" | translate}}</label>
+        <div class="col">
+          <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
+        </div>
+      </div>
+      <div>
+        <label class="col-fixed w-3">{{"user-add.detail.dept" | translate}}</label>
+        <div class="col">
+          <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
+        </div>
+      </div>
+      <div>
+        <label class="col-fixed w-3">{{"user-add.detail.status" | translate}}</label>
+        <div class="col">
+          <p-select [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
+        </div>
+      </div>
     </div>
   </div>
-  <div class="field grid">
-    <label class="col-fixed w-3">{{"user-add.detail.phone-number" | translate}}</label>
-    <div class="col">
-      <input class="text-base" pInputText type="text" [(ngModel)]="userDataModel.phoneNumber" />
+  <p-divider layout="horizontal" />
+  <div class="flex flex-wrap grid flex-auto flex-row">
+    <div class="flex field m-2">
+      <p-ifta-label class="flex m-1">
+        <input id="taxpayerName" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+        <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label class="flex m-1">
+        <input id="taxpayerNumber" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
+        <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
+      </p-ifta-label>
     </div>
-  </div>
-  <div class="field grid">
-    <label class="col-fixed w-3">{{"user-add.detail.role" | translate}}</label>
-    <div class="col">
-      <p-multiSelect [options]="userRoleList" [(ngModel)]="selectedUserRoles" />
+    <div class="flex field m-2">
+      <p-ifta-label class="flex m-1">
+        <input id="bankAccount" [(ngModel)]="userDataModel.bankAccount" type="text" pInputText>
+        <label for="bankAccount">{{"user-add.detail.bank-account" | translate}}</label>
+      </p-ifta-label>
     </div>
-  </div>
-  <div class="field grid">
-    <label class="col-fixed w-3">{{"user-add.detail.dept" | translate}}</label>
-    <div class="col">
-      <p-multiSelect [options]="userDeptList" [(ngModel)]="selectedUserDepts" />
-    </div>
-  </div>
-  <div class="field grid">
-    <label class="col-fixed w-3">{{"user-add.detail.status" | translate}}</label>
-    <div class="col">
-      <p-select [options]="userStatusList" [(ngModel)]="selectedUserStatus" />
-    </div>
-  </div>
-  <div class="field grid">
-    <p-ifta-label class="col">
-      <input id="taxpayer" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
-      <label for="taxpayer">{{"user-add.detail.company-name" | translate}}</label>
-    </p-ifta-label>
-    <p-ifta-label class="col">
-      <input id="bankAccount" [(ngModel)]="userDataModel.bankAccount" type="text" pInputText>
-      <label for="bankAccount">{{"user-add.detail.bank-account" | translate}}</label>
-    </p-ifta-label>
   </div>
 </div>

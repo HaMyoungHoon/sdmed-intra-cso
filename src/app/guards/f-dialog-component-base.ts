@@ -16,7 +16,7 @@ import {ConfirmationService} from "primeng/api";
   standalone: false
 })
 export abstract class FDialogComponentBase implements AfterContentInit, OnDestroy {
-  myRole?: number = 0;
+  myRole: number = 0;
   haveRole: boolean = false;
   isLoading: boolean = false;
   isMobile: boolean = false;
@@ -57,7 +57,7 @@ export abstract class FDialogComponentBase implements AfterContentInit, OnDestro
       e => this.fDialogService.error("getMyRole", e));
     this.setLoading(false);
     if (ret.result) {
-      this.myRole = ret.data;
+      this.myRole = ret.data ?? 0;
       this.haveRole = haveRole(ret.data, this.arrayRole)
       return;
     }

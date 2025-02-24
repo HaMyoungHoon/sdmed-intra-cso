@@ -23,10 +23,11 @@ import {
   statusToUserStatusDesc,
   UserStatus
 } from "../../../../models/rest/user/user-status";
+import {Divider} from "primeng/divider";
 
 @Component({
   selector: "app-user-add-dialog-component",
-  imports: [Button, IftaLabel, InputText, MultiSelect, ProgressSpinComponent, ReactiveFormsModule, Select, TranslatePipe, FormsModule],
+  imports: [Button, IftaLabel, InputText, MultiSelect, ProgressSpinComponent, ReactiveFormsModule, Select, TranslatePipe, FormsModule, Divider],
   templateUrl: "./user-add-dialog-component.component.html",
   styleUrl: "./user-add-dialog-component.component.scss",
   standalone: true,

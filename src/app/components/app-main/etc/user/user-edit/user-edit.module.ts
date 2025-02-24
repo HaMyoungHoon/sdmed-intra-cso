@@ -17,13 +17,14 @@ import {CustomPickListComponent} from "../../../../common/custom-pick-list/custo
 import {Card} from "primeng/card";
 import {IftaLabel} from "primeng/iftalabel";
 import {ConfirmPopup} from "primeng/confirmpopup";
+import {Divider} from "primeng/divider";
 
 
 
 @NgModule({
   declarations: [UserEditComponent],
-  imports: [
-    CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent, Card, IftaLabel, ConfirmPopup
-  ]
+	imports: [
+		CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent, Card, IftaLabel, ConfirmPopup, Divider
+	]
 })
 export class UserEditModule { }
