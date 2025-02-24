@@ -9,7 +9,7 @@
       <p-button class="m-1" size="small" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{sampleDownloadTooltip | translate}}" />
       <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
     </div>
-    <p-listbox class="flex w-fit h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" optionLabel="name" (onChange)="userListOnSelect($event)">
+    <p-listbox class="flex w-fit h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" [filterFields]="userFilterFields" (onChange)="userListOnSelect($event)">
       <ng-template #item let-user>
         <div class="flex w-20rem border-bottom-1 cursor-pointer">
           <label class="flex flex-auto justify-content-start cursor-pointer">{{user.id}}</label>

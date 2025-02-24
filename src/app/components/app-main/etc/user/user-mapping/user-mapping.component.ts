@@ -356,6 +356,9 @@ export class UserMappingComponent extends FComponentBase {
     this.fDialogService.warn("medicineSearch", ret.msg);
   }
 
+  get userFilterFields(): string[] {
+    return ["id", "name"];
+  }
   get hosFilterFields(): string[] {
     return ["code", "innerName"];
   }
