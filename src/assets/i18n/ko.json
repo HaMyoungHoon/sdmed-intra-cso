@@ -176,8 +176,8 @@
   },
   "pharma-list": {
     "post-pharma-data": "제약사 엑셀 업로드",
-    "post-pharma-medicine": "제약사-약품 엑셀 업로드",
-    "sample-pharma-medicine": "제약사-약품 샘플 다운로드",
+    "post-pharma-medicine": "제약사-약품 (발주처) 엑셀 업로드",
+    "sample-pharma-medicine": "제약사-약품 (발주처) 샘플 다운로드",
     "table": {
       "org-name": "원어명",
       "inner-name": "내부명",

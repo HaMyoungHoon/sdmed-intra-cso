@@ -139,19 +139,17 @@
     <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}"/>
   </div>
   <div #ediGalleria>
-    <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
+    <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
                 [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex" *ngIf="uploadModel.fileList.length > 0">
       <ng-template pTemplate="item" let-item>
         <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="edi-image cursor-pointer" (click)="viewEDIItem(uploadModel.fileList, item)" />
       </ng-template>
-      <ng-template pTemplate="caption" let-item>
+      <ng-template pTemplate="footer">
         <div class="flex">
-          <p-button class="flex m-1" size="small" icon="pi pi-download" [rounded]="true" pTooltip="{{downloadFileTooltip | translate}}" (click)="downloadEDIFile(item)" />
-          <div class="flex-row">
-            <label class="flex">{{ellipsis(item?.originalFilename, 50)}}</label>
-            <label class="flex">{{dateToYYYYMMdd(item?.regDate)}}</label>
-          </div>
-          <p-button class="flex m-1 justify-content-end ml-auto" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="removeEDIFile(item)" />
+          <label class="flex m-1 align-self-center">{{activeIndex + 1}}/{{uploadModel.fileList.length}}</label>
+          <label class="flex m-1 align-self-center font-bold">{{ellipsis(uploadModel.fileList[activeIndex].originalFilename, 50)}}</label>
+          <label class="flex m-1 align-self-center">{{dateToYYYYMMdd(uploadModel.fileList[activeIndex].regDate)}}</label>
+          <p-button class="flex m-1 justify-content-end ml-auto" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="removeEDIFile(uploadModel.fileList[activeIndex])" />
         </div>
       </ng-template>
     </p-galleria>
