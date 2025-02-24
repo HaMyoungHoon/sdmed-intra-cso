@@ -23,7 +23,8 @@
       "sub-3": "user mapping",
       "sub-4": "main ingredient method",
       "sub-5": "setting",
-      "sub-6": "log list"
+      "sub-6": "log list",
+      "sub-7": "log list"
     }
   },
   "menu-4": {
@@ -168,8 +169,7 @@
       "inner-name": "inner name",
       "owner-name": "owner name",
       "address": "address",
-      "manager1": "manager",
-      "manager2": "head",
+      "manager": "manager",
       "etc1": "et cetera",
       "etc2": "et cetera"
     }
@@ -390,8 +390,7 @@
     "close-date": "close date",
     "taxpayer-number": "taxpayer number",
     "image-url": "taxpayer image",
-    "manager1": "manager",
-    "manager2": "head",
+    "manager": "manager",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
@@ -423,8 +422,7 @@
     "close-date": "close date",
     "taxpayer-number": "taxpayer number",
     "image-url": "taxpayer image",
-    "manager1": "manager",
-    "manager2": "head",
+    "manager": "manager",
     "etc1": "et cetera",
     "etc2": "et cetera"
   },
@@ -575,6 +573,22 @@
       "class-name": "작명 모라 하징",
       "reg-date": "regDate"
     }
+  },
+  "ip-log-list": {
+    "this-index":  "thisIndex",
+    "date-time": "dateTime",
+    "method":  "method",
+    "request-uri": "requestUri",
+    "forwarded-for":  "forwardedFor",
+    "proxy-client-ip": "proxyClientIp",
+    "wl-proxy-client-ip":  "wlProxyClientIp",
+    "http-client-ip": "httpClientIp",
+    "http-forwarded-for":  "httpForwardedFor",
+    "remote-addr": "remoteAddr",
+    "local-addr":  "localAddr",
+    "server-name": "serverName",
+    "local-name":  "localName",
+    "local-port": "localPort"
   },
   "common-desc": {
     "open": "open",

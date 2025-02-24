@@ -4,7 +4,7 @@ import * as FAmhohwa from "../../guards/f-amhohwa";
 import {AppState} from "../../models/common/app-state";
 import {DOCUMENT, isPlatformBrowser} from "@angular/common";
 import {TableHeaderModel} from "../../models/common/table-header-model";
-import {THEME_LINK} from "../../guards/f-constants";
+import {IP_LOG_LIST_HEADER_LIST, THEME_LINK} from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -213,6 +213,17 @@ export class AppConfigService {
   setMedicinePriceListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.MEDICINE_LIST_PRICE_HEADER_LIST, buff);
+  }
+  getIPLogListTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.IP_LOG_LIST_HEADER_LIST);
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[]
+  }
+  setIPLogTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.IP_LOG_LIST_HEADER_LIST, buff);
   }
 
   allStorageClear(): void {

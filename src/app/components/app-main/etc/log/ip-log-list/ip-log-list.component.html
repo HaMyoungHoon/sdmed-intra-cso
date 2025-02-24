@@ -1,0 +1,31 @@
+<div class="ip-log-list-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <p-table [columns]="selectedHeaders" [value]="viewList" [scrollable]="true" [rows]="size" [loading]="isLoading"
+           [tableStyle]="tableStyle" size="small" stripedRows="true">
+    <ng-template #caption>
+      <div class="flex">
+        <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
+          <ng-template #item let-item>
+            <div>{{item.header | translate}}</div>
+          </ng-template>
+          <ng-template #selecteditems let-items>
+            <div *ngFor="let item of items">
+              {{item?.header | translate}},
+            </div>
+          </ng-template>
+        </p-multi-select>
+      </div>
+    </ng-template>
+    <ng-template #header let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [ngClass]="col.className">{{col.header | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">{{getTableItem(item, col)}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator (onPageChange)="paginatorChange($event)" [rows]="size" [totalRecords]="totalElement" [rowsPerPageOptions]="sizeList" />
+</div>

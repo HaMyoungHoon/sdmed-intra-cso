@@ -41,7 +41,8 @@ export const routes: Routes = [
       { path: FConstants.MAIN_INGREDIENT_METHOD_URL, loadChildren: () => import("./components/app-main/etc/manual/main-ingredient-method/main-ingredient-method.module").then(m => m.MainIngredientMethodModule) },
 
       { path: FConstants.SETTING_URL, loadChildren: () => import("./components/app-main/etc/setting/setting.module").then(m => m.SettingModule) },
-      { path: FConstants.LOG_LIST_URL, loadChildren: () => import("./components/app-main/etc/log/log-list/log-list.module").then(m => m.LogListModule) }
+      { path: FConstants.LOG_LIST_URL, loadChildren: () => import("./components/app-main/etc/log/log-list/log-list.module").then(m => m.LogListModule) },
+      { path: FConstants.IP_LOG_LIST_URL, loadChildren: () => import("./components/app-main/etc/log/ip-log-list/ip-log-list.module").then(m => m.IPLogListModule) }
     ]
   },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import("./components/notfound/notfound.module").then(m => m.NotfoundModule) },

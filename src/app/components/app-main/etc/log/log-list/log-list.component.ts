@@ -30,7 +30,7 @@ export class LogListComponent extends FComponentBase {
 
   async getList(): Promise<void> {
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getList(this.page, this.size),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getLogList(this.page, this.size),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result == true) {

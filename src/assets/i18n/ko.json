@@ -23,7 +23,8 @@
       "sub-3": "유저 매핑",
       "sub-4": "성분코드 부여방법",
       "sub-5": "설정",
-      "sub-6": "로그 리스트"
+      "sub-6": "로그 리스트",
+      "sub-7": "로그 리스트"
     }
   },
   "menu-4": {
@@ -168,8 +169,7 @@
       "inner-name": "내부명",
       "owner-name": "대표명",
       "address": "주소",
-      "manager1": "영업담당",
-      "manager2": "부서장",
+      "manager": "영업담당",
       "etc1": "비고1",
       "etc2": "비고2"
     }
@@ -390,8 +390,7 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
-    "manager1": "영업담당",
-    "manager2": "부서장",
+    "manager": "영업담당",
     "etc1": "비고1",
     "etc2": "비고2"
   },
@@ -423,8 +422,7 @@
     "close-date": "거래종료일",
     "taxpayer-number": "사업자번호",
     "image-url": "사업자등록증",
-    "manager1": "영업담당",
-    "manager2": "부서장",
+    "manager": "영업담당",
     "etc1": "비고1",
     "etc2": "비고2"
   },
@@ -570,6 +568,22 @@
       "class-name": "작명 모라 하징",
       "reg-date": "등록일"
     }
+  },
+  "ip-log-list": {
+    "this-index":  "thisIndex",
+    "date-time": "dateTime",
+    "method":  "method",
+    "request-uri": "requestUri",
+    "forwarded-for":  "forwardedFor",
+    "proxy-client-ip": "proxyClientIp",
+    "wl-proxy-client-ip":  "wlProxyClientIp",
+    "http-client-ip": "httpClientIp",
+    "http-forwarded-for":  "httpForwardedFor",
+    "remote-addr": "remoteAddr",
+    "local-addr":  "localAddr",
+    "server-name": "serverName",
+    "local-name":  "localName",
+    "local-port": "localPort"
   },
   "error": {
     "title": "요청하신 페이지를 찾을 수 없습니다.",
