@@ -178,7 +178,15 @@ export class UserEditComponent extends FComponentBase {
   }
   userImageView(userFileType: UserFileType): void {
     const file = this.userDataModel.fileList.find(x => x.userFileType == userFileType);
-    FUserInfoMethod.userImageView(file, this.taxpayerImageInput, this.fDialogService);
+    let input: ElementRef<HTMLInputElement>;
+    switch (userFileType) {
+      case UserFileType.Taxpayer: input = this.taxpayerImageInput; break;
+      case UserFileType.BankAccount: input = this.bankAccountImageInput; break;
+      case UserFileType.CsoReport: input = this.csoReportImageInput; break;
+      case UserFileType.MarketingContract: input = this.marketingContractImageInput; break;
+      default: return;
+    }
+    FUserInfoMethod.userImageView(file, input, this.fDialogService);
   }
   async userImageSelected(event: any, userFileType: UserFileType): Promise<void> {
     this.setLoading();

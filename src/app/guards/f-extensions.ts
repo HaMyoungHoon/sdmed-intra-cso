@@ -65,10 +65,14 @@ export function dateToYearFullString(date?: Date | null | string): string {
 
   return `${date.getFullYear()}-${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
-export function dateToMonthFullString(date?: Date): string {
+export function dateToMonthFullString(date?: Date | null | string): string {
   if (date == null) {
     return "??-?? ??:??:??";
   }
+  if (typeof(date) == "string") {
+    date = stringToDate(date);
+  }
+
   return `${dToMon(date)}-${dToD(date)} ${dToH(date)}:${dToMin(date)}:${dToS(date)}`;
 }
 export function dateToYYYYMMdd(date?: Date | null | string): string {
