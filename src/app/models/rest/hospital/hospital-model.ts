@@ -26,8 +26,7 @@ export class HospitalModel {
   mobilePhone: string = "";
   openDate?: Date;
   closeDate?: Date;
-  manager1: string = "";
-  manager2: string = "";
+  manager: string = "";
   etc1: string = "";
   etc2: string = "";
   imageUrl: string = "";
@@ -57,6 +56,7 @@ export class HospitalModel {
     this.mobilePhone = data.mobilePhone;
     this.openDate = data.openDate;
     this.closeDate = data.closeDate;
+    this.manager = data.manager;
     this.etc1 = data.etc1;
     this.etc2 = data.etc2;
     this.imageUrl = data.imageUrl;
@@ -87,7 +87,7 @@ export class HospitalModel {
     lhs.mobilePhone = rhs.mobilePhone;
     lhs.openDate = rhs.openDate;
     lhs.closeDate = rhs.closeDate;
-    lhs.manager1 = rhs.manager2;
+    lhs.manager = rhs.manager;
     lhs.etc1 = rhs.etc1;
     lhs.etc2 = rhs.etc2;
     lhs.imageUrl = rhs.imageUrl;

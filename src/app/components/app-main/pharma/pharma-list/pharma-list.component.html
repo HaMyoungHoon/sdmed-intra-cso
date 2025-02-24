@@ -32,7 +32,7 @@
     </ng-template>
     <ng-template #header let-columns>
       <tr>
-        <th *ngFor="let col of columns" [ngClass]="col.className">{{col.header | translate}}</th>
+        <th *ngFor="let col of columns" [ngClass]="col.className" [pSortableColumn]="col.field">{{col.header | translate}}<p-sortIcon field="{{col.field}}" /></th>
       </tr>
     </ng-template>
     <ng-template #body let-item let-columns="columns">

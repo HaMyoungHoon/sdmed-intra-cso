@@ -18,6 +18,7 @@ export const HOSPITAL_LIST_HEADER_LIST: string = "hospitalListHeaderList";
 export const PHARMA_LIST_HEADER_LIST: string = "pharmaListHeaderList";
 export const MEDICINE_LIST_HEADER_LIST: string = "medicineListHeaderList";
 export const MEDICINE_LIST_PRICE_HEADER_LIST: string = "medicinePriceListHeaderList";
+export const IP_LOG_LIST_HEADER_LIST: string = "ipLogListHeaderList";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";
@@ -55,6 +56,7 @@ export const USER_MAPPING_URL: string = "etc/userMapping";
 export const MAIN_INGREDIENT_METHOD_URL: string = "etc/manual/main_ingredient_method";
 export const SETTING_URL: string = "etc/setting";
 export const LOG_LIST_URL: string = "etc/logList";
+export const IP_LOG_LIST_URL: string = "etc/ipLogList";
 
 export const ASSETS_NO_IMAGE: string = "assets/image/no-image-1920.png";
 export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";
