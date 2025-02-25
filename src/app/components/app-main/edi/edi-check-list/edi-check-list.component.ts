@@ -9,6 +9,7 @@ import {UserDataModel} from "../../../../models/rest/user/user-data-model";
 import {Subject, takeUntil} from "rxjs";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {EdiUploadCheckSubModel} from "../../../../models/rest/edi/edi-upload-check-sub-model";
+import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 
 @Component({
   selector: "app-edi-check-list",
@@ -139,6 +140,9 @@ export class EdiCheckListComponent extends FComponentBase {
   get filterFields(): string[] {
     return ["id", "name", "hospitalName"];
   }
+  get userFilterFields(): string[] {
+    return ["id", "name"];
+  }
   get downIcon(): string {
     return "pi pi-chevron-down";
   }
@@ -150,4 +154,5 @@ export class EdiCheckListComponent extends FComponentBase {
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
+	protected readonly StringToEDIStateDesc = StringToEDIStateDesc;
 }

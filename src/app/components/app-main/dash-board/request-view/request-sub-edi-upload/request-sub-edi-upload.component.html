@@ -37,33 +37,30 @@
       <label for="userName">{{"edi-view.user-name" | translate}}</label>
     </p-ifta-label>
     <span class="m-1 align-self-center">
-      <p-tag [value]="uploadModel.ediState" [severity]="getEDIStateSeverity(uploadModel.ediState)" />
+      <p-tag [value]="StringToEDIStateDesc[uploadModel.ediState]" [severity]="getEDIStateSeverity(uploadModel.ediState)" />
     </span>
     <p-button class="m-1 align-self-center" (click)="$event.stopPropagation(); responseNewEDI()" *ngIf="!newEDIModifyDisable()">{{"common-desc.modify" | translate}}</p-button>
   </div>
   <p-accordion [multiple]="multipleEnable">
     <p-accordion-panel *ngFor="let pharma of uploadModel.pharmaList" value="{{accordionPharmaIndex(pharma)}}">
       <p-accordion-header>
-        <div>
-          <span>{{pharma.orgName}}</span>
-        </div>
-        <div *ngIf="pharma.isCarriedOver">
-          <span>{{"edi-view.carried-over" | translate}}</span>
-          <span>{{"edi-view.approx-apply-date" | translate}}</span>
-          <span>{{getPharmaApplyDate(pharma)}}</span>
-        </div>
-        <div>
-          <span>{{"edi-view.edi-state" | translate}}</span>
-          <span>
-            <p-tag [value]="pharma.ediState" [severity]="getEDIStateSeverity(pharma.ediState)" />
+        <div class="flex flex-wrap w-full flex-row">
+          <div class="flex col-2 align-items-center">
+            <label>{{pharma.orgName}}</label>
+          </div>
+          <div *ngIf="pharma.isCarriedOver" class="flex col-2 align-items-center">
+            <label>{{"edi-view.carried-over" | translate}}</label>
+            <label>{{"edi-view.approx-apply-date" | translate}}</label>
+            <label>{{getPharmaApplyDate(pharma)}}</label>
+          </div>
+          <div class="flex col-2 align-items-center">
+            <p-tag [value]="StringToEDIStateDesc[pharma.ediState]" [severity]="getEDIStateSeverity(pharma.ediState)" />
             <p-button (click)="$event.stopPropagation(); responsePharma(pharma)" *ngIf="!modifyDisable(pharma)">{{"common-desc.modify" | translate}}</p-button>
-          </span>
-        </div>
-        <div *ngIf="!modifyDisable(pharma)">
-          <span>{{"common-desc.modify" | translate}}</span>
-          <span>
+          </div>
+          <div class="flex flex-auto col-1 justify-content-end align-items-center" *ngIf="!modifyDisable(pharma)">
+            <label>{{"common-desc.modify" | translate}}</label>
             <p-button icon="pi pi-file-edit" (click)="$event.stopPropagation(); pharmaModify(pharma)" />
-          </span>
+          </div>
         </div>
       </p-accordion-header>
       <p-accordion-content>
@@ -107,24 +104,26 @@
   <p-accordion [multiple]="multipleEnable">
     <p-accordion-panel *ngFor="let response of uploadModel.responseList" value="{{accordionResponseIndex(response)}}">
       <p-accordion-header>
-        <div>
-          <span>{{response.pharmaName}}</span>
-        </div>
-        <div>
-          <span>{{"edi-view.reply.edi-state" | translate}}</span>
-          <p-tag [value]="response.ediState" [severity]="getEDIStateSeverity(response.ediState)" />
-        </div>
-        <div>
-          <span>{{"edi-view.reply.reg-date" | translate}}</span>
-          <span>{{dateToYYYYMMdd(response.regDate)}}</span>
-        </div>
-        <div>
-          <span>{{"edi-view.reply.user-name" | translate}}</span>
-          <span>{{response.userName}}</span>
+        <div class="flex flex-wrap w-full flex-row">
+          <div class="flex col-2 align-items-center">
+            <label>{{response.pharmaName}}</label>
+          </div>
+          <div class="flex col-2 align-items-center">
+            <label>{{"edi-view.reply.edi-state" | translate}}</label>
+            <p-tag [value]="StringToEDIStateDesc[response.ediState]" [severity]="getEDIStateSeverity(response.ediState)" />
+          </div>
+          <div class="flex col-2 align-items-center">
+            <label>{{"edi-view.reply.reg-date" | translate}}</label>
+            <label>{{dateToYYYYMMdd(response.regDate)}}</label>
+          </div>
+          <div class="flex col-2 align-items-center">
+            <label>{{"edi-view.reply.user-name" | translate}}</label>
+            <label>{{response.userName}}</label>
+          </div>
         </div>
       </p-accordion-header>
       <p-accordion-content *ngIf="response.etc.length > 0">
-        <textarea rows="5" cols="30" pTextarea [autoResize]="true" [(ngModel)]="response.etc" [readonly]="true"></textarea>
+        <textarea class="w-full" rows="5" cols="30" pTextarea [autoResize]="true" [(ngModel)]="response.etc" [readonly]="true"></textarea>
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>

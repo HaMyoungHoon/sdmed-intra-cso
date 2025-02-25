@@ -6,7 +6,7 @@ import {EDIUploadPharmaModel} from "../../../../models/rest/edi/edi-upload-pharm
 import * as FExtensions from "../../../../guards/f-extensions";
 import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
 import {Select} from "primeng/select";
-import {allEDIStateArray, EDIState} from "../../../../models/rest/edi/edi-state";
+import {allEDIStateArray, EDIState, StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 import {FormsModule} from "@angular/forms";
 import {Button} from "primeng/button";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -88,4 +88,6 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
     }
     return true;
   }
+
+  protected readonly StringToEDIStateDesc = StringToEDIStateDesc;
 }

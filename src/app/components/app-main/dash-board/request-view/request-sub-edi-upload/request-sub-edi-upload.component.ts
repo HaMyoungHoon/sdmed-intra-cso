@@ -6,7 +6,7 @@ import * as FExtensions from "../../../../../guards/f-extensions";
 import {EDIUploadModel} from "../../../../../models/rest/edi/edi-upload-model";
 import {EDIUploadPharmaModel} from "../../../../../models/rest/edi/edi-upload-pharma-model";
 import {EDIUploadPharmaMedicineModel} from "../../../../../models/rest/edi/edi-upload-pharma-medicine-model";
-import {EDIState} from "../../../../../models/rest/edi/edi-state";
+import {EDIState, StringToEDIStateDesc} from "../../../../../models/rest/edi/edi-state";
 import {transformToBoolean} from "primeng/utils";
 import {EDIUploadFileModel} from "../../../../../models/rest/edi/edi-upload-file-model";
 import {saveAs} from "file-saver";
@@ -429,4 +429,5 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly allTextPositionDesc = allTextPositionDesc;
+  protected readonly StringToEDIStateDesc = StringToEDIStateDesc;
 }

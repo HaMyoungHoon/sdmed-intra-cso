@@ -11,7 +11,7 @@ import {EDIUploadPharmaMedicineModel} from "../../../../models/rest/edi/edi-uplo
 import {EDIUploadFileModel} from "../../../../models/rest/edi/edi-upload-file-model";
 import {FullscreenFileViewComponent} from "../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {saveAs} from "file-saver";
-import {EDIState} from "../../../../models/rest/edi/edi-state";
+import {EDIState, StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {Subject, takeUntil} from "rxjs";
 import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
@@ -409,4 +409,5 @@ export class EdiViewComponent extends FComponentBase {
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly allTextPositionDesc = allTextPositionDesc;
+	protected readonly StringToEDIStateDesc = StringToEDIStateDesc;
 }

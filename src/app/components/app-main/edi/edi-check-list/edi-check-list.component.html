@@ -21,7 +21,7 @@
             <label>{{item | translate}}</label>
           </ng-template>
         </p-select>
-        <p-select class="m-1" [options]="userList" [(ngModel)]="selectUser">
+        <p-select class="m-1" [options]="userList" [(ngModel)]="selectUser" [filter]="true" [filterFields]="userFilterFields">
           <ng-template #item let-item>
             <div class="flex flex-column">
               <label>{{item.id}}</label>
@@ -72,7 +72,7 @@
                 <tr class="click-tr" (click)="openData(subModel)">
                   <td>{{subModel.pharmaName}}</td>
                   <td>
-                    <p-tag [value]="subModel.ediState" [severity]="getEDIStateSeverity(subModel.ediState)" />
+                    <p-tag [value]="StringToEDIStateDesc[subModel.ediState]" [severity]="getEDIStateSeverity(subModel.ediState)" />
                   </td>
                   <td>{{dateToYYYYMMdd(subModel.regDate)}}</td>
                   <td>{{requestApplyDate(subModel)}}</td>
