@@ -10,7 +10,7 @@ import {QnAReplyModel} from "../../../../models/rest/qna/qna-reply-model";
 import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-model";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {QnAFileModel} from "../../../../models/rest/qna/qna-file-model";
-import {QnAState, QnAStateToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
+import {QnAState} from "../../../../models/rest/qna/qna-state";
 import {Editor, EditorTextChangeEvent} from "primeng/editor";
 import {transformToBoolean} from "primeng/utils";
 import * as FConstants from "../../../../guards/f-constants";
@@ -293,7 +293,7 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
       e => this.fDialogService.error("saveData", e));
     if (ret.result) {
       await this.refreshData();
-      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, `${this.qnaHeaderModel.name}\n${this.qnaHeaderModel.title}`);
+      await this.mqttSend(this.qnaHeaderModel.userPK, this.qnaHeaderModel.thisPK, `${ret.data?.name}\n${this.qnaHeaderModel.title}`);
       return true;
     }
 
@@ -379,7 +379,6 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd;
   protected readonly getQnAStateSeverity = FExtensions.getQnAStateSeverity;
   protected readonly ellipsis = FExtensions.ellipsis;
-  protected readonly QnAStateToQnAStateDesc = QnAStateToQnAStateDesc;
 
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
 }
