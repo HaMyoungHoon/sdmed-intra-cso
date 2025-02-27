@@ -33,7 +33,7 @@ export function ediStateToEDIStateDesc(ediState?: EDIState): string {
 export const EDIStateDesc: { [key in EDIState]: string } = {
   [EDIState.None]: "미처리",
   [EDIState.OK]: "완료",
-  [EDIState.Reject]: "불가",
+  [EDIState.Reject]: "반려",
   [EDIState.Pending]: "이월",
   [EDIState.Partial]: "부분처리",
 }
@@ -41,7 +41,7 @@ export const EDIStateDesc: { [key in EDIState]: string } = {
 export const StringToEDIStateDesc: { [key in string]: string } = {
   "None": "미처리",
   "OK": "완료",
-  "Reject": "불가",
+  "Reject": "반려",
   "Pending": "이월",
   "Partial": "부분처리",
 }
@@ -55,7 +55,7 @@ export const StringToEDIState: { [key in string]: EDIState } = {
 export const EDIStateDescToEDIState: { [key in string]: EDIState } = {
   "미처리": EDIState.None,
   "완료": EDIState.OK,
-  "불가": EDIState.Reject,
+  "반려": EDIState.Reject,
   "이월": EDIState.Pending,
   "부분처리": EDIState.Partial,
 }
