@@ -5,7 +5,7 @@ import * as FConstants from "../../../../guards/f-constants";
 import {QnAHeaderModel} from "../../../../models/rest/qna/qna-header-model";
 import {QnaListService} from "../../../../services/rest/qna-list.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
-import {QnAStateToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
+import {QnAStateToQnAStateDesc, StringToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
 import {Calendar} from "primeng/calendar";
 import {SelectButtonModel} from "../../../../models/common/select-button-model";
 import * as FAmhohwa from "../../../../guards/f-amhohwa";
@@ -169,4 +169,5 @@ export class QnaListComponent extends FComponentBase {
   protected readonly getQnAStateSeverity = FExtensions.getQnAStateSeverity;
   protected readonly tableStyle = FConstants.tableStyle;
   protected readonly filterTableOption = FConstants.filterTableOption;
+	protected readonly StringToQnAStateDesc = StringToQnAStateDesc;
 }

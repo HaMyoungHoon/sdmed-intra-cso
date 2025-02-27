@@ -40,7 +40,7 @@
         <td>{{data.id}}</td>
         <td>{{data.name}}</td>
         <td>
-          <p-tag [value]="data.qnaState" [severity]="getQnAStateSeverity(data.qnaState)"/>
+          <p-tag [value]="StringToQnAStateDesc[data.qnaState]" [severity]="getQnAStateSeverity(data.qnaState)"/>
         </td>
         <td>{{dateToYYYYMMdd(data.regDate)}}</td>
       </tr>

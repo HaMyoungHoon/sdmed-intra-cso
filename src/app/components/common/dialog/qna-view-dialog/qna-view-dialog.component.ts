@@ -10,7 +10,7 @@ import {QnAReplyModel} from "../../../../models/rest/qna/qna-reply-model";
 import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-model";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {QnAFileModel} from "../../../../models/rest/qna/qna-file-model";
-import {QnAState} from "../../../../models/rest/qna/qna-state";
+import {QnAState, StringToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
 import {Editor, EditorTextChangeEvent} from "primeng/editor";
 import {transformToBoolean} from "primeng/utils";
 import * as FConstants from "../../../../guards/f-constants";
@@ -381,4 +381,5 @@ export class QnaViewDialogComponent extends FDialogComponentBase {
   protected readonly ellipsis = FExtensions.ellipsis;
 
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
+	protected readonly StringToQnAStateDesc = StringToQnAStateDesc;
 }

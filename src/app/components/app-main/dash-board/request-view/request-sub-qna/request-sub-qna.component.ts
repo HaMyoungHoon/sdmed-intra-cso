@@ -8,7 +8,7 @@ import {QnaListService} from "../../../../../services/rest/qna-list.service";
 import * as FExtensions from "../../../../../guards/f-extensions";
 import {QnAFileModel} from "../../../../../models/rest/qna/qna-file-model";
 import {transformToBoolean} from "primeng/utils";
-import {QnAState} from "../../../../../models/rest/qna/qna-state";
+import {QnAState, StringToQnAStateDesc} from "../../../../../models/rest/qna/qna-state";
 import {saveAs} from "file-saver";
 import {UploadFileBuffModel} from "../../../../../models/common/upload-file-buff-model";
 import {DOCUMENT} from "@angular/common";
@@ -364,4 +364,5 @@ export class RequestSubQnaComponent extends FComponentBase {
   protected readonly getQnAStateSeverity = FExtensions.getQnAStateSeverity;
   protected readonly ellipsis = FExtensions.ellipsis;
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
+	protected readonly StringToQnAStateDesc = StringToQnAStateDesc;
 }

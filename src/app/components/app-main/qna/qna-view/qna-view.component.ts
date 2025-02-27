@@ -10,7 +10,7 @@ import * as FImageCache from "../../../../guards/f-image-cache";
 import {QnAHeaderModel} from "../../../../models/rest/qna/qna-header-model";
 import {QnAContentModel} from "../../../../models/rest/qna/qna-content-model";
 import {DashboardService} from "../../../../services/rest/dashboard.service";
-import {QnAState} from "../../../../models/rest/qna/qna-state";
+import {QnAState, StringToQnAStateDesc} from "../../../../models/rest/qna/qna-state";
 import {QnAFileModel} from "../../../../models/rest/qna/qna-file-model";
 import {transformToBoolean} from "primeng/utils";
 import {QnAReplyModel} from "../../../../models/rest/qna/qna-reply-model";
@@ -376,4 +376,5 @@ export class QnaViewComponent extends FComponentBase {
   protected readonly ellipsis = FExtensions.ellipsis;
 
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
+  protected readonly StringToQnAStateDesc = StringToQnAStateDesc;
 }
