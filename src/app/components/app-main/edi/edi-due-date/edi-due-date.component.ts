@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Component, ElementRef, signal, ViewChild} from "@angular/core";
+import {Component, ElementRef, signal, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {haveRole, UserRole} from "../../../../models/rest/user/user-role";
 import {EdiDueDateService} from "../../../../services/rest/edi-due-date.service";
 import * as FExtensions from "../../../../guards/f-extensions"
 import {EDIPharmaDueDateModel} from "../../../../models/rest/edi/edi-pharma-due-date-model";
-import {CalendarOptions, DateSelectArg, DatesSetArg, EventApi, EventChangeArg, EventClickArg} from "@fullcalendar/core";
+import {CalendarOptions, DateSelectArg, DatesSetArg, EventApi, EventChangeArg, EventClickArg, EventInput, EventSourceFuncArg, EventSourceInput} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
@@ -37,7 +37,7 @@ export class EdiDueDateComponent extends FComponentBase {
       }
     },
     headerToolbar: {
-      left: "prev,next today",
+      left: "prev,next today dayGridMonth,dayGridWeek",
       center: "title",
       right: "excelUpload sampleDownload",
     },
@@ -59,10 +59,14 @@ export class EdiDueDateComponent extends FComponentBase {
   selectedDate?: Date;
   selectedPharma: PharmaModel[] = [];
   ablePharmaList: PharmaModel[] = [];
-  constructor(private thisService: EdiDueDateService, private cd: ChangeDetectorRef) {
+  constructor(private thisService: EdiDueDateService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger, UserRole.Employee, UserRole.EdiChanger));
     const sub = new Subject<any>();
     this.sub.push(sub);
+    this.calendarOptions.update((options) => ({
+      ...options,
+      initialView: this.appConfig.getCalendarViewType()
+    }));
     this.translateService.onLangChange.pipe(takeUntil(sub)).subscribe((event: LangChangeEvent) => {
       this.calendarOptions.update((options) => ({
         ...options,
@@ -75,17 +79,22 @@ export class EdiDueDateComponent extends FComponentBase {
     await this.getList();
   }
 
+  setEvents(): void {
+    this.calendar.getApi().batchRendering(async () => {
+      this.calendar.getApi().removeAllEvents();
+      this.viewModel.forEach(x => {
+        this.addEvent(x);
+      });
+    });
+  }
   async getList(): Promise<void> {
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.getList(FExtensions.dateToYYYYMMdd(this.calendar.getApi().getDate())),
       e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result) {
-      this.calendar.getApi().removeAllEvents();
       this.viewModel = ret.data ?? [];
-      this.viewModel.forEach(x => {
-        this.addEvent(x);
-      });
+      this.setEvents();
       return;
     }
     this.fDialogService.warn("getList", ret.msg);
@@ -96,11 +105,8 @@ export class EdiDueDateComponent extends FComponentBase {
       e => this.fDialogService.error("getListRange", e));
     this.setLoading(false);
     if (ret.result) {
-      this.calendar.getApi().removeAllEvents();
       this.viewModel = ret.data ?? [];
-      this.viewModel.forEach(x => {
-        this.addEvent(x);
-      });
+      this.setEvents();
       return;
     }
     this.fDialogService.warn("getListRange", ret.msg);
@@ -175,6 +181,7 @@ export class EdiDueDateComponent extends FComponentBase {
   async datesSet(datesSetArg: DatesSetArg): Promise<void> {
     if (this.haveRole) {
       await this.getListRange(datesSetArg.start, datesSetArg.end);
+      this.appConfig.setCalendarViewType(datesSetArg.view.type);
     }
   }
   async dateSelect(selectInfo: DateSelectArg): Promise<void> {
@@ -199,7 +206,6 @@ export class EdiDueDateComponent extends FComponentBase {
     }
   }
   async eventSet(events: EventApi[]): Promise<void> {
-    this.cd.detectChanges();
   }
   async eventChange(eventChange: EventChangeArg): Promise<void> {
     if (!haveRole(this.myRole, Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger, UserRole.EdiChanger))) {

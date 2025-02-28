@@ -4,7 +4,6 @@ import * as FAmhohwa from "../../guards/f-amhohwa";
 import {AppState} from "../../models/common/app-state";
 import {DOCUMENT, isPlatformBrowser} from "@angular/common";
 import {TableHeaderModel} from "../../models/common/table-header-model";
-import {IP_LOG_LIST_HEADER_LIST, THEME_LINK} from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -225,6 +224,16 @@ export class AppConfigService {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.IP_LOG_LIST_HEADER_LIST, buff);
   }
+  getCalendarViewType(): string {
+    const buff = FAmhohwa.getLocalStorage(FConstants.CALENDAR_VIEW_TYPE);
+    if (buff.length <= 0) {
+      return "dayGridMonth"
+    }
+    return buff;
+  }
+  setCalendarViewType(typeString: string): void {
+    FAmhohwa.setLocalStorage(FConstants.CALENDAR_VIEW_TYPE, typeString);
+  }
 
   allStorageClear(): void {
     const storage: string[] = [
@@ -242,7 +251,10 @@ export class AppConfigService {
       FConstants.HOSPITAL_LIST_HEADER_LIST,
       FConstants.PHARMA_LIST_HEADER_LIST,
       FConstants.MEDICINE_LIST_HEADER_LIST,
-      FConstants.MEDICINE_LIST_PRICE_HEADER_LIST
+      FConstants.MEDICINE_LIST_PRICE_HEADER_LIST,
+      FConstants.MEDICINE_LIST_PRICE_HEADER_LIST,
+      FConstants.IP_LOG_LIST_HEADER_LIST,
+      FConstants.CALENDAR_VIEW_TYPE
     ];
     storage.forEach(x => FAmhohwa.removeLocalStorage(x));
   }

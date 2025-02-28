@@ -19,6 +19,7 @@ export const PHARMA_LIST_HEADER_LIST: string = "pharmaListHeaderList";
 export const MEDICINE_LIST_HEADER_LIST: string = "medicineListHeaderList";
 export const MEDICINE_LIST_PRICE_HEADER_LIST: string = "medicinePriceListHeaderList";
 export const IP_LOG_LIST_HEADER_LIST: string = "ipLogListHeaderList";
+export const CALENDAR_VIEW_TYPE: string = "calendarViewType";
 
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";
