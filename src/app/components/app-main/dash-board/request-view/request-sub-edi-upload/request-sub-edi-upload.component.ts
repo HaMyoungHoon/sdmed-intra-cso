@@ -218,8 +218,13 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     if (this.uploadModel.ediState == EDIState.OK || this.uploadModel.ediState == EDIState.Reject) {
       return true;
     }
-
-    return this.uploadModel.etc.length <= 0;
+    if (this.uploadModel.etc.length <= 0) {
+      return true;
+    }
+    if (this.uploadModel.pharmaList.length > 0) {
+      return true;
+    }
+    return false;
   }
   responsePharma(pharma: EDIUploadPharmaModel): void {
     const sub = new Subject<any>();
