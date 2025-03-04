@@ -105,6 +105,13 @@ export class ImageModifyViewComponent {
   menuInit(): void {
     this.contextMenu = [
       {
+        label: "common-desc.all-download",
+        icon: "pi pi-download",
+        command: async(_: MenuItemCommandEvent): Promise<void> => {
+          await this.allDownload();
+        }
+      },
+      {
         label: "common-desc.download",
         icon: "pi pi-download",
         command: async(_: MenuItemCommandEvent): Promise<void> => {
@@ -233,6 +240,27 @@ export class ImageModifyViewComponent {
     this.brushSize = this.fontSize / 2;
     await this.optionInput();
   }
+  async allDownload(): Promise<void> {
+    this.isLoading = true;
+    for (const item of this.fileViewModel) {
+      const ext = FExtensions.getExtMimeType(item.mimeType);
+      if (FExtensions.isImage(ext)) {
+        await this.downloadImageFile(item);
+      } else {
+        const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+          e => this.onError("downloadFile", e));
+        try {
+          if (ret && ret.body) {
+            const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
+            saveAs(ret.body, filename);
+          }
+        } catch (e: any) {
+          this.onError("download", e?.message?.toString());
+        }
+      }
+    }
+    this.isLoading = false;
+  }
   async download(): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;
     if (item == undefined) {
@@ -243,6 +271,27 @@ export class ImageModifyViewComponent {
     const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
     saveAs(blob, filename);
     this.isLoading = false;
+  }
+  async downloadImageFile(item: FileViewModel): Promise<void> {
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.onError("downloadFile", e));
+      if (ret && ret.body) {
+        blobBuff = ret.body;
+        await FImageCache.putImage(item.blobUrl, blobBuff);
+      } else {
+        this.onError("download", "edi file download fail");
+        return;
+      }
+    }
+    try {
+      const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
+      const blob = await FExtensions.blobAddWatermarkCanvas(blobBuff, filename, item.mimeType, this.watermarkCanvas.nativeElement);
+      saveAs(blob, filename);
+    } catch (e: any) {
+      this.onError("download", e?.message?.toString());
+    }
   }
   async print(height_width_full: number): Promise<void> {
     const item: FileViewModel | undefined = this.selectViewModel;

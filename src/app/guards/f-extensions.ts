@@ -819,6 +819,32 @@ export async function blobAddText(blob: Blob, text: string, mimeType: string = "
     image.src = URL.createObjectURL(blob);
   });
 }
+export async function blobAddWatermarkCanvas(blob: Blob, text: string, mimeType: string = "image/jpeg", watermarkCanvas: HTMLCanvasElement): Promise<Blob> {
+  const ext = getExtMimeType(mimeType);
+  if (!isImage(ext)) {
+    return blob;
+  }
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    const image = new Image();
+    image.onload = () => {
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 0, 0);
+        context.drawImage(watermarkCanvas, 0, 0, canvas.width, canvas.height); // , 0, 0, canvas.width, canvas.height);
+        canvas.toBlob((blob) => resolve(blob!), mimeType);
+        canvas.remove();
+      } else {
+        reject("이미지 초기화 실패");
+      }
+      URL.revokeObjectURL(image.src);
+    };
+    image.src = URL.createObjectURL(blob);
+  });
+}
 export function canvasCombined(imageCanvas: HTMLCanvasElement, brushCanvas: HTMLCanvasElement, watermarkCanvas: HTMLCanvasElement, cropVector: Vector2d): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = cropVector.width;
