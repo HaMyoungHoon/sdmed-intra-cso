@@ -2,7 +2,7 @@
   <app-progress-spin [isLoading]="isLoading" />
   <drawer-fullscreen-file-view #fullscreenFileView />
   <drawer-image-modify-view #imageModifyView (error)="onError($event)" />
-  <p-context-menu [target]="ediGalleria" [model]="contextMenu" (onShow)="contextMenuOnShow()">
+  <p-context-menu [target]="ediGalleria" [model]="contextMenu" (onShow)="contextMenuOnShow()" appendTo="body">
     <ng-template pTemplate="item" let-item>
       <a pRipple class="flex align-items-center p-contextmenu-item-link">
         <span [class]="item.icon"></span>

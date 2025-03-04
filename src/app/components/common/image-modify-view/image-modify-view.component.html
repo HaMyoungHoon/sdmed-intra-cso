@@ -1,6 +1,6 @@
 <p-drawer class="image-modify-view-container" [fullScreen]="true" [(visible)]="isVisible" (onHide)="onHide()" [closeOnEscape]="true" [closable]="false">
   <app-progress-spin [isLoading]="isLoading" />
-  <p-context-menu [target]="contentContainer" [model]="contextMenu">
+  <p-context-menu [target]="contentContainer" [model]="contextMenu" appendTo="body">
     <ng-template pTemplate="item" let-item>
       <a pRipple class="flex align-items-center p-contextmenu-item-link">
         <span [class]="item.icon"></span>
