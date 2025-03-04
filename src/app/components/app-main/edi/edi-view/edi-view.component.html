@@ -79,7 +79,7 @@
           </ng-template>
           <ng-template #body let-medicine>
             <tr>
-              <td>{{medicine.innerName}}</td>
+              <td>{{medicine.name}}</td>
               <td>
                 <input type="number" [(ngModel)]="medicine.count" [disabled]="modifyDisable(pharma)">
               </td>
