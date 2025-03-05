@@ -92,7 +92,7 @@ export class EdiListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openEDIViewDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

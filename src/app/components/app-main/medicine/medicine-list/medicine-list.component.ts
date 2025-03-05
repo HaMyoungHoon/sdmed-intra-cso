@@ -61,7 +61,7 @@ export class MedicineListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openMedicineAddDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,
@@ -110,7 +110,7 @@ export class MedicineListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openMedicineEditDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

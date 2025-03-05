@@ -3,6 +3,7 @@
   <div class="m-1" *ngIf="!isLoading">
     <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
     <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
+    <p-button class="m-1" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
     <label>esc on close</label>
   </div>
   <div *ngIf="isImage">

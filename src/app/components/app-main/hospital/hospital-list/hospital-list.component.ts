@@ -60,7 +60,7 @@ export class HospitalListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openHospitalAddDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,
@@ -109,7 +109,7 @@ export class HospitalListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openHospitalEditDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

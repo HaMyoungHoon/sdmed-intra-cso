@@ -55,7 +55,7 @@ export class UserSettingComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openUserAddDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,
@@ -108,7 +108,7 @@ export class UserSettingComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openUserEditDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

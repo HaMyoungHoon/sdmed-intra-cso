@@ -70,7 +70,7 @@ export class MyInfoComponent extends FComponentBase {
       return;
     }
     this.fDialogService.openFullscreenFileView({
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

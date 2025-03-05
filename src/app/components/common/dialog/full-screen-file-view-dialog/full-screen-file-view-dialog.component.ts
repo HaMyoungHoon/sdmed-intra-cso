@@ -77,6 +77,9 @@ export class FullScreenFileViewDialogComponent extends FDialogComponentBase {
       await this.excelReady();
     }
   }
+  close(): void {
+    this.ref.close();
+  }
 
   get selectViewModel(): FileViewModel | undefined {
     if (this.selectedIndex < 0 || this.selectedIndex >= this.fileViewModel.length) {

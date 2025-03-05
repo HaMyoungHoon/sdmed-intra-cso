@@ -228,7 +228,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     this.sub.push(sub);
     this.fDialogService.openEDIResponseDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

@@ -131,7 +131,7 @@ export class HospitalEditComponent extends FComponentBase {
     }
 
     this.fDialogService.openImageView({
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

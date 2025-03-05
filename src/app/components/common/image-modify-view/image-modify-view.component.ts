@@ -240,6 +240,9 @@ export class ImageModifyViewComponent {
     this.brushSize = this.fontSize / 2;
     await this.optionInput();
   }
+  close(): void {
+    this.isVisible = false;
+  }
   async allDownload(): Promise<void> {
     this.isLoading = true;
     for (const item of this.fileViewModel) {

@@ -44,7 +44,7 @@ export function userImageView(fileModel: UserFileModel | undefined, input: Eleme
     return;
   }
   fDialogService.openFullscreenFileView({
-    closable: false,
+    closable: true,
     closeOnEscape: true,
     draggable: true,
     resizable: true,

@@ -84,6 +84,9 @@ export class FullscreenFileViewComponent {
       await this.excelReady();
     }
   }
+  close(): void {
+    this.isVisible = false;
+  }
 
   get selectViewModel(): FileViewModel | undefined {
     if (this.selectedIndex < 0 || this.selectedIndex >= this.fileViewModel.length) {

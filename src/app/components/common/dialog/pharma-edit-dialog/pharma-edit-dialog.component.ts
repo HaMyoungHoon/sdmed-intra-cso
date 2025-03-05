@@ -183,7 +183,7 @@ export class PharmaEditDialogComponent extends FDialogComponentBase {
     }
 
     this.fDialogService.openImageView({
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,

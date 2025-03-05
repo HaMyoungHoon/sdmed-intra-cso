@@ -133,7 +133,7 @@ export class QnaListComponent extends FComponentBase {
     this.sub.push(sub);
     this.fDialogService.openQnAViewDialog({
       modal: true,
-      closable: false,
+      closable: true,
       closeOnEscape: true,
       draggable: true,
       resizable: true,
