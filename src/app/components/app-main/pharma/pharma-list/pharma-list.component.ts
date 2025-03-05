@@ -9,7 +9,6 @@ import {PharmaListService} from "../../../../services/rest/pharma-list.service";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
 import {TableHeaderModel} from "../../../../models/common/table-header-model";
-import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 
 @Component({
   selector: "app-pharma-list",

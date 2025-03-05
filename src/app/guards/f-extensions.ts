@@ -22,7 +22,7 @@ import {BlobStorageInfoModel} from "../models/rest/blob-storage-info-model";
 import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
 import heic2any from "heic2any";
 import {Vector2d} from "../models/common/vector-2d";
-import {FILL_CROP_ORIGIN_COLOR} from "./f-constants";
+import {saveAs, FileSaverOptions} from "file-saver";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -1129,4 +1129,17 @@ export function regexPasswordCheck(data: string | undefined): boolean {
     return false;
   }
   return FConstants.REGEX_CHECK_PASSWORD_0.test(data);
+}
+export function fileSave(data: Blob | string, filename: string, options?: FileSaverOptions): void {
+  const extIndex = filename.lastIndexOf(".");
+  if (extIndex == -1) {
+    saveAs(data, filename, options);
+    return;
+  }
+  const ext = filename.substring(extIndex);
+  if (ext.toLowerCase().includes("webp") || ext == ".") {
+    filename = `${filename.substring(0, extIndex)}.jpg`;
+  }
+  console.log(filename);
+  saveAs(data, filename, options);
 }

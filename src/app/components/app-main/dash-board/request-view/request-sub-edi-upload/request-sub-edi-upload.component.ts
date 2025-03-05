@@ -9,7 +9,6 @@ import {EDIUploadPharmaMedicineModel} from "../../../../../models/rest/edi/edi-u
 import {EDIState, StringToEDIStateDesc} from "../../../../../models/rest/edi/edi-state";
 import {transformToBoolean} from "primeng/utils";
 import {EDIUploadFileModel} from "../../../../../models/rest/edi/edi-upload-file-model";
-import {saveAs} from "file-saver";
 import * as FConstants from "../../../../../guards/f-constants";
 import {FullscreenFileViewComponent} from "../../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {EdiListService} from "../../../../../services/rest/edi-list.service";
@@ -38,6 +37,7 @@ import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
 import {ColorPicker} from "primeng/colorpicker";
+import {getExtMimeType} from "../../../../../guards/f-extensions";
 
 @Component({
   selector: "app-request-sub-edi-upload",
@@ -324,7 +324,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     try {
       const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
       const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
-      saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+      FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
     }
@@ -342,7 +342,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
           const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
           const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+          FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
         }
       } catch (e: any) {
         this.fDialogService.warn("download", e?.message?.toString());
@@ -392,7 +392,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
             const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
             const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
             const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-            saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+            FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
           }
         } catch (e: any) {
           this.fDialogService.warn("download", e?.message?.toString());

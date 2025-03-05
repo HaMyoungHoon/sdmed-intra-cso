@@ -21,7 +21,6 @@ import {EDIUploadPharmaModel} from "../../../../models/rest/edi/edi-upload-pharm
 import {EDIUploadPharmaMedicineModel} from "../../../../models/rest/edi/edi-upload-pharma-medicine-model";
 import {transformToBoolean} from "primeng/utils";
 import {EDIUploadFileModel} from "../../../../models/rest/edi/edi-upload-file-model";
-import {saveAs} from "file-saver";
 import * as FConstants from "../../../../guards/f-constants";
 import {Textarea} from "primeng/textarea";
 import {EDIUploadResponseModel} from "../../../../models/rest/edi/edi-upload-response-model";
@@ -37,6 +36,7 @@ import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
 import {ColorPicker} from "primeng/colorpicker";
+import {getExtMimeType} from "../../../../guards/f-extensions";
 
 @Component({
   selector: "app-edi-view-dialog",
@@ -321,7 +321,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     try {
       const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
       const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
-      saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+      FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
     }
@@ -339,7 +339,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
           const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
           const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
           const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-          saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+          FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
         }
       } catch (e: any) {
         this.fDialogService.warn("download", e?.message?.toString());
@@ -389,7 +389,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
             const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
             const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
             const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-            saveAs(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getMimeTypeExt(item.mimeType)}`);
+            FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
           }
         } catch (e: any) {
           this.fDialogService.warn("download", e?.message?.toString());

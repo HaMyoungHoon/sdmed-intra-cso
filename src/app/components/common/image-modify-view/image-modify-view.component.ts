@@ -17,13 +17,13 @@ import {Select} from "primeng/select";
 import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Vector2d} from "../../../models/common/vector-2d";
-import {saveAs} from "file-saver";
 import {ContextMenu} from "primeng/contextmenu";
 import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
 import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../guards/f-image-cache";
 import {allDesc, ImageDragMode} from "./image-drag-mode";
+import {getExtMimeType} from "../../../guards/f-extensions";
 
 @Component({
   selector: "drawer-image-modify-view",
@@ -251,8 +251,8 @@ export class ImageModifyViewComponent {
           e => this.onError("downloadFile", e));
         try {
           if (ret && ret.body) {
-            const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
-            saveAs(ret.body, filename);
+            const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getExtMimeType(item.mimeType)}`;
+            FExtensions.fileSave(ret.body, filename);
           }
         } catch (e: any) {
           this.onError("download", e?.message?.toString());
@@ -268,8 +268,8 @@ export class ImageModifyViewComponent {
     }
     this.isLoading = true;
     const blob: Blob = await FExtensions.toBlobCanvasCombined(this.imageCanvas.nativeElement, this.brushCanvas.nativeElement, this.watermarkCanvas.nativeElement, item.mimeType, this.imageCropVector);
-    const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
-    saveAs(blob, filename);
+    const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getExtMimeType(item.mimeType)}`;
+    FExtensions.fileSave(blob, filename);
     this.isLoading = false;
   }
   async downloadImageFile(item: FileViewModel): Promise<void> {
@@ -286,9 +286,9 @@ export class ImageModifyViewComponent {
       }
     }
     try {
-      const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getMimeTypeExt(item.mimeType)}`;
+      const filename: string = `${FExtensions.ableFilename(this.fileName)}.${FExtensions.getExtMimeType(item.mimeType)}`;
       const blob = await FExtensions.blobAddWatermarkCanvas(blobBuff, filename, item.mimeType, this.watermarkCanvas.nativeElement);
-      saveAs(blob, filename);
+      FExtensions.fileSave(blob, filename);
     } catch (e: any) {
       this.onError("download", e?.message?.toString());
     }
