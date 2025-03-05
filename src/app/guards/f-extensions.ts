@@ -1132,7 +1132,7 @@ export function regexPasswordCheck(data: string | undefined): boolean {
 }
 export function fileSave(data: Blob | string, filename: string, options?: FileSaverOptions): void {
   const extIndex = filename.lastIndexOf(".");
-  if (extIndex == -1) {
+  if (extIndex < 0) {
     saveAs(data, filename, options);
     return;
   }
@@ -1140,6 +1140,5 @@ export function fileSave(data: Blob | string, filename: string, options?: FileSa
   if (ext.toLowerCase().includes("webp") || ext == ".") {
     filename = `${filename.substring(0, extIndex)}.jpg`;
   }
-  console.log(filename);
   saveAs(data, filename, options);
 }

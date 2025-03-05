@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import * as FConstants from "./guards/f-constants"
 import {AppMainComponent} from "./components/app-main/app-main.component";
-import {LOG_LIST_URL} from "./guards/f-constants";
+import {EXTERNAL_BLOB_VIEW_URL, LOG_LIST_URL} from "./guards/f-constants";
 
 export const routes: Routes = [
   { path: "", component: AppMainComponent,
@@ -45,6 +45,7 @@ export const routes: Routes = [
       { path: FConstants.IP_LOG_LIST_URL, loadChildren: () => import("./components/app-main/etc/log/ip-log-list/ip-log-list.module").then(m => m.IPLogListModule) }
     ]
   },
+  { path: FConstants.EXTERNAL_BLOB_VIEW_URL.slice(1), loadChildren: () => import("./components/external-blob-view/external-blob-view.module").then(m => m.ExternalBlobViewModule) },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import("./components/notfound/notfound.module").then(m => m.NotfoundModule) },
   { path: FConstants.API_CSO.slice(1), loadChildren: () => import("./components/notfound/notfound.module").then(m => m.NotfoundModule) },
   { path: "**", redirectTo: FConstants.NOTFOUND_URL },

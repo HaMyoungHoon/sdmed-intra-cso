@@ -1,0 +1,8 @@
+<div class="external-blob-view-container">
+  <div *ngIf="isPdf">
+    <ngx-extended-pdf-viewer class="pdf-viewer-container" [src]="blobUrl" />
+  </div>
+  <div class="flex w-full h-full" *ngIf="isExcel">
+    <div id="excelTable" class="flex"></div>
+  </div>
+</div>

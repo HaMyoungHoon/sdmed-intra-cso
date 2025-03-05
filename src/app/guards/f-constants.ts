@@ -21,6 +21,7 @@ export const MEDICINE_LIST_PRICE_HEADER_LIST: string = "medicinePriceListHeaderL
 export const IP_LOG_LIST_HEADER_LIST: string = "ipLogListHeaderList";
 export const CALENDAR_VIEW_TYPE: string = "calendarViewType";
 
+export const EXTERNAL_BLOB_VIEW_URL: string = "/externalBlobView";
 export const NOTFOUND_URL: string = "/notfound";
 export const API_CSO: string = "/apiCSO";
 
@@ -58,6 +59,8 @@ export const MAIN_INGREDIENT_METHOD_URL: string = "etc/manual/main_ingredient_me
 export const SETTING_URL: string = "etc/setting";
 export const LOG_LIST_URL: string = "etc/logList";
 export const IP_LOG_LIST_URL: string = "etc/ipLogList";
+
+export const BLOB_URL_1: string = "https://devsdmed1.blob.core.windows.net"
 
 export const ASSETS_NO_IMAGE: string = "assets/image/no-image-1920.png";
 export const ASSETS_ZIP_IMAGE: string = "assets/image/zip-image.png";
