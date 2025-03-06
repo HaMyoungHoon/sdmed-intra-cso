@@ -138,6 +138,8 @@ export class QnaListComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
+      width: "95%",
+      height: "95%",
       data: data.thisPK
     }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {

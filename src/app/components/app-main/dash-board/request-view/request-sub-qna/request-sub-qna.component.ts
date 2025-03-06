@@ -52,6 +52,8 @@ export class RequestSubQnaComponent extends FComponentBase {
   saveAble: boolean = false;
   uploadFileBuffModel: UploadFileBuffModel[] = [];
   activeIndex: number = 0;
+  replyActiveIndex: number[] = [];
+  uploadActiveIndex: number = 0;
   imageCacheUrl: {blobUrl: string, objectUrl: string}[] = [];
   constructor(@Inject(DOCUMENT) private document: Document, private thisService: QnaListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
@@ -90,6 +92,9 @@ export class RequestSubQnaComponent extends FComponentBase {
     if (ret.result) {
       this.qnaContentModel = ret.data ?? new QnAContentModel();
       this.accordionValue = [`${this.qnaContentModel.replyList.length - 1}`];
+      this.qnaContentModel.replyList.forEach(x => {
+        this.replyActiveIndex.push(0);
+      });
       await this.readyImage();
       return;
     }
