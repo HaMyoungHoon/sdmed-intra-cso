@@ -127,6 +127,8 @@ export class EdiCheckListComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
+      width: "95%",
+      height: "95%",
       data: data.ediPK
     }).pipe(takeUntil(sub)).subscribe((x): void => {
     });
