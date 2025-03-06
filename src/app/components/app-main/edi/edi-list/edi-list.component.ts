@@ -168,7 +168,7 @@ export class EdiListComponent extends FComponentBase {
       case "yearMonth": return `${item.year}-${item.month}` ;
       case "id": return item.id;
       case "userName": return item.name;
-      case "orgName": return item.orgName;
+      case "orgName": return this.getItemOrgName(item);
       case "ediState": return StringToEDIStateDesc[item.ediState];
       case "regDate": return FExtensions.dateToYYYYMMdd(item.regDate);
       default: return ""
@@ -182,6 +182,18 @@ export class EdiListComponent extends FComponentBase {
   }
   isHeaderTag(tableHeaderModel: TableHeaderModel): boolean {
     return tableHeaderModel.htmlType == "tag";
+  }
+  getItemOrgName(item: EDIUploadModel): string {
+    if (item.etc.length <= 0) {
+      return item.orgName;
+    }
+    return `${item.orgName} (${item.etc})`
+  }
+  isNewPlace(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): boolean {
+    if (tableHeaderModel.field != "orgName") {
+      return false;
+    }
+    return item.etc.length > 0;
   }
 
   protected readonly filterTable = FExtensions.filterTable;

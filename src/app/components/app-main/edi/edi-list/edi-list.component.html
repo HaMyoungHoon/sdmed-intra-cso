@@ -34,8 +34,8 @@
     <ng-template #body let-item let-columns="columns">
       <tr class="click-tr" (click)="openData(item)">
         <td *ngFor="let col of columns">
-          <label *ngIf="isHeaderLabel(col)">{{getTableItem(item, col)}}</label>
-          <p-tag *ngIf="isHeaderTag(col)" [severity]="getTableItemSeverity(item)">{{getTableItem(item, col)}}</p-tag>
+          <label class="click-item" *ngIf="isHeaderLabel(col)" [class.text-primary]="isNewPlace(item, col)">{{getTableItem(item, col)}}</label>
+          <p-tag class="click-item" *ngIf="isHeaderTag(col)" [severity]="getTableItemSeverity(item)">{{getTableItem(item, col)}}</p-tag>
         </td>
       </tr>
     </ng-template>
