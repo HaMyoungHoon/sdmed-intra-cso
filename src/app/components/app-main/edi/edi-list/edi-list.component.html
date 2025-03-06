@@ -7,7 +7,9 @@
         <p-date-picker #startDatePicker [(ngModel)]="startDate" (selectionchange)="startDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{startDatePlaceHolder | translate}}" />
         <p-date-picker #endDatePicker [(ngModel)]="endDate" (selectionchange)="endDateChange($event)" dateFormat="yy-mm-dd" pTooltip="{{endDatePlaceHolder | translate}}" />
         <p-checkbox class="align-self-center ml-2" binary="true" [(ngModel)]="myChild" pTooltip="{{myChildTooltip | translate}}" />
-        <p-button class="m-1" (onClick)="refreshData()" icon="pi pi-refresh" />
+        <p-button class="m-1 refresh-button" (onClick)="refreshData()" size="small" [disabled]="!haveRole">
+          <img src="/assets/icon/sync.svg" alt="refresh" class="icon-size" />
+        </p-button>
         <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
           <ng-template #item let-item>
             <div>{{item.header | translate}}</div>
