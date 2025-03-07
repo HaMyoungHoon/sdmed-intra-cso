@@ -23,6 +23,7 @@ import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
 import heic2any from "heic2any";
 import {Vector2d} from "../models/common/vector-2d";
 import {saveAs, FileSaverOptions} from "file-saver";
+import {EDIUploadPharmaFileModel} from "../models/rest/edi/edi-upload-pharma-file-model";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -394,6 +395,15 @@ export function userFileListToViewModel(userFileList: UserFileModel[]): FileView
   }));
 }
 export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileViewModel[] {
+  return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = ableFilename(x.originalFilename);
+    obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
+  }));
+}
+export function ediPharmaFileListToViewModel(ediFileList: EDIUploadPharmaFileModel[]): FileViewModel[] {
   return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;

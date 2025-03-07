@@ -1,0 +1,37 @@
+<div class="edi-pharma-file-view-model-container flex">
+  <drawer-fullscreen-file-view #fullscreenFileView />
+  <drawer-image-modify-view #imageModifyView (error)="tossError($event)" (warn)="tossWarn($event)" />
+  <p-context-menu [target]="ediPharmaGalleria" [model]="contextPharmaMenu" (onShow)="contextPharmaMenuOnShow()" appendTo="body">
+    <ng-template pTemplate="item" let-item>
+      <a pRipple class="flex align-items-center p-contextmenu-item-link">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">{{item.label | translate}}</span>
+      </a>
+    </ng-template>
+  </p-context-menu>
+  <div class="flex" *ngIf="pharmaModel.fileList.length > 0">
+    <p-select class="m-1 align-self-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" appendTo="body" />
+    <p-ifta-label class="m-1">
+      <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
+      <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
+    </p-ifta-label>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}" appendTo="body"/>
+    <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}" appendTo="body"/>
+  </div>
+  <div #ediPharmaGalleria class="flex col-6">
+    <p-galleria class="flex w-full" tabindex="-1" [value]="pharmaModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
+                [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex" >
+      <ng-template pTemplate="item" let-item>
+        <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="edi-image cursor-pointer" (click)="viewEDIPharmaItem(pharmaModel.fileList, item)" />
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="flex">
+          <label class="flex m-1 align-self-center">{{activeIndex + 1}}/{{pharmaModel.fileList.length}}</label>
+          <label class="flex m-1 align-self-center font-bold">{{ellipsis(pharmaModel.fileList[activeIndex].originalFilename, 50)}}</label>
+          <label class="flex m-1 align-self-center">{{dateToYYYYMMdd(pharmaModel.fileList[activeIndex].regDate)}}</label>
+          <p-button class="flex m-1 justify-content-end ml-auto" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="removeEDIPharmaFile()" />
+        </div>
+      </ng-template>
+    </p-galleria>
+  </div>
+</div>

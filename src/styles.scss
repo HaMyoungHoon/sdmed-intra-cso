@@ -15,7 +15,11 @@ app-menu-config .p-menu a {
 app-user-mapping .p-listbox-list-container {
   min-height: 30rem;
 }
-
+app-edi-view p-table .p-datatable,
+app-edi-view-dialog p-table .p-datatable,
+app-request-sub-edi-upload p-table .p-datatable {
+  width: 100%;
+}
 app-pharma-add-dialog .p-inputwrapper,
 app-pharma-add .p-inputwrapper,
 app-pharma-edit-dialog .p-inputwrapper,
@@ -97,4 +101,10 @@ app-hospital-edit .p-inputwrapper  {
 .icon-size {
   width: 20px;
   height: 20px;
+}
+.no-drag {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }

@@ -102,6 +102,7 @@
     "reg-date": "reg date",
     "hospital-name": "hospital name",
     "hospital-new-name": "new place",
+    "hospital-transfer-name": "transfer place",
     "id": "id",
     "user-name": "user name",
     "edi-state": "state",

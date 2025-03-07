@@ -36,7 +36,7 @@ import {Divider} from "primeng/divider";
 })
 export class RequestSubSignUpComponent extends FComponentBase {
   @Input() requestModel?: RequestModel
-  @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter<RequestModel>();
+  @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter();
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("csoReportImageInput") csoReportImageInput!: ElementRef<HTMLInputElement>

@@ -38,7 +38,8 @@ export class ImageModifyViewComponent {
   @ViewChild("cropCanvas") cropCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("brushCanvas") brushCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild("watermarkCanvas") watermarkCanvas!: ElementRef<HTMLCanvasElement>;
-  @Output() error: EventEmitter<{title: string, msg: string}> = new EventEmitter<{title: string; msg: string}>();
+  @Output() error: EventEmitter<{title: string, msg?: string}> = new EventEmitter();
+  @Output() warn: EventEmitter<{title: string, msg?: string}> = new EventEmitter();
   imageCacheSource: HTMLImageElement = new Image();
   isVisible: boolean = false;
   fileViewModel: FileViewModel[] = [];
@@ -77,8 +78,11 @@ export class ImageModifyViewComponent {
   constructor(@Inject(DOCUMENT) private document: Document, private commonService: CommonService) {
     this.menuInit();
   }
-  onError(title: string, msg: string): void {
+  onError(title: string, msg?: string): void {
     this.error.next({title: title, msg: msg});
+  }
+  onWarn(title: string, msg?: string): void {
+    this.warn.next({title: title, msg: msg});
   }
   async show(fileViewModel: FileViewModel[], fileName: string, addTextOptionModel: AddTextOptionModel = new AddTextOptionModel()): Promise<void> {
     this.fileViewModel = fileViewModel;
@@ -284,7 +288,7 @@ export class ImageModifyViewComponent {
         blobBuff = ret.body;
         await FImageCache.putImage(item.blobUrl, blobBuff);
       } else {
-        this.onError("download", "edi file download fail");
+        this.onWarn("download", "edi file download fail");
         return;
       }
     }

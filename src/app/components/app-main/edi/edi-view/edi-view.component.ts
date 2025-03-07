@@ -1,4 +1,4 @@
-import {Component, input, ViewChild} from "@angular/core";
+import {Component, input, QueryList, ViewChild, ViewChildren} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {EdiListService} from "../../../../services/rest/edi-list.service";
 import {ActivatedRoute} from "@angular/router";
@@ -20,7 +20,9 @@ import {ImageModifyViewComponent} from "../../../common/image-modify-view/image-
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
-import {getExtMimeType} from "../../../../guards/f-extensions";
+import {EDIType} from "../../../../models/rest/edi/edi-type";
+import {EDIUploadPharmaFileModel} from "../../../../models/rest/edi/edi-upload-pharma-file-model";
+import {EdiPharmaFileViewModelComponent} from "../../../common/edi-pharma-file-view-model/edi-pharma-file-view-model.component";
 
 @Component({
   selector: "app-edi-view",
@@ -31,6 +33,7 @@ import {getExtMimeType} from "../../../../guards/f-extensions";
 export class EdiViewComponent extends FComponentBase {
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
   @ViewChild("imageModifyView") imageModifyView!: ImageModifyViewComponent;
+  @ViewChildren("ediPharmaFileViewModel") ediPharmaFileViewModel!: QueryList<EdiPharmaFileViewModelComponent>;
   thisPK: string = "";
   uploadModel: EDIUploadModel = new EDIUploadModel();
   pharmaStateList: string[] = [];
@@ -53,8 +56,11 @@ export class EdiViewComponent extends FComponentBase {
   override async ngDestroy(): Promise<void> {
     this.imageCacheClear();
   }
-  onError(data: {title: string, msg: string}): void {
+  onError(data: {title: string, msg?: string}): void {
     this.fDialogService.error(data.title, data.msg);
+  }
+  onWarn(data: {title: string, msg?: string}): void {
+    this.fDialogService.warn(data.title, data.msg);
   }
   contextMenuOnShow(): void {
     this.initMenu();
@@ -122,6 +128,11 @@ export class EdiViewComponent extends FComponentBase {
     if (ret.result) {
       this.uploadModel = ret.data ?? new EDIUploadModel();
       this.pharmaStateList = [...this.uploadModel.pharmaList.map(x => x.ediState)];
+      this.uploadModel.pharmaList.forEach(x => {
+        if (x.fileList == undefined) {
+          x.fileList = [];
+        }
+      });
       if (this.uploadModel.pharmaList.length >= 1) {
         this.selectPrintPharma = this.uploadModel.pharmaList[0];
       }
@@ -169,10 +180,19 @@ export class EdiViewComponent extends FComponentBase {
         });
       }
     }
+    for (let fileView of this.ediPharmaFileViewModel) {
+      await fileView.readyImage(this.commonService);
+    }
   }
 
   getApplyDate(): string {
     return `${this.uploadModel.year}-${this.uploadModel.month}`;
+  }
+  getHospitalName(): string {
+    if (this.uploadModel.ediType == EDIType.DEFAULT) {
+      return this.uploadModel.orgName;
+    }
+    return `${this.uploadModel.orgName} (${this.uploadModel.etc})`;
   }
   getPharmaApplyDate(pharma: EDIUploadPharmaModel): string {
     return `${pharma.year}-${pharma.month}`;
@@ -305,7 +325,28 @@ export class EdiViewComponent extends FComponentBase {
       }
     }
     try {
-      const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+      const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
+      const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
+      FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
+    } catch (e: any) {
+      this.fDialogService.warn("download", e?.message?.toString());
+    }
+  }
+  async downloadPharmaImageFile(pharmaName: string, item: EDIUploadPharmaFileModel, withWatermark: boolean = true): Promise<void> {
+    let blobBuff = await FImageCache.getImage(item.blobUrl);
+    if (blobBuff == undefined) {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      if (ret && ret.body) {
+        blobBuff = ret.body;
+        await FImageCache.putImage(item.blobUrl, blobBuff);
+      } else {
+        this.fDialogService.warn("download", "edi file download fail");
+        return;
+      }
+    }
+    try {
+      const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
       const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
       FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
     } catch (e: any) {
@@ -323,9 +364,29 @@ export class EdiViewComponent extends FComponentBase {
       try {
         if (ret && ret.body) {
           const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
-          const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+          const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
           const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
+        }
+      } catch (e: any) {
+        this.fDialogService.warn("download", e?.message?.toString());
+      }
+    }
+    this.setLoading(false);
+  }
+  async downloadEDIPharmaFile(data: {pharmaName: string, item: EDIUploadPharmaFileModel, withWatermark: boolean }): Promise<void> {
+    this.setLoading();
+    const ext = FExtensions.getExtMimeType(data.item.mimeType);
+    if (FExtensions.isImage(ext)) {
+      await this.downloadPharmaImageFile(data.pharmaName, data.item);
+    } else {
+      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(data.item.blobUrl),
+        e => this.fDialogService.error("downloadFile", e));
+      try {
+        if (ret && ret.body) {
+          const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${data.pharmaName}`;
+          const blob = data.withWatermark ? await FExtensions.blobAddText(ret.body, filename, data.item.mimeType, this.addTextOptionMerge()) : ret.body;
+          FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(data.item.mimeType)}`);
         }
       } catch (e: any) {
         this.fDialogService.warn("download", e?.message?.toString());
@@ -355,10 +416,21 @@ export class EdiViewComponent extends FComponentBase {
     }
     this.fDialogService.warn("delete", ret.msg);
   }
+  async removeEDIPharmaFile(item: EDIUploadPharmaFileModel): Promise<void> {
+    this.setLoading();
+    const ret = await FExtensions.restTry(async() => await this.thisService.deleteEDIPharmaFile(item.thisPK),
+      e => this.fDialogService.error("delete", e));
+    this.setLoading(false);
+    if (ret.result) {
+      await this.mqttSend(this.uploadModel.userPK, this.uploadModel.thisPK, `${this.uploadModel.name}\n${this.uploadModel.orgName}\n${item.originalFilename}`);
+      return;
+    }
+    this.fDialogService.warn("delete", ret.msg);
+  }
   async imageModify(): Promise<void> {
     const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
     const buff = this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType));
-    const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+    const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
   }
   async allDownload(withWatermark: boolean = true): Promise<void> {
@@ -373,7 +445,7 @@ export class EdiViewComponent extends FComponentBase {
         try {
           if (ret && ret.body) {
             const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
-            const filename = `${this.getApplyDate()}_${this.uploadModel.orgName}_${pharmaName}`;
+            const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
             const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
             FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
           }
@@ -393,9 +465,6 @@ export class EdiViewComponent extends FComponentBase {
     });
   }
 
-  get downloadFileTooltip(): string {
-    return "common-desc.save";
-  }
   get removeFileTooltip(): string {
     return "common-desc.remove";
   }
@@ -408,6 +477,16 @@ export class EdiViewComponent extends FComponentBase {
   get imageModifyVisible(): boolean {
     return this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType)).length > 0;
   }
+  get isTransfer(): boolean {
+    return this.uploadModel.ediType == EDIType.TRANSFER;
+  }
+  get isNew(): boolean {
+    return this.uploadModel.ediType == EDIType.NEW;
+  }
+  get isDefault(): boolean {
+    return this.uploadModel.ediType == EDIType.DEFAULT;
+  }
+
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd
   protected readonly ellipsis = FExtensions.ellipsis;
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;

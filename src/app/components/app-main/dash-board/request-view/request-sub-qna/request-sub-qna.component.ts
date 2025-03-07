@@ -39,7 +39,7 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class RequestSubQnaComponent extends FComponentBase {
   @Input() requestModel?: RequestModel
-  @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter<RequestModel>();
+  @Output() closeEvent: EventEmitter<RequestModel> = new EventEmitter();
   @ViewChild("quillEditor") quillEditor!: Editor;
   @ViewChild("inputFiles") inputFiles!: ElementRef<HTMLInputElement>;
   @ViewChild("fullscreenFileView") fullscreenFileView!: FullscreenFileViewComponent;
