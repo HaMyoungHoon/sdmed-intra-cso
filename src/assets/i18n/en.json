@@ -92,6 +92,7 @@
       "id": "id",
       "user-name": "name",
       "org-name": "hospital",
+      "pharma-name": "pharma",
       "edi-state": "state",
       "reg-date": "reg date"
     }

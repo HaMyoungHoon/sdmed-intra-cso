@@ -1,5 +1,6 @@
 import {EDIState} from "./edi-state";
 import {EDIUploadPharmaMedicineModel} from "./edi-upload-pharma-medicine-model";
+import {EDIUploadPharmaFileModel} from "./edi-upload-pharma-file-model";
 
 export class EDIUploadPharmaModel {
   thisPK: string = "";
@@ -12,4 +13,5 @@ export class EDIUploadPharmaModel {
   isCarriedOver: boolean = false;
   ediState: EDIState = EDIState.None;
   medicineList: EDIUploadPharmaMedicineModel[] = [];
+  fileList: EDIUploadPharmaFileModel[] = [];
 }

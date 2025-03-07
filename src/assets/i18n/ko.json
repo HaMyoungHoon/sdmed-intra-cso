@@ -92,6 +92,7 @@
       "id": "아이디",
       "user-name": "이름",
       "org-name": "병원명",
+      "pharma-name": "제약사명",
       "edi-state": "상태",
       "reg-date": "등록일"
     }

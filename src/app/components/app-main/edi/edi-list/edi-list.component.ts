@@ -46,6 +46,7 @@ export class EdiListComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.initList = ret.data ?? [];
+      this.initList.forEach(x => x.ediStateDesc = StringToEDIStateDesc[x.ediState]);
       this.viewList = [...this.initList];
       return;
     }
@@ -116,7 +117,7 @@ export class EdiListComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["ediState", "orgName", "id", "name"];
+    return ["ediStateDesc", "orgName", "id", "name", "pharmaList.orgName"];
   }
   get startDatePlaceHolder(): string {
     return "edi-list.header.start-date";
@@ -151,6 +152,10 @@ export class EdiListComponent extends FComponentBase {
       obj.field = "orgName";
     }));
     this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "edi-list.table.pharma-name";
+      obj.field = "pharmaName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
       obj.header = "edi-list.table.edi-state";
       obj.htmlType = "tag";
       obj.field = "ediState";
@@ -171,7 +176,8 @@ export class EdiListComponent extends FComponentBase {
       case "id": return item.id;
       case "userName": return item.name;
       case "orgName": return this.getItemOrgName(item);
-      case "ediState": return StringToEDIStateDesc[item.ediState];
+      case "pharmaName": return this.getItemPharmaName(item);
+      case "ediState": return item.ediStateDesc;
       case "regDate": return FExtensions.dateToYYYYMMdd(item.regDate);
       default: return ""
     }
@@ -191,11 +197,28 @@ export class EdiListComponent extends FComponentBase {
     }
     return `${item.orgName} (${item.etc})`
   }
+  getItemPharmaName(item: EDIUploadModel): string {
+    if (item.pharmaList.length <= 0) {
+      return "???";
+    }
+    if (item.pharmaList.length == 1) {
+      return item.pharmaList[0].orgName;
+    }
+    return `${item.pharmaList[0].orgName} (${item.pharmaList.length})`;
+  }
   isNewPlace(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): boolean {
     if (tableHeaderModel.field != "orgName") {
       return false;
     }
     return item.etc.length > 0;
+  }
+  pharmaListTooltip(item: EDIUploadModel): string {
+    if (item.pharmaList.length <= 0) {
+      return "";
+    }
+    let ret = "";
+    item.pharmaList.forEach(x => ret += `${x.orgName}\n`);
+    return ret;
   }
 
   protected readonly filterTable = FExtensions.filterTable;
