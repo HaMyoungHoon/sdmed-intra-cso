@@ -12,6 +12,8 @@ export class EDIUploadModel {
   day: string = "";
   hospitalPK: string = "";
   orgName: string = "";
+  tempHospitalPK: string = "";
+  tempOrgName: string = "";
   id: string = "";
   name: string = "";
   ediState: EDIState = EDIState.None;
@@ -31,6 +33,8 @@ export class EDIUploadModel {
     lhs.day = rhs.day;
     lhs.hospitalPK = rhs.hospitalPK;
     lhs.orgName = rhs.orgName;
+    lhs.tempHospitalPK = rhs.tempHospitalPK;
+    lhs.tempOrgName = rhs.tempOrgName;
     lhs.name = rhs.name;
     lhs.ediState = rhs.ediState;
     lhs.ediStateDesc = rhs.ediStateDesc;

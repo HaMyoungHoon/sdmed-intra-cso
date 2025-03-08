@@ -11,6 +11,7 @@ import {Subject, takeUntil} from "rxjs";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {TableHeaderModel} from "../../../../models/common/table-header-model";
 import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
+import {EDIType} from "../../../../models/rest/edi/edi-type";
 
 @Component({
   selector: "app-edi-list",
@@ -192,10 +193,11 @@ export class EdiListComponent extends FComponentBase {
     return tableHeaderModel.htmlType == "tag";
   }
   getItemOrgName(item: EDIUploadModel): string {
-    if (item.etc.length <= 0) {
+    if (item.ediType == EDIType.DEFAULT) {
       return item.orgName;
     }
-    return `${item.orgName} (${item.etc})`
+
+    return `${item.orgName} (${item.tempOrgName})`
   }
   getItemPharmaName(item: EDIUploadModel): string {
     if (item.pharmaList.length <= 0) {
@@ -206,11 +208,20 @@ export class EdiListComponent extends FComponentBase {
     }
     return `${item.pharmaList[0].orgName} (${item.pharmaList.length})`;
   }
+  isPrimary(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): boolean {
+    return this.isNewPlace(item, tableHeaderModel) || this.isTransferPlace(item, tableHeaderModel);
+  }
   isNewPlace(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): boolean {
     if (tableHeaderModel.field != "orgName") {
       return false;
     }
-    return item.etc.length > 0;
+    return item.ediType == EDIType.NEW;
+  }
+  isTransferPlace(item: EDIUploadModel, tableHeaderModel: TableHeaderModel): boolean {
+    if (tableHeaderModel.field != "orgName") {
+      return false;
+    }
+    return item.ediType == EDIType.TRANSFER;
   }
   pharmaListTooltip(item: EDIUploadModel): string {
     if (item.pharmaList.length <= 0) {

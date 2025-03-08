@@ -20,7 +20,6 @@ import {EDIUploadPharmaModel} from "../../../models/rest/edi/edi-upload-pharma-m
 import {AddTextOptionModel} from "../../../models/common/add-text-option-model";
 import * as FImageCache from "../../../guards/f-image-cache";
 import {CommonService} from "../../../services/rest/common.service";
-import {EDIUploadModel} from "../../../models/rest/edi/edi-upload-model";
 import {EDIUploadPharmaFileModel} from "../../../models/rest/edi/edi-upload-pharma-file-model";
 import {EDIUploadFileModel} from "../../../models/rest/edi/edi-upload-file-model";
 import {HttpResponse} from "@angular/common/http";
@@ -128,31 +127,31 @@ export class EdiPharmaFileViewModelComponent {
   }
   async readyImage(commonService: CommonService): Promise<void> {
     this.imageCacheClear();
-    for (let ediFile of this.pharmaModel.fileList) {
-      const ext = FExtensions.getExtMimeType(ediFile.mimeType);
+    for (let pharmaFile of this.pharmaModel.fileList) {
+      const ext = FExtensions.getExtMimeType(pharmaFile.mimeType);
       if (!FExtensions.isImage(ext)) {
         this.imageCacheUrl.push({
-          blobUrl: ediFile.blobUrl,
+          blobUrl: pharmaFile.blobUrl,
           objectUrl: FExtensions.extToBlobUrl(ext)
         });
       } else {
-        let blobBuff = await FImageCache.getImage(ediFile.blobUrl);
+        let blobBuff = await FImageCache.getImage(pharmaFile.blobUrl);
         if (blobBuff == undefined) {
-          const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await commonService.downloadFile(ediFile.blobUrl),
+          const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await commonService.downloadFile(pharmaFile.blobUrl),
             e => this.onError("downloadFile", e));
           if (ret && ret.body) {
             blobBuff = ret.body;
-            await FImageCache.putImage(ediFile.blobUrl, blobBuff);
+            await FImageCache.putImage(pharmaFile.blobUrl, blobBuff);
           } else {
             this.imageCacheUrl.push({
-              blobUrl: ediFile.blobUrl,
+              blobUrl: pharmaFile.blobUrl,
               objectUrl: FConstants.ASSETS_NO_IMAGE
             });
             continue;
           }
         }
         this.imageCacheUrl.push({
-          blobUrl: ediFile.blobUrl,
+          blobUrl: pharmaFile.blobUrl,
           objectUrl: URL.createObjectURL(blobBuff)
         });
       }

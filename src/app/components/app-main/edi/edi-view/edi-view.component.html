@@ -24,7 +24,7 @@
       <label for="hospitalName">{{"edi-view.hospital-name" | translate}}</label>
     </p-ifta-label>
     <p-ifta-label class="m-1" *ngIf="!isDefault">
-      <input id="hospitalNewName" [ngModel]="uploadModel.etc" readonly pInputText />
+      <input id="hospitalNewName" [ngModel]="uploadModel.tempOrgName" readonly pInputText />
       <label for="hospitalNewName" *ngIf="isNew">{{"edi-view.hospital-new-name" | translate}}</label>
       <label for="hospitalNewName" *ngIf="isTransfer">{{"edi-view.hospital-transfer-name" | translate}}</label>
     </p-ifta-label>
@@ -103,7 +103,7 @@
               </ng-template>
             </p-table>
           </div>
-          <app-edi-pharma-file-view-model #ediPharmaFileViewModel [applyDate]="getApplyDate()" [hospitalName]="getHospitalName()" [pharmaModel]="pharma"
+          <app-edi-pharma-file-view-model class="flex col-6" #ediPharmaFileViewModel [applyDate]="getApplyDate()" [hospitalName]="getHospitalName()" [pharmaModel]="pharma"
                                           (error)="onError($event)" (warn)="onWarn($event)" (removeFileEvent)="removeEDIPharmaFile($event)" (downloadFileEvent)="downloadEDIPharmaFile($event)"/>
         </div>
       </p-accordion-content>

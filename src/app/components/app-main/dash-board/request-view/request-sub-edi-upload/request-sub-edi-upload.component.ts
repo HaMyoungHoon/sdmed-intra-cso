@@ -1,4 +1,14 @@
-import {Component, EventEmitter, input, Input, Output, QueryList, ViewChild, ViewChildren} from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  input,
+  Input,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {UserRole} from "../../../../../models/rest/user/user-role";
@@ -67,7 +77,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   textColor: string = "#000000";
   contextMenu: MenuItem[] = [];
   imageCacheUrl: {blobUrl: string, objectUrl: string}[] = [];
-  constructor(private thisService: EdiListService) {
+  constructor(private thisService: EdiListService, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
 
@@ -153,6 +163,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
       if (this.uploadModel.pharmaList.length >= 1) {
         this.selectPrintPharma = this.uploadModel.pharmaList[0];
       }
+      this.cd.detectChanges();
       await this.readyImage();
       this.setLoading(false);
       return;
@@ -209,7 +220,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     if (this.uploadModel.ediType == EDIType.DEFAULT) {
       return this.uploadModel.orgName;
     }
-    return `${this.uploadModel.orgName} (${this.uploadModel.etc})`;
+    return `${this.uploadModel.orgName} (${this.uploadModel.tempOrgName})`;
   }
   getPharmaApplyDate(pharma: EDIUploadPharmaModel): string {
     return `${pharma.year}-${pharma.month}`;
@@ -240,7 +251,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     if (this.uploadModel.ediState == EDIState.OK || this.uploadModel.ediState == EDIState.Reject) {
       return true;
     }
-    if (this.uploadModel.etc.length <= 0) {
+    if (this.uploadModel.tempOrgName.length <= 0) {
       return true;
     }
     if (this.uploadModel.pharmaList.length > 0) {
@@ -328,7 +339,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
 //    this.fDialogService.warn("notice", ret.msg);
   }
   async downloadImageFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
-    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
     let blobBuff = await FImageCache.getImage(item.blobUrl);
     if (blobBuff == undefined) {
       const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
@@ -380,7 +391,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
         e => this.fDialogService.error("downloadFile", e));
       try {
         if (ret && ret.body) {
-          const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+          const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
           const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
           const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
@@ -445,7 +456,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.fDialogService.warn("delete", ret.msg);
   }
   async imageModify(): Promise<void> {
-    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
     const buff = this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType));
     const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
     await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
@@ -461,7 +472,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
           e => this.fDialogService.error("downloadFile", e));
         try {
           if (ret && ret.body) {
-            const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.etc;
+            const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
             const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
             const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
             FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
