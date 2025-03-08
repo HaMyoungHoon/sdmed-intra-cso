@@ -136,8 +136,10 @@
     "user-mode-option1": "child only",
     "user-mode-option2": "all user",
     "table": {
+      "id": "id",
       "name": "name",
-      "hospital-name": "hospital",
+      "org-name": "org hospital name",
+      "inner-name": "inner hospital name",
       "pharma-name": "pharma",
       "edi-state": "state",
       "reg-date": "reg date",

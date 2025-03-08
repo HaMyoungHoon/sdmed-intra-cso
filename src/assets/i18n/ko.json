@@ -136,8 +136,10 @@
     "user-mode-option1": "담당만 선택",
     "user-mode-option2": "전체유저중 선택",
     "table": {
+      "id": "아이디",
       "name": "이름",
-      "hospital-name": "병원",
+      "org-name": "외부병원명",
+      "inner-name": "내부병원명",
       "pharma-name": "제약사",
       "edi-state": "상태",
       "reg-date": "등록일",

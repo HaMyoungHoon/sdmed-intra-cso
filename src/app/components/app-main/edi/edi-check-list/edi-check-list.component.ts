@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import {Component} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {EdiCheckListService} from "../../../../services/rest/edi-check-list.service";
@@ -9,7 +9,7 @@ import {UserDataModel} from "../../../../models/rest/user/user-data-model";
 import {Subject, takeUntil} from "rxjs";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {EdiUploadCheckSubModel} from "../../../../models/rest/edi/edi-upload-check-sub-model";
-import {StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
+import {EDIState, StringToEDIStateDesc} from "../../../../models/rest/edi/edi-state";
 
 @Component({
   selector: "app-edi-check-list",
@@ -96,7 +96,7 @@ export class EdiCheckListComponent extends FComponentBase {
     this.setLoading();
     await FExtensions.tryCatchAsync(async() => await FImageCache.clearExpiredImage());
     const ret = await FExtensions.restTry(async() =>
-        await this.thisService.getData(FExtensions.dateToYYYYMMdd(this.selectMonth), selectUser.thisPK), e => this.fDialogService.error("getList", e));
+        await this.thisService.getData(FExtensions.dateToYYYYMMdd(this.selectMonth), selectUser.thisPK, this.getIsEDIDate()), e => this.fDialogService.error("getList", e));
     this.setLoading(false);
     if (ret.result) {
       this.initList = ret.data ?? [];
@@ -133,14 +133,20 @@ export class EdiCheckListComponent extends FComponentBase {
     }).pipe(takeUntil(sub)).subscribe((x): void => {
     });
   }
+  getPharmaName(data: EdiUploadCheckSubModel): string {
+    return `${data.pharmaName ?? "???"}`;
+  }
+  getEDIState(data: EdiUploadCheckSubModel): string {
+    return StringToEDIStateDesc[data.ediState ?? EDIState.None];
+  }
   requestApplyDate(data: EdiUploadCheckSubModel): string {
     return `${data.reqApplyYear}-${data.reqApplyMonth}-${data.reqApplyDay}`;
   }
   actualApplyDate(data: EdiUploadCheckSubModel): string {
-    return `${data.actualApplyYear}-${data.actualApplyMonth}-${data.actualApplyDay}`;
+    return `${data.actualApplyYear ?? "????"}-${data.actualApplyMonth ?? "??"}-${data.actualApplyDay ?? "??"}`;
   }
   get filterFields(): string[] {
-    return ["id", "name", "hospitalName"];
+    return ["id", "name", "orgName", "innerName"];
   }
   get userFilterFields(): string[] {
     return ["id", "name"];

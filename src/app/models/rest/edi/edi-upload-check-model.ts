@@ -1,9 +1,11 @@
 import {EdiUploadCheckSubModel} from "./edi-upload-check-sub-model";
 
 export class EdiUploadCheckModel {
+  id: string = "";
   name: string = "";
   userPK: string = "";
   hospitalPK: string = "";
-  hospitalName: string = "";
+  orgName: string = "";
+  innerName: string = "";
   subModel: EdiUploadCheckSubModel[] = [];
 }
