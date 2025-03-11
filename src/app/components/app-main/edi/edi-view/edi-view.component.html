@@ -29,6 +29,10 @@
       <label for="hospitalNewName" *ngIf="isTransfer">{{"edi-view.hospital-transfer-name" | translate}}</label>
     </p-ifta-label>
   </div>
+  <div class="flex" *ngIf="!isDefault">
+    <p-button class="m-1" *ngIf="hospitalTempDetailAble" (click)="openHospitalTempDetail()">{{"edi-view.hospital-temp-detail" | translate}}</p-button>
+    <p-button class="m-1" *ngIf="hospitalTempFindAble" (click)="openHospitalTempFind()">{{"edi-view.hospital-temp-find" | translate}}</p-button>
+  </div>
   <div class="flex">
     <p-ifta-label class="m-1">
       <input id="userId" [ngModel]="uploadModel.id" readonly pInputText />

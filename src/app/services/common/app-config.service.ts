@@ -4,6 +4,7 @@ import * as FAmhohwa from "../../guards/f-amhohwa";
 import {AppState} from "../../models/common/app-state";
 import {DOCUMENT, isPlatformBrowser} from "@angular/common";
 import {TableHeaderModel} from "../../models/common/table-header-model";
+import {MAP_THEME_NUMBER} from "../../guards/f-constants";
 
 @Injectable({
   providedIn: "root"
@@ -156,6 +157,17 @@ export class AppConfigService {
     if (isPlatformBrowser(this.platformId)) {
       FAmhohwa.setLocalStorage(FConstants.THEME_LINK, JSON.stringify(state));
     }
+  }
+
+  getMapThemeNumber(): number {
+    const buff = FAmhohwa.getLocalStorage(FConstants.MAP_THEME_NUMBER);
+    if (buff.length <= 0) {
+      return 0;
+    }
+    return Number(buff) ?? 0;
+  }
+  setMapThemeNumber(data: number): void {
+    FAmhohwa.setLocalStorage(FConstants.MAP_THEME_NUMBER, data.toString());
   }
 
   getEDIListTableHeaderList(): TableHeaderModel[] {

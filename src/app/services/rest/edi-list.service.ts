@@ -8,6 +8,7 @@ import {EDIUploadPharmaMedicineModel} from "../../models/rest/edi/edi-upload-pha
 import {EDIUploadResponseModel} from "../../models/rest/edi/edi-upload-response-model";
 import {EDIUploadFileModel} from "../../models/rest/edi/edi-upload-file-model";
 import {EDIUploadPharmaFileModel} from "../../models/rest/edi/edi-upload-pharma-file-model";
+import {HospitalTempModel} from "../../models/rest/hospital/hospital-temp-model";
 
 @Injectable({
   providedIn: "root"
@@ -34,6 +35,9 @@ export class EdiListService {
   }
   putData(thisPK: string, ediUploadModel: EDIUploadModel): Promise<RestResult<EDIUploadModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data/${thisPK}`, ediUploadModel);
+  }
+  putHospitalTempData(thisPK: string, hospitalTempModel: HospitalTempModel): Promise<RestResult<EDIUploadModel>> {
+    return this.httpResponse.put(`${this.baseUrl}/data/hospitalTemp/${thisPK}`, hospitalTempModel);
   }
   putPharmaData(thisPK: string, ediUploadPharmaModel: EDIUploadPharmaModel): Promise<RestResult<EDIPharmaDueDateModel>> {
     return this.httpResponse.put(`${this.baseUrl}/data/pharma/${thisPK}`, ediUploadPharmaModel);

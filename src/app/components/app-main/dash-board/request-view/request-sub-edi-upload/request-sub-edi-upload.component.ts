@@ -53,6 +53,7 @@ import {
 } from "../../../../common/edi-pharma-file-view-model/edi-pharma-file-view-model.component";
 import {EDIType} from "../../../../../models/rest/edi/edi-type";
 import {EDIUploadPharmaFileModel} from "../../../../../models/rest/edi/edi-upload-pharma-file-model";
+import {HospitalTempModel} from "../../../../../models/rest/hospital/hospital-temp-model";
 
 @Component({
   selector: "app-request-sub-edi-upload",
@@ -170,6 +171,18 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.setLoading(false);
     this.fDialogService.warn("getData", ret.msg);
+  }
+  async putHospitalTempData(data: HospitalTempModel): Promise<void> {
+    this.setLoading();
+    const ret = await FExtensions.restTry(async() => await this.thisService.putHospitalTempData(this.uploadModel.thisPK, data),
+      e => this.fDialogService.error("putHospitalTempData", e));
+    this.setLoading(false);
+    if (ret.result) {
+      this.uploadModel.tempHospitalPK = data.thisPK;
+      this.uploadModel.tempOrgName = data.orgName;
+      return;
+    }
+    this.fDialogService.warn("putHospitalTempData", ret.msg);
   }
   imageCacheClear(): void {
     this.imageCacheUrl.forEach(x => {
@@ -326,6 +339,34 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
   async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
     await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
+  }
+  openHospitalTempDetail(): void {
+    this.fDialogService.openHospitalTempDetailView({
+      closable: false,
+      closeOnEscape: true,
+      maximizable: true,
+      width: "80%",
+      height: "80%",
+      data: this.uploadModel.tempHospitalPK
+    });
+  }
+  openHospitalTempFind(): void {
+    const sub = new Subject<any>();
+    this.sub.push(sub);
+    this.fDialogService.openHospitalTempFindView({
+      closable: false,
+      closeOnEscape: true,
+      maximizable: true,
+      width: "80%",
+      height: "80%",
+      data: {
+      }
+    }).pipe(takeUntil(sub)).subscribe(async(x) => {
+      const buff = x as HospitalTempModel | null;
+      if (buff) {
+        await this.putHospitalTempData(buff)
+      }
+    });
   }
   async mqttSend(userPK: string | undefined, thisPK: string | undefined, content: string | undefined): Promise<void> {
     if (userPK == undefined || thisPK == undefined || content == undefined) {
@@ -513,6 +554,12 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
   get isDefault(): boolean {
     return this.uploadModel.ediType == EDIType.DEFAULT;
+  }
+  get hospitalTempDetailAble(): boolean {
+    return this.uploadModel.tempHospitalPK.length > 0;
+  }
+  get hospitalTempFindAble(): boolean {
+    return this.uploadModel.tempHospitalPK.length == 0;
   }
 
   protected readonly dateToYYYYMMdd = FExtensions.dateToYYYYMMdd

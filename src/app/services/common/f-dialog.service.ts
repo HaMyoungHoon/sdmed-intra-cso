@@ -23,6 +23,12 @@ import {FullScreenFileViewDialogComponent} from "../../components/common/dialog/
 import {UserAddDialogComponentComponent} from "../../components/common/dialog/user-add-dialog-component/user-add-dialog-component.component";
 import {Router} from "@angular/router";
 import {AppConfigService} from "./app-config.service";
+import {
+  HospitalTempDetailComponent
+} from "../../components/common/dialog/hospital-temp-detail/hospital-temp-detail.component";
+import {
+  HospitalTempFindComponent
+} from "../../components/common/dialog/hospital-temp-find/hospital-temp-find.component";
 
 @Injectable({
   providedIn: "root"
@@ -55,6 +61,14 @@ export class FDialogService {
   }
   openQnAViewDialog(config: DynamicDialogConfig): Observable<any> {
     this.ref = this.dialogService.open(QnaViewDialogComponent, config);
+    return this.ref.onClose;
+  }
+  openHospitalTempFindView(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(HospitalTempFindComponent, config);
+    return this.ref.onClose;
+  }
+  openHospitalTempDetailView(config: DynamicDialogConfig): Observable<any> {
+    this.ref = this.dialogService.open(HospitalTempDetailComponent, config);
     return this.ref.onClose;
   }
   openPasswordChangeDialog(config: DynamicDialogConfig): Observable<any> {

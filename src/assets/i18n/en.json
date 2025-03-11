@@ -103,6 +103,8 @@
     "hospital-name": "hospital name",
     "hospital-new-name": "new place",
     "hospital-transfer-name": "transfer place",
+    "hospital-temp-detail": "hospital detail",
+    "hospital-temp-find": "find hospital",
     "id": "id",
     "user-name": "user name",
     "edi-state": "state",
@@ -569,11 +571,6 @@
     "remove-cache": "remove cache",
     "setting-init": "setting init"
   },
-  "error": {
-    "title": "cannot found page",
-    "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
-    "back-to-home": "back to home"
-  },
   "log-list": {
     "table": {
       "id": "id",
@@ -598,6 +595,19 @@
     "local-name":  "localName",
     "local-port": "localPort"
   },
+  "hospital-temp-find": {
+    "search-hospital": "search hospital",
+    "map-toggle": "map toggle",
+    "find-nearby": "find nearby",
+    "warn": {
+      "search-string": "input 3 character"
+    }
+  },
+  "error": {
+    "title": "cannot found page",
+    "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
+    "back-to-home": "back to home"
+  },
   "common-desc": {
     "open": "open",
     "view": "view",
@@ -612,6 +622,7 @@
     "change": "change",
     "cancel": "cancel",
     "confirm": "confirm",
+    "select": "select",
     "excel-upload": "엑셀 업로드",
     "sample-download": "sample download",
     "download": "download",
@@ -626,7 +637,8 @@
     "brush-clear": "brush clear",
     "height-auto-print": "print fit width",
     "width-auto-print": "print fit height",
-    "full-print": "print fit full"
+    "full-print": "print fit full",
+    "open-map": "open map"
   },
   "mqtt-desc": {
     "title": {

@@ -13,6 +13,7 @@ export const CACHES_IMAGE_CACHE: string = "image-cache";
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
 export const LOADING_IMAGE_ARRAY: string = "loading-image-array";
+export const MAP_THEME_NUMBER: string = "mapThemeNumber";
 export const EDI_LIST_HEADER_LIST: string = "ediListHeaderList";
 export const HOSPITAL_LIST_HEADER_LIST: string = "hospitalListHeaderList";
 export const PHARMA_LIST_HEADER_LIST: string = "pharmaListHeaderList";
@@ -96,3 +97,9 @@ export const REGEX_CHECK_PASSWORD_1: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-�
 export const REGEX_CHECK_PASSWORD_2: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 export const REGEX_HEX_COLOR_RGB: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
 export const REGEX_HEX_COLOR_RGBA: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
+
+export const MAP_GOOGLE_API_KEY = "AIzaSyAcz6O5HVUam-TG_vuR7Hc6CNSuuvSiDsc";
+
+export let DEF_LAT: number = 37.5020656;
+export let DEF_LNG: number = 126.8880897;
+export let DEF_POSITION = { lat: DEF_LAT, lng: DEF_LNG };

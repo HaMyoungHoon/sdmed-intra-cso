@@ -11,13 +11,15 @@ import {Button} from "primeng/button";
 import {Card} from "primeng/card";
 import {IconField} from "primeng/iconfield";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
+import {Select} from "primeng/select";
+import {GoogleMapComponent} from "../../../common/google-map/google-map.component";
 
 
 
 @NgModule({
   declarations: [SettingComponent],
   imports: [
-    CommonModule, SettingRoutingModule, Checkbox, FormsModule, IftaLabel, TranslatePipe, InputText, Button, Card, IconField, ProgressSpinComponent
+    CommonModule, SettingRoutingModule, Checkbox, FormsModule, IftaLabel, TranslatePipe, InputText, Button, Card, IconField, ProgressSpinComponent, Select, GoogleMapComponent
   ]
 })
 export class SettingModule { }
