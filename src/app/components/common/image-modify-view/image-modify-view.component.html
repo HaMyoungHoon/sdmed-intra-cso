@@ -26,11 +26,11 @@
           <label for="imageHeight">height</label>
         </p-ifta-label>
         <p-ifta-label class="m-1">
-          <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText (input)="optionInput()"/>
+          <input id="fontSize" [(ngModel)]="paintConfig.textSize" type="number" pInputText (input)="optionInput()"/>
           <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
         </p-ifta-label>
-        <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}" (onChange)="optionInput()"/>
-        <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}" (onChange)="optionInput()"/>
+        <p-color-picker class="m-1 align-content-center" [(ngModel)]="paintConfig.textBackColor" (ngModelChange)="textBackColorChange($event)" pTooltip="{{backColorTooltip | translate}}" (onChange)="optionInput()"/>
+        <p-color-picker class="m-1 align-content-center" [(ngModel)]="paintConfig.textColor" (ngModelChange)="textColorChange($event)" pTooltip="{{textColorTooltip | translate}}" (onChange)="optionInput()"/>
         <p-select class="m-1 align-content-center align-self-center h-min w-7rem" size="small" [options]="[0, 90, 180, 270]" [(ngModel)]="imageAngle" (onChange)="onAngleChange()" />
         <p-button class="m-1 align-content-center" size="small" icon="pi pi-refresh" rounded="true" (click)="angleChange()" />
       </div>
@@ -53,17 +53,31 @@
         </p-ifta-label>
       </div>
       <div class="flex">
-        <p-ifta-label class="m-1">
-          <input id="brushSize" [(ngModel)]="brushSize" type="number" pInputText>
-          <label for="brushSize">brush size</label>
-        </p-ifta-label>
-        <p-ifta-label class="m-1">
-          <input id="brushAlpha" [(ngModel)]="brushAlpha" type="number" pInputText>
-          <label for="brushAlpha">brush alpha</label>
-        </p-ifta-label>
-        <p-color-picker class="m-1 align-content-center" [(ngModel)]="brushColor" pTooltip="{{brushColorTooltip | translate}}" />
-        <p-button class="align-content-center mr-1" size="small" (click)="clearBrushCanvas()" icon="pi pi-eraser" pTooltip="{{brushClearTooltip | translate}}" />
-        <p-select class="flex h-fit align-self-center" [options]="imageDragList" [(ngModel)]="imageDragMode" />
+        <p-select class="flex m-1 h-fit align-self-center" [options]="imageDragList" [(ngModel)]="imageDragMode" pTooltip="{{imageDragTooltip}}" />
+        <div class="flex" *ngIf="brushModeActive">
+          <p-ifta-label class="m-1">
+            <input id="brushSize" [(ngModel)]="paintConfig.brushSize" type="number" pInputText>
+            <label for="brushSize">brush size</label>
+          </p-ifta-label>
+          <p-ifta-label class="m-1">
+            <input id="brushAlpha" [(ngModel)]="paintConfig.brushAlpha" type="number" pInputText (ngModelChange)="brushAlphaChange($event)">
+            <label for="brushAlpha">brush alpha</label>
+          </p-ifta-label>
+          <p-color-picker class="m-1 align-content-center" [(ngModel)]="paintConfig.brushColor" (ngModelChange)="brushColorChange($event)" pTooltip="{{brushColorTooltip | translate}}" />
+          <p-button class="align-content-center mr-1" size="small" (click)="clearBrushCanvas()" icon="pi pi-eraser" pTooltip="{{brushClearTooltip | translate}}" />
+        </div>
+        <div class="flex" *ngIf="squareModeActive">
+          <p-ifta-label class="m-1">
+            <input id="squareSize" [(ngModel)]="paintConfig.squareSize" type="number" pInputText>
+            <label for="squareSize">square size</label>
+          </p-ifta-label>
+          <p-ifta-label class="m-1">
+            <input id="squareAlpha" [(ngModel)]="paintConfig.squareAlpha" type="number" pInputText (ngModelChange)="squareAlphaChange($event)">
+            <label for="squareAlpha">square alpha</label>
+          </p-ifta-label>
+          <p-color-picker class="m-1 align-content-center" [(ngModel)]="paintConfig.squareColor" (ngModelChange)="squareColorChange($event)" pTooltip="{{squareColorTooltip | translate}}" />
+          <p-button class="align-content-center mr-1" size="small" (click)="clearSquareCanvas()" icon="pi pi-eraser" pTooltip="{{squareClearTooltip | translate}}" />
+        </div>
       </div>
     </div>
     <div>
@@ -92,10 +106,12 @@
               (input)="optionInput()" (compositionstart)="fileNameCompStart()" (compositionupdate)="fileNameCompUpdate($event)" (compositionend)="fileNameCompEnd()"></textarea>
   </div>
   <div class="image-modify-view-sub-container">
-    <div #contentContainer class="content-container" [ngClass]="brushClassActive">
+    <div #contentContainer class="content-container" [class.brush-active]="brushModeActive" [class.square-active]="squareModeActive">
       <canvas #imageCanvas class="image-canvas"></canvas>
       <canvas #cropCanvas class="crop-canvas"></canvas>
       <canvas #brushCanvas class="brush-canvas"></canvas>
+      <canvas #squareCanvas class="square-canvas"></canvas>
+      <canvas #squareCanvasBuff class="square-canvas"></canvas>
       <canvas #watermarkCanvas class="text-canvas" (mousedown)="canvasDragStart($event)" (mousemove)="canvasDrag($event)"
               (mouseup)="canvasDragEnd()" (mouseleave)="canvasDragEnd()"></canvas>
     </div>

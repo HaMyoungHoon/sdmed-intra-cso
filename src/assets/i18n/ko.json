@@ -637,6 +637,8 @@
     "text-color": "글자색",
     "brush-color": "브러시색",
     "brush-clear": "브러시제거",
+    "square-color": "사각형색",
+    "square-clear": "사각형제거",
     "height-auto-print": "인쇄(가로맞춤)",
     "width-auto-print": "인쇄(세로맞춤)",
     "full-print": "인쇄(가로세로맞춤)",

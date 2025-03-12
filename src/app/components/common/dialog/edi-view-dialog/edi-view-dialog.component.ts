@@ -36,11 +36,11 @@ import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../guards/f-image-cache";
 import {HttpResponse} from "@angular/common/http";
 import {ColorPicker} from "primeng/colorpicker";
-import {getExtMimeType} from "../../../../guards/f-extensions";
 import {EdiPharmaFileViewModelComponent} from "../../edi-pharma-file-view-model/edi-pharma-file-view-model.component";
 import {EDIType} from "../../../../models/rest/edi/edi-type";
 import {EDIUploadPharmaFileModel} from "../../../../models/rest/edi/edi-upload-pharma-file-model";
 import {HospitalTempModel} from "../../../../models/rest/hospital/hospital-temp-model";
+import * as FCanvasUtil from "../../../../guards/f-canvas-util";
 
 @Component({
   selector: "app-edi-view-dialog",
@@ -380,7 +380,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     }
     try {
       const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-      const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
+      const blob = withWatermark ? await FCanvasUtil.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
       FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
@@ -401,7 +401,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
     }
     try {
       const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-      const blob = withWatermark ? await FExtensions.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
+      const blob = withWatermark ? await FCanvasUtil.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
       FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
@@ -419,7 +419,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
         if (ret && ret.body) {
           const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
           const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-          const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
+          const blob = withWatermark ? await FCanvasUtil.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
           FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
         }
       } catch (e: any) {
@@ -439,7 +439,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
       try {
         if (ret && ret.body) {
           const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${data.pharmaName}`;
-          const blob = data.withWatermark ? await FExtensions.blobAddText(ret.body, filename, data.item.mimeType, this.addTextOptionMerge()) : ret.body;
+          const blob = data.withWatermark ? await FCanvasUtil.blobAddText(ret.body, filename, data.item.mimeType, this.addTextOptionMerge()) : ret.body;
           FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(data.item.mimeType)}`);
         }
       } catch (e: any) {
@@ -500,7 +500,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
           if (ret && ret.body) {
             const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
             const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-            const blob = withWatermark ? await FExtensions.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
+            const blob = withWatermark ? await FCanvasUtil.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
             FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
           }
         } catch (e: any) {

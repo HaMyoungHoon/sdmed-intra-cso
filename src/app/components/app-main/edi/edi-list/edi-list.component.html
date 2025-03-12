@@ -36,7 +36,7 @@
     <ng-template #body let-item let-columns="columns">
       <tr class="click-tr" (click)="openData(item)" [pTooltip]="pharmaListTooltip(item)">
         <td *ngFor="let col of columns">
-          <label class="click-item" *ngIf="isHeaderLabel(col)" [class.text-primary]="isPrimary(item, col)">{{getTableItem(item, col)}}</label>
+          <label class="click-item" *ngIf="isHeaderLabel(col)" [class.foreground-orange]="isPrimary(item, col)">{{getTableItem(item, col)}}</label>
           <p-tag class="click-item" *ngIf="isHeaderTag(col)" [severity]="getTableItemSeverity(item)">{{getTableItem(item, col)}}</p-tag>
         </td>
       </tr>

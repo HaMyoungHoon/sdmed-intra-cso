@@ -34,7 +34,7 @@
   max-width: 100%;
 }
 
-.image-canvas, .crop-canvas, .text-canvas, .brush-canvas {
+.image-canvas, .crop-canvas, .text-canvas, .brush-canvas, .square-canvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -42,5 +42,8 @@
   width: auto;
 }
 .brush-active {
-  cursor: url("/assets/image/brush.png"), auto;
+  cursor: var(--brush-cursor-style);
+}
+.square-active {
+  cursor: crosshair;
 }

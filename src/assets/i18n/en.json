@@ -635,6 +635,8 @@
     "text-color": "text color",
     "brush-color": "brush color",
     "brush-clear": "brush clear",
+    "square-color": "square color",
+    "square-clear": "square clear",
     "height-auto-print": "print fit width",
     "width-auto-print": "print fit height",
     "full-print": "print fit full",

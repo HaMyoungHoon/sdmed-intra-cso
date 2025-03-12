@@ -4,8 +4,6 @@ export const STORAGE_KEY_LANG: string = "lang";
 export const STORAGE_DASHBOARD_VIEW_TYPE: string = "dashboardViewType";
 export const STORAGE_QNA_VIEW_TYPE: string = "qnaViewType";
 export const STORAGE_IMAGE_CACHE_CLEAR_TIME: string = "imageCacheClearTime";
-export const STORAGE_INFO_STICKY: string = "infoSticky";
-export const STORAGE_TOAST_LIFE: string = "toastLife";
 
 export const HEADERS_CACHE_TIMESTAMP: string = "X-Cache-Timestamp";
 export const CACHES_IMAGE_CACHE: string = "image-cache";
@@ -13,6 +11,8 @@ export const CACHES_IMAGE_CACHE: string = "image-cache";
 export const THEME_LINK: string = "app-theme";
 export const MQTT_CONNECT_DATA: string = "mqtt-connect";
 export const LOADING_IMAGE_ARRAY: string = "loading-image-array";
+
+export const PAINT_CONFIG: string = "paintConfig";
 export const MAP_THEME_NUMBER: string = "mapThemeNumber";
 export const EDI_LIST_HEADER_LIST: string = "ediListHeaderList";
 export const HOSPITAL_LIST_HEADER_LIST: string = "hospitalListHeaderList";
@@ -95,10 +95,11 @@ export const REGEX_CHECK_ID: RegExp = /^[A-Za-z0-9가-힣]{3,20}$/;
 export const REGEX_CHECK_PASSWORD_0: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[0-9]).{8,20}$/;
 export const REGEX_CHECK_PASSWORD_1: RegExp = /^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ])(?=.*[()!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 export const REGEX_CHECK_PASSWORD_2: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+export const REGEX_CHECK_COLOR_RGB: RegExp = /^#[0-9A-Fa-f]{6}$/;
 export const REGEX_HEX_COLOR_RGB: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
 export const REGEX_HEX_COLOR_RGBA: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
 
-export const MAP_GOOGLE_API_KEY = "AIzaSyAcz6O5HVUam-TG_vuR7Hc6CNSuuvSiDsc";
+export const MAP_GOOGLE_API_KEY = "AIzaSyAXbfpHy7uOHr2cFKAMqpNfapHJ-yynm3k";
 
 export let DEF_LAT: number = 37.5020656;
 export let DEF_LNG: number = 126.8880897;
