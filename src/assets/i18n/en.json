@@ -12,7 +12,8 @@
       "sub-1": "medicine price list",
       "sub-2": "hospital list",
       "sub-3": "pharma list",
-      "sub-4": "medicine list"
+      "sub-4": "medicine list",
+      "sub-5": "hospital find"
     }
   },
   "menu-3": {
@@ -594,6 +595,15 @@
     "server-name": "serverName",
     "local-name":  "localName",
     "local-port": "localPort"
+  },
+  "hospital-pharmacy-temp": {
+    "search-hospital": "search hospital",
+    "find-nearby": "find nearby",
+    "pharmacy-toggle": "pharmacy toggle",
+    "distance": "distance (m)",
+    "warn": {
+      "search-string": "input 3 character"
+    }
   },
   "hospital-temp-find": {
     "search-hospital": "search hospital",

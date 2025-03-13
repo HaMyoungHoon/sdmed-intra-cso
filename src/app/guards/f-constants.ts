@@ -41,6 +41,8 @@ export const HOSPITAL_LIST_URL: string = "hospital-list";
 export const HOSPITAL_NEW_URL: string = "hospital-list/new";
 export const HOSPITAL_EDIT_URL: string = "hospital-list/:thisPK";
 
+export const HOSPITAL_TEMP_URL: string = "hospital-temp";
+
 export const PHARMA_LIST_URL: string = "pharma-list";
 export const PHARMA_NEW_URL: string= "pharma-list/new";
 export const PHARMA_EDIT_URL: string = "pharma-list/:thisPK";

@@ -12,7 +12,8 @@
       "sub-1": "약제급여목록표",
       "sub-2": "병원목록",
       "sub-3": "제약사목록",
-      "sub-4": "약품목록"
+      "sub-4": "약품목록",
+      "sub-5": "병원찾기"
     }
   },
   "menu-3": {
@@ -596,6 +597,15 @@
     "server-name": "serverName",
     "local-name":  "localName",
     "local-port": "localPort"
+  },
+  "hospital-pharmacy-temp": {
+    "search-hospital": "병원 검색",
+    "find-nearby": "근처병원찾기",
+    "pharmacy-toggle": "약국 토글",
+    "distance": "거리 (m)",
+    "warn": {
+      "search-string": "3글자 이상 입력해주세요."
+    }
   },
   "hospital-temp-find": {
     "search-hospital": "병원 검색",

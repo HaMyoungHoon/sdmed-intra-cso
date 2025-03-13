@@ -23,6 +23,8 @@ export const routes: Routes = [
       { path: FConstants.HOSPITAL_NEW_URL, loadChildren: () => import("./components/app-main/hospital/hospital-add/hospital-add.module").then(m => m.HospitalAddModule) },
       { path: FConstants.HOSPITAL_EDIT_URL, loadChildren: () => import("./components/app-main/hospital/hospital-edit/hospital-edit.module").then(m => m.HospitalEditModule) },
 
+      { path: FConstants.HOSPITAL_TEMP_URL, loadChildren: () => import("./components/app-main/etc/hospital-pharmacy-temp/hospital-pharmacy-temp.module").then(m => m.HospitalPharmacyTempModule) },
+
       { path: FConstants.PHARMA_LIST_URL, loadChildren: () => import("./components/app-main/pharma/pharma-list/pharma-list.module").then(m => m.PharmaListModule) },
       { path: FConstants.PHARMA_NEW_URL, loadChildren: () => import("./components/app-main/pharma/pharma-add/pharma-add.module").then(m => m.PharmaAddModule) },
       { path: FConstants.PHARMA_EDIT_URL, loadChildren: () => import("./components/app-main/pharma/pharma-edit/pharma-edit.module").then(m => m.PharmaEditModule) },

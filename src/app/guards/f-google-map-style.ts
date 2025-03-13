@@ -19,7 +19,7 @@ export function hospitalContent(orgName: string, address: string, phoneNumber: s
     <div>${orgName}</div>
     <div>${address}</div>
     <div>${phoneNumber}</div>
-    <div class="${websiteClass}" onclick="openWebsite('${websiteUrl}')">${websiteUrl}</div>
+    <div class="${websiteClass}" onclick="openWebsite(${websiteUrl})">${websiteUrl}</div>
 </div>`;
 }
 export function pharmacyContent(orgName: string, address: string, phoneNumber: string): string {

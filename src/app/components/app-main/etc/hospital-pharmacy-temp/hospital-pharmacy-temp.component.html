@@ -1,0 +1,41 @@
+<div class="hospital-pharmacy-temp-container">
+  <app-progress-spin [isLoading]="isLoading" />
+  <div class="flex flex-row flex-wrap">
+    <div class="col-6 content-container">
+      <app-google-map #googleMap (error)="tossError($event)" (warn)="tossWarn($event)" [themeNumber]="themeNumber" />
+    </div>
+    <div class="flex flex-column flex-wrap col-6">
+      <div class="header-container flex">
+        <p-ifta-label class="m-1">
+          <input class="w-10rem h-fit align-self-center" id="searchString" [(ngModel)]="searchString" pInputText (keydown.enter)="searchHospital($event)" />
+          <label for="searchString">{{"hospital-pharmacy-temp.search-hospital" | translate}}</label>
+        </p-ifta-label>
+        <p-button class="flex m-1" size="small" (click)="pharmacyToggle()">{{"hospital-pharmacy-temp.pharmacy-toggle" | translate}}</p-button>
+        <p-ifta-label class="flex m-1">
+          <input id="toastLife" type="number" pInputText [(ngModel)]="distance" (keydown.enter)="reGetNearbyPharmacyData()"/>
+          <label for="toastLife">{{"hospital-pharmacy-temp.distance" | translate}}</label>
+        </p-ifta-label>
+      </div>
+      <div class="fle flex-column flex-wrap">
+        <p-list-box class="flex h-35rem" [options]="hospitalItems" [filter]="true" [filterFields]="filterFields" [(ngModel)]="selectedHospital" optionLabel="orgName" (ngModelChange)="selectHospitalChange($event)">
+          <ng-template pTemplate="item" let-item>
+            <div class="flex flex-wrap">
+              <div class="flex align-items-center justify-content-center m-1 foreground-orange">{{item.orgName}}</div>
+              <div class="flex align-items-center justify-content-center m-1">{{item.address}}</div>
+              <div class="flex align-items-center justify-content-center m-1 foreground-teal">{{item.phoneNumber}}</div>
+            </div>
+          </ng-template>
+        </p-list-box>
+        <p-list-box class="flex h-35rem" [options]="pharmacyItems" [filter]="true" [filterFields]="filterFields" [(ngModel)]="selectedPharmacy" optionLabel="orgName" (ngModelChange)="selectPharmacyChange($event)">
+          <ng-template pTemplate="item" let-item>
+            <div class="flex flex-wrap">
+              <div class="flex align-items-center justify-content-center m-1 foreground-orange">{{item.orgName}}</div>
+              <div class="flex align-items-center justify-content-center m-1">{{item.address}}</div>
+              <div class="flex align-items-center justify-content-center m-1 foreground-teal">{{item.phoneNumber}}</div>
+            </div>
+          </ng-template>
+        </p-list-box>
+      </div>
+    </div>
+  </div>
+</div>
