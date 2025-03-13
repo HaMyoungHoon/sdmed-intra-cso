@@ -20,6 +20,7 @@ export class EdiListService {
 
   getList(startDate: string, endDate: string, myChild: boolean = true): Promise<RestResult<EDIUploadModel[]>> {
     this.httpResponse.addParam("myChild", myChild);
+    this.httpResponse.addParam("withFile", true);
     this.httpResponse.addParam("startDate", startDate);
     this.httpResponse.addParam("endDate", endDate);
     return this.httpResponse.get(`${this.baseUrl}/list`);

@@ -228,7 +228,7 @@ export class EdiListComponent extends FComponentBase {
       return "";
     }
     let ret = "";
-    item.pharmaList.forEach(x => ret += `${x.orgName}\n`);
+    item.pharmaList.forEach(x => ret += `${x.orgName} (${x.fileList.length})\n`);
     return ret;
   }
 
