@@ -1,11 +1,29 @@
 <div class="hospital-temp-detail-container">
-  <div class="flex m-1 justify-content-center" *ngIf="isLoading">
+  <div class="absolute w-full z-5" *ngIf="isLoading">
     <p-progress-spinner strokeWidth="2" />
   </div>
-  <div class="header-container flex">
-    <p-button class="flex m-1 ml-auto justify-content-end" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
-  </div>
-  <div class="content-container" [hidden]="!mapVisible">
-    <app-google-map #googleMap (error)="tossError($event)" (warn)="tossWarn($event)" [themeNumber]="themeNumber" />
+  <div class="flex flex-row flex-wrap">
+    <div class="col-6 content-container">
+      <app-google-map #googleMap (error)="tossError($event)" (warn)="tossWarn($event)" [themeNumber]="themeNumber" />
+    </div>
+    <div class="flex flex-column flex-wrap col-6">
+      <div class="header-container flex">
+        <p-button class="flex m-1" size="small" (click)="pharmacyToggle()">{{"hospital-temp-detail.pharmacy-toggle" | translate}}</p-button>
+        <p-ifta-label class="flex m-1">
+          <input id="toastLife" type="number" pInputText [(ngModel)]="distance" (keydown.enter)="reGetNearbyPharmacyData()"/>
+          <label for="toastLife">{{"hospital-temp-detail.distance" | translate}}</label>
+        </p-ifta-label>
+        <p-button class="flex m-1 ml-auto justify-content-end" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
+      </div>
+      <p-list-box class="flex h-35rem" [options]="pharmacyItems" [filter]="true" [filterFields]="filterFields" [(ngModel)]="selectedPharmacy" optionLabel="orgName" (ngModelChange)="selectPharmacyChange($event)">
+        <ng-template pTemplate="item" let-item>
+          <div class="flex flex-wrap">
+            <div class="flex align-items-center justify-content-center m-1 foreground-orange">{{item.orgName}}</div>
+            <div class="flex align-items-center justify-content-center m-1">{{item.address}}</div>
+            <div class="flex align-items-center justify-content-center m-1 foreground-teal">{{item.phoneNumber}}</div>
+          </div>
+        </ng-template>
+      </p-list-box>
+    </div>
   </div>
 </div>

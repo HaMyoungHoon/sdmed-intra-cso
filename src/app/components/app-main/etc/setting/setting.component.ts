@@ -17,8 +17,8 @@ export class SettingComponent implements AfterViewInit {
   toastLife: number = 3000;
   isLoading: boolean = false;
   mapThemeNumber: number = 0;
-  mapThemeList: {label: string, func: () => any}[] = FGoogleMapStyle.googleThemeList();
-  selectedMapTheme?: {label: string, func: () => any};
+  mapThemeList: {label: string, id: string}[] = FGoogleMapStyle.googleThemeList();
+  selectedMapTheme?: {label: string, id: string};
   constructor(private appConfig: AppConfigService) {
     this.mapThemeNumber = this.appConfig.getMapThemeNumber();
     this.selectedMapTheme = this.mapThemeList[this.mapThemeNumber];
@@ -52,12 +52,12 @@ export class SettingComponent implements AfterViewInit {
   get stickyCheckIcon(): string {
     return this.infoSticky ? "pi pi-check-circle" : "pi pi-circle";
   }
-  mapThemeChanged(): void {
+  async mapThemeChanged(): Promise<void> {
     const selectedTheme = this.selectedMapTheme;
     if (selectedTheme) {
       this.mapThemeNumber = this.mapThemeList.findIndex(x => x.label == selectedTheme.label) ?? 0;
       this.appConfig.setMapThemeNumber(this.mapThemeNumber);
-      this.googleMap.themeSelectionChange(selectedTheme);
+      await this.googleMap.themeSelectionChange(selectedTheme);
     }
   }
 }

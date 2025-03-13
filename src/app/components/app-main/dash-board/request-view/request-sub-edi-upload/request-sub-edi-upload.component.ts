@@ -332,9 +332,10 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.fDialogService.openHospitalTempDetailView({
       closable: false,
       closeOnEscape: true,
-      maximizable: true,
+      maximizable: false,
       width: "80%",
       height: "80%",
+      styleClass: "no-padding",
       data: this.uploadModel.tempHospitalPK
     });
   }
@@ -344,11 +345,10 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     this.fDialogService.openHospitalTempFindView({
       closable: false,
       closeOnEscape: true,
-      maximizable: true,
+      maximizable: false,
       width: "80%",
       height: "80%",
-      data: {
-      }
+      styleClass: "no-padding"
     }).pipe(takeUntil(sub)).subscribe(async(x) => {
       const buff = x as HospitalTempModel | null;
       if (buff) {

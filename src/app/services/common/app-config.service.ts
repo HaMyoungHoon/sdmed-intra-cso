@@ -23,7 +23,6 @@ export class AppConfigService {
       () => {
         const state = this.appState();
         this.saveAppState(state);
-        console.log(state);
         this.handleDarkModeTransition(state);
       },
       { }
@@ -202,7 +201,6 @@ export class AppConfigService {
     const transition = (document as any).startViewTransition(() => {
       this.toggledDarkMode(state);
     });
-    console.log(transition);
     transition.ready.then(() => this.onTransitionEnd());
   }
   private toggledDarkMode(state: AppState): void {

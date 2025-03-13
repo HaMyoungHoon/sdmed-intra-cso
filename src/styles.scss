@@ -38,6 +38,9 @@ app-hospital-edit-dialog .p-inputwrapper,
 app-hospital-edit .p-inputwrapper  {
   width: 20rem;
 }
+.no-padding .p-dialog-header {
+  padding: 0 !important;
+}
 
 .collapse {
   display: none;
@@ -102,6 +105,10 @@ app-hospital-edit .p-inputwrapper  {
   width: 20px;
   height: 20px;
 }
+.h-35rem .p-listbox-list-container {
+  min-height: 35rem;
+  max-height: 35rem;
+}
 .no-drag {
   -webkit-user-select:none;
   -moz-user-select:none;
@@ -112,7 +119,7 @@ app-hospital-edit .p-inputwrapper  {
 @media screen and (max-width: 750px) {
   .map-view-container {
     width: 100%;
-    height: 80vh;
+    height: 75vh;
     display: flex;
     flex: 0 0 auto;
   }
@@ -120,11 +127,24 @@ app-hospital-edit .p-inputwrapper  {
 @media screen and (min-width: 750px) {
   .map-view-container {
     width: 100%;
-    height: 80vh;
+    height: 75vh;
     display: flex;
     flex: 0 0 auto;
     padding: 10px;
   }
+}
+
+.foreground-orange {
+  color: var(--p-orange-600) !important;
+}
+.foreground-teal {
+  color: var(--p-teal-600) !important;
+}
+.background-orange {
+  background-color: var(--p-orange-600) !important;
+}
+.background-teal {
+  background-color: var(--p-teal-600) !important;
 }
 
 :root {

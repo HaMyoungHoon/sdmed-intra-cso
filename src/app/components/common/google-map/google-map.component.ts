@@ -97,9 +97,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
     window.googleMap = new window.google.maps.Map(document.getElementById("google-map-view"), {
       center: window.googlePosition,
       zoom: 15,
-//      mapId: FConstants.MAP_ID,
-      styles: this.selectedTheme.func
+      mapId: this.selectedTheme.id
     });
+    window.google.maps.importLibrary("marker");
     window.googleGeocoder = new window.google.maps.Geocoder();
     window.googleInfoWindow = new window.google.maps.InfoWindow({
       content: `${window.googlePosition}`,
@@ -160,12 +160,13 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
     const map = window.googleMap;
     for (let marker of markerModel) {
       try {
-        const markerBuff = new window.google.maps.Marker({
-          title: "mhha",
+        const markerBuff = new window.google.maps.marker.AdvancedMarkerElement({
+          title: marker.title,
           position: marker.position,
-          map
+          content: marker.icon,
+          map,
         });
-        markerBuff.addListener("click", (x: any): void => {
+        markerBuff.addEventListener("click", (): void => {
           this.googleOpenInfoWindow(marker.content, markerBuff.position);
         });
 
@@ -187,19 +188,18 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.onError("clear marker", e);
     }
   }
-  panTo(latitude: number, longitude: number): void {
+  panTo(latitude: number, longitude: number, zoom: number = 15): void {
     window.googlePosition = {lat: latitude, lng: longitude};
     window.googleMap.setCenter(new window.google.maps.LatLng(latitude, longitude));
+    window.googleMap.setZoom(zoom);
   }
 
-  themeSelectionChange(data: {label: string, func: () => any}): void {
+  async themeSelectionChange(data: {label: string, id: string}): Promise<void> {
     this.selectedTheme = data
-    if (window.googleMap) {
-      window.googleMap.setOptions({ styles: this.selectedTheme.func });
-    }
+    await this.googleInitMap();
   }
   getSelectedTheme(position?: number) {
-    if (position && position >= 0 && position <= 4) {
+    if (position && position >= 0 && position <= 2) {
       return FGoogleMapStyle.googleThemeList()[position];
     }
     return FGoogleMapStyle.googleThemeList()[0];

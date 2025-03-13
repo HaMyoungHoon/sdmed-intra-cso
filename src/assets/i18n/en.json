@@ -597,11 +597,14 @@
   },
   "hospital-temp-find": {
     "search-hospital": "search hospital",
-    "map-toggle": "map toggle",
     "find-nearby": "find nearby",
     "warn": {
       "search-string": "input 3 character"
     }
+  },
+  "hospital-temp-detail": {
+    "pharmacy-toggle": "pharmacy toggle",
+    "distance": "distance (m)"
   },
   "error": {
     "title": "cannot found page",

@@ -4,6 +4,7 @@ import {RestResult} from "../../models/common/rest-result";
 import {HospitalTempModel} from "../../models/rest/hospital/hospital-temp-model";
 import {RestPage} from "../../models/common/rest-page";
 import {HospitalTempFileModel} from "../../models/rest/hospital/hospital-temp-file-model";
+import {PharmacyTempModel} from "../../models/rest/hospital/pharmacy-temp-model";
 
 @Injectable({
   providedIn: "root"
@@ -25,11 +26,17 @@ export class HospitalTempService {
     this.httpResponse.addParam("searchString", searchString);
     return this.httpResponse.get(`${this.baseUrl}/list/search`);
   }
-  getListNearBy(latitude: number, longitude: number, distance: number = 1): Promise<RestResult<HospitalTempModel[]>> {
+  getHospitalListNearBy(latitude: number, longitude: number, distance: number = 1000): Promise<RestResult<HospitalTempModel[]>> {
     this.httpResponse.addParam("latitude", latitude);
     this.httpResponse.addParam("longitude", longitude);
     this.httpResponse.addParam("distance", distance);
     return this.httpResponse.get(`${this.baseUrl}/list/nearby`);
+  }
+  getPharmacyListNearBy(latitude: number, longitude: number, distance: number = 1000): Promise<RestResult<PharmacyTempModel[]>> {
+    this.httpResponse.addParam("latitude", latitude);
+    this.httpResponse.addParam("longitude", longitude);
+    this.httpResponse.addParam("distance", distance);
+    return this.httpResponse.get(`${this.baseUrl}/list/nearby/pharmacy`);
   }
 
   postDataFile(hospitalTempFileModel: HospitalTempFileModel): Promise<RestResult<HospitalTempFileModel>> {
