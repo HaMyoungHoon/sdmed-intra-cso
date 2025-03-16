@@ -3,10 +3,10 @@
     <p-progress-spinner strokeWidth="2" />
   </div>
   <div class="flex flex-row flex-wrap">
-    <div class="col-6 content-container">
+    <div class="col-8 content-container">
       <app-google-map #googleMap (error)="tossError($event)" (warn)="tossWarn($event)" [themeNumber]="themeNumber"/>
     </div>
-    <div class="flex flex-column flex-wrap col-6">
+    <div class="flex flex-column flex-wrap col-4">
       <div class="header-container flex">
         <p-ifta-label class="m-1">
           <input class="w-10rem h-fit align-self-center" id="searchString" [(ngModel)]="searchString" pInputText (keydown.enter)="searchHospital($event)" />
@@ -16,7 +16,7 @@
         <p-button class="flex m-1 h-fit align-self-center" size="small" (click)="hospitalSelect()" [disabled]="selectedHospital == undefined">{{"common-desc.select" | translate}}</p-button>
         <p-button class="flex m-1 ml-auto justify-content-end" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
       </div>
-      <p-list-box class="flex h-35rem" [options]="hospitalItems" [filter]="true" [filterFields]="filterFields" [(ngModel)]="selectedHospital" optionLabel="orgName" (ngModelChange)="selectHospitalChange($event)">
+      <p-list-box class="flex item-h-35rem item-w-35rem" [options]="hospitalItems" [filter]="true" [filterFields]="filterFields" [(ngModel)]="selectedHospital" optionLabel="orgName" (ngModelChange)="selectHospitalChange($event)">
         <ng-template pTemplate="item" let-item>
           <div class="flex flex-wrap">
             <div class="flex align-items-center justify-content-center m-1 foreground-orange">{{item.orgName}}</div>

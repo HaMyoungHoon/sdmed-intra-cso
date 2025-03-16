@@ -97,7 +97,10 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
     window.googleMap = new window.google.maps.Map(document.getElementById("google-map-view"), {
       center: window.googlePosition,
       zoom: 15,
-      mapId: this.selectedTheme.id
+      mapId: this.selectedTheme.id,
+      disableDefaultUI: true,
+      scaleControl: true,
+      zoomControl: true,
     });
     window.google.maps.importLibrary("marker");
     window.googleGeocoder = new window.google.maps.Geocoder();

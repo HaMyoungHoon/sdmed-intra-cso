@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use "p-list-box";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
 @import "handsontable/styles/handsontable.min.css";
@@ -11,9 +12,6 @@ app-menu-config .p-menu {
 }
 app-menu-config .p-menu a {
   text-decoration-line: none;
-}
-app-user-mapping .p-listbox-list-container {
-  min-height: 30rem;
 }
 app-edi-view p-table .p-datatable,
 app-edi-view-dialog p-table .p-datatable,
@@ -65,10 +63,6 @@ app-hospital-edit .p-inputwrapper  {
   max-height: 50rem !important;
 }
 
-.p-drawer .p-listbox, .p-listbox-list-container {
-  min-height: 50rem;
-}
-
 .p-galleria-nav-button {
   background-color: rgba(220, 220, 220, 150) !important;
 }
@@ -105,10 +99,6 @@ app-hospital-edit .p-inputwrapper  {
   width: 20px;
   height: 20px;
 }
-.h-35rem .p-listbox-list-container {
-  min-height: 35rem;
-  max-height: 35rem;
-}
 .no-drag {
   -webkit-user-select:none;
   -moz-user-select:none;
@@ -119,7 +109,7 @@ app-hospital-edit .p-inputwrapper  {
 @media screen and (max-width: 750px) {
   .map-view-container {
     width: 100%;
-    height: 75vh;
+    height: 80vh;
     display: flex;
     flex: 0 0 auto;
   }
@@ -127,7 +117,7 @@ app-hospital-edit .p-inputwrapper  {
 @media screen and (min-width: 750px) {
   .map-view-container {
     width: 100%;
-    height: 75vh;
+    height: 100%;
     display: flex;
     flex: 0 0 auto;
     padding: 10px;

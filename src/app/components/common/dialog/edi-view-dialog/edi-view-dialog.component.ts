@@ -330,8 +330,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
       closable: false,
       closeOnEscape: true,
       maximizable: false,
-      width: "80%",
-      height: "80%",
+      width: "85%",
       styleClass: "no-padding",
       data: this.uploadModel.tempHospitalPK
     });
@@ -343,8 +342,7 @@ export class EdiViewDialogComponent extends FDialogComponentBase {
       closable: false,
       closeOnEscape: true,
       maximizable: false,
-      width: "80%",
-      height: "80%",
+      width: "85%",
       styleClass: "no-padding"
     }).pipe(takeUntil(sub)).subscribe(async(x) => {
       const buff = x as HospitalTempModel | null;

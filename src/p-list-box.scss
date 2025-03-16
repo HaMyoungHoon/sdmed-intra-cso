@@ -1,0 +1,27 @@
+app-user-mapping .p-listbox-list-container {
+  min-height: 30rem;
+}
+
+.item-h-20rem .p-listbox-list-container {
+  min-height: 20rem;
+  max-height: 20rem;
+}
+.item-h-25rem .p-listbox-list-container {
+  min-height: 25rem;
+  max-height: 25rem;
+}
+.item-h-35rem .p-listbox-list-container {
+  min-height: 35rem;
+  max-height: 35rem;
+}
+.item-w-35rem .p-listbox-list-container {
+  min-width: 35rem;
+  max-width: 35rem;
+}
+.item-w-50rem .p-listbox-list-container {
+  min-width: 50rem;
+  max-width: 50rem;
+}
+.p-drawer .p-listbox, .p-listbox-list-container {
+  min-height: 50rem;
+}
