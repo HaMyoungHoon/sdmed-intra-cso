@@ -107,6 +107,15 @@ export function calcDateDiffDay(startDate: Date, endDate: Date): number {
   return Math.floor(diffMs / msToDay);
 }
 
+export function parseStringToDate(dateString?: string | Date): Date | undefined {
+  if (dateString == null) {
+    return undefined
+  }
+  if (typeof(dateString) == "string") {
+    return new Date(dateString);
+  }
+  return dateString;
+}
 export function stringToDate(dateString?: string): Date {
   if (dateString == null) {
     return new Date();

@@ -17,13 +17,9 @@ import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {DashboardService} from "../../../../../services/rest/dashboard.service";
 import {UserFileType} from "../../../../../models/rest/user/user-file-type";
 import {Subject, takeUntil} from "rxjs";
-import {userTrainingImageView} from "../../../../../guards/f-user-info-method";
 import {UserTrainingFileAddComponent} from "../../../../common/user-training-file-add/user-training-file-add.component";
 import {UserTrainingModel} from "../../../../../models/rest/user/user-training-model";
-import {userTrainingListToViewModel} from "../../../../../guards/f-extensions";
 import {UploadFileBuffModel} from "../../../../../models/common/upload-file-buff-model";
-import {RestResult} from "../../../../../models/common/rest-result";
-import {UserFileModel} from "../../../../../models/rest/user/user-file-model";
 
 @Component({
   selector: "app-user-edit",
@@ -110,12 +106,8 @@ export class UserEditComponent extends FComponentBase {
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
-      if (this.userDataModel.contractDate) {
-        this.contractDate = this.userDataModel.contractDate;
-      }
-      if (this.userDataModel.csoReportDate) {
-        this.csoReportDate = this.userDataModel.csoReportDate;
-      }
+      this.contractDate = FExtensions.parseStringToDate(this.userDataModel.contractDate);
+      this.csoReportDate = FExtensions.parseStringToDate(this.userDataModel.csoReportDate);
       this.cd.detectChanges();
       await this.userTrainingFileAdd.readyImage();
       return;

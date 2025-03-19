@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, input, Input, Output, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, input, Input, Output, ViewChild} from "@angular/core";
 import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {allUserRoleDescArray, flagToRoleDesc, UserRole} from "../../../../../models/rest/user/user-role";
 import {FComponentBase} from "../../../../../guards/f-component-base";
@@ -57,7 +57,7 @@ export class RequestSubSignUpComponent extends FComponentBase {
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   csoReportDate?: Date;
   contractDate?: Date;
-  constructor(private thisService: UserInfoService) {
+  constructor(private thisService: UserInfoService, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
   }
 
@@ -84,12 +84,10 @@ export class RequestSubSignUpComponent extends FComponentBase {
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
-      if (this.userDataModel.contractDate) {
-        this.contractDate = this.userDataModel.contractDate;
-      }
-      if (this.userDataModel.csoReportDate) {
-        this.csoReportDate = this.userDataModel.csoReportDate;
-      }
+      this.contractDate = FExtensions.parseStringToDate(this.userDataModel.contractDate);
+      this.csoReportDate = FExtensions.parseStringToDate(this.userDataModel.csoReportDate);
+      this.cd.detectChanges();
+      await this.userTrainingFileAdd.readyImage();
       return;
     }
     this.fDialogService.warn("getThisData", ret.msg);
