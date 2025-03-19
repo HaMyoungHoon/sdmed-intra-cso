@@ -122,6 +122,8 @@ export class UserTrainingFileAddComponent {
     if (this.uploadFileBuff && this.trainingDate) {
       this.uploadFileEvent.next({file: this.uploadFileBuff, date: this.trainingDate});
     }
+    this.uploadFileBuff = undefined;
+    this.trainingDate = undefined;
   }
   get acceptFiles(): string {
     return ".jpg,.jpeg,.png,.webp,.bmp,.xlsx,.pdf,.heif,.heic,.gif";
