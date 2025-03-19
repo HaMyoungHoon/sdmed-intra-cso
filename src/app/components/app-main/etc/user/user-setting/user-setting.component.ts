@@ -145,7 +145,7 @@ export class UserSettingComponent extends FComponentBase {
       const target = FExtensions.plusMonths(item.csoReportDate, 3).getTime();
       return now > target;
     }
-    return true;
+    return false;
   }
   trainingExpire(item: UserDataModel): boolean {
     if (item.trainingList.length <= 0) {
