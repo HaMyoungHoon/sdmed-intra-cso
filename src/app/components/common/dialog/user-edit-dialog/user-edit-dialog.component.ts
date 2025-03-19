@@ -172,13 +172,29 @@ export class UserEditDialogComponent extends FDialogComponentBase {
     const ret = await FExtensions.restTry(async() => await FUserInfoMethod.imageSelected(event, this.userDataModel, userFileType, this.thisService, this.commonService, this.azureBlobService),
       e => this.fDialogService.error(`${userFileType}`, e));
     this.setLoading(false);
+    let content = "";
     switch (userFileType) {
-      case UserFileType.Taxpayer: this.taxpayerImageInput.nativeElement.value = ""; break;
-      case UserFileType.BankAccount: this.bankAccountImageInput.nativeElement.value = ""; break;
-      case UserFileType.CsoReport: this.csoReportImageInput.nativeElement.value = ""; break;
-      case UserFileType.MarketingContract: this.marketingContractImageInput.nativeElement.value = ""; break;
+      case UserFileType.Taxpayer: {
+        content = "user-edit.detail.taxpayer-image";
+        this.taxpayerImageInput.nativeElement.value = "";
+      } break;
+      case UserFileType.BankAccount: {
+        content = "user-edit.detail.bank-account-image";
+        this.bankAccountImageInput.nativeElement.value = "";
+      } break;
+      case UserFileType.CsoReport: {
+        content = "user-edit.detail.cso-report-image";
+        this.csoReportImageInput.nativeElement.value = "";
+      } break;
+      case UserFileType.MarketingContract: {
+        content = "user-edit.detail.marketing-contract-image";
+        this.marketingContractImageInput.nativeElement.value = "";
+      } break;
     }
     if (ret.result) {
+      this.translateService.get(content).subscribe(x => {
+        this.mqttService.postUserFileAdd(this.userDataModel.thisPK, x);
+      });
       if (ret.data) {
         this.userDataModel.fileList.push(ret.data)
       }
@@ -252,6 +268,9 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       e => this.fDialogService.error("upload", e));
     this.setLoading(false);
     if (ret.result) {
+      this.translateService.get("user-edit.detail.training-image").subscribe(x => {
+        this.mqttService.postUserFileAdd(this.userDataModel.thisPK, x);
+      });
       if (ret.data) {
         this.userDataModel.trainingList.unshift(ret.data);
         await this.userTrainingFileAdd.readyImage();
