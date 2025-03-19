@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, ElementRef, input, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../../guards/f-component-base";
 import {UserDataModel} from "../../../../../models/rest/user/user-data-model";
 import {allUserRoleDescArray, flagToRoleDesc, UserRole} from "../../../../../models/rest/user/user-role";
@@ -17,6 +17,13 @@ import {RequestModel} from "../../../../../models/rest/requst/request-model";
 import {DashboardService} from "../../../../../services/rest/dashboard.service";
 import {UserFileType} from "../../../../../models/rest/user/user-file-type";
 import {Subject, takeUntil} from "rxjs";
+import {userTrainingImageView} from "../../../../../guards/f-user-info-method";
+import {UserTrainingFileAddComponent} from "../../../../common/user-training-file-add/user-training-file-add.component";
+import {UserTrainingModel} from "../../../../../models/rest/user/user-training-model";
+import {userTrainingListToViewModel} from "../../../../../guards/f-extensions";
+import {UploadFileBuffModel} from "../../../../../models/common/upload-file-buff-model";
+import {RestResult} from "../../../../../models/common/rest-result";
+import {UserFileModel} from "../../../../../models/rest/user/user-file-model";
 
 @Component({
   selector: "app-user-edit",
@@ -25,6 +32,7 @@ import {Subject, takeUntil} from "rxjs";
   standalone: false,
 })
 export class UserEditComponent extends FComponentBase {
+  @ViewChild("userTrainingFileAdd") userTrainingFileAdd!: UserTrainingFileAddComponent;
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("csoReportImageInput") csoReportImageInput!: ElementRef<HTMLInputElement>
@@ -41,7 +49,9 @@ export class UserEditComponent extends FComponentBase {
   selectedUserDepts: string[] = [];
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData: HospitalModel = new HospitalModel();
-  constructor(private thisService: UserInfoService, private dashboardService: DashboardService, private route: ActivatedRoute) {
+  csoReportDate?: Date;
+  contractDate?: Date;
+  constructor(private thisService: UserInfoService, private dashboardService: DashboardService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
     this.userDataModel.thisPK = this.route.snapshot.params["thisPK"];
   }
@@ -55,6 +65,12 @@ export class UserEditComponent extends FComponentBase {
       this.userDataModel.thisPK = x["thisPK"];
       await this.refreshData();
     });
+  }
+  onError(data: {title: string, msg?: string}): void {
+    this.fDialogService.error(data.title, data.msg);
+  }
+  onWarn(data: {title: string, msg?: string}): void {
+    this.fDialogService.warn(data.title, data.msg);
   }
 
   async refreshData(): Promise<void> {
@@ -94,6 +110,14 @@ export class UserEditComponent extends FComponentBase {
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
+      if (this.userDataModel.contractDate) {
+        this.contractDate = this.userDataModel.contractDate;
+      }
+      if (this.userDataModel.csoReportDate) {
+        this.csoReportDate = this.userDataModel.csoReportDate;
+      }
+      this.cd.detectChanges();
+      await this.userTrainingFileAdd.readyImage();
       return;
     }
     this.fDialogService.warn("getUserData", ret.msg);
@@ -125,6 +149,12 @@ export class UserEditComponent extends FComponentBase {
   }
   async saveUserData(): Promise<void> {
     this.setLoading();
+    if (this.contractDate) {
+      this.userDataModel.contractDate = this.contractDate;
+    }
+    if (this.csoReportDate) {
+      this.userDataModel.csoReportDate = this.csoReportDate;
+    }
     const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
     this.setLoading(false);
@@ -206,6 +236,81 @@ export class UserEditComponent extends FComponentBase {
       return;
     }
     this.fDialogService.warn(`${userFileType}`, ret.msg);
+  }
+
+  trainingImageUrl(): string {
+    const file = this.userDataModel.trainingList;
+    if (file.length > 0) {
+      return FExtensions.blobUrlThumbnail(file[0].blobUrl, file[0].mimeType);
+    }
+    return FConstants.ASSETS_NO_IMAGE;
+  }
+  trainingDate(): string {
+    const file = this.userDataModel.trainingList;
+    if (file.length <= 0) {
+      return "";
+    }
+    return FExtensions.dateToYYYYMMdd(file[0].trainingDate);
+  }
+  trainingImageTooltip(): string {
+    return "user-edit.detail.training-image";
+  }
+  trainingImageView(): void {
+    const file = this.userDataModel.trainingList;
+    if (file.length <= 0) {
+      return;
+    }
+    FUserInfoMethod.userTrainingImageView(file, this.fDialogService);
+  }
+  viewUserTrainingItem(item: UserTrainingModel): void {
+    this.fDialogService.openFullscreenFileView({
+      closable: false,
+      closeOnEscape: true,
+      maximizable: true,
+      width: "100%",
+      height: "100%",
+      data: {
+        file: FExtensions.userTrainingListToViewModel(this.userDataModel.trainingList),
+        index: this.userDataModel.trainingList.findIndex(x => x.thisPK == item.thisPK)
+      }
+    });
+  }
+  async userTrainingUpload(data: {file: UploadFileBuffModel, date: Date}): Promise<void> {
+    const file = data.file.file;
+    if (file == undefined) {
+      return;
+    }
+    this.setLoading();
+    const blobName = FExtensions.getUserBlobName(this.userDataModel.id, data.file.ext);
+    const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobName),
+      e => this.fDialogService.error("upload", e));
+    if (blobStorageInfo.result != true || blobStorageInfo.data == undefined) {
+      this.setLoading(false);
+      this.fDialogService.error("upload", blobStorageInfo.msg);
+      return;
+    }
+    const blobModel = FExtensions.getUserBlobModel(file, blobStorageInfo.data, blobName, data.file.ext);
+    let uploadRet = true;
+    const azureRet = await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
+      e => {
+      this.fDialogService.error("upload", e);
+      uploadRet = false;
+    });
+    if (azureRet == null || !uploadRet) {
+      this.setLoading(false);
+      return;
+    }
+    const ret = await FExtensions.restTry(async() => await this.thisService.postUserTrainingData(this.userDataModel.thisPK, blobModel, FExtensions.dateToYYYYMMdd(data.date)),
+        e => this.fDialogService.error("upload", e));
+    this.setLoading(false);
+    if (ret.result) {
+      if (ret.data) {
+        this.userDataModel.trainingList.unshift(ret.data);
+        await this.userTrainingFileAdd.readyImage();
+      }
+      return;
+    }
+    this.fDialogService.warn("upload", ret.msg);
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });

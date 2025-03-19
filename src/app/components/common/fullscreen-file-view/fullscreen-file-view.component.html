@@ -1,10 +1,12 @@
 <p-drawer [fullScreen]="true" [(visible)]="isVisible" (onHide)="onHide()" [closeOnEscape]="true" [closable]="false">
   <app-progress-spin [isLoading]="isLoading" />
-  <div class="m-1" *ngIf="!isLoading">
-    <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
-    <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
-    <p-button class="m-1" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
-    <label>esc on close</label>
+  <div class="">
+    <div class="col m-1" *ngIf="!isLoading">
+      <p-button class="m-1" size="small" icon="pi pi-angle-left" (click)="prev()" [rounded]="true" [disabled]="!prevAble" />
+      <p-button class="m-1" size="small" icon="pi pi-angle-right" (click)="next()" [rounded]="true" [disabled]="!nextAble" />
+      <p-button class="m-1" size="small" icon="pi pi-times" (click)="close()" [rounded]="true" />
+    </div>
+    <label class="col">{{getFilename}}</label>
   </div>
   <div *ngIf="isImage">
     <p-image [src]="getImageSrc" [alt]="getFilename"/>

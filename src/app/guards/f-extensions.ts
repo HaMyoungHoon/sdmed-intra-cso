@@ -25,6 +25,7 @@ import {Vector2d} from "../models/common/vector-2d";
 import {saveAs, FileSaverOptions} from "file-saver";
 import {EDIUploadPharmaFileModel} from "../models/rest/edi/edi-upload-pharma-file-model";
 import {REGEX_CHECK_COLOR_RGB} from "./f-constants";
+import {UserTrainingModel} from "../models/rest/user/user-training-model";
 
 export type voidFunc = () => void;
 export type anyFunc = (x: any) => void;
@@ -126,6 +127,11 @@ export function plusDays(targetDate: Date, days: number): Date {
 export function plusMonths(targetDate: Date, months: number): Date {
   const ret = new Date(targetDate);
   ret.setMonth(ret.getMonth() + months);
+  return ret;
+}
+export function plusYear(targetDate: Date, years: number): Date {
+  const ret = new Date(targetDate);
+  ret.setFullYear(ret.getFullYear() + 1);
   return ret;
 }
 
@@ -391,6 +397,15 @@ export function getQnAReplyPostFileModel(file: File, thisPK: string, blobStorage
 
 export function userFileListToViewModel(userFileList: UserFileModel[]): FileViewModel[] {
   return userFileList.map(x => applyClass(FileViewModel, (obj) => {
+    obj.mimeType = x.mimeType;
+    obj.blobUrl = x.blobUrl;
+    obj.filename = ableFilename(x.originalFilename);
+    obj.ext = getExtMimeType(x.mimeType);
+    obj.regDate = x.regDate;
+  }));
+}
+export function userTrainingListToViewModel(userTrainingList: UserTrainingModel[]): FileViewModel[] {
+  return userTrainingList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);

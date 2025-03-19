@@ -227,7 +227,13 @@
       "dept": "dept",
       "status": "status",
       "reg-date": "reg date",
-      "last-login-date": "last login date"
+      "last-login-date": "last login date",
+      "cso-report-image": "cso report",
+      "cso-report-date": "cso report date",
+      "contract-date": "contract date",
+      "marketing-contract-image": "marketing contract",
+      "training-image": "training certificate",
+      "training-image-add": "training add"
     },
     "child": {
       "id": "id",
@@ -237,11 +243,17 @@
       "dept": "dept",
       "status": "status",
       "company-name": "company name",
+      "company-inner-name": "company inner name",
+      "company-address": "address",
       "company-number": "company number",
       "taxpayer-image": "tax payer",
       "bank-account-image": "bank account",
       "cso-report-image": "cso report",
-      "marketing-contract-image": "marketing contract"
+      "cso-report-date": "cso report date",
+      "contract-date": "contract date",
+      "marketing-contract-image": "marketing contract",
+      "training-image": "training certificate",
+      "training-image-add": "training add"
     }
   },
   "user-setting": {
@@ -250,7 +262,12 @@
     "mail": "mail",
     "phone-number": "phone",
     "status": "status",
-    "role": "role"
+    "role": "role",
+    "training-date": "training date",
+    "warn": {
+      "training-empty": "training data empty",
+      "training-expired": "training date expired"
+    }
   },
   "user-mapping": {
     "user-list": {
@@ -300,12 +317,18 @@
       "reg-date": "reg date",
       "bank-account": "bank account",
       "company-name": "company name",
+      "company-inner-name": "company inner name",
+      "company-address": "address",
       "company-number": "company number",
       "last-login-date": "login date",
       "taxpayer-image": "tax payer",
       "bank-account-image": "bank account",
       "cso-report-image": "cso report",
-      "marketing-contract-image": "marketing contract"
+      "cso-report-date": "cso report date",
+      "contract-date": "contract date",
+      "marketing-contract-image": "marketing contract",
+      "training-image": "training certificate",
+      "training-image-add": "training add"
     }
   },
   "user-edit": {
@@ -334,26 +357,38 @@
       "reg-date": "reg date",
       "bank-account": "bank account",
       "company-name": "company name",
+      "company-inner-name": "company inner name",
+      "company-address": "address",
       "company-number": "company number",
       "last-login-date": "login date",
       "taxpayer-image": "tax payer",
       "bank-account-image": "bank account",
       "cso-report-image": "cso report",
-      "marketing-contract-image": "marketing contract"
+      "cso-report-date": "cso report date",
+      "contract-date": "contract date",
+      "marketing-contract-image": "marketing contract",
+      "training-image": "training certificate",
+      "training-image-add": "training add"
     },
     "child": {
-      "id": "아이디",
-      "name": "이름",
-      "phone-number": "번호",
-      "role": "권한",
-      "dept": "부서",
-      "status": "상태",
-      "company-name": "사명",
-      "company-number": "사업자번호",
-      "taxpayer-image": "사업등록증",
-      "bank-account-image": "은행계좌",
-      "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅 계약서"
+      "id": "id",
+      "name": "name",
+      "phone-number": "phone number",
+      "role": "role",
+      "dept": "dept",
+      "status": "status",
+      "company-name": "company name",
+      "company-inner-name": "company inner name",
+      "company-address": "address",
+      "company-number": "company number",
+      "taxpayer-image": "taxpayer image",
+      "bank-account-image": "bank account",
+      "cso-report-image": "CSO report",
+      "cso-report-date": "cso report date",
+      "contract-date": "contract date",
+      "marketing-contract-image": "marketing contract",
+      "training-image": "training certificate",
+      "training-image-add": "training add"
     },
     "hos-data": {
       "code": "code",
@@ -616,6 +651,12 @@
     "pharmacy-toggle": "pharmacy toggle",
     "distance": "distance (m)"
   },
+  "user-training-file-add": {
+    "title": {
+      "training-list": "training certificate",
+      "training-date": "training date"
+    }
+  },
   "error": {
     "title": "cannot found page",
     "contents": "The page address may be incorrect, deleted, or changed.\nPlease double-check the URL you entered.",
@@ -665,7 +706,8 @@
       "edi-ok": "edi ok",
       "edi-recep": "edi recep",
       "edi-file-add": "edi file add",
-      "edi-file-delete": "edi file delete"
+      "edi-file-delete": "edi file delete",
+      "user-file-add": "user file add"
     }
   },
   "primeng": {

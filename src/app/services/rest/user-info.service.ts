@@ -5,6 +5,7 @@ import {UserDataModel} from "../../models/rest/user/user-data-model";
 import {BlobUploadModel} from "../../models/rest/blob-upload-model";
 import {UserFileType} from "../../models/rest/user/user-file-type";
 import {UserFileModel} from "../../models/rest/user/user-file-model";
+import {UserTrainingModel} from "../../models/rest/user/user-training-model";
 
 @Injectable({
   providedIn: "root"
@@ -46,6 +47,10 @@ export class UserInfoService {
   putUserFileImageUrl(thisPK: string, blobModel: BlobUploadModel, userFileType: UserFileType): Promise<RestResult<UserFileModel>> {
     this.httpResponse.addParam("userFileType", userFileType);
     return this.httpResponse.put(`${this.baseUrl}/file/${thisPK}`, blobModel);
+  }
+  postUserTrainingData(thisPK: string, blobModel: BlobUploadModel, trainingDate: string): Promise<RestResult<UserTrainingModel>> {
+    this.httpResponse.addParam("trainingDate", trainingDate);
+    return this.httpResponse.post(`${this.baseUrl}/file/training/${thisPK}`, blobModel);
   }
   putPasswordInit(userPK: string): Promise<RestResult<string>> {
     this.httpResponse.addParam("userPK", userPK);

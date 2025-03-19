@@ -9,6 +9,7 @@ import {UserInfoService} from "../../../../../services/rest/user-info.service";
 import {saveAs} from "file-saver";
 import * as FConstants from "../../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
+import {plusMonths} from "../../../../../guards/f-extensions";
 
 @Component({
   selector: "app-user-setting",
@@ -128,6 +129,43 @@ export class UserSettingComponent extends FComponentBase {
         new UserDataModel().copyLhsFromRhs(this.userDataModel[target], x);
       }
     });
+  }
+  trainingDate(item: UserDataModel): string {
+    if (item.trainingList.length <= 0) {
+      return "????-??-??";
+    }
+    return FExtensions.dateToYYYYMMdd(item.trainingList[0].trainingDate);
+  }
+  trainingEmpty(item: UserDataModel): boolean {
+    if (item.trainingList.length <= 0) {
+      return true;
+    }
+    if (item.csoReportDate) {
+      const now = new Date().getTime();
+      const target = FExtensions.plusMonths(item.csoReportDate, 3).getTime();
+      return now > target;
+    }
+    return true;
+  }
+  trainingExpire(item: UserDataModel): boolean {
+    if (item.trainingList.length <= 0) {
+      return false;
+    }
+    if (item.trainingList[0].trainingDate) {
+      const now = new Date().getTime();
+      const target = FExtensions.plusYear(item.trainingList[0].trainingDate, 1).getTime();
+      return now > target;
+    }
+    return false;
+  }
+  userTooltip(item: UserDataModel): string {
+    if (this.trainingEmpty(item)) {
+      return "user-setting.warn.training-empty";
+    }
+    if (this.trainingExpire(item)) {
+      return "user-setting.warn.training-expired";
+    }
+    return "";
   }
 
   get filterFields(): string[] {

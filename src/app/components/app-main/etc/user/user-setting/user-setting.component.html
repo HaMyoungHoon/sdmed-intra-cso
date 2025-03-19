@@ -26,10 +26,11 @@
         <th>{{"user-setting.phone-number" | translate}}</th>
         <th pSortableColumn="status">{{"user-setting.status" | translate}} <p-sortIcon field="status" /></th>
         <th pSortableColumn="role">{{"user-setting.role" | translate}} <p-sortIcon field="role" /></th>
+        <th>{{"user-setting.training-date" | translate}}</th>
       </tr>
     </ng-template>
     <ng-template #body let-userData>
-      <tr class="click-tr" (click)="userEdit(userData)">
+      <tr class="click-tr" (click)="userEdit(userData)" [class.training-empty]="trainingEmpty(userData)" [class.traning-expired]="trainingExpire(userData)" pTooltip="{{userTooltip(userData) | translate}}">
         <td>{{userData.id}}</td>
         <td>{{userData.name}}</td>
         <td>{{userData.mail}}</td>
@@ -42,6 +43,7 @@
             <p-tag [value]="role"/>
           </span>
         </td>
+        <td>{{trainingDate(userData)}}</td>
       </tr>
     </ng-template>
   </p-table>

@@ -86,14 +86,26 @@
         <div class="field grid">
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.Taxpayer)" [alt]="userDataModel.companyNumber" (click)="userImageView(UserFileType.Taxpayer)" pTooltip="{{userImageTooltip(UserFileType.Taxpayer) | translate}}"/>
           <div class="col">
-            <p-ifta-label class="col">
-              <input id="taxpayerName" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
-              <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
-            </p-ifta-label>
-            <p-ifta-label class="col">
-              <input id="taxpayerNumber" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
-              <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
-            </p-ifta-label>
+            <div class="formgrid grid col">
+              <p-ifta-label class="m-1">
+                <input id="taxpayerName" class="w-20rem" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+                <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
+              </p-ifta-label>
+              <p-ifta-label class="m-1">
+                <input id="taxpayerInnerName" class="w-20rem" [(ngModel)]="userDataModel.companyInnerName" type="text" pInputText>
+                <label for="taxpayerInnerName">{{"user-edit.detail.company-inner-name" | translate}}</label>
+              </p-ifta-label>
+            </div>
+            <div class="formgrid grid col">
+              <p-ifta-label class="m-1">
+                <input id="taxpayerAddress" class="w-20rem" [(ngModel)]="userDataModel.companyAddress" type="text" pInputText>
+                <label for="taxpayerAddress">{{"user-edit.detail.company-address" | translate}}</label>
+              </p-ifta-label>
+              <p-ifta-label class="m-1">
+                <input id="taxpayerNumber" class="w-20rem" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
+                <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
+              </p-ifta-label>
+            </div>
           </div>
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.BankAccount)" [alt]="userDataModel.bankAccount" (click)="userImageView(UserFileType.BankAccount)" pTooltip="{{userImageTooltip(UserFileType.BankAccount) | translate}}"/>
           <p-ifta-label class="col">
@@ -104,11 +116,30 @@
         <div class="field grid">
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
           <div class="col">
-            <label>{{"user-edit.detail.cso-report-image" | translate}}</label>
+            <div class="col">
+              <span>{{"user-edit.detail.cso-report-date" | translate}}</span>
+              <p-date-picker class="col" [(ngModel)]="csoReportDate" view="date" dateFormat="yy-mm-dd" readonlyInput="true" appendTo="body" />
+            </div>
+            <div class="col">
+              <span>{{"user-edit.detail.contract-date" | translate}}</span>
+              <p-date-picker class="col" [(ngModel)]="contractDate" view="date" dateFormat="yy-mm-dd" readonlyInput="true" appendTo="body" />
+            </div>
           </div>
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
           <div class="col">
             <label>{{"user-edit.detail.marketing-contract-image" | translate}}</label>
+          </div>
+        </div>
+        <div class="field grid">
+          <p-image class="col-fixed" width="100" height="100" [src]="trainingImageUrl()" (click)="trainingImageView()" pTooltip="{{trainingImageTooltip() | translate}}"/>
+          <div class="formgrid col">
+            <label class="col">{{"user-edit.detail.training-image" | translate}}</label>
+            <label class="col">{{trainingDate()}}</label>
+            <p-button class="col" (click)="userTrainingFilePop.toggle($event)">{{"user-edit.detail.training-image-add" | translate}}</p-button>
+            <p-popover #userTrainingFilePop appendTo="body">
+              <popover-user-training-file-add #userTrainingFileAdd [trainingList]="userDataModel.trainingList" (error)="onError($event)" (warn)="onWarn($event)"
+                                              (viewItemEvent)="viewUserTrainingItem($event)" (uploadFileEvent)="userTrainingUpload($event)" />
+            </p-popover>
           </div>
         </div>
         <input #taxpayerImageInput class="collapse" type="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf" (change)="userImageSelected($event, UserFileType.Taxpayer)">

@@ -18,13 +18,16 @@ import {Card} from "primeng/card";
 import {IftaLabel} from "primeng/iftalabel";
 import {ConfirmPopup} from "primeng/confirmpopup";
 import {Divider} from "primeng/divider";
+import {DatePicker} from "primeng/datepicker";
+import {Popover} from "primeng/popover";
+import {UserTrainingFileAddComponent} from "../../../../common/user-training-file-add/user-training-file-add.component";
 
 
 
 @NgModule({
   declarations: [UserEditComponent],
-	imports: [
-		CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent, Card, IftaLabel, ConfirmPopup, Divider
-	]
+  imports: [
+    CommonModule, UserEditRoutingModule, AccordionModule, ButtonModule, ImageModule, InputTextModule, MultiSelectModule, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tooltip, TranslatePipe, FormsModule, Select, CustomPickListComponent, Card, IftaLabel, ConfirmPopup, Divider, DatePicker, Popover, UserTrainingFileAddComponent
+  ]
 })
 export class UserEditModule { }

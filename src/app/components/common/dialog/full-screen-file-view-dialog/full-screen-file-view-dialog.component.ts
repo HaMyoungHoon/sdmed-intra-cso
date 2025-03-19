@@ -34,8 +34,9 @@ export class FullScreenFileViewDialogComponent extends FDialogComponentBase {
   }
 
   override async ngInit(): Promise<void> {
-    if (this.isExcel) {}
-    await this.excelReady();
+    if (this.isExcel) {
+      await this.excelReady();
+    }
   }
   init(): void {
     this.fileViewModel = [];

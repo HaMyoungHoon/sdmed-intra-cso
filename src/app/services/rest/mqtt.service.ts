@@ -10,7 +10,6 @@ import * as FConstants from "../../guards/f-constants";
 import {Subject} from "rxjs";
 import {MqttContentType} from "../../models/rest/mqtt/mqtt-content-type";
 import {EDIState} from "../../models/rest/edi/edi-state";
-import {ediStateToMqttContentType} from "../../guards/f-extensions";
 
 @Injectable({
   providedIn: "root"
@@ -70,6 +69,17 @@ export class MqttService {
       obj.contentType = MqttContentType.EDI_FILE_DELETE;
       obj.content = content;
       obj.targetItemPK = thisPK;
+    }));
+    return new Promise((resolve): void => {
+      resolve(new RestResult<any>().setFail("통신 에러"))
+    });
+  }
+  async postUserFileAdd(userPK: string, content: string): Promise<RestResult<any>> {
+    const topic = `private/${userPK}`;
+    await this.postPublish(topic, FExtensions.applyClass(MqttContentModel, obj => {
+      obj.contentType = MqttContentType.USER_FILE_ADD;
+      obj.content = content;
+      obj.targetItemPK = userPK;
     }));
     return new Promise((resolve): void => {
       resolve(new RestResult<any>().setFail("통신 에러"))

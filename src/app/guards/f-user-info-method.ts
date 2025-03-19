@@ -11,14 +11,15 @@ import {stringArrayToUserDept, userDeptToFlag} from "../models/rest/user/user-de
 import {StatusDescToUserStatus} from "../models/rest/user/user-status";
 import {UserFileType} from "../models/rest/user/user-file-type";
 import {UserFileModel} from "../models/rest/user/user-file-model";
-import {getUserBlobName} from "./f-extensions";
+import {getUserBlobName, isAbleUpload} from "./f-extensions";
+import {UserTrainingModel} from "../models/rest/user/user-training-model";
 
 export async function imageSelected(event: any, data: UserDataModel, userFileType: UserFileType, service: UserInfoService, commonService: CommonService, azureBlobService: AzureBlobService): Promise<RestResult<UserFileModel>> {
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     const file = input.files[0];
     const ext = await FExtensions.getFileExt(file);
-    if (!FExtensions.isImage(ext)) {
+    if (!FExtensions.isAbleUpload(ext)) {
       return new RestResult<UserFileModel>().setFail("only image file");
     }
     const blobName = FExtensions.getUserBlobName(data.id, ext);
@@ -51,6 +52,19 @@ export function userImageView(fileModel: UserFileModel | undefined, input: Eleme
     maximizable: true,
     data: {
       file: FExtensions.userFileListToViewModel(Array<UserFileModel>(fileModel!!)),
+      index: 0,
+    }
+  });
+}
+export function userTrainingImageView(trainingImage: UserTrainingModel[], fDialogService: FDialogService): void {
+  fDialogService.openFullscreenFileView({
+    closable: true,
+    closeOnEscape: true,
+    draggable: true,
+    resizable: true,
+    maximizable: true,
+    data: {
+      file: FExtensions.userTrainingListToViewModel(trainingImage),
       index: 0,
     }
   });

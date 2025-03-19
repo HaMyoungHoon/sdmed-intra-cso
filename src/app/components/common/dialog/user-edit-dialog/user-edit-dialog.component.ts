@@ -28,15 +28,21 @@ import {UserFileType} from "../../../../models/rest/user/user-file-type";
 import {IftaLabel} from "primeng/iftalabel";
 import {Divider} from "primeng/divider";
 import {ConfirmPopup} from "primeng/confirmpopup";
+import {DatePicker} from "primeng/datepicker";
+import {Popover} from "primeng/popover";
+import {UserTrainingFileAddComponent} from "../../user-training-file-add/user-training-file-add.component";
+import {UserTrainingModel} from "../../../../models/rest/user/user-training-model";
+import {UploadFileBuffModel} from "../../../../models/common/upload-file-buff-model";
 
 @Component({
   selector: "app-user-edit-dialog",
-  imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent, IftaLabel, Divider, ConfirmPopup],
+    imports: [AccordionModule, NgIf, TagModule, TranslatePipe, FormsModule, MultiSelectModule, ButtonModule, TableModule, ImageModule, InputTextModule, ProgressSpinComponent, Tooltip, Select, CustomPickListComponent, IftaLabel, Divider, ConfirmPopup, DatePicker, Popover, UserTrainingFileAddComponent],
   templateUrl: "./user-edit-dialog.component.html",
   styleUrl: "./user-edit-dialog.component.scss",
   standalone: true,
 })
 export class UserEditDialogComponent extends FDialogComponentBase {
+  @ViewChild("userTrainingFileAdd") userTrainingFileAdd!: UserTrainingFileAddComponent;
   @ViewChild("taxpayerImageInput") taxpayerImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("bankAccountImageInput") bankAccountImageInput!: ElementRef<HTMLInputElement>
   @ViewChild("csoReportImageInput") csoReportImageInput!: ElementRef<HTMLInputElement>
@@ -50,6 +56,8 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   selectedUserDepts: string[] = [];
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData: HospitalModel = new HospitalModel();
+  csoReportDate?: Date;
+  contractDate?: Date;
   constructor(private thisService: UserInfoService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
     const dlg = this.dialogService.getInstance(this.ref);
@@ -58,6 +66,12 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   override async ngInit(): Promise<void> {
     await this.getUserData();
     await this.getChildAble();
+  }
+  onError(data: {title: string, msg?: string}): void {
+    this.fDialogService.error(data.title, data.msg);
+  }
+  onWarn(data: {title: string, msg?: string}): void {
+    this.fDialogService.warn(data.title, data.msg);
   }
 
   async getUserData(): Promise<void> {
@@ -68,6 +82,12 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       this.selectedUserStatus = statusToUserStatusDesc(ret.data?.status);
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
+      if (this.userDataModel.contractDate) {
+        this.contractDate = this.userDataModel.contractDate;
+      }
+      if (this.userDataModel.csoReportDate) {
+        this.csoReportDate = this.userDataModel.csoReportDate;
+      }
       return;
     }
     this.fDialogService.warn("getUserData", ret.msg);
@@ -83,6 +103,12 @@ export class UserEditDialogComponent extends FDialogComponentBase {
   }
   async saveUserData(): Promise<void> {
     this.setLoading();
+    if (this.contractDate) {
+      this.userDataModel.contractDate = this.contractDate;
+    }
+    if (this.csoReportDate) {
+      this.userDataModel.csoReportDate = this.csoReportDate;
+    }
     const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
     this.setLoading(false);
@@ -159,6 +185,80 @@ export class UserEditDialogComponent extends FDialogComponentBase {
       return;
     }
     this.fDialogService.warn(`${userFileType}`, ret.msg);
+  }
+  trainingImageUrl(): string {
+    const file = this.userDataModel.trainingList;
+    if (file.length > 0) {
+      return FExtensions.blobUrlThumbnail(file[0].blobUrl, file[0].mimeType);
+    }
+    return FConstants.ASSETS_NO_IMAGE;
+  }
+  trainingDate(): string {
+    const file = this.userDataModel.trainingList;
+    if (file.length <= 0) {
+      return "";
+    }
+    return FExtensions.dateToYYYYMMdd(file[0].trainingDate);
+  }
+  trainingImageTooltip(): string {
+    return "user-edit.detail.training-image";
+  }
+  trainingImageView(): void {
+    const file = this.userDataModel.trainingList;
+    if (file.length <= 0) {
+      return;
+    }
+    FUserInfoMethod.userTrainingImageView(file, this.fDialogService);
+  }
+  viewUserTrainingItem(item: UserTrainingModel): void {
+    this.fDialogService.openFullscreenFileView({
+      closable: false,
+      closeOnEscape: true,
+      maximizable: true,
+      width: "100%",
+      height: "100%",
+      data: {
+        file: FExtensions.userTrainingListToViewModel(this.userDataModel.trainingList),
+        index: this.userDataModel.trainingList.findIndex(x => x.thisPK == item.thisPK)
+      }
+    });
+  }
+  async userTrainingUpload(data: {file: UploadFileBuffModel, date: Date}): Promise<void> {
+    const file = data.file.file;
+    if (file == undefined) {
+      return;
+    }
+    this.setLoading();
+    const blobName = FExtensions.getUserBlobName(this.userDataModel.id, data.file.ext);
+    const blobStorageInfo = await FExtensions.restTry(async() => await this.commonService.getGenerateSas(blobName),
+      e => this.fDialogService.error("upload", e));
+    if (blobStorageInfo.result != true || blobStorageInfo.data == undefined) {
+      this.setLoading(false);
+      this.fDialogService.error("upload", blobStorageInfo.msg);
+      return;
+    }
+    const blobModel = FExtensions.getUserBlobModel(file, blobStorageInfo.data, blobName, data.file.ext);
+    let uploadRet = true;
+    const azureRet = await FExtensions.tryCatchAsync(async() => await this.azureBlobService.putUpload(file, blobStorageInfo.data, blobModel.blobName, blobModel.mimeType),
+      e => {
+        this.fDialogService.error("upload", e);
+        uploadRet = false;
+      });
+    if (azureRet == null || !uploadRet) {
+      this.setLoading(false);
+      return;
+    }
+    const ret = await FExtensions.restTry(async() => await this.thisService.postUserTrainingData(this.userDataModel.thisPK, blobModel, FExtensions.dateToYYYYMMdd(data.date)),
+      e => this.fDialogService.error("upload", e));
+    this.setLoading(false);
+    if (ret.result) {
+      if (ret.data) {
+        this.userDataModel.trainingList.unshift(ret.data);
+        await this.userTrainingFileAdd.readyImage();
+      }
+      return;
+    }
+    this.fDialogService.warn("upload", ret.msg);
   }
 
   multipleEnable = input(true, { transform: (v: any) => transformToBoolean(v) });

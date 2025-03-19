@@ -229,7 +229,11 @@
       "reg-date": "등록일",
       "last-login-date": "마지막 로그인일",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅 계약서"
+      "cso-report-date": "CSO 신고일",
+      "contract-date": "CSO 계약일",
+      "marketing-contract-image": "마케팅 계약서",
+      "training-image": "교육수료증",
+      "training-image-add": "교육수료증 추가"
     },
     "child": {
       "id": "아이디",
@@ -239,11 +243,17 @@
       "dept": "부서",
       "status": "상태",
       "company-name": "사명",
+      "company-inner-name": "업체내부명",
+      "company-address": "주소",
       "company-number": "사업자번호",
       "taxpayer-image": "사업등록증",
       "bank-account-image": "은행계좌",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅 계약서"
+      "cso-report-date": "CSO 신고일",
+      "contract-date": "CSO 계약일",
+      "marketing-contract-image": "마케팅 계약서",
+      "training-image": "교육수료증",
+      "training-image-add": "교육수료증 추가"
     }
   },
   "user-setting": {
@@ -252,7 +262,12 @@
     "mail": "메일",
     "phone-number": "번호",
     "status": "상태",
-    "role": "권한"
+    "role": "권한",
+    "training-date": "교육수료일",
+    "warn": {
+      "training-empty": "교육수료 데이터가 없음",
+      "training-expired": "교육수료일이 만료 됨"
+    }
   },
   "user-mapping": {
     "user-list": {
@@ -302,12 +317,18 @@
       "reg-date": "등록일",
       "bank-account": "은행계좌",
       "company-name": "사명",
+      "company-inner-name": "업체내부명",
+      "company-address": "주소",
       "company-number": "사업자번호",
       "last-login-date": "마지막 로그인일",
       "taxpayer-image": "사업자등록증",
       "bank-account-image": "은행계좌",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅계약서"
+      "cso-report-date": "CSO 신고일",
+      "contract-date": "CSO 계약일",
+      "marketing-contract-image": "마케팅 계약서",
+      "training-image": "교육수료증",
+      "training-image-add": "교육수료증 추가"
     }
   },
   "user-edit": {
@@ -336,12 +357,18 @@
       "reg-date": "등록일",
       "bank-account": "은행계좌",
       "company-name": "사명",
+      "company-inner-name": "업체내부명",
+      "company-address": "주소",
       "company-number": "사업자번호",
       "last-login-date": "마지막 로그인일",
       "taxpayer-image": "사업자등록증",
       "bank-account-image": "은행계좌",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅계약서"
+      "cso-report-date": "CSO 신고일",
+      "contract-date": "CSO 계약일",
+      "marketing-contract-image": "마케팅 계약서",
+      "training-image": "교육수료증",
+      "training-image-add": "교육수료증 추가"
     },
     "child": {
       "id": "아이디",
@@ -351,11 +378,17 @@
       "dept": "부서",
       "status": "상태",
       "company-name": "사명",
+      "company-inner-name": "업체내부명",
+      "company-address": "주소",
       "company-number": "사업자번호",
       "taxpayer-image": "사업등록증",
       "bank-account-image": "은행계좌",
       "cso-report-image": "CSO 신고증",
-      "marketing-contract-image": "마케팅 계약서"
+      "cso-report-date": "CSO 신고일",
+      "contract-date": "CSO 계약일",
+      "marketing-contract-image": "마케팅 계약서",
+      "training-image": "교육수료증",
+      "training-image-add": "교육수료증 추가"
     },
     "hos-data": {
       "code": "코드",
@@ -618,6 +651,12 @@
     "pharmacy-toggle": "약국 토글",
     "distance": "거리 (m)"
   },
+  "user-training-file-add": {
+    "title": {
+      "training-list": "교육수료증",
+      "training-date": "교육수료일"
+    }
+  },
   "error": {
     "title": "요청하신 페이지를 찾을 수 없습니다.",
     "contents": "페이지의 주소가 잘못 입력되었거나,\n찾으시려는 페이지의 주소가 삭제 또는 변경되어 사용할 수 없는 상태입니다.\n입력하신 주소가 정확한지 한 번 더 확인해 주시기 바랍니다.",
@@ -667,7 +706,8 @@
       "edi-ok": "EDI 승인",
       "edi-recep": "EDI 수신",
       "edi-file-add": "EDI 파일 추가",
-      "edi-file-delete": "EDI 파일 제거"
+      "edi-file-delete": "EDI 파일 제거",
+      "user-file-add": "유저 파일 추가"
     }
   },
   "primeng": {
