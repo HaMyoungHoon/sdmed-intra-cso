@@ -16,9 +16,10 @@ export class UserDataModel {
   companyName: string = "";
   companyInnerName: string = "";
   companyNumber: string = "";
+  companyOwner: string = "";
   companyAddress: string = "";
   bankAccount: string = "";
-  csoReportDate?: Date;
+  csoReportNumber: string = "";
   contractDate?: Date;
   regDate: Date = new Date();
   lastLoginDate?: Date;
@@ -37,10 +38,11 @@ export class UserDataModel {
     lhs.status = rhs.status;
     lhs.companyName = rhs.companyName;
     lhs.companyInnerName = rhs.companyInnerName;
+    lhs.companyOwner = rhs.companyOwner;
     lhs.companyNumber = rhs.companyNumber;
     lhs.companyAddress = rhs.companyAddress;
     lhs.bankAccount = rhs.bankAccount;
-    lhs.csoReportDate = rhs.csoReportDate;
+    lhs.csoReportNumber = rhs.csoReportNumber;
     lhs.contractDate = rhs.contractDate;
     lhs.regDate = rhs.regDate;
     lhs.lastLoginDate = rhs.lastLoginDate;

@@ -10,6 +10,7 @@ import {saveAs} from "file-saver";
 import * as FConstants from "../../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
 import {plusMonths} from "../../../../../guards/f-extensions";
+import {TableHeaderModel} from "../../../../../models/common/table-header-model";
 
 @Component({
   selector: "app-user-setting",
@@ -21,10 +22,13 @@ export class UserSettingComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
   initValue: UserDataModel[] = [];
+  headerList: TableHeaderModel[] = [];
+  selectedHeaders: TableHeaderModel[] = [];
   userDataModel: UserDataModel[] = [];
   isSorted: boolean | null = null;
   constructor(private thisService: UserInfoService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
+    this.layoutInit();
   }
 
   override async ngInit(): Promise<void> {
@@ -99,6 +103,101 @@ export class UserSettingComponent extends FComponentBase {
     });
   }
 
+
+  headerSelectChange(data: TableHeaderModel[]): void {
+    if (data.length <= 0) {
+      this.selectedHeaders = [];
+    }
+    this.configService.setUserSettingTableHeaderList(this.selectedHeaders);
+  }
+  layoutInit(): void {
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.id";
+      obj.field = "id";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.name";
+      obj.field = "name";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.mail";
+      obj.field = "mail";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.phone-number";
+      obj.field = "phoneNumber";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.role";
+      obj.field = "role";
+      obj.htmlType = "tags";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.status";
+      obj.field = "status";
+      obj.htmlType = "tag";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.company-inner-name";
+      obj.field = "companyInnerName";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.company-number";
+      obj.field = "companyNumber";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.company-address";
+      obj.field = "companyAddress";
+    }));
+    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
+      obj.header = "user-setting.table.training-date";
+      obj.field = "trainingDate";
+    }));
+
+    this.selectedHeaders = this.configService.getUserSettingTableHeaderList();
+    if (this.selectedHeaders.length <= 0) {
+      this.selectedHeaders = [...this.headerList];
+    }
+  }
+  getTableItem(item: UserDataModel, tableHeaderModel: TableHeaderModel): string {
+    switch (tableHeaderModel.field) {
+      case "id": return item.id;
+      case "name": return item.name;
+      case "mail": return item.mail;
+      case "phoneNumber": return item.phoneNumber;
+      case "status": return statusToUserStatusDesc(item.status);
+      case "companyInnerName": return item.companyInnerName;
+      case "companyNumber": return item.companyNumber;
+      case "companyAddress": return item.companyAddress;
+      case "trainingDate": return this.trainingDate(item);
+      default: return "";
+    }
+  }
+  getTableItems(item: UserDataModel, tableHeaderModel: TableHeaderModel): string[] {
+    switch (tableHeaderModel.field) {
+      case "role": {
+        console.log(flagToRoleDesc(item.role));
+        return flagToRoleDesc(item.role);
+      }
+      default: return [];
+    }
+  }
+  getTableItemSeverity(item: UserDataModel, tableHeaderModel: TableHeaderModel): any {
+    if (tableHeaderModel.field == "status") {
+      return FExtensions.getUserStatusSeverity(item.status);
+    }
+
+    return undefined;
+  }
+  isHeaderLabel(tableHeaderModel: TableHeaderModel): boolean {
+    return tableHeaderModel.htmlType == "label";
+  }
+  isHeaderTag(tableHeaderModel: TableHeaderModel): boolean {
+    return tableHeaderModel.htmlType == "tag";
+  }
+  isHeaderTags(tableHeaderModel: TableHeaderModel): boolean {
+    return tableHeaderModel.htmlType == "tags";
+  }
   userEdit(data: UserDataModel): void {
     const isNewTab = this.configService.isNewTab();
     if (isNewTab) {
@@ -114,7 +213,7 @@ export class UserSettingComponent extends FComponentBase {
       draggable: true,
       resizable: true,
       maximizable: true,
-      width: "60%",
+      width: "95%",
       data: data
     }).pipe(takeUntil(sub)).subscribe((x): void => {
       if (x == null) {
@@ -140,11 +239,6 @@ export class UserSettingComponent extends FComponentBase {
     if (item.trainingList.length <= 0) {
       return true;
     }
-    if (item.csoReportDate) {
-      const now = new Date().getTime();
-      const target = FExtensions.plusMonths(item.csoReportDate, 3).getTime();
-      return now > target;
-    }
     return false;
   }
   trainingExpire(item: UserDataModel): boolean {
@@ -169,7 +263,7 @@ export class UserSettingComponent extends FComponentBase {
   }
 
   get filterFields(): string[] {
-    return ["id", "name", "status", "role"];
+    return ["id", "name", "mail", "phoneNumber", "status", "role", "companyInnerName", "companyNumber", "companyAddress"];
   }
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";

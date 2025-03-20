@@ -258,44 +258,44 @@ export class AppConfigService {
   }
 
   getEDIListTableHeaderList(): TableHeaderModel[] {
-    const buff = FAmhohwa.getLocalStorage(FConstants.EDI_LIST_HEADER_LIST)
+    const buff = FAmhohwa.getLocalStorage(FConstants.EDI_LIST_HEADER_LIST);
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setEDIListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.EDI_LIST_HEADER_LIST, buff);
   }
   getHospitalListTableHeaderList(): TableHeaderModel[] {
-    const buff = FAmhohwa.getLocalStorage(FConstants.HOSPITAL_LIST_HEADER_LIST)
+    const buff = FAmhohwa.getLocalStorage(FConstants.HOSPITAL_LIST_HEADER_LIST);
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setHospitalListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.HOSPITAL_LIST_HEADER_LIST, buff);
   }
   getPharmaListTableHeaderList(): TableHeaderModel[] {
-    const buff = FAmhohwa.getLocalStorage(FConstants.PHARMA_LIST_HEADER_LIST)
+    const buff = FAmhohwa.getLocalStorage(FConstants.PHARMA_LIST_HEADER_LIST);
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setPharmaListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.PHARMA_LIST_HEADER_LIST, buff);
   }
   getMedicineListTableHeaderList(): TableHeaderModel[] {
-    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_LIST_HEADER_LIST)
+    const buff = FAmhohwa.getLocalStorage(FConstants.MEDICINE_LIST_HEADER_LIST);
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setMedicineListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
@@ -306,18 +306,29 @@ export class AppConfigService {
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setMedicinePriceListTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
     FAmhohwa.setLocalStorage(FConstants.MEDICINE_LIST_PRICE_HEADER_LIST, buff);
+  }
+  getUserSettingTableHeaderList(): TableHeaderModel[] {
+    const buff = FAmhohwa.getLocalStorage(FConstants.USER_SETTING_HEADER_LIST);
+    if (buff.length <= 0) {
+      return [];
+    }
+    return JSON.parse(buff) as TableHeaderModel[];
+  }
+  setUserSettingTableHeaderList(data: TableHeaderModel[]): void {
+    const buff = JSON.stringify(data);
+    FAmhohwa.setLocalStorage(FConstants.USER_SETTING_HEADER_LIST, buff);
   }
   getIPLogListTableHeaderList(): TableHeaderModel[] {
     const buff = FAmhohwa.getLocalStorage(FConstants.IP_LOG_LIST_HEADER_LIST);
     if (buff.length <= 0) {
       return [];
     }
-    return JSON.parse(buff) as TableHeaderModel[]
+    return JSON.parse(buff) as TableHeaderModel[];
   }
   setIPLogTableHeaderList(data: TableHeaderModel[]): void {
     const buff = JSON.stringify(data);
@@ -326,7 +337,7 @@ export class AppConfigService {
   getCalendarViewType(): string {
     const buff = FAmhohwa.getLocalStorage(FConstants.CALENDAR_VIEW_TYPE);
     if (buff.length <= 0) {
-      return "dayGridMonth"
+      return "dayGridMonth";
     }
     return buff;
   }

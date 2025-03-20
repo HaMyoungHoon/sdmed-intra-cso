@@ -88,22 +88,26 @@
           <div class="col">
             <div class="formgrid grid col">
               <p-ifta-label class="m-1">
-                <input id="taxpayerName" class="w-20rem" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
-                <label for="taxpayerName">{{"user-edit.detail.company-name" | translate}}</label>
+                <input id="companyName" class="w-20rem" [(ngModel)]="userDataModel.companyName" type="text" pInputText>
+                <label for="companyName">{{"user-edit.detail.company-name" | translate}}</label>
               </p-ifta-label>
               <p-ifta-label class="m-1">
-                <input id="taxpayerInnerName" class="w-20rem" [(ngModel)]="userDataModel.companyInnerName" type="text" pInputText>
-                <label for="taxpayerInnerName">{{"user-edit.detail.company-inner-name" | translate}}</label>
+                <input id="companyInnerName" class="w-20rem" [(ngModel)]="userDataModel.companyInnerName" type="text" pInputText>
+                <label for="companyInnerName">{{"user-edit.detail.company-inner-name" | translate}}</label>
+              </p-ifta-label>
+              <p-ifta-label class="m-1">
+                <input id="companyOwner" class="w-10rem" [(ngModel)]="userDataModel.companyOwner" type="text" pInputText>
+                <label for="companyOwner">{{"user-edit.detail.company-owner" | translate}}</label>
               </p-ifta-label>
             </div>
             <div class="formgrid grid col">
               <p-ifta-label class="m-1">
-                <input id="taxpayerAddress" class="w-20rem" [(ngModel)]="userDataModel.companyAddress" type="text" pInputText>
-                <label for="taxpayerAddress">{{"user-edit.detail.company-address" | translate}}</label>
+                <input id="companyAddress" class="w-20rem" [(ngModel)]="userDataModel.companyAddress" type="text" pInputText>
+                <label for="companyAddress">{{"user-edit.detail.company-address" | translate}}</label>
               </p-ifta-label>
               <p-ifta-label class="m-1">
-                <input id="taxpayerNumber" class="w-20rem" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
-                <label for="taxpayerNumber">{{"user-edit.detail.company-number" | translate}}</label>
+                <input id="companyNumber" class="w-20rem" [(ngModel)]="userDataModel.companyNumber" type="text" pInputText>
+                <label for="companyNumber">{{"user-edit.detail.company-number" | translate}}</label>
               </p-ifta-label>
             </div>
           </div>
@@ -116,18 +120,15 @@
         <div class="field grid">
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.CsoReport)" (click)="userImageView(UserFileType.CsoReport)" pTooltip="{{userImageTooltip(UserFileType.CsoReport) | translate}}"/>
           <div class="col">
-            <div class="col">
-              <span>{{"user-edit.detail.cso-report-date" | translate}}</span>
-              <p-date-picker class="col" [(ngModel)]="csoReportDate" view="date" dateFormat="yy-mm-dd" readonlyInput="true" appendTo="body" />
-            </div>
-            <div class="col">
-              <span>{{"user-edit.detail.contract-date" | translate}}</span>
-              <p-date-picker class="col" [(ngModel)]="contractDate" view="date" dateFormat="yy-mm-dd" readonlyInput="true" appendTo="body" />
-            </div>
+            <p-ifta-label class="col">
+              <input id="csoReportNumber" [(ngModel)]="userDataModel.csoReportNumber" type="text" pInputText>
+              <label for="csoReportNumber">{{"user-edit.detail.cso-report-number" | translate}}</label>
+            </p-ifta-label>
           </div>
           <p-image class="col-fixed" width="100" height="100" [src]="userImageUrl(UserFileType.MarketingContract)" (click)="userImageView(UserFileType.MarketingContract)" pTooltip="{{userImageTooltip(UserFileType.MarketingContract) | translate}}"/>
           <div class="col">
-            <label>{{"user-edit.detail.marketing-contract-image" | translate}}</label>
+            <label class="flex">{{"user-edit.detail.contract-date" | translate}}</label>
+            <p-date-picker class="flex" [(ngModel)]="contractDate" view="date" dateFormat="yy-mm-dd" readonlyInput="true" appendTo="body" />
           </div>
         </div>
         <div class="field grid">

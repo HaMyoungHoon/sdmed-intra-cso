@@ -19,6 +19,7 @@ export const HOSPITAL_LIST_HEADER_LIST: string = "hospitalListHeaderList";
 export const PHARMA_LIST_HEADER_LIST: string = "pharmaListHeaderList";
 export const MEDICINE_LIST_HEADER_LIST: string = "medicineListHeaderList";
 export const MEDICINE_LIST_PRICE_HEADER_LIST: string = "medicinePriceListHeaderList";
+export const USER_SETTING_HEADER_LIST: string = "userSettingHeaderList";
 export const IP_LOG_LIST_HEADER_LIST: string = "ipLogListHeaderList";
 export const CALENDAR_VIEW_TYPE: string = "calendarViewType";
 

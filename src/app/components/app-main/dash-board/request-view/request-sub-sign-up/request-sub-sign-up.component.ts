@@ -55,7 +55,6 @@ export class RequestSubSignUpComponent extends FComponentBase {
   selectedUserRoles: string[] = [];
   selectedUserDepts: string[] = [];
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
-  csoReportDate?: Date;
   contractDate?: Date;
   constructor(private thisService: UserInfoService, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
@@ -85,7 +84,6 @@ export class RequestSubSignUpComponent extends FComponentBase {
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
       this.contractDate = FExtensions.parseStringToDate(this.userDataModel.contractDate);
-      this.csoReportDate = FExtensions.parseStringToDate(this.userDataModel.csoReportDate);
       this.cd.detectChanges();
       await this.userTrainingFileAdd.readyImage();
       return;
@@ -110,9 +108,6 @@ export class RequestSubSignUpComponent extends FComponentBase {
     this.setLoading();
     if (this.contractDate) {
       this.userDataModel.contractDate = this.contractDate;
-    }
-    if (this.csoReportDate) {
-      this.userDataModel.csoReportDate = this.csoReportDate;
     }
     const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));

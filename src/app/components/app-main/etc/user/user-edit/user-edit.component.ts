@@ -45,7 +45,6 @@ export class UserEditComponent extends FComponentBase {
   selectedUserDepts: string[] = [];
   selectedUserStatus: string = statusToUserStatusDesc(UserStatus.None);
   selectedHosData: HospitalModel = new HospitalModel();
-  csoReportDate?: Date;
   contractDate?: Date;
   constructor(private thisService: UserInfoService, private dashboardService: DashboardService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.UserChanger));
@@ -107,7 +106,6 @@ export class UserEditComponent extends FComponentBase {
       this.selectedUserRoles = flagToRoleDesc(ret.data?.role);
       this.selectedUserDepts = flagToDeptDesc(ret.data?.dept);
       this.contractDate = FExtensions.parseStringToDate(this.userDataModel.contractDate);
-      this.csoReportDate = FExtensions.parseStringToDate(this.userDataModel.csoReportDate);
       this.cd.detectChanges();
       await this.userTrainingFileAdd.readyImage();
       return;
@@ -143,9 +141,6 @@ export class UserEditComponent extends FComponentBase {
     this.setLoading();
     if (this.contractDate) {
       this.userDataModel.contractDate = this.contractDate;
-    }
-    if (this.csoReportDate) {
-      this.userDataModel.csoReportDate = this.csoReportDate;
     }
     const ret = await FExtensions.restTry(async() => await FUserInfoMethod.saveUserData(this.userDataModel, this.selectedUserRoles, this.selectedUserDepts, this.selectedUserStatus, this.thisService),
       e => this.fDialogService.error("saveUserData", e));
