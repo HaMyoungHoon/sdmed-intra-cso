@@ -4,9 +4,6 @@ import {UserRole} from "../../../../models/rest/user/user-role";
 import {ActivatedRoute} from "@angular/router";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
 import {HospitalModel} from "../../../../models/rest/hospital/hospital-model";
-import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
-import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
-import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import * as FExtensions from "../../../../guards/f-extensions";
 import * as FConstants from "../../../../guards/f-constants";
 import {Subject, takeUntil} from "rxjs";
@@ -20,12 +17,6 @@ import {Subject, takeUntil} from "rxjs";
 export class HospitalEditComponent extends FComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
   hospitalModel: HospitalModel = new HospitalModel();
-  billTypeList: string[] = allBillTypeDescArray();
-  contractTypeList: string[] = allContractTypeDescArray();
-  deliveryDivList: string[] = allDeliveryDivDescArray();
-  selectBillType: string = billTypeToBillTypeDesc(BillType.None);
-  selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
-  selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
   constructor(private thisService: HospitalListService, private route: ActivatedRoute) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
     this.hospitalModel.thisPK = this.route.snapshot.params["thisPK"];
@@ -50,9 +41,6 @@ export class HospitalEditComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.hospitalModel = ret.data ?? new HospitalModel();
-      this.selectBillType = billTypeToBillTypeDesc(ret.data?.billType);
-      this.selectContractType = contractTypeToContractTypeDesc(ret.data?.contractType);
-      this.selectDeliveryDiv = deliveryDivToDeliveryDivDesc(ret.data?.deliveryDiv);
       return;
     }
     this.fDialogService.warn("getHospitalData", ret.msg);
@@ -60,9 +48,6 @@ export class HospitalEditComponent extends FComponentBase {
   }
 
   async saveData(): Promise<void> {
-    this.hospitalModel.billType = BillTypeDescToBillType[this.selectBillType];
-    this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
-    this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.putData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));

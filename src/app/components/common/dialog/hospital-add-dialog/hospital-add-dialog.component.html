@@ -38,10 +38,6 @@
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.address" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-add.address-detail" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.addressDetail" />
-      </div>
     </div>
   </p-card>
   <p-card class="flex grid m-1" *ngIf="hospitalModel">
@@ -54,41 +50,9 @@
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.businessItem" />
       </div>
-      <label class="col-2 align-self-center">{{"hospital-add.bill-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.contract-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.delivery-div" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.license-number" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.licenseNumber" />
-      </div>
       <label class="col-2 align-self-center">{{"hospital-add.nursing-home-number" | translate}}</label>
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.nursingHomeNumber" />
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.mail" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.mail" />
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.mobile-phone" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="hospitalModel.mobilePhone" />
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.open-date" | translate}}</label>
-      <div class="col-4">
-        <p-date-picker [(ngModel)]="hospitalModel.openDate" dateFormat="yy-mm-dd" appendTo="body" />
-      </div>
-      <label class="col-2 align-self-center">{{"hospital-add.close-date" | translate}}</label>
-      <div class="col-4">
-        <p-date-picker [(ngModel)]="hospitalModel.closeDate" dateFormat="yy-mm-dd" appendTo="body" />
       </div>
       <label class="col-2 align-self-center">{{"hospital-add.etc1" | translate}}</label>
       <div class="col-4">

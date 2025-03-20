@@ -164,10 +164,6 @@ export class HospitalListComponent extends FComponentBase {
       obj.field = "address";
     }));
     this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
-      obj.header = "hospital-list.table.manager";
-      obj.field = "manager";
-    }));
-    this.headerList.push(FExtensions.applyClass(TableHeaderModel, obj => {
       obj.header = "hospital-list.table.etc1";
       obj.field = "etc1";
     }));
@@ -187,7 +183,6 @@ export class HospitalListComponent extends FComponentBase {
       case "innerName": return item.innerName;
       case "ownerName": return item.ownerName;
       case "address": return item.address;
-      case "manager": return item.manager;
       case "etc1": return item.etc1;
       case "etc2": return item.etc2;
       default: return ""

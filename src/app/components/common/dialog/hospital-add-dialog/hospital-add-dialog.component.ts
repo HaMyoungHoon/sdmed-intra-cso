@@ -10,29 +10,18 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {FDialogComponentBase} from "../../../../guards/f-dialog-component-base";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {HospitalModel} from "../../../../models/rest/hospital/hospital-model";
-import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
-import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
-import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import * as FExtensions from "../../../../guards/f-extensions";
 import {HospitalListService} from "../../../../services/rest/hospital-list.service";
-import {Select} from "primeng/select";
-import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: "app-hospital-add-dialog",
-  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule, Select, DatePicker],
+  imports: [ButtonModule, CardModule, ImageModule, InputTextModule, NgIf, ProgressSpinComponent, ReactiveFormsModule, TranslatePipe, FormsModule],
   templateUrl: "./hospital-add-dialog.component.html",
   styleUrl: "./hospital-add-dialog.component.scss",
   standalone: true,
 })
 export class HospitalAddDialogComponent extends FDialogComponentBase {
   hospitalModel: HospitalModel = new HospitalModel();
-  billTypeList: string[] = allBillTypeDescArray();
-  contractTypeList: string[] = allContractTypeDescArray();
-  deliveryDivList: string[] = allDeliveryDivDescArray();
-  selectBillType: string = billTypeToBillTypeDesc(BillType.None);
-  selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
-  selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
   constructor(private thisService: HospitalListService) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.HospitalChanger));
   }
@@ -59,9 +48,6 @@ export class HospitalAddDialogComponent extends FDialogComponentBase {
       });
       return;
     }
-    this.hospitalModel.billType = BillTypeDescToBillType[this.selectBillType];
-    this.hospitalModel.contractType = ContactTypeDescToContactType[this.selectContractType];
-    this.hospitalModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.hospitalModel),
       e => this.fDialogService.error("saveData", e));
