@@ -2,11 +2,6 @@ import {Component, ElementRef, ViewChild} from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {UserRole} from "../../../../models/rest/user/user-role";
 import {PharmaModel} from "../../../../models/rest/pharma/pharma-model";
-import {allBillTypeDescArray, BillType, BillTypeDescToBillType, billTypeToBillTypeDesc} from "../../../../models/rest/bill-type";
-import {allPharmaTypeDescArray, PharmaType, PharmaTypeDescToPharmaType, pharmaTypeToPharmaTypeDesc} from "../../../../models/rest/pharma/pharma-type";
-import {allPharmaGroupDescArray, PharmaGroup, PharmaGroupDescToPharmaGroup, pharmaGroupToPharmaGroupDesc} from "../../../../models/rest/pharma/pharma-group";
-import {allContractTypeDescArray, ContactTypeDescToContactType, ContractType, contractTypeToContractTypeDesc} from "../../../../models/rest/contract-type";
-import {allDeliveryDivDescArray, DeliveryDiv, DeliveryDivDescToDeliveryDiv, deliveryDivToDeliveryDivDesc} from "../../../../models/rest/delivery-div";
 import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
 import {debounceTime, Subject, Subscription, takeUntil} from "rxjs";
 import {PharmaListService} from "../../../../services/rest/pharma-list.service";
@@ -23,16 +18,6 @@ import {ActivatedRoute} from "@angular/router";
 export class PharmaEditComponent extends FComponentBase {
   @ViewChild("imageInput") imageInput!: ElementRef<HTMLInputElement>;
   pharmaModel: PharmaModel = new PharmaModel();
-  billTypeList: string[] = allBillTypeDescArray();
-  pharmaTypeList: string[] = allPharmaTypeDescArray();
-  pharmaGroupList: string[] = allPharmaGroupDescArray();
-  contractTypeList: string[] = allContractTypeDescArray();
-  deliveryDivList: string[] = allDeliveryDivDescArray();
-  selectBillType: string = billTypeToBillTypeDesc(BillType.None);
-  selectPharmaType: string = pharmaTypeToPharmaTypeDesc(PharmaType.None);
-  selectPharmaGroup: string = pharmaGroupToPharmaGroupDesc(PharmaGroup.None);
-  selectContractType: string = contractTypeToContractTypeDesc(ContractType.None);
-  selectDeliveryDiv: string = deliveryDivToDeliveryDivDesc(DeliveryDiv.None);
 
   medicineSearchLoading: boolean = false;
   isMedicineSearchTypeCode: boolean = false;
@@ -73,21 +58,11 @@ export class PharmaEditComponent extends FComponentBase {
     this.setLoading(false);
     if (ret.result) {
       this.pharmaModel = ret.data ?? new PharmaModel();
-      this.selectBillType = billTypeToBillTypeDesc(ret.data?.billType);
-      this.selectPharmaType = pharmaTypeToPharmaTypeDesc(ret.data?.pharmaType);
-      this.selectPharmaGroup = pharmaGroupToPharmaGroupDesc(ret.data?.pharmaGroup);
-      this.selectContractType = contractTypeToContractTypeDesc(ret.data?.contractType);
-      this.selectDeliveryDiv = deliveryDivToDeliveryDivDesc(ret.data?.deliveryDiv);
       return;
     }
     this.fDialogService.warn("getPharmaData", ret.msg);
   }
   async saveData(): Promise<void> {
-    this.pharmaModel.billType = BillTypeDescToBillType[this.selectBillType];
-    this.pharmaModel.pharmaType = PharmaTypeDescToPharmaType[this.selectPharmaType];
-    this.pharmaModel.pharmaGroup = PharmaGroupDescToPharmaGroup[this.selectPharmaType];
-    this.pharmaModel.contractType = ContactTypeDescToContactType[this.selectContractType];
-    this.pharmaModel.deliveryDiv = DeliveryDivDescToDeliveryDiv[this.selectDeliveryDiv];
     this.setLoading();
     if (!await this.medicineListModify()) {
       this.setLoading(false);

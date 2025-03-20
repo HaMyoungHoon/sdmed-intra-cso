@@ -35,10 +35,6 @@
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.address" />
       </div>
-      <label class="col-2 align-self-center">{{"pharma-edit.address-detail" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.addressDetail" />
-      </div>
       <label class="col-2 align-self-center">{{"common-desc.in-visible" | translate}}</label>
       <div class="col-4">
         <p-select [options]="[true, false]" [(ngModel)]="pharmaModel.inVisible" />
@@ -47,49 +43,9 @@
   </p-card>
   <p-card class="flex grid m-1" *ngIf="pharmaModel">
     <div class="field col grid">
-      <label class="col-1 align-self-center">{{"pharma-edit.business-type" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessType" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.business-item" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.businessItem" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.bill-type" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="billTypeList" [(ngModel)]="selectBillType" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.contract-type" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="contractTypeList" [(ngModel)]="selectContractType" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.pharma-type" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="pharmaTypeList" [(ngModel)]="selectPharmaType" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.pharma-group" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="pharmaGroupList" [(ngModel)]="selectPharmaGroup" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.delivery-div" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="deliveryDivList" [(ngModel)]="selectDeliveryDiv" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.mail" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mail" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.mobile-phone" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="pharmaModel.mobilePhone" />
-      </div>
       <label class="col-1 align-self-center">{{"pharma-edit.open-date" | translate}}</label>
       <div class="col-3">
         <p-date-picker [(ngModel)]="pharmaModel.openDate" dateFormat="yy-mm-dd" />
-      </div>
-      <label class="col-1 align-self-center">{{"pharma-edit.close-date" | translate}}</label>
-      <div class="col-3">
-        <p-date-picker [(ngModel)]="pharmaModel.closeDate" dateFormat="yy-mm-dd" />
       </div>
       <label class="col-1 align-self-center">{{"pharma-edit.retroactive-rule" | translate}}</label>
       <div class="col-3">

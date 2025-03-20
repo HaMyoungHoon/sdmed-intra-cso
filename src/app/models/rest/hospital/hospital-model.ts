@@ -1,6 +1,3 @@
-import {BillType} from "../bill-type";
-import {ContractType} from "../contract-type";
-import {DeliveryDiv} from "../delivery-div";
 import {PharmaModel} from "../pharma/pharma-model";
 
 export class HospitalModel {
