@@ -214,8 +214,8 @@ export class MedicineListComponent extends FComponentBase {
       case "maxPrice": return item.maxPrice.toString();
       case "customPrice": return item.customPrice.toString();
       case "charge": return item.charge.toString();
-      case "standard": return item.medicineSubModel.standard;
-      case "etc": return item.medicineSubModel.etc1;
+      case "standard": return item.standard;
+      case "etc": return item.etc1;
       default: return ""
     }
   }

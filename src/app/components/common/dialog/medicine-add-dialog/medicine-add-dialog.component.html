@@ -23,10 +23,6 @@
       <div class="col-4">
         <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.kdCode" />
       </div>
-      <label class="col-2 align-self-center">{{"medicine-add.standard-code" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.standardCode" />
-      </div>
       <label class="col-2 align-self-center">{{"medicine-add.pharma" | translate}}</label>
       <div class="col-4">
         <p-select [options]="pharmaList" [(ngModel)]="selectPharma" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName"/>
@@ -53,59 +49,15 @@
     <div class="field col grid">
       <label class="col-2 align-self-center">{{"medicine-add.standard" | translate}}</label>
       <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.standard" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.account-unit" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.accountUnit" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineTypeList" [(ngModel)]="selectMedicineType" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineMethodList" [(ngModel)]="selectMedicineMethod" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineCategoryList" [(ngModel)]="selectMedicineCategory" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineGroupList" [(ngModel)]="selectMedicineGroup" appendTo="body"/>
+        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.standard" />
       </div>
       <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
       <div class="col-4">
         <p-select [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" appendTo="body"/>
       </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineRankList" [(ngModel)]="selectMedicineRank" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineStorageTempList" [(ngModel)]="selectMedicineStorageTemp" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="medicineStorageBoxList" [(ngModel)]="selectMedicineStorageBox" appendTo="body"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.package-unit" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.packageUnit" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.unit" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.medicineSubModel.unit" />
-      </div>
       <label class="col-2 align-self-center">{{"medicine-add.etc1" | translate}}</label>
       <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.medicineSubModel.etc1" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.etc2" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.medicineSubModel.etc2" />
+        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.etc1" />
       </div>
     </div>
   </p-card>

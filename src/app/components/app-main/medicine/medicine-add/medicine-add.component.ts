@@ -1,14 +1,7 @@
 import { Component } from "@angular/core";
 import {FComponentBase} from "../../../../guards/f-component-base";
 import {MedicineModel} from "../../../../models/rest/medicine/medicine-model";
-import {allMedicineTypeDescArray, MedicineType, MedicineTypeDescToMedicineType, medicineTypeToMedicineTypeDesc} from "../../../../models/rest/medicine/medicine-type";
-import {allMedicineMethodDescArray, MedicineMethod, MedicineMethodDescToMedicineMethod, medicineMethodToMedicineMethodDesc} from "../../../../models/rest/medicine/medicine-method";
-import {allMedicineCategoryDescArray, MedicineCategory, MedicineCategoryDescToMedicineCategory, medicineCategoryToMedicineCategoryDesc} from "../../../../models/rest/medicine/medicine-category";
-import {allMedicineGroupDescArray, MedicineGroup, MedicineGroupDescToMedicineGroup, medicineGroupToMedicineGroupDesc} from "../../../../models/rest/medicine/medicine-group";
 import {allMedicineDivDescArray, MedicineDiv, MedicineDivDescToMedicineDiv, medicineDivToMedicineDivDesc} from "../../../../models/rest/medicine/medicine-div";
-import {allMedicineRankDescArray, MedicineRank, MedicineRankDescToMedicineRank, medicineRankToMedicineRankDesc} from "../../../../models/rest/medicine/medicine-rank";
-import {allMedicineStorageTempDescArray, MedicineStorageTemp, MedicineStorageTempDescToMedicineStorageTemp, medicineStorageTempToMedicineStorageTempDesc} from "../../../../models/rest/medicine/medicine-storage-temp";
-import {allMedicineStorageBoxDescArray, MedicineStorageBox, MedicineStorageBoxDescToMedicineStorageBox, medicineStorageBoxToMedicineStorageBoxDesc} from "../../../../models/rest/medicine/medicine-storage-box";
 import {MedicineIngredientModel} from "../../../../models/rest/medicine/medicine-ingredient-model";
 import {MedicineListService} from "../../../../services/rest/medicine-list.service";
 import {UserRole} from "../../../../models/rest/user/user-role";
@@ -26,22 +19,8 @@ export class MedicineAddComponent extends FComponentBase {
   pharmaList: PharmaModel[] = [];
   selectPharma?: PharmaModel;
   medicineModel: MedicineModel = new MedicineModel();
-  medicineTypeList: string[] = allMedicineTypeDescArray();
-  medicineMethodList: string[] = allMedicineMethodDescArray();
-  medicineCategoryList: string[] = allMedicineCategoryDescArray();
-  medicineGroupList: string[] = allMedicineGroupDescArray();
   medicineDivList: string[] = allMedicineDivDescArray();
-  medicineRankList: string[] = allMedicineRankDescArray();
-  medicineStorageTempList: string[] = allMedicineStorageTempDescArray();
-  medicineStorageBoxList: string[] = allMedicineStorageBoxDescArray();
-  selectMedicineType = medicineTypeToMedicineTypeDesc(MedicineType.General);
-  selectMedicineMethod = medicineMethodToMedicineMethodDesc(MedicineMethod.ETC);
-  selectMedicineCategory = medicineCategoryToMedicineCategoryDesc(MedicineCategory.ETC);
-  selectMedicineGroup = medicineGroupToMedicineGroupDesc(MedicineGroup.Additional)
   selectMedicineDiv = medicineDivToMedicineDivDesc(MedicineDiv.Open);
-  selectMedicineRank = medicineRankToMedicineRankDesc(MedicineRank.None);
-  selectMedicineStorageTemp = medicineStorageTempToMedicineStorageTempDesc(MedicineStorageTemp.RoomTemp);
-  selectMedicineStorageBox = medicineStorageBoxToMedicineStorageBoxDesc(MedicineStorageBox.Sealed);
 
   mainIngredientList: MedicineIngredientModel[] = [];
   filteredMainIngredientList: MedicineIngredientModel[] = [];
@@ -101,14 +80,7 @@ export class MedicineAddComponent extends FComponentBase {
       return;
     }
     this.medicineModel.makerCode = this.selectPharma?.code;
-    this.medicineModel.medicineSubModel.medicineType = MedicineTypeDescToMedicineType[this.selectMedicineType];
-    this.medicineModel.medicineSubModel.medicineMethod = MedicineMethodDescToMedicineMethod[this.selectMedicineMethod];
-    this.medicineModel.medicineSubModel.medicineCategory = MedicineCategoryDescToMedicineCategory[this.selectMedicineCategory];
-    this.medicineModel.medicineSubModel.medicineGroup = MedicineGroupDescToMedicineGroup[this.selectMedicineGroup];
-    this.medicineModel.medicineSubModel.medicineDiv = MedicineDivDescToMedicineDiv[this.selectMedicineDiv];
-    this.medicineModel.medicineSubModel.medicineRank = MedicineRankDescToMedicineRank[this.selectMedicineRank];
-    this.medicineModel.medicineSubModel.medicineStorageTemp = MedicineStorageTempDescToMedicineStorageTemp[this.selectMedicineStorageTemp];
-    this.medicineModel.medicineSubModel.medicineStorageBox = MedicineStorageBoxDescToMedicineStorageBox[this.selectMedicineStorageBox];
+    this.medicineModel.medicineDiv = MedicineDivDescToMedicineDiv[this.selectMedicineDiv];
     this.medicineModel.mainIngredientCode = this.selectedMainIngredient.mainIngredientCode;
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.postData(this.medicineModel),

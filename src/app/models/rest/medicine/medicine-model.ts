@@ -1,23 +1,24 @@
 import {MedicinePriceModel} from "./medicine-price-model";
-import {MedicineSubModel} from "./medicine-sub-model";
 import {MedicineIngredientModel} from "./medicine-ingredient-model";
+import {MedicineDiv} from "./medicine-div";
 
 export class MedicineModel {
   thisPK: string = "";
-  code: string = "";
-  mainIngredientCode: string = "";
-  kdCode: string = "";
-  standardCode: number = 0;
-  clientName?: string = "";
   makerName?: string = "";
-  makerCode: string = "";
   orgName: string = "";
   innerName: string = "";
+  kdCode: string = "";
   customPrice: number = 0;
   charge: number = 0;
-  maxPrice: number = 0;
+  standard: string = "";
+  etc1: string = "";
+  mainIngredientCode: string = "";
+  code: string = "";
+  makerCode: string = "";
+  medicineDiv: MedicineDiv = MedicineDiv.Open;
   inVisible: boolean = false;
-  medicineSubModel: MedicineSubModel = new MedicineSubModel();
+  clientName?: string = "";
+  maxPrice: number = 0;
   medicineIngredientModel: MedicineIngredientModel = new MedicineIngredientModel();
   medicinePriceModel: MedicinePriceModel[] = [];
 
@@ -26,7 +27,6 @@ export class MedicineModel {
     this.code = data.code;
     this.mainIngredientCode = data.mainIngredientCode;
     this.kdCode = data.kdCode;
-    this.standardCode = data.standardCode;
     this.clientName = data.clientName ?? "";
     this.makerName = data.makerName ?? "";
     this.makerCode = data.makerCode;
@@ -36,7 +36,6 @@ export class MedicineModel {
     this.charge = data.charge;
     this.maxPrice = data.maxPrice;
     this.inVisible = data.inVisible;
-    this.medicineSubModel = data.medicineSubModel;
     this.medicineIngredientModel = data.medicineIngredientModel;
     this.medicinePriceModel = data.medicinePriceModel;
     return this;
@@ -46,7 +45,6 @@ export class MedicineModel {
     lhs.code = rhs.code;
     lhs.mainIngredientCode = rhs.mainIngredientCode;
     lhs.kdCode = rhs.kdCode;
-    lhs.standardCode = rhs.standardCode;
     lhs.clientName = rhs.clientName ?? "";
     lhs.makerName = rhs.makerName ?? "";
     lhs.makerCode = rhs.makerCode;
@@ -56,7 +54,6 @@ export class MedicineModel {
     lhs.charge = rhs.charge;
     lhs.maxPrice = rhs.maxPrice;
     lhs.inVisible = rhs.inVisible;
-    lhs.medicineSubModel = rhs.medicineSubModel;
     lhs.medicineIngredientModel = rhs.medicineIngredientModel;
     lhs.medicinePriceModel = rhs.medicinePriceModel;
   }
