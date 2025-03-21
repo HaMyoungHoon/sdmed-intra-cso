@@ -1,63 +1,73 @@
 <div class="flex flex-column flex-wrap medicine-add-container">
   <app-progress-spin [isLoading]="isLoading" />
-  <div class="m-1">
+  <div class="m-1 align-self-center">
     <p-button class="m-1" (onClick)="saveData()" [disabled]="!haveRole">{{"common-desc.save" | translate}}</p-button>
   </div>
-  <p-card class="flex grid m-1" *ngIf="medicineModel">
-    <div class="field col grid">
-      <label class="col-2 align-self-center">{{"medicine-add.code" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.code" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.main-ingredient-code" | translate}}</label>
-      <div class="col-4">
-        <p-auto-complete [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
+  <p-card class="flex grid align-self-center m-1" *ngIf="medicineModel">
+    <div class="flex col gap-2">
+      <p-ifta-label>
+        <input id="code" class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.code" />
+        <label for="code">{{"medicine-add.code" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex col gap-2">
+      <p-ifta-label>
+        <input id="orgName" class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.orgName" />
+        <label for="orgName">{{"medicine-add.org-name" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <input id="innerName" class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.innerName" />
+        <label for="innerName">{{"medicine-add.inner-name" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <p-select id="makerName" [options]="pharmaList" [(ngModel)]="selectMaker" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName"/>
+        <label for="makerName">{{"medicine-add.maker-name" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <p-select id="clientName" [options]="pharmaList" [(ngModel)]="selectClient" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName"/>
+        <label for="clientName">{{"medicine-add.client-name" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex col gap-2">
+      <p-ifta-label>
+        <p-auto-complete id="mainIngredient" [(ngModel)]="selectedMainIngredient" [suggestions]="filteredMainIngredientList" (completeMethod)="filterAutoComplete($event)" optionLabel="mainIngredientName">
           <ng-template #item let-mainIngredient>
-            <div>{{mainIngredient.mainIngredientCode}}</div>
-            <div>{{mainIngredient.mainIngredientName}}</div>
+            <div class="gap-2">
+              <div>{{mainIngredient.mainIngredientCode}}</div>
+              <div>{{mainIngredient.mainIngredientName}}</div>
+            </div>
           </ng-template>
         </p-auto-complete>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.kd-code" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.kdCode" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.pharma" | translate}}</label>
-      <div class="col-4">
-        <p-select [options]="pharmaList" [(ngModel)]="selectPharma" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName"/>
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.org-name" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.orgName" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.inner-name" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.innerName" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.custom-price" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.customPrice" />
-      </div>
-      <label class="col-2 align-self-center">{{"medicine-add.charge" | translate}}</label>
-      <div class="col-4">
-        <input class="text-base" pInputText type="number" maxlength="3" [(ngModel)]="medicineModel.charge" />
-      </div>
+        <label for="mainIngredient">{{"medicine-add.main-ingredient-code" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <input id="kdCode" class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.kdCode" />
+        <label for="kdCode">{{"medicine-add.kd-code" | translate}}</label>
+      </p-ifta-label>
     </div>
-  </p-card>
-  <p-card class="flex grid m-1" *ngIf="medicineModel">
-    <div class="field col grid">
-      <label class="col-1 align-self-center">{{"medicine-add.standard" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.standard" />
-      </div>
-      <label class="col-1 align-self-center">{{"medicine-add.medicine-type" | translate}}</label>
-      <div class="col-3">
-        <p-select [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" />
-      </div>
-      <label class="col-1 align-self-center">{{"medicine-add.etc1" | translate}}</label>
-      <div class="col-3">
-        <input class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.etc1" />
-      </div>
+    <div class="flex col gap-2">
+      <p-ifta-label>
+        <input id="customPrice" class="text-base" pInputText type="number" maxlength="200" [(ngModel)]="medicineModel.customPrice" />
+        <label for="customPrice">{{"medicine-add.custom-price" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <input id="charge" class="text-base" pInputText type="number" maxlength="3" [(ngModel)]="medicineModel.charge" />
+        <label for="charge">{{"medicine-add.charge" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <input id="standard" class="text-base" pInputText type="text" maxlength="200" [(ngModel)]="medicineModel.standard" />
+        <label for="standard">{{"medicine-add.standard" | translate}}</label>
+      </p-ifta-label>
+    </div>
+    <div class="flex col gap-2">
+      <p-ifta-label>
+        <p-select id="medicineDiv" [options]="medicineDivList" [(ngModel)]="selectMedicineDiv" />
+        <label for="medicineDiv">{{"medicine-add.medicine-div" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <input id="etc1" class="text-base" pInputText type="text" maxlength="500" [(ngModel)]="medicineModel.etc1" />
+        <label for="etc1">{{"medicine-add.etc1" | translate}}</label>
+      </p-ifta-label>
     </div>
   </p-card>
 </div>

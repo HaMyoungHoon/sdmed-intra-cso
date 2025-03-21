@@ -10,13 +10,14 @@ import {InputTextModule} from "primeng/inputtext";
 import {ProgressSpinComponent} from "../../../common/progress-spin/progress-spin.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Select} from "primeng/select";
+import {IftaLabel} from "primeng/iftalabel";
 
 
 
 @NgModule({
   declarations: [MedicineAddComponent],
-  imports: [
-    CommonModule, MedicineAddRoutingModule, AutoCompleteModule, ButtonModule, CardModule, FormsModule, InputTextModule, ProgressSpinComponent, TranslatePipe, Select
-  ]
+    imports: [
+        CommonModule, MedicineAddRoutingModule, AutoCompleteModule, ButtonModule, CardModule, FormsModule, InputTextModule, ProgressSpinComponent, TranslatePipe, Select, IftaLabel
+    ]
 })
 export class MedicineAddModule { }

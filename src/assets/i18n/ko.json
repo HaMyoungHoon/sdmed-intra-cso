@@ -513,14 +513,16 @@
   },
   "medicine-edit": {
     "warn": {
-      "maker": "제조사를 입력해주세요"
+      "maker": "제조사를 입력해주세요",
+      "client": "발주처를 입력해주세요."
     },
     "code": "코드",
     "main-ingredient-code": "성분코드",
     "kd-code": "보험코드",
     "org-name": "제품명",
     "inner-name": "내부명",
-    "pharma": "제약사",
+    "maker-name": "제조사",
+    "client-name": "발주처",
     "custom-price": "지정가",
     "charge": "요율",
     "standard": "규격",
@@ -531,12 +533,14 @@
     "warn": {
       "code": "코드를 입력해주세요.",
       "name": "이름을 입력해주세요.",
-      "maker": "제조사를 입력해주세요."
+      "maker": "제조사를 입력해주세요.",
+      "client": "발주처를 입력해주세요."
     },
     "code": "코드",
     "main-ingredient-code": "성분코드",
     "kd-code": "보험코드",
-    "pharma": "제약사",
+    "maker-name": "제조사",
+    "client-name": "발주처",
     "org-name": "제품명",
     "inner-name": "내부명",
     "custom-price": "지정가",

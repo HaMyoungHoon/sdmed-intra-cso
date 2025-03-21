@@ -19,8 +19,12 @@
         <label for="innerName">{{"medicine-edit.inner-name" | translate}}</label>
       </p-ifta-label>
       <p-ifta-label>
-        <p-select id="pharmaName" [options]="pharmaList" [(ngModel)]="selectPharma" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName" />
-        <label for="pharmaName">{{"medicine-edit.pharma" | translate}}</label>
+        <p-select id="makerName" [options]="pharmaList" [(ngModel)]="selectMaker" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName" />
+        <label for="makerName">{{"medicine-edit.maker-name" | translate}}</label>
+      </p-ifta-label>
+      <p-ifta-label>
+        <p-select id="clientName" [options]="pharmaList" [(ngModel)]="selectClient" appendTo="body" optionLabel="innerName" [filter]="true" filterBy="innerName" />
+        <label for="clientName">{{"medicine-edit.client-name" | translate}}</label>
       </p-ifta-label>
     </div>
     <div class="flex col gap-2">

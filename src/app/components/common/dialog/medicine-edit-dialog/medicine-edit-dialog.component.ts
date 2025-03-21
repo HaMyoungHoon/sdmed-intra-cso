@@ -29,7 +29,8 @@ import {IftaLabel} from "primeng/iftalabel";
 })
 export class MedicineEditDialogComponent extends FDialogComponentBase{
   pharmaList: PharmaModel[] = [];
-  selectPharma?: PharmaModel;
+  selectMaker?: PharmaModel;
+  selectClient?: PharmaModel;
   medicineModel: MedicineModel = new MedicineModel();
   medicineDivList: string[] = allMedicineDivDescArray();
   selectMedicineDiv = medicineDivToMedicineDivDesc(MedicineDiv.Open);
@@ -79,20 +80,28 @@ export class MedicineEditDialogComponent extends FDialogComponentBase{
       e => this.fDialogService.error("getPharmaList", e));
     if (ret.result) {
       this.pharmaList = ret.data ?? [];
-      this.selectPharma = this.pharmaList.find(x => x.code == this.medicineModel.makerCode);
+      this.selectMaker = this.pharmaList.find(x => x.code == this.medicineModel.makerCode);
+      this.selectClient = this.pharmaList.find(x => x.code == this.medicineModel.clientCode);
       return;
     }
     this.fDialogService.warn("getPharmaList", ret.msg);
   }
 
   async saveData(): Promise<void> {
-    if (this.selectPharma == null) {
+    if (this.selectMaker == null) {
       this.translateService.get("medicine-edit.warn.maker").subscribe(x => {
         this.fDialogService.warn("saveData", x);
       });
       return;
     }
-    this.medicineModel.makerCode = this.selectPharma?.code;
+    if (this.selectClient == null) {
+      this.translateService.get("medicine-edit.warn.client").subscribe(x => {
+        this.fDialogService.warn("saveData", x);
+      });
+      return;
+    }
+    this.medicineModel.makerCode = this.selectMaker.code;
+    this.medicineModel.clientCode = this.selectClient.code;
     this.medicineModel.medicineDiv = MedicineDivDescToMedicineDiv[this.selectMedicineDiv];
     this.medicineModel.mainIngredientCode = this.selectedMainIngredient.mainIngredientCode;
     this.setLoading();

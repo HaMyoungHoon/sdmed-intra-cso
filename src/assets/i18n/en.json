@@ -509,12 +509,14 @@
   },
   "medicine-edit": {
     "warn": {
-      "maker": "plz input pharma"
+      "maker": "plz input maker",
+      "client": "plz input client"
     },
     "code": "code",
     "main-ingredient-code": "ingredient code",
     "kd-code": "insurance code",
-    "pharma": "pharma",
+    "maker-name": "maker name",
+    "client-name": "client name",
     "org-name": "org name",
     "inner-name": "inner name",
     "custom-price": "custom price",
@@ -527,12 +529,14 @@
     "warn": {
       "code": "plz input code",
       "name": "plz input name",
-      "maker": "plz input pharma"
+      "maker": "plz input pharma",
+      "client": "plz input client"
     },
     "code": "code",
     "main-ingredient-code": "ingredient code",
     "kd-code": "insurance code",
-    "pharma": "pharma",
+    "maker-name": "maker name",
+    "client-name": "client name",
     "org-name": "org name",
     "inner-name": "inner name",
     "custom-price": "custom price",
