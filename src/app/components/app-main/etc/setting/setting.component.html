@@ -19,9 +19,10 @@
       <p-button class="m-1 align-self-center">{{"setting.setting-init" | translate}}</p-button>
     </div>
   </div>
-  <div class="formgrid grid">
-    <p-select class="field grid m-1" [options]="mapThemeList" [(ngModel)]="selectedMapTheme" optionLabel="label" (ngModelChange)="mapThemeChanged()" >
-    </p-select>
-    <app-google-map class="field w-full grid m-1" #googleMap [themeNumber]="mapThemeNumber" />
+  <div class="flex flex-column">
+    <p-select class="flex w-fit m-1" [options]="mapThemeList" [(ngModel)]="selectedMapTheme" optionLabel="label" (ngModelChange)="mapThemeChanged()" />
+    <div class="flex setting-map-view-container">
+      <app-google-map class="field w-full grid m-1" #googleMap [themeNumber]="mapThemeNumber" />
+    </div>
   </div>
 </div>
