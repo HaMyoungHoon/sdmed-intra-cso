@@ -118,8 +118,8 @@ export class UserMappingComponent extends FComponentBase {
       this.setLoading(false);
       this.inputUploadExcel.nativeElement.value = "";
       if (ret.result) {
+        this.fDialogService.success("excel upload", ret.data?.toString());
         await this.getAllList();
-        this.fDialogService.success("excel upload", ret.data);
         return;
       }
       this.fDialogService.warn("excel upload", ret.msg);
