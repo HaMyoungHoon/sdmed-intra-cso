@@ -182,8 +182,6 @@
   },
   "pharma-list": {
     "post-pharma-data": "upload pharma excel",
-    "post-pharma-medicine": "upload pharma-medicine (client) excel",
-    "sample-pharma-medicine": "sample download pharma-medicine (client) excel",
     "table": {
       "org-name": "org name",
       "inner-name": "inner name",

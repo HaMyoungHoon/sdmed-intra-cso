@@ -8,10 +8,7 @@
         <p-button class="m-1" (onClick)="insertData()" icon="pi pi-plus" [disabled]="!haveRole"/>
         <p-button class="m-1" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" pTooltip="{{uploadExcelTooltip | translate}}"/>
         <p-button class="m-1" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{sampleDownloadTooltip | translate}}" />
-        <p-button class="m-1" (onClick)="uploadPharmaMedicineExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" pTooltip="{{uploadMedicineTooltip | translate}}" />
-        <p-button class="m-1" (onClick)="pharmaMedicineSampleDown()" icon="pi pi-download" pTooltip="{{pharmaMedicineSampleDownloadTooltip | translate}}" />
         <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
-        <input #inputPharmaMedicineUploadExcel class="collapse" type="file" accept=".xlsx" (change)="pharmaMedicineExcelSelected($event)">
         <p-multi-select [options]="headerList" [(ngModel)]="selectedHeaders" (ngModelChange)="headerSelectChange($event)">
           <ng-template #item let-item>
             <div>{{item.header | translate}}</div>

@@ -19,7 +19,6 @@ import {TableHeaderModel} from "../../../../models/common/table-header-model";
 export class PharmaListComponent extends FComponentBase {
   @ViewChild("listTable") listTable!: Table;
   @ViewChild("inputUploadExcel") inputUploadExcel!: ElementRef<HTMLInputElement>;
-  @ViewChild("inputPharmaMedicineUploadExcel") inputPharmaMedicineUploadExcel!: ElementRef<HTMLInputElement>;
   headerList: TableHeaderModel[] = [];
   selectedHeaders: TableHeaderModel[] = [];
   initValue: PharmaModel[] = [];
@@ -100,33 +99,6 @@ export class PharmaListComponent extends FComponentBase {
       this.fDialogService.warn("excel upload", ret.msg);
     }
   }
-  uploadPharmaMedicineExcel(): void {
-    this.inputPharmaMedicineUploadExcel.nativeElement.click();
-  }
-  pharmaMedicineSampleDown(): void {
-    this.thisService.getPharmaMedicineExcelSample().then(x => {
-      const blob = URL.createObjectURL(x.body);
-      saveAs(blob, "pharmaMedicineSampleExcel.xlsx");
-    }).catch(x => {
-      this.fDialogService.error("sampleDown", x.message);
-    });
-  }
-  async pharmaMedicineExcelSelected(event: any): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.setLoading();
-      const ret = await FExtensions.restTry(async() => await this.thisService.postPharmaMedicineExcel(file),
-        e => this.fDialogService.error("excel upload", e));
-      this.setLoading(false);
-      this.inputPharmaMedicineUploadExcel.nativeElement.value = "";
-      if (ret.result) {
-        await this.getPharmaAll();
-        return;
-      }
-      this.fDialogService.warn("excel upload", ret.msg);
-    }
-  }
   pharmaEdit(data: PharmaModel): void {
     const isNewTab = this.configService.isNewTab();
     if (isNewTab) {
@@ -167,12 +139,6 @@ export class PharmaListComponent extends FComponentBase {
   }
   get sampleDownloadTooltip(): string {
     return "common-desc.sample-download";
-  }
-  get uploadMedicineTooltip(): string {
-    return "pharma-list.post-pharma-medicine";
-  }
-  get pharmaMedicineSampleDownloadTooltip(): string {
-    return "pharma-list.sample-pharma-medicine";
   }
   headerSelectChange(data: TableHeaderModel[]): void {
     if (data.length <= 0) {
