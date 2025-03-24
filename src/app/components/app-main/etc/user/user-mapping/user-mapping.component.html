@@ -7,6 +7,7 @@
       <p-button class="m-1" size="small" icon="pi pi-refresh" (click)="refresh()"></p-button>
       <p-button class="m-1" size="small" (onClick)="uploadExcel()" icon="pi pi-file-excel" [disabled]="!haveRole" pTooltip="{{uploadExcelTooltip | translate}}"/>
       <p-button class="m-1" size="small" (onClick)="sampleDown()" icon="pi pi-download" pTooltip="{{sampleDownloadTooltip | translate}}" />
+      <p-button class="m-1" size="small" (click)="downloadExcel()">{{"common-desc.all-download" | translate}}</p-button>
       <input #inputUploadExcel class="collapse" type="file" accept=".xlsx" (change)="excelSelected($event)">
     </div>
     <p-listbox class="flex w-fit h-full" [options]="userList" [(ngModel)]="selectUser" [filter]="true" [filterFields]="userFilterFields" (onChange)="userListOnSelect($event)">

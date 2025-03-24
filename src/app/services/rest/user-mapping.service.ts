@@ -44,6 +44,9 @@ export class UserMappingService {
   getExcelSample(): Promise<any> {
     return this.httpResponse.getBlob(`${this.baseUrl}/file/sample`);
   }
+  getDownloadExcel(): Promise<any> {
+    return this.httpResponse.getBlob(`${this.baseUrl}/file/download/excel`);
+  }
   postExcel(file: File): Promise<RestResult<string>> {
     const formData = new FormData();
     formData.append("file", file);

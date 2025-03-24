@@ -108,6 +108,16 @@ export class UserMappingComponent extends FComponentBase {
       this.fDialogService.error("sampleDown", x.message);
     });
   }
+  async downloadExcel(): Promise<void> {
+    this.setLoading();
+    this.thisService.getDownloadExcel().then(x => {
+      const blob = URL.createObjectURL(x.body);
+      saveAs(blob, "userMappingData.xlsx");
+      this.setLoading(false);
+    }).catch(x => {
+      this.fDialogService.error("download", x.message);
+    })
+  }
   async excelSelected(event: any): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
