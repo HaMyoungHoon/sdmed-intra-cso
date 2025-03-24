@@ -176,7 +176,6 @@ export class UserSettingComponent extends FComponentBase {
   getTableItems(item: UserDataModel, tableHeaderModel: TableHeaderModel): string[] {
     switch (tableHeaderModel.field) {
       case "role": {
-        console.log(flagToRoleDesc(item.role));
         return flagToRoleDesc(item.role);
       }
       default: return [];

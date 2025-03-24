@@ -33,9 +33,9 @@ export class UserMappingService {
     this.httpResponse.addParam("isSearchTypeCode", isSearchTypeCode);
     return this.httpResponse.get(`${this.baseUrl}/list/pharmaSearch`)
   }
-  getPharmaData(pharmaPK: string, pharmaOwnMedicineView: boolean = false): Promise<RestResult<PharmaModel>> {
+  getPharmaData(hospitalPK: String, pharmaPK: string, pharmaOwnMedicineView: boolean = false): Promise<RestResult<PharmaModel>> {
     this.httpResponse.addParam("pharmaOwnMedicineView", pharmaOwnMedicineView);
-    return this.httpResponse.get(`${this.baseUrl}/data/pharma/${pharmaPK}`);
+    return this.httpResponse.get(`${this.baseUrl}/data/pharma/${hospitalPK}/${pharmaPK}`);
   }
 
   putUserRelationModifyByPK(userPK: string, hosPharmaMedicinePairModel: HosPharmaMedicinePairModel[]): Promise<RestResult<UserDataModel>> {

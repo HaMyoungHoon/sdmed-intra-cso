@@ -337,13 +337,17 @@ export class UserMappingComponent extends FComponentBase {
     return this.selectPharma == null;
   }
   async medicineSearch(): Promise<void> {
+    const hospital = this.selectHos;
+    if (hospital == null) {
+      return;
+    }
     const pharma = this.selectPharma;
     if (pharma == null) {
       this.medicineList = [];
       return;
     }
     this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaData(pharma.thisPK, true),
+    const ret = await FExtensions.restTry(async() => await this.thisService.getPharmaData(hospital.thisPK, pharma.thisPK, true),
       e => this.fDialogService.error("medicineSearch", e));
     this.setLoading(false);
     if (ret.result) {
