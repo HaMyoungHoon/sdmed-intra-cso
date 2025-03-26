@@ -3,8 +3,8 @@ import {MedicineModel} from "../medicine/medicine-model";
 export class PharmaModel {
   thisPK: string = "";
   code: string = "";
-  orgName: string = "";
   innerName: string = "";
+  orgName: string = "";
   ownerName: string = "";
   taxpayerNumber: string = "";
   address: string = "";
