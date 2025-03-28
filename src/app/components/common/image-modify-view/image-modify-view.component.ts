@@ -196,8 +196,9 @@ export class ImageModifyViewComponent {
   }
   async prev(): Promise<void> {
     this.selectedIndex--;
-    this.imageVector.init()
-    this.rotateVector.init()
+    this.imageVector.init();
+    this.rotateVector.init();
+    this.previousImageAngle = 0
     this.imageAngle = 0
     await this.imageReady();
     this.paintConfig.textSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
@@ -207,8 +208,9 @@ export class ImageModifyViewComponent {
   }
   async next(): Promise<void> {
     this.selectedIndex++;
-    this.imageVector.init()
-    this.rotateVector.init()
+    this.imageVector.init();
+    this.rotateVector.init();
+    this.previousImageAngle = 0
     this.imageAngle = 0
     await this.imageReady();
     this.paintConfig.textSize = Math.max(this.imageVector.width, this.imageVector.height) / 40;
@@ -396,6 +398,9 @@ export class ImageModifyViewComponent {
     if (this.imageAngle == 360) {
       this.imageAngle = 0;
     }
+    console.log(`previousImageAngle ${this.previousImageAngle}`);
+    console.log(`imageAngle ${this.imageAngle}`);
+    console.log(`${Math.abs(this.previousImageAngle - this.imageAngle) % 180 == 90}`);
     if (Math.abs(this.previousImageAngle - this.imageAngle) % 180 == 90) {
       this.imageVector.rotate();
     }
