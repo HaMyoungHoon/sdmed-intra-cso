@@ -2,14 +2,6 @@
   <app-progress-spin [isLoading]="isLoading" />
   <drawer-fullscreen-file-view #fullscreenFileView />
   <drawer-image-modify-view #imageModifyView (error)="onError($event)" (warn)="onWarn($event)" />
-  <p-context-menu [target]="ediGalleria" [model]="contextMenu" (onShow)="contextMenuOnShow()" appendTo="body">
-    <ng-template pTemplate="item" let-item>
-      <a pRipple class="flex align-items-center p-contextmenu-item-link">
-        <span [class]="item.icon"></span>
-        <span class="ml-2">{{item.label | translate}}</span>
-      </a>
-    </ng-template>
-  </p-context-menu>
   <div class="flex">
     <p-ifta-label class="m-1">
       <input id="applyDate" [ngModel]="getApplyDate()" readonly pInputText />
@@ -139,30 +131,4 @@
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>
-  <div class="flex" *ngIf="uploadModel.fileList.length > 0">
-    <p-select class="m-1 align-self-center" [options]="uploadModel.pharmaList" [(ngModel)]="selectPrintPharma" optionLabel="orgName" *ngIf="uploadModel.pharmaList.length > 0"/>
-    <p-select class="m-1 align-self-center" [options]="allTextPositionDesc()" [(ngModel)]="selectTextPosition" />
-    <p-ifta-label class="m-1">
-      <input id="fontSize" [(ngModel)]="fontSize" type="number" pInputText />
-      <label for="fontSize">{{"common-desc.font-size" | translate}}</label>
-    </p-ifta-label>
-    <p-color-picker class="m-1 align-content-center" [(ngModel)]="backColor" pTooltip="{{backColorTooltip | translate}}"/>
-    <p-color-picker class="m-1 align-content-center" [(ngModel)]="textColor" pTooltip="{{textColorTooltip | translate}}"/>
-  </div>
-  <div #ediGalleria>
-    <p-galleria tabindex="-1" [value]="uploadModel.fileList" indicatorsPosition="bottom" [showItemNavigators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="false"
-                [containerStyle]="galleriaContainerStyle" [numVisible]="0" [(activeIndex)]="activeIndex" *ngIf="uploadModel.fileList.length > 0">
-      <ng-template pTemplate="item" let-item>
-        <img [src]="getBlobUrl(item)" [alt]="item.originalFilename" class="edi-image cursor-pointer" (click)="viewEDIItem(uploadModel.fileList, item)" />
-      </ng-template>
-      <ng-template pTemplate="footer">
-        <div class="flex">
-          <label class="flex m-1 align-self-center">{{activeIndex + 1}}/{{uploadModel.fileList.length}}</label>
-          <label class="flex m-1 align-self-center font-bold">{{ellipsis(uploadModel.fileList[activeIndex].originalFilename, 50)}}</label>
-          <label class="flex m-1 align-self-center">{{dateToYYYYMMdd(uploadModel.fileList[activeIndex].regDate)}}</label>
-          <p-button class="flex m-1 justify-content-end ml-auto" size="small" icon="pi pi-times" [rounded]="true" pTooltip="{{removeFileTooltip | translate}}" (click)="removeEDIFile(uploadModel.fileList[activeIndex])" />
-        </div>
-      </ng-template>
-    </p-galleria>
-  </div>
 </div>

@@ -22,7 +22,6 @@ export class EDIUploadModel {
   regDate: Date = new Date();
   etc: string = "";
   pharmaList: EDIUploadPharmaModel[] = [];
-  fileList: EDIUploadFileModel[] = [];
   responseList: EDIUploadResponseModel[] = [];
 
   copyLhsFromRhs(lhs: EDIUploadModel, rhs: EDIUploadModel): void {
@@ -42,7 +41,6 @@ export class EDIUploadModel {
     lhs.regDate = rhs.regDate;
     lhs.etc = rhs.etc;
     lhs.pharmaList = rhs.pharmaList;
-    lhs.fileList = rhs.fileList;
     lhs.responseList = rhs.responseList;
   }
 }

@@ -16,27 +16,20 @@ import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from "prim
 import {Button} from "primeng/button";
 import {GalleriaModule} from "primeng/galleria";
 import {NgForOf, NgIf} from "@angular/common";
-import {MenuItem, MenuItemCommandEvent, PrimeTemplate} from "primeng/api";
 import {ProgressSpinComponent} from "../../../../common/progress-spin/progress-spin.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
 import {Tag} from "primeng/tag";
-import {Tooltip} from "primeng/tooltip";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Subject, takeUntil} from "rxjs";
 import {Textarea} from "primeng/textarea";
 import {EDIUploadResponseModel} from "../../../../../models/rest/edi/edi-upload-response-model";
-import {Select} from "primeng/select";
 import {AddTextOptionModel} from "../../../../../models/common/add-text-option-model";
-import {allTextPositionDesc, DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../../../models/common/text-position";
+import {DescToTextPosition, TextPosition, TextPositionToTextPositionDesc} from "../../../../../models/common/text-position";
 import {InputText} from "primeng/inputtext";
 import {IftaLabel} from "primeng/iftalabel";
 import {ImageModifyViewComponent} from "../../../../common/image-modify-view/image-modify-view.component";
-import {ContextMenu} from "primeng/contextmenu";
-import {Ripple} from "primeng/ripple";
 import * as FImageCache from "../../../../../guards/f-image-cache";
-import {HttpResponse} from "@angular/common/http";
-import {ColorPicker} from "primeng/colorpicker";
 import {EdiPharmaFileViewModelComponent} from "../../../../common/edi-pharma-file-view-model/edi-pharma-file-view-model.component";
 import {EDIType} from "../../../../../models/rest/edi/edi-type";
 import {EDIUploadPharmaFileModel} from "../../../../../models/rest/edi/edi-upload-pharma-file-model";
@@ -45,7 +38,7 @@ import * as FCanvasUtil from "../../../../../guards/f-canvas-util";
 
 @Component({
   selector: "app-request-sub-edi-upload",
-  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, PrimeTemplate, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, Tooltip, TranslatePipe, FormsModule, Textarea, Select, InputText, IftaLabel, ImageModifyViewComponent, ContextMenu, Ripple, ColorPicker, EdiPharmaFileViewModelComponent],
+  imports: [Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, FullscreenFileViewComponent, GalleriaModule, NgForOf, NgIf, ProgressSpinComponent, ReactiveFormsModule, TableModule, Tag, TranslatePipe, FormsModule, Textarea, InputText, IftaLabel, ImageModifyViewComponent, EdiPharmaFileViewModelComponent],
   templateUrl: "./request-sub-edi-upload.component.html",
   styleUrl: "./request-sub-edi-upload.component.scss",
   standalone: true,
@@ -64,8 +57,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   selectTextPosition: string = TextPositionToTextPositionDesc[TextPosition.LT];
   backColor: string = "#FFFFFF";
   textColor: string = "#000000";
-  contextMenu: MenuItem[] = [];
-  imageCacheUrl: {blobUrl: string, objectUrl: string}[] = [];
   constructor(private thisService: EdiListService, private cd: ChangeDetectorRef) {
     super(Array<UserRole>(UserRole.Admin, UserRole.CsoAdmin, UserRole.Employee));
   }
@@ -74,63 +65,12 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     await this.getData();
   }
   override async ngDestroy(): Promise<void> {
-    this.imageCacheClear();
   }
   onError(data: {title: string, msg?: string}): void {
     this.fDialogService.error(data.title, data.msg);
   }
   onWarn(data: {title: string, msg?: string}): void {
     this.fDialogService.warn(data.title, data.msg);
-  }
-  contextMenuOnShow(): void {
-    this.initMenu();
-  }
-  initMenu(): void {
-    this.contextMenu = [
-      {
-        label: "edi-view.image-modify",
-        icon: "pi pi-wrench",
-        command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.imageModify();
-        },
-        visible: this.imageModifyVisible,
-      },
-      {
-        separator: true,
-        visible: this.imageModifyVisible,
-      },
-      {
-        label: "edi-view.all-download-with-watermark",
-        icon: "pi pi-download",
-        command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.allDownload(true);
-        },
-      },
-      {
-        label: "edi-view.all-download-without-watermark",
-        icon: "pi pi-download",
-        command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.allDownload(false);
-        },
-      },
-      {
-        separator: true
-      },
-      {
-        label: "edi-view.download-with-watermark",
-        icon: "pi pi-download",
-        command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], true);
-        },
-      },
-      {
-        label: "edi-view.download-without-watermark",
-        icon: "pi pi-download",
-        command: async(_: MenuItemCommandEvent): Promise<void> => {
-          await this.downloadEDIFile(this.uploadModel.fileList[this.activeIndex], false);
-        },
-      },
-    ]
   }
 
   async getData(): Promise<void> {
@@ -172,43 +112,7 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.fDialogService.warn("putHospitalTempData", ret.msg);
   }
-  imageCacheClear(): void {
-    this.imageCacheUrl.forEach(x => {
-      URL.revokeObjectURL(x.objectUrl);
-    });
-    this.imageCacheUrl = [];
-  }
   async readyImage(): Promise<void> {
-    this.imageCacheClear();
-    for (let ediFile of this.uploadModel.fileList) {
-      const ext = FExtensions.getExtMimeType(ediFile.mimeType);
-      if (!FExtensions.isImage(ext)) {
-        this.imageCacheUrl.push({
-          blobUrl: ediFile.blobUrl,
-          objectUrl: FExtensions.extToBlobUrl(ext)
-        });
-      } else {
-        let blobBuff = await FImageCache.getImage(ediFile.blobUrl);
-        if (blobBuff == undefined) {
-          const ret: HttpResponse<Blob> | null = await FExtensions.tryCatchAsync(async (): Promise<HttpResponse<Blob>> => await this.commonService.downloadFile(ediFile.blobUrl),
-            e => this.fDialogService.error("downloadFile", e));
-          if (ret && ret.body) {
-            blobBuff = ret.body;
-            await FImageCache.putImage(ediFile.blobUrl, blobBuff);
-          } else {
-            this.imageCacheUrl.push({
-              blobUrl: ediFile.blobUrl,
-              objectUrl: FConstants.ASSETS_NO_IMAGE
-            });
-            continue;
-          }
-        }
-        this.imageCacheUrl.push({
-          blobUrl: ediFile.blobUrl,
-          objectUrl: URL.createObjectURL(blobBuff)
-        });
-      }
-    }
     for (let fileView of this.ediPharmaFileViewModel) {
       await fileView.readyImage(this.commonService);
     }
@@ -320,13 +224,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   }
   accordionResponseIndex(item: EDIUploadResponseModel): string {
     return `${this.uploadModel.responseList.findIndex(x => x.thisPK == item.thisPK)}`;
-  }
-
-  getBlobUrl(item: EDIUploadFileModel): string {
-    return this.imageCacheUrl.find(x => x.blobUrl == item.blobUrl)?.objectUrl ?? FConstants.ASSETS_NO_IMAGE;
-  }
-  async viewEDIItem(data: EDIUploadFileModel[], item: EDIUploadFileModel): Promise<void> {
-    await this.fullscreenFileView.show(FExtensions.ediFileListToViewModel(data), data.findIndex(x => x.thisPK == item.thisPK));
   }
   openHospitalTempDetail(): void {
     this.fDialogService.openHospitalTempDetailView({
@@ -449,28 +346,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.setLoading(false);
   }
-  async removeEDIFile(item: EDIUploadFileModel): Promise<void> {
-    this.setLoading();
-    const ret = await FExtensions.restTry(async() => await this.thisService.deleteEDIFile(item.thisPK),
-      e => this.fDialogService.error("delete", e));
-    this.setLoading(false);
-    if (ret.result) {
-      await this.mqttSend(this.uploadModel.userPK, this.uploadModel.thisPK, `${this.uploadModel.name}\n${this.uploadModel.orgName}\n${item.originalFilename}`);
-      const index = this.uploadModel.fileList.indexOf(item);
-      if (index == this.uploadModel.fileList.length - 1) {
-        if (this.uploadModel.fileList.length - 1 > 0) {
-          this.activeIndex = this.uploadModel.fileList.length - 2;
-        } else {
-          this.activeIndex = 0;
-        }
-      }
-      if (index >= 0) {
-        this.uploadModel.fileList = [...this.uploadModel.fileList.filter(x => x.thisPK != item.thisPK)];
-      }
-      return;
-    }
-    this.fDialogService.warn("delete", ret.msg);
-  }
   async removeEDIPharmaFile(item: EDIUploadPharmaFileModel): Promise<void> {
     this.setLoading();
     const ret = await FExtensions.restTry(async() => await this.thisService.deleteEDIPharmaFile(item.thisPK),
@@ -482,35 +357,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     }
     this.fDialogService.warn("delete", ret.msg);
   }
-  async imageModify(): Promise<void> {
-    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
-    const buff = this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType));
-    const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-    await this.imageModifyView.show(FExtensions.ediFileListToViewModel(buff), filename, this.addTextOptionMerge());
-  }
-  async allDownload(withWatermark: boolean = true): Promise<void> {
-    this.setLoading();
-    for (const item of this.uploadModel.fileList) {
-      const ext = FExtensions.getExtMimeType(item.mimeType);
-      if (FExtensions.isImage(ext)) {
-        await this.downloadImageFile(item);
-      } else {
-        const ret = await FExtensions.tryCatchAsync(async () => await this.commonService.downloadFile(item.blobUrl),
-          e => this.fDialogService.error("downloadFile", e));
-        try {
-          if (ret && ret.body) {
-            const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
-            const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-            const blob = withWatermark ? await FCanvasUtil.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-            FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
-          }
-        } catch (e: any) {
-          this.fDialogService.warn("download", e?.message?.toString());
-        }
-      }
-    }
-    this.setLoading(false);
-  }
   addTextOptionMerge(): AddTextOptionModel {
     return FExtensions.applyClass(AddTextOptionModel, obj => {
       obj.textPosition = DescToTextPosition[this.selectTextPosition];
@@ -520,18 +366,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     });
   }
 
-  get removeFileTooltip(): string {
-    return "common-desc.remove";
-  }
-  get backColorTooltip(): string {
-    return "common-desc.back-color";
-  }
-  get textColorTooltip(): string {
-    return "common-desc.text-color";
-  }
-  get imageModifyVisible(): boolean {
-    return this.uploadModel.fileList.filter(x => FExtensions.isImageMimeType(x.mimeType)).length > 0;
-  }
   get isTransfer(): boolean {
     return this.uploadModel.ediType == EDIType.TRANSFER;
   }
@@ -553,6 +387,5 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
   protected readonly getEDIStateSeverity = FExtensions.getEDIStateSeverity;
   protected readonly galleriaContainerStyle = FConstants.galleriaContainerStyle;
   protected readonly tableStyle = FConstants.tableStyle;
-  protected readonly allTextPositionDesc = allTextPositionDesc;
   protected readonly StringToEDIStateDesc = StringToEDIStateDesc;
 }
