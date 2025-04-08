@@ -1,6 +1,5 @@
 import {EDIState} from "./edi-state";
 import {EDIUploadPharmaModel} from "./edi-upload-pharma-model";
-import {EDIUploadFileModel} from "./edi-upload-file-model";
 import {EDIUploadResponseModel} from "./edi-upload-response-model";
 import {EDIType} from "./edi-type";
 

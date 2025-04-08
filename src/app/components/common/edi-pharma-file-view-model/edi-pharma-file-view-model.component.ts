@@ -21,7 +21,6 @@ import {AddTextOptionModel} from "../../../models/common/add-text-option-model";
 import * as FImageCache from "../../../guards/f-image-cache";
 import {CommonService} from "../../../services/rest/common.service";
 import {EDIUploadPharmaFileModel} from "../../../models/rest/edi/edi-upload-pharma-file-model";
-import {EDIUploadFileModel} from "../../../models/rest/edi/edi-upload-file-model";
 import {HttpResponse} from "@angular/common/http";
 
 @Component({
@@ -66,7 +65,7 @@ export class EdiPharmaFileViewModelComponent {
   setLoading(data: boolean = true): void {
     this.isLoading = data;
   }
-  getBlobUrl(item: EDIUploadFileModel): string {
+  getBlobUrl(item: EDIUploadPharmaFileModel): string {
     return this.imageCacheUrl.find(x => x.blobUrl == item.blobUrl)?.objectUrl ?? FConstants.ASSETS_NO_IMAGE;
   }
   contextPharmaMenuOnShow(): void {

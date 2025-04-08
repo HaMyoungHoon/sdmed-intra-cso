@@ -13,7 +13,6 @@ import {UploadFileBuffModel} from "../models/common/upload-file-buff-model";
 import {QnAState} from "../models/rest/qna/qna-state";
 import {QnAFileModel} from "../models/rest/qna/qna-file-model";
 import {FileViewModel} from "../models/rest/file-view-model";
-import {EDIUploadFileModel} from "../models/rest/edi/edi-upload-file-model";
 import {PDFDocument, rgb} from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import {AddTextOptionModel} from "../models/common/add-text-option-model";
@@ -21,10 +20,8 @@ import {UserFileModel} from "../models/rest/user/user-file-model";
 import {BlobStorageInfoModel} from "../models/rest/blob-storage-info-model";
 import {MqttContentType} from "../models/rest/mqtt/mqtt-content-type";
 import heic2any from "heic2any";
-import {Vector2d} from "../models/common/vector-2d";
 import {saveAs, FileSaverOptions} from "file-saver";
 import {EDIUploadPharmaFileModel} from "../models/rest/edi/edi-upload-pharma-file-model";
-import {REGEX_CHECK_COLOR_RGB} from "./f-constants";
 import {UserTrainingModel} from "../models/rest/user/user-training-model";
 
 export type voidFunc = () => void;
@@ -415,15 +412,6 @@ export function userFileListToViewModel(userFileList: UserFileModel[]): FileView
 }
 export function userTrainingListToViewModel(userTrainingList: UserTrainingModel[]): FileViewModel[] {
   return userTrainingList.map(x => applyClass(FileViewModel, (obj) => {
-    obj.mimeType = x.mimeType;
-    obj.blobUrl = x.blobUrl;
-    obj.filename = ableFilename(x.originalFilename);
-    obj.ext = getExtMimeType(x.mimeType);
-    obj.regDate = x.regDate;
-  }));
-}
-export function ediFileListToViewModel(ediFileList: EDIUploadFileModel[]): FileViewModel[] {
-  return ediFileList.map(x => applyClass(FileViewModel, (obj) => {
     obj.mimeType = x.mimeType;
     obj.blobUrl = x.blobUrl;
     obj.filename = ableFilename(x.originalFilename);

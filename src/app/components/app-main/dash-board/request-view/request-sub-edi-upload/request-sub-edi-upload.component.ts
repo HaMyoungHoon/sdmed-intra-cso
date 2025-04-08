@@ -8,7 +8,6 @@ import {EDIUploadPharmaModel} from "../../../../../models/rest/edi/edi-upload-ph
 import {EDIUploadPharmaMedicineModel} from "../../../../../models/rest/edi/edi-upload-pharma-medicine-model";
 import {EDIState, StringToEDIStateDesc} from "../../../../../models/rest/edi/edi-state";
 import {transformToBoolean} from "primeng/utils";
-import {EDIUploadFileModel} from "../../../../../models/rest/edi/edi-upload-file-model";
 import * as FConstants from "../../../../../guards/f-constants";
 import {FullscreenFileViewComponent} from "../../../../common/fullscreen-file-view/fullscreen-file-view.component";
 import {EdiListService} from "../../../../../services/rest/edi-list.service";
@@ -262,28 +261,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
 //    }
 //    this.fDialogService.warn("notice", ret.msg);
   }
-  async downloadImageFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
-    const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
-    let blobBuff = await FImageCache.getImage(item.blobUrl);
-    if (blobBuff == undefined) {
-      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-        e => this.fDialogService.error("downloadFile", e));
-      if (ret && ret.body) {
-        blobBuff = ret.body;
-        await FImageCache.putImage(item.blobUrl, blobBuff);
-      } else {
-        this.fDialogService.warn("download", "edi file download fail");
-        return;
-      }
-    }
-    try {
-      const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-      const blob = withWatermark ? await FCanvasUtil.blobAddText(blobBuff, filename, item.mimeType, this.addTextOptionMerge()) : blobBuff;
-      FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
-    } catch (e: any) {
-      this.fDialogService.warn("download", e?.message?.toString());
-    }
-  }
   async downloadPharmaImageFile(pharmaName: string, item: EDIUploadPharmaFileModel, withWatermark: boolean = true): Promise<void> {
     let blobBuff = await FImageCache.getImage(item.blobUrl);
     if (blobBuff == undefined) {
@@ -304,27 +281,6 @@ export class RequestSubEdiUploadComponent extends FComponentBase {
     } catch (e: any) {
       this.fDialogService.warn("download", e?.message?.toString());
     }
-  }
-  async downloadEDIFile(item: EDIUploadFileModel, withWatermark: boolean = true): Promise<void> {
-    this.setLoading();
-    const ext = FExtensions.getExtMimeType(item.mimeType);
-    if (FExtensions.isImage(ext)) {
-      await this.downloadImageFile(item);
-    } else {
-      const ret = await FExtensions.tryCatchAsync(async() => await this.commonService.downloadFile(item.blobUrl),
-        e => this.fDialogService.error("downloadFile", e));
-      try {
-        if (ret && ret.body) {
-          const pharmaName = this.selectPrintPharma?.orgName ?? this.uploadModel.tempOrgName;
-          const filename = `${this.getApplyDate()}_${this.getHospitalName()}_${pharmaName}`;
-          const blob = withWatermark ? await FCanvasUtil.blobAddText(ret.body, filename, item.mimeType, this.addTextOptionMerge()) : ret.body;
-          FExtensions.fileSave(blob, `${FExtensions.ableFilename(filename)}.${FExtensions.getExtMimeType(item.mimeType)}`);
-        }
-      } catch (e: any) {
-        this.fDialogService.warn("download", e?.message?.toString());
-      }
-    }
-    this.setLoading(false);
   }
   async downloadEDIPharmaFile(data: {pharmaName: string, item: EDIUploadPharmaFileModel, withWatermark: boolean }): Promise<void> {
     this.setLoading();
