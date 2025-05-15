@@ -1,6 +1,6 @@
-export const MAP_GOOGLE_ID = "c4e783549a7f4ba6";
-export const MAP_GOOGLE_GRAY_ID = "99745182c21c3536";
-export const MAP_GOOGLE_NIGHT_ID = "eae3a30c568ab075";
+export const MAP_GOOGLE_ID = "e3ab2c4c1d5bfc9a12de95c8";
+export const MAP_GOOGLE_GRAY_ID = "e3ab2c4c1d5bfc9a80e68750";
+export const MAP_GOOGLE_NIGHT_ID = "e3ab2c4c1d5bfc9a4f522bbf";
 
 declare global {
   interface Window {
