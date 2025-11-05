@@ -102,7 +102,7 @@ export const REGEX_CHECK_COLOR_RGB: RegExp = /^#[0-9A-Fa-f]{6}$/;
 export const REGEX_HEX_COLOR_RGB: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
 export const REGEX_HEX_COLOR_RGBA: RegExp = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i;
 
-export const MAP_GOOGLE_API_KEY = "AIzaSyAXbfpHy7uOHr2cFKAMqpNfapHJ-yynm3k";
+export const MAP_GOOGLE_API_KEY = "AIzaSyAcz6O5HVUam-TG_vuR7Hc6CNSuuvSiDsc";
 
 export let DEF_LAT: number = 37.5020656;
 export let DEF_LNG: number = 126.8880897;
