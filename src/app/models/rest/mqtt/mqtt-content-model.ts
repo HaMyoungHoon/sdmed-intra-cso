@@ -1,7 +1,6 @@
 import {MqttContentType} from "./mqtt-content-type";
 
 export class MqttContentModel {
-  topic: string = "";
   senderPK: string = "";
   senderID: string = "";
   senderName: string = "";
@@ -9,8 +8,7 @@ export class MqttContentModel {
   contentType: MqttContentType = MqttContentType.None;
   targetItemPK: string = "";
 
-  parseThis(topic: string, payload: Buffer): MqttContentModel {
-    this.topic = topic;
+  parseThis(payload: Buffer): MqttContentModel {
     try {
       const buff = JSON.parse(payload.toString()) as MqttContentModel;
       this.senderPK = buff.senderPK;

@@ -69,7 +69,7 @@ export class EdiResponseDialogComponent extends FDialogComponentBase {
     : await FExtensions.restTry(async() => await this.thisService.postEDINewData(this.ediUploadModel!!.thisPK, ediUploadResponseModel),
         e => this.fDialogService.error("postData", e));
     if (ret.result) {
-      await this.mqttSend(this.ediUploadModel?.userPK, ret.data?.thisPK, `${ret.data?.name}\n${ret.data?.orgName}`, ret.data?.ediState);
+      await this.mqttSend(ret.data?.userPK, ret.data?.thisPK, `${ret.data?.name}\n${ret.data?.orgName}`, ret.data?.ediState);
       this.ref.close(this.pharma);
       return;
     }

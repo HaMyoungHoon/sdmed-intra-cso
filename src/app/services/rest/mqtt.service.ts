@@ -119,7 +119,7 @@ export class MqttService {
       }
     });
     this.mqttClient.on("message", (topic: string, message: Buffer): void => {
-      this.mqttMessageSubject.next(new MqttContentModel().parseThis(topic, message));
+      this.mqttMessageSubject.next(new MqttContentModel().parseThis(message));
     });
     this.mqttClient.on("disconnect", (packet: IDisconnectPacket): void => {
       this.mqttDisconnectSubject.next(packet);
